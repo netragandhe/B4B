@@ -252,11 +252,11 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
             onClick={handleLogout}
             title="Sign Out"
             className={`w-full flex items-center ${
-              isCollapsed ? 'justify-center p-2' : 'gap-2 px-3 py-2'
+              isCollapsed ? 'justify-center p-2' : 'justify-between px-3 py-2'
             } text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors`}
           >
-            <LogOut className="w-3.5 h-3.5" />
             {!isCollapsed && <span>Sign Out</span>}
+            <LogOut className="w-3.5 h-3.5" />
           </button>
         </div>
       </aside>
@@ -461,10 +461,10 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                         setProfileMenuOpen(false)
                         handleLogout()
                       }}
-                      className="w-full flex items-center gap-2 px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg"
+                      className="w-full flex items-center justify-between gap-2 px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg font-semibold"
                     >
-                      <LogOut className="w-3.5 h-3.5" />
                       <span>Sign Out Terminal</span>
+                      <LogOut className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
@@ -596,10 +596,10 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                   setMobileSidebarOpen(false)
                   handleLogout()
                 }}
-                className="flex items-center gap-2 text-xs text-red-600"
+                className="flex items-center gap-2 text-xs font-semibold text-red-600"
               >
-                <LogOut className="w-3.5 h-3.5" />
                 <span>Sign Out</span>
+                <LogOut className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>

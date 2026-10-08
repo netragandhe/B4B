@@ -35,9 +35,10 @@ export const IdleTimeoutModal: React.FC = () => {
             variant="outline"
             size="sm"
             onClick={logout}
+            rightIcon={<LogOut className="w-4 h-4" />}
             className="text-slate-600 dark:text-slate-300"
           >
-            <LogOut className="w-4 h-4 mr-1.5" /> Log Out Now
+            Log Out Now
           </Button>
 
           <Button

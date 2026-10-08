@@ -52,9 +52,10 @@ export const LogoutConfirmModal: React.FC = () => {
             size="sm"
             pill
             onClick={handleConfirmLogout}
+            rightIcon={<LogOut className="w-4 h-4" />}
             className="font-bold bg-rose-600 hover:bg-rose-500 text-white"
           >
-            <LogOut className="w-4 h-4 mr-1.5" /> Log Out
+            Log Out
           </Button>
         </div>
       </div>

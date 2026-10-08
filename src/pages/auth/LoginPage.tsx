@@ -436,9 +436,10 @@ export const LoginPage: React.FC = () => {
                   size="md"
                   pill
                   isLoading={isSubmitting}
+                  rightIcon={<ArrowRight className="w-4 h-4" />}
                   className="w-full font-bold bg-[#0A3D9C] hover:bg-[#072B6E] text-white shadow-lg mt-2"
                 >
-                  Sign In to Dashboard <ArrowRight className="w-4 h-4 ml-1.5" />
+                  Sign In to Dashboard
                 </Button>
               </form>
 
