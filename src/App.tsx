@@ -147,10 +147,10 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <AuthProvider>
-          <PermissionProvider>
-            <ToastProvider>
-            <BrowserRouter>
+        <ToastProvider>
+          <AuthProvider>
+            <PermissionProvider>
+              <BrowserRouter>
               <Routes>
                 {/* 1. Public Marketing Website */}
                 <Route
@@ -911,9 +911,9 @@ export default function App() {
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </BrowserRouter>
-          </ToastProvider>
-        </PermissionProvider>
-      </AuthProvider>
+            </PermissionProvider>
+          </AuthProvider>
+        </ToastProvider>
       </ThemeProvider>
     </QueryClientProvider>
   )
