@@ -70,14 +70,14 @@ export const DesignSystemPage: React.FC = () => {
   const [passwordVal, setPasswordVal] = useState('FintechSec!99')
   const [stepperStep, setStepperStep] = useState(1)
 
-  // Color tokens
+  // B4B America Brand Color Tokens
   const colorSwatches = [
-    { name: 'Navy 900 (Canvas Dark)', hex: '#0A1628', class: 'bg-[#0A1628]', dark: true },
-    { name: 'Navy 700 (Surface)', hex: '#12294A', class: 'bg-[#12294A]', dark: true },
-    { name: 'Royal 600 (Primary)', hex: '#2563EB', class: 'bg-[#2563EB]', dark: true },
-    { name: 'Emerald 500 (Success)', hex: '#10B981', class: 'bg-[#10B981]', dark: true },
-    { name: 'Gold 500 (Scoreboard)', hex: '#F59E0B', class: 'bg-[#F59E0B]', dark: false },
-    { name: 'Slate Neutrals (Text/Border)', hex: '#64748B', class: 'bg-slate-500', dark: true },
+    { name: 'Brand Blue 600 (Primary)', hex: '#0A3D9C', class: 'bg-[#0A3D9C]', dark: true },
+    { name: 'Brand Blue 800 (Card Surface)', hex: '#072B6E', class: 'bg-[#072B6E]', dark: true },
+    { name: 'Brand Blue 900 (Canvas Dark)', hex: '#051E4D', class: 'bg-[#051E4D]', dark: true },
+    { name: 'Brand Yellow 500 (Accent CTA)', hex: '#FFC800', class: 'bg-[#FFC800]', dark: false },
+    { name: 'Brand Yellow 600 (Hover Accent)', hex: '#E6B400', class: 'bg-[#E6B400]', dark: false },
+    { name: 'Brand Blue 50 (Soft Tint)', hex: '#F0F4FC', class: 'bg-[#F0F4FC]', dark: false },
     { name: 'Red 500 (Destructive)', hex: '#EF4444', class: 'bg-[#EF4444]', dark: true },
   ]
 
@@ -181,6 +181,40 @@ export const DesignSystemPage: React.FC = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* SECTION 1B: B4B AMERICA BRAND LOGO VARIANTS */}
+        <section className="space-y-4">
+          <h2 className="text-xl font-bold font-heading flex items-center gap-2 text-slate-900 dark:text-white">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FFC800]" />
+            1B. B4B America Logo Variants & Clear Space
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card variant="default" className="p-6 space-y-3 border border-slate-200 dark:border-slate-800 text-center flex flex-col items-center justify-center">
+              <Badge variant="primary" size="sm">Full Logo (`variant="full"`)</Badge>
+              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl w-full flex items-center justify-center">
+                <BrandLogo variant="full" size="lg" />
+              </div>
+              <p className="text-xs text-slate-500">Used for Hero, Login side panels, Footers, and PDF Exports.</p>
+            </Card>
+
+            <Card variant="default" className="p-6 space-y-3 border border-slate-200 dark:border-slate-800 text-center flex flex-col items-center justify-center">
+              <Badge variant="emerald" size="sm">Wordmark (`variant="wordmark"`)</Badge>
+              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl w-full flex items-center justify-center">
+                <BrandLogo variant="wordmark" size="md" />
+              </div>
+              <p className="text-xs text-slate-500">Used for Sticky Header Navbar & Expanded Portal Sidebar.</p>
+            </Card>
+
+            <Card variant="default" className="p-6 space-y-3 border border-slate-200 dark:border-slate-800 text-center flex flex-col items-center justify-center">
+              <Badge variant="gold" size="sm">Square Icon (`variant="icon"`)</Badge>
+              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl w-full flex items-center justify-center">
+                <BrandLogo variant="icon" size="lg" />
+              </div>
+              <p className="text-xs text-slate-500">Used for Collapsed Sidebar, Favicon, Mobile Top Bar, PWA.</p>
+            </Card>
           </div>
         </section>
 

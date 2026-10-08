@@ -119,7 +119,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
         {/* Brand Header */}
         <div className="p-4 sm:p-5 border-b border-slate-100 dark:border-[#1E3A5F]/70 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 truncate overflow-hidden">
-            <BrandLogo size={isCollapsed ? 'sm' : 'md'} showTagline={false} />
+            <BrandLogo variant={isCollapsed ? 'icon' : 'wordmark'} size={isCollapsed ? 'sm' : 'md'} showTagline={false} />
           </Link>
 
           <button
@@ -222,28 +222,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
           })}
         </nav>
 
-        {/* eBOX Priority Callout Box in Sidebar (Expanded View) */}
-        {!isCollapsed && (
-          <div className="mx-3 my-2 p-3 rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-gradient-to-br from-emerald-50/70 to-teal-50/40 dark:from-emerald-950/30 dark:to-[#0D1E36]">
-            <div className="flex items-center justify-between text-xs mb-1">
-              <span className="font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-1.5">
-                <FolderArchive className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span>eBOX Vault</span>
-              </span>
-              <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded bg-emerald-500 text-white">
-                New
-              </span>
-            </div>
-            <p className="text-[11px] text-slate-600 dark:text-slate-400 mb-2">
-              Centralized secure repository for files & audits.
-            </p>
-            <Link to="/portal/ebox">
-              <Button size="sm" variant="accent" className="w-full text-xs h-7 justify-center">
-                Open eBOX Repository
-              </Button>
-            </Link>
-          </div>
-        )}
+
 
         {/* Sidebar Footer Controls */}
         <div className="p-3 border-t border-slate-100 dark:border-[#1E3A5F]/70 space-y-1">

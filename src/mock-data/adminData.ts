@@ -87,6 +87,14 @@ export const ADMIN_PENDING_APPROVALS: PendingApproval[] = [
     date: '2026-10-05',
     status: 'Pending',
   },
+  {
+    id: 'app_5',
+    type: 'Rank Promotion',
+    title: 'Rachel Adams — Promotion to District Leader (Rank 4)',
+    subtitle: 'Achieved $320k Personal Vol + $450k Team Vol',
+    date: '2026-10-04',
+    status: 'Pending',
+  },
 ]
 
 export const ADMIN_BIZPRO_LIST: AdminBizPro[] = [

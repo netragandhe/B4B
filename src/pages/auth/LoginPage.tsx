@@ -221,7 +221,7 @@ export const LoginPage: React.FC = () => {
 
         <div className="relative z-10">
           <Link to="/">
-            <BrandLogo size="lg" />
+            <BrandLogo variant="full" size="hero" />
           </Link>
         </div>
 
@@ -263,7 +263,7 @@ export const LoginPage: React.FC = () => {
           {/* Top Logo for mobile */}
           <div className="lg:hidden pb-4">
             <Link to="/">
-              <BrandLogo size="md" />
+              <BrandLogo variant="wordmark" size="md" />
             </Link>
           </div>
 

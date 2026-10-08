@@ -59,7 +59,7 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           {/* Brand Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <BrandLogo size="md" showTagline={false} />
+            <BrandLogo variant="wordmark" size="md" showTagline={false} />
           </Link>
 
           {/* Desktop Navigation Links */}
@@ -200,7 +200,7 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
           <div className="grid grid-cols-1 md:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
             {/* Col 1: Brand Info */}
             <div className="md:col-span-2 space-y-4">
-              <BrandLogo size="lg" className="text-white" />
+              <BrandLogo variant="full" size="lg" showTagline />
               <p className="text-slate-400 text-sm max-w-sm leading-relaxed">
                 {brandConfig.description}
               </p>
