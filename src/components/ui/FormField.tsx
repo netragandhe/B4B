@@ -6,6 +6,7 @@ export interface FormFieldProps {
   label?: string
   error?: string
   helperText?: string
+  hint?: string
   required?: boolean
   className?: string
   children: React.ReactNode
@@ -16,11 +17,13 @@ export const FormField: React.FC<FormFieldProps> = ({
   label,
   error,
   helperText,
+  hint,
   required,
   className,
   children,
   id,
 }) => {
+  const displayHelper = helperText || hint
   return (
     <div className={cn('flex flex-col space-y-1.5 w-full text-left', className)}>
       {label && (
@@ -40,10 +43,10 @@ export const FormField: React.FC<FormFieldProps> = ({
           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
           <span>{error}</span>
         </p>
-      ) : helperText ? (
+      ) : displayHelper ? (
         <p className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 mt-1">
           <Info className="w-3.5 h-3.5 shrink-0" />
-          <span>{helperText}</span>
+          <span>{displayHelper}</span>
         </p>
       ) : null}
     </div>

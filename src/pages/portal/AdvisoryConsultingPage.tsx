@@ -17,22 +17,33 @@ import { Modal } from '@/components/ui/Modal'
 import { FormField } from '@/components/ui/FormField'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
-import { DatePicker } from '@/components/ui/DatePicker'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
-import { CONSULTATION_SESSIONS } from '@/mock-data/fintechData'
+import { PageTransition } from '@/components/animations/PageTransition'
+import { PageLoadingFallback } from '@/components/ui/PageLoadingFallback'
+import { ErrorState } from '@/components/ui/ErrorState'
+import { EmptyState } from '@/components/ui/EmptyState'
+import { useConsultationSessions } from '@/hooks/queries/useFintechData'
 import { useToast } from '@/components/ui/Toast'
+import type { ConsultationSession } from '@/mock-data/fintechData'
 
 export const AdvisoryConsultingPage: React.FC = () => {
   const { toast } = useToast()
-  const [sessions, setSessions] = useState(CONSULTATION_SESSIONS)
+  const { data: initialSessions, isLoading, isError, refetch } = useConsultationSessions()
+  const [sessions, setSessions] = useState<ConsultationSession[]>([])
   const [isBookingOpen, setIsBookingOpen] = useState(false)
   const [newTopic, setNewTopic] = useState('')
   const [newDate, setNewDate] = useState('2026-10-28')
   const [newAdvisor, setNewAdvisor] = useState('Victoria Hastings')
 
+  React.useEffect(() => {
+    if (initialSessions) {
+      setSessions(initialSessions)
+    }
+  }, [initialSessions])
+
   const handleBookSession = (e: React.FormEvent) => {
     e.preventDefault()
-    const newSession = {
+    const newSession: ConsultationSession = {
       id: `cs-${Date.now()}`,
       advisorName: newAdvisor,
       advisorRole: 'Senior Managing Director & Fractional CFO',
@@ -40,7 +51,7 @@ export const AdvisoryConsultingPage: React.FC = () => {
       topic: newTopic || 'Q4 Margin Expansion & Debt Covenants Review',
       date: newDate,
       time: '3:00 PM EST',
-      status: 'Confirmed' as const,
+      status: 'Confirmed',
       duration: '45 mins',
       actionItemsCount: 3,
     }
@@ -54,197 +65,177 @@ export const AdvisoryConsultingPage: React.FC = () => {
     })
   }
 
+  if (isLoading) return <PageLoadingFallback />
+  if (isError) {
+    return (
+      <ErrorState
+        title="Could not load advisory schedule"
+        message="Unable to retrieve fractional CFO calendar and booked advisory sessions."
+        onRetry={() => refetch()}
+      />
+    )
+  }
+
   return (
-    <div className="space-y-8 text-left">
-      <div className="space-y-2">
-        <Breadcrumb items={[{ label: 'Advisory & CFO' }]} />
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 dark:text-white">
-              Fractional CFO & Advisory Practice
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Direct access to seasoned corporate finance partners, treasury reviews, and strategic planning.
-            </p>
+    <PageTransition>
+      <div className="space-y-8 text-left">
+        <div className="space-y-2">
+          <Breadcrumb items={[{ label: 'Advisory & CFO' }]} />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 dark:text-white">
+                Fractional CFO & Advisory Sessions
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-500">
+                1-on-1 strategic capital guidance, covenant compliance, and cash conversion cycle reviews.
+              </p>
+            </div>
+            <Button
+              variant="primary"
+              size="md"
+              pill
+              onClick={() => setIsBookingOpen(true)}
+              leftIcon={<Plus className="w-4 h-4" />}
+            >
+              Book Strategy Session
+            </Button>
           </div>
-          <Button
-            variant="primary"
-            size="md"
-            pill
-            onClick={() => setIsBookingOpen(true)}
-            leftIcon={<Plus className="w-4 h-4" />}
-          >
-            Book Strategy Session
-          </Button>
         </div>
-      </div>
 
-      {/* Advisory Partner Spotlight */}
-      <Card variant="bento" className="p-6 border-blue-200 dark:border-[#1E3A5F]">
-        <div className="flex flex-col sm:flex-row items-center gap-6">
-          <Avatar
-            src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80"
-            name="Victoria Hastings"
-            size="xl"
-            status="online"
+        {/* Sessions List */}
+        {sessions.length === 0 ? (
+          <EmptyState
+            icon={<Calendar className="w-8 h-8 text-blue-500" />}
+            title="No advisory sessions booked"
+            description="Book a dedicated strategy briefing with your fractional CFO partner."
+            action={
+              <Button size="sm" variant="primary" onClick={() => setIsBookingOpen(true)}>
+                Schedule First Session
+              </Button>
+            }
           />
-          <div className="flex-1 text-center sm:text-left space-y-1">
-            <Badge variant="emerald" size="sm" dot>
-              Assigned Lead Partner
-            </Badge>
-            <h3 className="text-xl font-bold font-heading text-slate-900 dark:text-white">
-              Victoria Hastings, CPA / CFA
-            </h3>
-            <p className="text-xs text-blue-600 dark:text-blue-400 font-semibold">
-              Senior Managing Director & Lead Fractional CFO
-            </p>
-            <p className="text-xs text-slate-500 max-w-2xl leading-relaxed pt-1">
-              "We've structured your revolving credit lines and optimized the cash conversion cycle down to 42 days. Next up: preparing Q4 audit packs for prospective acquisition syndicates."
-            </p>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsBookingOpen(true)}
-            leftIcon={<Video className="w-3.5 h-3.5 text-emerald-500" />}
-          >
-            Schedule 1-on-1
-          </Button>
-        </div>
-      </Card>
-
-      {/* Sessions History & Action Items Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Scheduled Sessions */}
-        <div className="lg:col-span-7 space-y-4">
-          <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white">
-            Upcoming & Past Consultations
-          </h3>
-
-          <div className="space-y-3">
-            {sessions.map((s) => (
-              <Card key={s.id} variant="default" className="p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <Avatar src={s.advisorAvatar} name={s.advisorName} size="md" />
+        ) : (
+          <div className="space-y-4">
+            {sessions.map((session) => (
+              <Card key={session.id} variant="default" className="p-6">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                  <div className="flex items-start gap-4">
+                    <Avatar
+                      src={session.advisorAvatar}
+                      name={session.advisorName}
+                      size="lg"
+                    />
                     <div>
-                      <h4 className="text-sm font-bold text-slate-900 dark:text-white">{s.topic}</h4>
-                      <p className="text-xs text-slate-500">{s.advisorName} • {s.duration}</p>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                          {session.advisorName}
+                        </h3>
+                        <Badge
+                          variant={session.status === 'Confirmed' ? 'emerald' : 'default'}
+                          size="sm"
+                        >
+                          {session.status}
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-slate-500">{session.advisorRole}</p>
+                      <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-2">
+                        {session.topic}
+                      </h4>
                     </div>
                   </div>
-                  <Badge variant={s.status === 'Confirmed' ? 'primary' : 'default'} size="sm">
-                    {s.status}
-                  </Badge>
-                </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-100 dark:border-[#1E3A5F] flex items-center justify-between text-xs text-slate-500">
-                  <span className="flex items-center gap-1.5 font-medium">
-                    <Calendar className="w-3.5 h-3.5 text-blue-500" />
-                    {s.date} at {s.time}
-                  </span>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => toast({ title: 'Meeting Room', description: 'Zoom conference link copied.', type: 'info' })}
-                    leftIcon={<Video className="w-3 h-3 text-emerald-500" />}
-                    className="h-7 text-xs"
-                  >
-                    Join Room
-                  </Button>
+                  <div className="flex flex-col md:items-end gap-2 shrink-0">
+                    <div className="text-xs text-slate-500 flex items-center gap-2">
+                      <Clock className="w-3.5 h-3.5" />
+                      <span>{session.date} • {session.time} ({session.duration})</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 mt-1">
+                      <Button
+                        size="sm"
+                        variant="accent"
+                        onClick={() =>
+                          toast({
+                            title: 'Launching Zoom Conference',
+                            description: 'Connecting to encrypted executive consultation room.',
+                            type: 'info',
+                          })
+                        }
+                        leftIcon={<Video className="w-3.5 h-3.5" />}
+                        className="text-xs"
+                      >
+                        Join Video Meeting
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() =>
+                          toast({
+                            title: 'Action Items (3)',
+                            description: '1. Update Q4 P&L. 2. Verify lender accounts. 3. Sign facility amendment.',
+                            type: 'info',
+                          })
+                        }
+                        className="text-xs"
+                      >
+                        Action Items ({session.actionItemsCount})
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </Card>
             ))}
           </div>
-        </div>
+        )}
 
-        {/* Action Items & Strategic Deliverables */}
-        <div className="lg:col-span-5 space-y-4">
-          <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white">
-            Advisory Action Deliverables
-          </h3>
+        {/* Schedule Modal */}
+        <Modal
+          isOpen={isBookingOpen}
+          onClose={() => setIsBookingOpen(false)}
+          title="Schedule Executive Advisory Briefing"
+          description="Select an advisor, agenda topic, and preferred consultation window."
+          maxWidth="md"
+        >
+          <form onSubmit={handleBookSession} className="space-y-4 text-xs">
+            <FormField label="Assigned CFO Partner" required>
+              <Select
+                value={newAdvisor}
+                onChange={(e) => setNewAdvisor(e.target.value)}
+                options={[
+                  { label: 'Victoria Hastings (Senior Managing Director & Fractional CFO)', value: 'Victoria Hastings' },
+                  { label: 'Derrick Vance (Head of Debt Syndication)', value: 'Derrick Vance' },
+                  { label: 'Elena Rostova (Operations & M&A Strategy Partner)', value: 'Elena Rostova' },
+                ]}
+              />
+            </FormField>
 
-          <Card variant="default" className="p-5 space-y-3">
-            <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100 dark:border-[#1E3A5F]">
-              <span className="font-bold text-slate-700 dark:text-slate-300">Deliverable Status</span>
-              <span className="text-emerald-500 font-bold">4 of 5 Complete</span>
+            <FormField label="Consultation Topic & Focus" required>
+              <Input
+                placeholder="e.g. Q4 Cash Flow Forecasting & Line Draw Optimization"
+                value={newTopic}
+                onChange={(e) => setNewTopic(e.target.value)}
+              />
+            </FormField>
+
+            <FormField label="Preferred Date" required>
+              <Input
+                type="date"
+                value={newDate}
+                onChange={(e) => setNewDate(e.target.value)}
+              />
+            </FormField>
+
+            <div className="pt-3 flex justify-end gap-2.5">
+              <Button type="button" variant="outline" size="sm" onClick={() => setIsBookingOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" variant="primary" size="sm" className="font-bold">
+                Confirm & Schedule
+              </Button>
             </div>
-
-            <div className="space-y-2.5 text-xs">
-              <div className="flex items-start gap-2.5 p-2 rounded-lg bg-emerald-50/50 dark:bg-emerald-950/20">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                <span className="text-slate-700 dark:text-slate-300">
-                  Audit DSO (Days Sales Outstanding) & supplier payment terms.
-                </span>
-              </div>
-              <div className="flex items-start gap-2.5 p-2 rounded-lg bg-emerald-50/50 dark:bg-emerald-950/20">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                <span className="text-slate-700 dark:text-slate-300">
-                  Deliver 13-week rolling cash forecast spreadsheet model.
-                </span>
-              </div>
-              <div className="flex items-start gap-2.5 p-2 rounded-lg bg-emerald-50/50 dark:bg-emerald-950/20">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                <span className="text-slate-700 dark:text-slate-300">
-                  Establish $500k primary revolving line syndication covenants.
-                </span>
-              </div>
-              <div className="flex items-start gap-2.5 p-2 rounded-lg bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900">
-                <Clock className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                <span className="font-semibold text-slate-800 dark:text-slate-200">
-                  Assemble institutional data room for Q4 commercial expansion.
-                </span>
-              </div>
-            </div>
-          </Card>
-        </div>
+          </form>
+        </Modal>
       </div>
-
-      {/* Book New Session Modal */}
-      <Modal
-        isOpen={isBookingOpen}
-        onClose={() => setIsBookingOpen(false)}
-        title="Schedule Strategic CFO Advisory Session"
-        description="Book dedicated time with your assigned lead partner."
-        maxWidth="md"
-      >
-        <form onSubmit={handleBookSession} className="space-y-4">
-          <FormField label="Consultation Topic" required>
-            <Input
-              value={newTopic}
-              onChange={(e) => setNewTopic(e.target.value)}
-              placeholder="e.g. Q4 Debt Cost Optimization & Tax Structuring"
-            />
-          </FormField>
-
-          <FormField label="Select Lead Advisor" required>
-            <Select
-              value={newAdvisor}
-              onChange={(e) => setNewAdvisor(e.target.value)}
-              options={[
-                { label: 'Victoria Hastings (Fractional CFO & Treasury)', value: 'Victoria Hastings' },
-                { label: 'Derrick Vance (Head of Debt Syndication)', value: 'Derrick Vance' },
-                { label: 'Elena Rostova (M&A Strategy Partner)', value: 'Elena Rostova' },
-              ]}
-            />
-          </FormField>
-
-          <FormField label="Preferred Date" required>
-            <DatePicker
-              value={newDate}
-              onChange={(e) => setNewDate(e.target.value)}
-            />
-          </FormField>
-
-          <div className="pt-3 flex justify-end gap-3">
-            <Button type="button" variant="outline" onClick={() => setIsBookingOpen(false)}>
-              Cancel
-            </Button>
-            <Button type="submit" variant="primary" pill>
-              Confirm Appointment
-            </Button>
-          </div>
-        </form>
-      </Modal>
-    </div>
+    </PageTransition>
   )
 }

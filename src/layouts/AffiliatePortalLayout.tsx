@@ -2,20 +2,23 @@ import React, { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard,
-  Wallet,
+  Link2,
+  UserPlus,
   Users,
-  FileCheck2,
-  Settings,
+  DollarSign,
+  FolderDown,
+  ShieldCheck,
   LogOut,
   Menu,
   X,
   Sun,
   Moon,
   ExternalLink,
-  PlusCircle,
   Bell,
-  Search,
   ArrowRightLeft,
+  Sparkles,
+  QrCode,
+  CheckCircle2,
 } from 'lucide-react'
 import { BrandLogo, brandConfig } from '@/config/brand'
 import { Button } from '@/components/ui/Button'
@@ -24,8 +27,10 @@ import { Avatar } from '@/components/ui/Avatar'
 import { useAuth } from '@/hooks/useAuth'
 import { useTheme } from '@/hooks/useTheme'
 import { useToast } from '@/components/ui/Toast'
+import { usePartnerProfile, useAffiliateMetrics } from '@/hooks/queries/useAffiliateData'
+import { formatCurrency } from '@/lib/utils'
 
-export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AffiliatePortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, logout } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const location = useLocation()
@@ -33,33 +38,34 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
   const { toast } = useToast()
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
+  const { data: profile } = usePartnerProfile()
+  const { data: metrics } = useAffiliateMetrics()
+
   const navItems = [
-    { name: 'Financial Scoreboard', href: '/portal/dashboard', icon: LayoutDashboard },
-    { name: 'Capital Facilities', href: '/portal/capital', icon: Wallet, badge: '$850k' },
-    { name: 'Advisory & CFO', href: '/portal/advisory', icon: Users, badge: '2 Pending' },
-    { name: 'Documents & Filings', href: '/portal/documents', icon: FileCheck2 },
-    { name: 'Account Settings', href: '/portal/settings', icon: Settings },
+    { name: 'Dashboard', href: '/portal/affiliate/dashboard', icon: LayoutDashboard },
+    { name: 'My Unique Links', href: '/portal/affiliate/links', icon: Link2, badge: `${metrics?.activeLinksCount || 6} Links` },
+    { name: 'Submit Lead', href: '/portal/affiliate/submit-lead', icon: UserPlus, badge: 'Fast Track' },
+    { name: 'Referrals', href: '/portal/affiliate/referrals', icon: Users, badge: `${metrics?.fundedDeals || 38} Funded` },
+    { name: 'Commissions & Payouts', href: '/portal/affiliate/commissions', icon: DollarSign, badge: formatCurrency(metrics?.pendingPayout || 4350) },
+    { name: 'Marketing Materials', href: '/portal/affiliate/marketing', icon: FolderDown, badge: '24 Assets' },
+    { name: 'Partner Profile', href: '/portal/affiliate/profile', icon: ShieldCheck },
   ]
 
-  const isActive = (href: string) => location.pathname === href
+  const isActive = (href: string) => {
+    if (href === '/portal/affiliate/dashboard' && (location.pathname === '/portal/affiliate' || location.pathname === '/portal/affiliate/dashboard')) {
+      return true
+    }
+    return location.pathname === href
+  }
 
   const handleLogout = () => {
     logout()
     toast({
-      title: 'Logged Out',
-      description: 'You have been safely signed out of your client terminal.',
+      title: 'Signed Out',
+      description: 'You have exited the partner terminal.',
       type: 'info',
     })
     navigate('/')
-  }
-
-  const handleQuickDraw = () => {
-    toast({
-      title: 'Draw Request Initialized',
-      description: 'Select an active facility to draw funds into your operating account.',
-      type: 'info',
-    })
-    navigate('/portal/capital')
   }
 
   return (
@@ -72,41 +78,42 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
             <BrandLogo size="md" />
           </Link>
           <div className="mt-3 flex items-center justify-between">
-            <Badge variant="navy" size="sm" className="text-[10px] tracking-wide">
-              {brandConfig.portalName}
+            <Badge variant="emerald" size="sm" className="text-[10px] tracking-wide font-bold">
+              Partner & Affiliate Hub
             </Badge>
             <span className="flex items-center gap-1 text-[11px] text-emerald-500 font-semibold">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Live Synced
+              Tracking Active
             </span>
           </div>
         </div>
 
-        {/* Company Profile Card */}
-        <div className="p-4 mx-4 my-4 rounded-xl bg-gradient-to-br from-blue-50/80 to-indigo-50/50 dark:from-[#12294A] dark:to-[#0D1E36] border border-blue-100 dark:border-[#1E3A5F]">
+        {/* Partner Profile Badge Card */}
+        <div className="p-4 mx-4 my-3.5 rounded-2xl bg-gradient-to-br from-emerald-50/80 via-teal-50/40 to-blue-50/50 dark:from-[#0d2a2a] dark:to-[#0D1E36] border border-emerald-200/80 dark:border-emerald-900/60 shadow-xs">
           <div className="flex items-center gap-3">
-            <Avatar name={user?.name || 'Marcus Vance'} size="md" status="online" />
+            <Avatar name={profile?.fullName || 'Alex Vance'} size="md" status="online" />
             <div className="min-w-0 flex-1">
               <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
-                {user?.company || 'Apex Freight LLC'}
+                {profile?.fullName || 'Alex Vance'}
               </h4>
               <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
-                {user?.role || 'Founder & CEO'}
+                {profile?.businessName || 'Vance Advisory Group'}
               </p>
             </div>
           </div>
-          <div className="mt-3 pt-2.5 border-t border-blue-200/50 dark:border-[#1E3A5F] flex items-center justify-between text-[11px]">
-            <span className="text-slate-500 dark:text-slate-400">Credit Score</span>
-            <span className="font-bold text-amber-500 flex items-center gap-1">
-              785 <span className="text-[9px] text-emerald-500 font-normal">Tier A</span>
+          <div className="mt-3 pt-2.5 border-t border-emerald-200/60 dark:border-emerald-900/60 flex items-center justify-between text-[11px]">
+            <span className="text-slate-500 dark:text-slate-400">Partner Tier</span>
+            <span className="font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-amber-500" />
+              {profile?.partnerTier || 'Platinum VIP'}
             </span>
           </div>
         </div>
 
-        {/* Navigation Links */}
-        <nav className="flex-1 px-4 space-y-1.5">
+        {/* Navigation Items */}
+        <nav className="flex-1 px-4 space-y-1">
           <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
-            Terminal Navigation
+            Partner Navigation
           </p>
           {navItems.map((item) => {
             const Icon = item.icon
@@ -117,7 +124,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                 to={item.href}
                 className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                   active
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-500/20'
                     : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
@@ -127,10 +134,10 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                 </div>
                 {item.badge && (
                   <span
-                    className={`text-[10px] px-2 py-0.2 rounded-full font-bold ${
+                    className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
                       active
                         ? 'bg-white/20 text-white'
-                        : 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900'
+                        : 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900'
                     }`}
                   >
                     {item.badge}
@@ -141,27 +148,27 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
           })}
         </nav>
 
-        {/* Quick Capital Action in Sidebar */}
-        <div className="p-4 mx-4 my-2 rounded-xl border border-emerald-200 dark:border-emerald-950/60 bg-emerald-50/50 dark:bg-emerald-950/20">
-          <div className="flex items-center justify-between text-xs mb-1.5">
-            <span className="font-bold text-emerald-800 dark:text-emerald-300">Ready Draw</span>
-            <span className="font-extrabold text-emerald-600 dark:text-emerald-400">$300,000</span>
+        {/* Quick Submit Lead Action in Sidebar */}
+        <div className="p-4 mx-4 my-2 rounded-xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/20">
+          <div className="flex items-center justify-between text-xs mb-1">
+            <span className="font-bold text-blue-900 dark:text-blue-300">Fast Lead Routing</span>
+            <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">48-Hr SLA</span>
           </div>
           <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-2.5">
-            Available on 24-hr disbursement.
+            Submit a warm commercial prospect directly to underwriting.
           </p>
           <Button
             size="sm"
-            variant="accent"
-            onClick={handleQuickDraw}
+            variant="primary"
+            onClick={() => navigate('/portal/affiliate/submit-lead')}
             className="w-full text-xs h-8"
-            leftIcon={<PlusCircle className="w-3.5 h-3.5" />}
+            leftIcon={<UserPlus className="w-3.5 h-3.5" />}
           >
-            Draw Working Capital
+            Submit Direct Lead
           </Button>
         </div>
 
-        {/* Footer of Sidebar */}
+        {/* Switcher & Sign Out */}
         <div className="p-4 border-t border-slate-100 dark:border-[#1E3A5F]/70 space-y-1">
           <Link
             to="/bizpro/dashboard"
@@ -173,23 +180,25 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
             </span>
           </Link>
           <Link
-            to="/portal/affiliate/dashboard"
-            className="flex items-center justify-between px-3 py-2 text-xs text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 rounded-lg transition-colors font-medium"
+            to="/portal/dashboard"
+            className="flex items-center justify-between px-3 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-[#12294A] rounded-lg transition-colors font-medium"
           >
             <span className="flex items-center gap-2">
               <ArrowRightLeft className="w-3.5 h-3.5" />
-              <span>Switch to Partner Hub</span>
+              <span>Switch to Client Terminal</span>
             </span>
           </Link>
+
           <Link
-            to="/"
-            className="flex items-center justify-between px-3 py-2 text-xs text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:bg-slate-50 dark:hover:bg-[#12294A] rounded-lg transition-colors"
+            to="/affiliates"
+            className="flex items-center justify-between px-3 py-2 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 hover:bg-slate-50 dark:hover:bg-[#12294A] rounded-lg transition-colors"
           >
             <span className="flex items-center gap-2">
               <ExternalLink className="w-3.5 h-3.5" />
-              <span>Back to Public Website</span>
+              <span>Partner Program Overview</span>
             </span>
           </Link>
+
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors"
@@ -202,7 +211,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
       {/* Main View Area */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Top Portal Header */}
+        {/* Top Header Bar */}
         <header className="sticky top-0 z-30 h-16 border-b border-slate-200 dark:border-[#1E3A5F] bg-white/80 dark:bg-[#0D1E36]/80 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
@@ -212,24 +221,26 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
               <Menu className="w-5 h-5" />
             </button>
             <div className="hidden sm:flex items-center gap-2 text-xs">
-              <span className="font-semibold text-slate-500 dark:text-slate-400">Client:</span>
-              <span className="font-bold text-slate-900 dark:text-slate-100">{user?.company}</span>
+              <span className="font-semibold text-slate-500 dark:text-slate-400">Partner:</span>
+              <span className="font-bold text-slate-900 dark:text-slate-100">{profile?.fullName || 'Alex Vance'}</span>
               <span className="text-slate-300 dark:text-slate-600">•</span>
-              <Badge variant="gold" size="sm" dot>
-                {user?.tier || 'Platinum Tier'}
+              <Badge variant="emerald" size="sm" dot>
+                {profile?.partnerTier || 'Platinum VIP (25% Boost)'}
               </Badge>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Quick pre-approved indicator */}
+            {/* Accrued payout pill */}
             <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span className="text-slate-600 dark:text-slate-300">Total Facility:</span>
-              <span className="font-extrabold text-emerald-600 dark:text-emerald-400">$850,000</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-slate-600 dark:text-slate-300">Ready Payout:</span>
+              <span className="font-extrabold text-emerald-600 dark:text-emerald-400">
+                {formatCurrency(metrics?.pendingPayout || 4350)}
+              </span>
             </div>
 
-            {/* Quick Switch to Biz Pro Terminal */}
+            {/* Quick Switch Button to Biz Pro */}
             <Link
               to="/bizpro/dashboard"
               className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-[#1E3A5F] text-xs font-semibold text-blue-600 dark:text-blue-400 hover:bg-slate-100 dark:hover:bg-[#12294A] transition-colors"
@@ -238,23 +249,29 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
               <span>Biz Pro Terminal</span>
             </Link>
 
-            {/* Quick Switch to Partner Hub */}
+            {/* Quick Switch Button */}
             <Link
-              to="/portal/affiliate/dashboard"
+              to="/portal/dashboard"
               className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-[#1E3A5F] text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] transition-colors"
             >
-              <ArrowRightLeft className="w-3.5 h-3.5 text-emerald-500" />
-              <span>Partner Hub</span>
+              <ArrowRightLeft className="w-3.5 h-3.5 text-slate-500" />
+              <span>Client Terminal</span>
             </Link>
 
             {/* Notification bell */}
             <button
-              onClick={() => toast({ title: 'Notifications', description: 'All covenants and quarterly reports verified.', type: 'info' })}
+              onClick={() =>
+                toast({
+                  title: 'Partner Alerts',
+                  description: '1 new referral funded ($1,750 commission pending approval).',
+                  type: 'info',
+                })
+              }
               className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#12294A] relative"
-              aria-label="Notifications"
+              aria-label="Partner Notifications"
             >
               <Bell className="w-4 h-4" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-blue-600" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-500" />
             </button>
 
             {/* Theme Toggle */}
@@ -268,7 +285,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
             {/* User Avatar */}
             <div className="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-[#1E3A5F]">
-              <Avatar name={user?.name} size="sm" />
+              <Avatar name={profile?.fullName || 'Alex Vance'} size="sm" />
               <button
                 onClick={handleLogout}
                 className="hidden sm:inline-flex text-xs font-semibold text-slate-500 hover:text-red-600 dark:text-slate-400"
@@ -313,7 +330,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                       onClick={() => setMobileSidebarOpen(false)}
                       className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold ${
                         active
-                          ? 'bg-blue-600 text-white'
+                          ? 'bg-emerald-600 text-white'
                           : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A]'
                       }`}
                     >
@@ -334,12 +351,20 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
             <div className="pt-4 border-t border-slate-100 dark:border-[#1E3A5F] space-y-2">
               <Link
-                to="/"
+                to="/portal/dashboard"
+                onClick={() => setMobileSidebarOpen(false)}
+                className="flex items-center gap-2 text-xs text-blue-600 font-semibold"
+              >
+                <ArrowRightLeft className="w-3.5 h-3.5" />
+                <span>Switch to Client Terminal</span>
+              </Link>
+              <Link
+                to="/affiliates"
                 onClick={() => setMobileSidebarOpen(false)}
                 className="flex items-center gap-2 text-xs text-slate-500"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
-                <span>Marketing Website</span>
+                <span>Partner Overview</span>
               </Link>
               <button
                 onClick={() => {

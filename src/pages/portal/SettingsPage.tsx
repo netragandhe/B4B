@@ -17,6 +17,7 @@ import { Switch } from '@/components/ui/Switch'
 import { OtpInput } from '@/components/ui/OtpInput'
 import { Badge } from '@/components/ui/Badge'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { PageTransition } from '@/components/animations/PageTransition'
 import { useAuth } from '@/hooks/useAuth'
 import { useTheme } from '@/hooks/useTheme'
 import { useToast } from '@/components/ui/Toast'
@@ -75,8 +76,9 @@ export const SettingsPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl space-y-8 text-left">
-      <div className="space-y-2">
+    <PageTransition>
+      <div className="max-w-4xl space-y-8 text-left">
+        <div className="space-y-2">
         <Breadcrumb items={[{ label: 'Account Settings' }]} />
         <div className="flex items-center justify-between">
           <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 dark:text-white">
@@ -209,5 +211,6 @@ export const SettingsPage: React.FC = () => {
         </div>
       </Card>
     </div>
-  )
+  </PageTransition>
+)
 }

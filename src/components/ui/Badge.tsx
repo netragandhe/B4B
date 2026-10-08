@@ -19,6 +19,8 @@ export const badgeVariants = cva(
           'bg-red-50 dark:bg-red-950/60 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900',
         navy:
           'bg-[#0A1628] text-white border border-[#1E3A5F]',
+        royal:
+          'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xs',
         outline:
           'border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300',
       },

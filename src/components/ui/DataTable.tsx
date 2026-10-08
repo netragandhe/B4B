@@ -25,6 +25,7 @@ export interface DataTableProps<T> {
   data: T[]
   columns: Column<T>[]
   searchKey?: keyof T | string
+  searchPlaceholder?: string
   filterOptions?: {
     key: keyof T | string
     label: string
@@ -39,6 +40,7 @@ export function DataTable<T extends Record<string, any>>({
   data,
   columns,
   searchKey,
+  searchPlaceholder,
   filterOptions,
   pageSize = 5,
   className,
@@ -113,7 +115,7 @@ export function DataTable<T extends Record<string, any>>({
         {searchKey && (
           <div className="w-full sm:w-72">
             <Input
-              placeholder={`Search by ${String(searchKey)}...`}
+              placeholder={searchPlaceholder || `Search by ${String(searchKey)}...`}
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value)
