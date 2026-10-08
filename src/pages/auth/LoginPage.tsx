@@ -1,305 +1,502 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { motion } from 'framer-motion'
 import {
+  Eye,
+  EyeOff,
   Lock,
   Mail,
   ArrowRight,
-  ShieldCheck,
   Sparkles,
-  Quote,
-  Star,
+  Shield,
   CheckCircle2,
-  ChevronRight,
-  UserCheck,
+  AlertCircle,
+  KeyRound,
+  RefreshCw,
 } from 'lucide-react'
+import { BrandLogo } from '@/config/brand'
 import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
-import { PasswordInput } from '@/components/ui/PasswordInput'
-import { FormField } from '@/components/ui/FormField'
 import { Badge } from '@/components/ui/Badge'
-import { useAuth, UserRole, DEMO_PROFILES } from '@/hooks/useAuth'
+import { Input } from '@/components/ui/Input'
+import { FormField } from '@/components/ui/FormField'
+import { SEOHead } from '@/components/seo/SEOHead'
+import { useAuth, UserRole } from '@/hooks/useAuth'
 import { useToast } from '@/components/ui/Toast'
-import { BrandLogo, brandConfig } from '@/config/brand'
 
 const loginSchema = z.object({
-  email: z.string().min(1, 'Email is required').email('Enter a valid business email address'),
+  email: z.string().email('Please enter a valid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
   rememberMe: z.boolean().optional(),
 })
 
-type LoginFormValues = z.infer<typeof loginSchema>
+type LoginFormData = z.infer<typeof loginSchema>
 
 export const LoginPage: React.FC = () => {
-  const { login, user } = useAuth()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const { login, loginAsDemoRole, verifyOtp } = useAuth()
   const { toast } = useToast()
-  const [selectedRole, setSelectedRole] = useState<UserRole>('Client')
-  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const [showPassword, setShowPassword] = useState(false)
+  const [isShakeError, setIsShakeError] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
+
+  // 2-Step OTP State
+  const [step, setStep] = useState<'login' | 'otp' | 'pending'>('login')
+  const [pendingEmail, setPendingEmail] = useState('')
+  const [otpValue, setOtpValue] = useState(['', '', '', '', '', ''])
+  const [resendTimer, setResendTimer] = useState(30)
+  const [isResendDisabled, setIsResendDisabled] = useState(true)
+
+  const sessionExpired = searchParams.get('sessionExpired') === 'true'
+  const redirectUrl = searchParams.get('redirect')
+
+  useEffect(() => {
+    if (sessionExpired) {
+      toast({
+        title: 'Session Expired',
+        description: 'You have been logged out due to 15 minutes of inactivity. Please log in again.',
+        type: 'warning',
+      })
+    }
+  }, [sessionExpired, toast])
+
+  // OTP Countdown timer
+  useEffect(() => {
+    let timer: any
+    if (step === 'otp' && resendTimer > 0) {
+      timer = setInterval(() => {
+        setResendTimer((prev) => prev - 1)
+      }, 1000)
+    } else if (resendTimer === 0) {
+      setIsResendDisabled(false)
+    }
+    return () => clearInterval(timer)
+  }, [step, resendTimer])
 
   const {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
-  } = useForm<LoginFormValues>({
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: DEMO_PROFILES.Client.email,
-      password: 'ApexSecurePassword2026!',
+      email: 'client@demo.com',
+      password: 'Demo@1234',
       rememberMe: true,
     },
   })
 
-  const handleRoleSelect = (role: UserRole) => {
-    setSelectedRole(role)
-    const profile = DEMO_PROFILES[role]
-    if (profile) {
-      setValue('email', profile.email)
+  const handleDemoQuickLogin = async (role: UserRole) => {
+    setFormError(null)
+    const email = `${role.toLowerCase().replace(/\s+/g, '')}@demo.com`
+    setValue('email', email)
+    setValue('password', 'Demo@1234')
+
+    try {
+      const res = await loginAsDemoRole(role)
+      if (res.success) {
+        toast({
+          title: `Welcome back!`,
+          description: `Logged in as ${role} (${res.user?.name}).`,
+          type: 'success',
+        })
+        const targetPath = redirectUrl ? decodeURIComponent(redirectUrl) : getRolePath(role)
+        navigate(targetPath)
+      }
+    } catch {
+      toast({ title: 'Quick Login Error', type: 'error' })
     }
   }
 
-  const onSubmit = (data: LoginFormValues) => {
-    setIsSubmitting(true)
-    setTimeout(() => {
-      login({ email: data.email, role: selectedRole })
-      setIsSubmitting(false)
-      toast({
-        title: `Welcome back, ${DEMO_PROFILES[selectedRole].name}!`,
-        description: `Logged in as ${selectedRole} (${DEMO_PROFILES[selectedRole].company})`,
-        type: 'success',
-      })
-      navigate('/portal/dashboard')
-    }, 600)
+  const getRolePath = (role: UserRole) => {
+    switch (role) {
+      case 'Admin':
+        return '/portal/admin/dashboard'
+      case 'Biz Pro':
+        return '/portal/bizpro/dashboard'
+      case 'Client':
+        return '/portal/client/dashboard'
+      case 'Affiliate':
+        return '/portal/affiliate/dashboard'
+      case 'Employer':
+        return '/portal/employer/dashboard'
+      case 'Job Seeker':
+        return '/portal/seeker/applications'
+      default:
+        return '/portal/dashboard'
+    }
   }
 
-  const rolesList: UserRole[] = ['Client', 'Admin', 'Biz Pro', 'Affiliate', 'Employer', 'Job Seeker']
+  const onSubmit = async (data: LoginFormData) => {
+    setFormError(null)
+    setIsShakeError(false)
+
+    const res = await login(data.email, data.password, !!data.rememberMe)
+
+    if (res.isPending) {
+      setStep('pending')
+      return
+    }
+
+    if (!res.success) {
+      setIsShakeError(true)
+      setFormError(res.error || 'Login failed. Please check credentials.')
+      toast({ title: 'Authentication Failed', description: res.error, type: 'error' })
+      return
+    }
+
+    if (res.requiresOtp && res.user) {
+      setPendingEmail(data.email)
+      setStep('otp')
+      toast({ title: '2-Step Verification', description: 'Demo OTP is 123456', type: 'info' })
+      return
+    }
+
+    if (res.user) {
+      toast({
+        title: `Welcome, ${res.user.name}!`,
+        description: `Successfully signed in to ${res.user.role} portal.`,
+        type: 'success',
+      })
+      const targetPath = redirectUrl ? decodeURIComponent(redirectUrl) : getRolePath(res.user.role)
+      navigate(targetPath)
+    }
+  }
+
+  const handleOtpSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const fullCode = otpValue.join('')
+    if (fullCode.length < 6) {
+      setFormError('Please enter all 6 digits of your verification code.')
+      return
+    }
+
+    const res = await verifyOtp(pendingEmail, fullCode)
+    if (res.success && res.user) {
+      toast({
+        title: '2-Factor Authentication Verified',
+        description: `Access granted as ${res.user.role}.`,
+        type: 'success',
+      })
+      const targetPath = redirectUrl ? decodeURIComponent(redirectUrl) : getRolePath(res.user.role)
+      navigate(targetPath)
+    } else {
+      setFormError(res.error || 'Invalid OTP code.')
+      toast({ title: 'Verification Failed', description: 'Demo OTP is 123456', type: 'error' })
+    }
+  }
+
+  const handleOtpChange = (index: number, val: string) => {
+    if (!/^\d*$/.test(val)) return
+    const newOtp = [...otpValue]
+    newOtp[index] = val.slice(-1)
+    setOtpValue(newOtp)
+
+    if (val && index < 5) {
+      const nextInput = document.getElementById(`otp-input-${index + 1}`)
+      if (nextInput) nextInput.focus()
+    }
+  }
+
+  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent) => {
+    if (e.key === 'Backspace' && !otpValue[index] && index > 0) {
+      const prevInput = document.getElementById(`otp-input-${index - 1}`)
+      if (prevInput) prevInput.focus()
+    }
+  }
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-slate-50 dark:bg-[#0A1628] text-slate-900 dark:text-slate-100 font-sans">
-      {/* Left Panel: Branded Dark Gradient & Testimonial Showcase */}
-      <div className="lg:w-5/12 xl:w-1/2 bg-gradient-to-br from-[#0A1628] via-[#0D1E36] to-[#12294A] text-white p-8 lg:p-12 xl:p-16 flex flex-col justify-between relative overflow-hidden border-r border-[#1E3A5F]">
-        {/* Background glow effects */}
-        <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-slate-900 text-white">
+      <SEOHead title="Portal Sign In | B4B Executive Platform" description="Sign in to your B4B client, Biz Pro, or corporate portal account." />
 
-        {/* Top Header */}
+      {/* LEFT SIDE PANEL: BRANDED GRADIENT & TESTIMONIAL */}
+      <div className="hidden lg:flex flex-col justify-between p-12 relative overflow-hidden bg-gradient-to-br from-blue-900 via-slate-900 to-emerald-950 border-r border-slate-800">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
         <div className="relative z-10">
-          <Link to="/" className="inline-block mb-10">
-            <BrandLogo size="lg" className="text-white" />
+          <Link to="/">
+            <BrandLogo size="lg" />
           </Link>
-
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-semibold mb-6">
-            <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-            <span>Institutional Growth & Capital Operating System</span>
-          </div>
-
-          <h1 className="text-3xl lg:text-4xl font-extrabold font-heading tracking-tight leading-tight text-white mb-4">
-            Empowering modern businesses with capital & CFO intelligence.
-          </h1>
-          <p className="text-sm text-slate-300 max-w-lg leading-relaxed">
-            Access non-dilutive credit lines, automated treasury forecasts, and dedicated fractional CFO advisory in one unified workspace.
-          </p>
         </div>
 
-        {/* Center Testimonial Card */}
-        <div className="relative z-10 my-10 p-6 sm:p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl space-y-4">
-          <div className="flex items-center gap-1 text-amber-400">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-            ))}
-          </div>
+        <div className="relative z-10 max-w-lg space-y-6">
+          <Badge variant="emerald" size="md">
+            Verified Corporate Portal
+          </Badge>
 
-          <Quote className="w-8 h-8 text-blue-400/40" />
-          <p className="text-sm sm:text-base italic text-slate-200 leading-relaxed font-serif">
-            "B4B unlocked an $850k revolving facility for Apex Freight without equity dilution. Their fractional CFO team helped us expand our fleet by 40% in under 90 days."
+          <h2 className="text-3xl sm:text-4xl font-extrabold font-heading tracking-tight leading-tight">
+            Empowering Main Street Businesses Across America
+          </h2>
+
+          <p className="text-sm text-slate-300 leading-relaxed">
+            "B4B Network transformed our capital stack. We secured $850k in working capital debt facilities within 10 days."
           </p>
 
-          <div className="pt-4 border-t border-white/10 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img
-                src={DEMO_PROFILES.Client.avatarUrl}
-                alt={DEMO_PROFILES.Client.name}
-                className="w-11 h-11 rounded-full object-cover border-2 border-emerald-500/80 shadow-md"
-              />
-              <div>
-                <h4 className="text-xs font-bold text-white">{DEMO_PROFILES.Client.name}</h4>
-                <p className="text-[11px] text-slate-400">{DEMO_PROFILES.Client.title}, {DEMO_PROFILES.Client.company}</p>
-              </div>
+          <div className="pt-2 flex items-center gap-3">
+            <img
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+              alt="Marcus Vance"
+              className="w-11 h-11 rounded-full object-cover border-2 border-emerald-400"
+            />
+            <div>
+              <div className="text-xs font-bold text-white">Marcus Vance</div>
+              <div className="text-[11px] text-slate-400">CEO, Apex Freight & Logistics LLC</div>
             </div>
-            <Badge variant="emerald" size="sm" className="hidden sm:inline-flex">
-              $850k Line Issued
-            </Badge>
           </div>
         </div>
 
-        {/* Footer Security Badges */}
-        <div className="relative z-10 pt-6 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-400">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>SOC2 Type II & 256-Bit SSL Encrypted</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="hover:text-slate-200">Privacy</span>
-            <span>•</span>
-            <span className="hover:text-slate-200">Security</span>
-            <span>•</span>
-            <span className="hover:text-slate-200">Compliance</span>
-          </div>
+        <div className="relative z-10 text-xs text-slate-500">
+          © {new Date().getFullYear()} B4B Capital Network Inc. Encrypted 256-bit TLS Session.
         </div>
       </div>
 
-      {/* Right Panel: Login Form & Role Switcher */}
-      <div className="lg:w-7/12 xl:w-1/2 p-6 sm:p-12 lg:p-16 flex flex-col justify-center max-w-2xl mx-auto w-full">
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl sm:text-3xl font-bold font-heading text-slate-900 dark:text-white">
-              Sign In to Your Workspace
-            </h2>
-            <Link
-              to="/portal/signup"
-              className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
-            >
-              <span>Create Account</span>
-              <ChevronRight className="w-3.5 h-3.5" />
+      {/* RIGHT SIDE PANEL: AUTH FORM & QUICK DEMO LOGIN */}
+      <div className="flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-12 space-y-8 bg-slate-900">
+        <div className="w-full max-w-md mx-auto space-y-6 text-left">
+
+          {/* Top Logo for mobile */}
+          <div className="lg:hidden pb-4">
+            <Link to="/">
+              <BrandLogo size="md" />
             </Link>
           </div>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Select a demo role below or enter your credentials to access your dashboard.
-          </p>
-        </div>
 
-        {/* DEMO ROLE SELECTOR */}
-        <div className="mb-8 p-4 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50/70 dark:from-[#12294A] dark:to-[#0D1E36] border border-blue-200 dark:border-[#1E3A5F] space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-900 dark:text-blue-300 flex items-center gap-1.5">
-              <UserCheck className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              <span>Demo Role Previewer (Select Role)</span>
-            </span>
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
-              Active: {selectedRole}
-            </span>
-          </div>
+          {/* STEP: LOGIN */}
+          {step === 'login' && (
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className={`space-y-6 ${isShakeError ? 'animate-shake' : ''}`}
+            >
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-white tracking-tight">
+                  Sign in to Portal
+                </h1>
+                <p className="text-xs sm:text-sm text-slate-400 mt-1">
+                  Enter your corporate credentials or click a quick demo role below.
+                </p>
+              </div>
 
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
-            {rolesList.map((role) => {
-              const active = selectedRole === role
-              return (
+              {/* DEMO QUICK LOGIN BUTTONS ROW */}
+              <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/80 space-y-3">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-bold text-slate-300 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Demo Quick Role Login:
+                  </span>
+                  <span className="text-[10px] text-slate-400">1-Click Preview</span>
+                </div>
+
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
+                  {(['Admin', 'Biz Pro', 'Client', 'Affiliate', 'Employer', 'Job Seeker'] as UserRole[]).map((r) => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => handleDemoQuickLogin(r)}
+                      className="py-2 px-1.5 rounded-xl bg-slate-900 hover:bg-blue-600/30 border border-slate-700 hover:border-blue-400 text-[11px] font-bold text-slate-200 hover:text-white transition-all text-center truncate"
+                    >
+                      {r}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Error Alert Box */}
+              {formError && (
+                <div className="p-3.5 rounded-xl bg-rose-950/60 border border-rose-800 text-xs text-rose-300 flex items-center gap-2.5">
+                  <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                  <span>{formError}</span>
+                </div>
+              )}
+
+              {/* Form */}
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <FormField label="Email Address" required error={errors.email?.message}>
+                  <div className="relative">
+                    <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                    <Input
+                      type="email"
+                      placeholder="name@company.com"
+                      className="pl-9 text-xs"
+                      {...register('email')}
+                    />
+                  </div>
+                </FormField>
+
+                <FormField label="Password" required error={errors.password?.message}>
+                  <div className="relative">
+                    <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="••••••••"
+                      className="pl-9 pr-10 text-xs"
+                      {...register('password')}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-white"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </FormField>
+
+                <div className="flex items-center justify-between text-xs pt-1">
+                  <label className="flex items-center gap-2 text-slate-400 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      {...register('rememberMe')}
+                      className="w-4 h-4 accent-blue-600 rounded"
+                    />
+                    <span>Remember me</span>
+                  </label>
+
+                  <Link to="/portal/forgot-password" className="text-blue-400 hover:underline font-semibold">
+                    Forgot password?
+                  </Link>
+                </div>
+
+                <Button
+                  type="submit"
+                  variant="accent"
+                  size="md"
+                  pill
+                  isLoading={isSubmitting}
+                  className="w-full font-bold bg-gradient-to-r from-blue-600 to-emerald-500 hover:from-blue-500 hover:to-emerald-400 text-white shadow-lg mt-2"
+                >
+                  Sign In to Dashboard <ArrowRight className="w-4 h-4 ml-1.5" />
+                </Button>
+              </form>
+
+              <div className="text-center text-xs text-slate-400 pt-4 border-t border-slate-800">
+                Don't have an account yet?{' '}
+                <Link to="/portal/signup" className="text-emerald-400 font-bold hover:underline">
+                  Create New Account
+                </Link>
+              </div>
+            </motion.div>
+          )}
+
+          {/* STEP: OTP 2-FACTOR SCREEN */}
+          {step === 'otp' && (
+            <motion.form
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              onSubmit={handleOtpSubmit}
+              className="space-y-6"
+            >
+              <div className="p-3 rounded-full bg-blue-500/20 text-blue-400 w-fit">
+                <KeyRound className="w-6 h-6" />
+              </div>
+
+              <div>
+                <Badge variant="emerald" size="sm" className="mb-2">
+                  2-Factor Authentication
+                </Badge>
+                <h2 className="text-2xl font-bold text-white font-heading">Enter Verification Code</h2>
+                <p className="text-xs text-slate-400 mt-1">
+                  We sent a 6-digit code to <strong className="text-white">{pendingEmail}</strong>. (Demo Code: <span className="font-mono text-emerald-400 font-bold">123456</span>)
+                </p>
+              </div>
+
+              {formError && (
+                <div className="p-3 rounded-xl bg-rose-950/60 border border-rose-800 text-xs text-rose-300">
+                  {formError}
+                </div>
+              )}
+
+              {/* 6 Digit OTP Inputs */}
+              <div className="flex items-center justify-between gap-2">
+                {otpValue.map((digit, idx) => (
+                  <input
+                    key={idx}
+                    id={`otp-input-${idx}`}
+                    type="text"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleOtpChange(idx, e.target.value)}
+                    onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                    className="w-12 h-14 rounded-xl bg-slate-800 border border-slate-700 focus:border-emerald-400 text-center font-mono font-bold text-xl text-white focus:outline-none"
+                  />
+                ))}
+              </div>
+
+              <div className="flex items-center justify-between text-xs text-slate-400">
                 <button
-                  key={role}
                   type="button"
-                  onClick={() => handleRoleSelect(role)}
-                  className={`px-2 py-2 rounded-xl text-xs font-bold text-center transition-all ${
-                    active
-                      ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25 ring-2 ring-blue-500/50 scale-[1.02]'
-                      : 'bg-white dark:bg-[#0D1E36] text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#1E3A5F] border border-slate-200 dark:border-slate-700'
+                  disabled={isResendDisabled}
+                  onClick={() => {
+                    setResendTimer(30)
+                    setIsResendDisabled(true)
+                    toast({ title: 'Verification Code Resent', description: 'Demo code: 123456', type: 'info' })
+                  }}
+                  className={`flex items-center gap-1 font-semibold ${
+                    isResendDisabled ? 'text-slate-600 cursor-not-allowed' : 'text-blue-400 hover:underline'
                   }`}
                 >
-                  {role}
+                  <RefreshCw className="w-3.5 h-3.5" /> Resend Code {resendTimer > 0 ? `(${resendTimer}s)` : ''}
                 </button>
-              )
-            })}
-          </div>
 
-          <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center justify-between pt-1">
-            <span>Demo Profile: <strong className="text-slate-800 dark:text-slate-200">{DEMO_PROFILES[selectedRole].name}</strong> ({DEMO_PROFILES[selectedRole].title})</span>
-            <span className="text-blue-600 dark:text-blue-400 font-semibold">{DEMO_PROFILES[selectedRole].company}</span>
-          </div>
-        </div>
+                <button
+                  type="button"
+                  onClick={() => setStep('login')}
+                  className="text-slate-400 hover:text-white"
+                >
+                  Cancel
+                </button>
+              </div>
 
-        {/* Main Login Form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <FormField label="Business Email Address" error={errors.email?.message} required id="login-email">
-            <Input
-              id="login-email"
-              placeholder="name@company.com"
-              leftIcon={<Mail className="w-4 h-4" />}
-              {...register('email')}
-            />
-          </FormField>
+              <Button
+                type="submit"
+                variant="accent"
+                size="md"
+                pill
+                className="w-full font-bold bg-emerald-600 hover:bg-emerald-500 text-white"
+              >
+                Verify & Continue
+              </Button>
+            </motion.form>
+          )}
 
-          <FormField label="Password" error={errors.password?.message} required id="login-password">
-            <PasswordInput
-              id="login-password"
-              placeholder="••••••••••••"
-              leftIcon={<Lock className="w-4 h-4" />}
-              {...register('password')}
-            />
-          </FormField>
-
-          <div className="flex items-center justify-between text-xs pt-1">
-            <label className="flex items-center gap-2 text-slate-600 dark:text-slate-400 cursor-pointer">
-              <input
-                type="checkbox"
-                className="rounded border-slate-300 dark:border-slate-700 text-blue-600 focus:ring-blue-500"
-                {...register('rememberMe')}
-              />
-              <span>Remember this device</span>
-            </label>
-            <Link
-              to="/portal/forgot-password"
-              className="text-blue-600 dark:text-blue-400 hover:underline font-semibold"
+          {/* STEP: PENDING APPROVAL SCREEN */}
+          {step === 'pending' && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-6 text-center"
             >
-              Forgot password?
-            </Link>
-          </div>
+              <div className="p-4 rounded-full bg-amber-500/20 text-amber-400 w-fit mx-auto">
+                <Shield className="w-10 h-10" />
+              </div>
 
-          <div className="pt-2 space-y-3">
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              isLoading={isSubmitting}
-              rightIcon={<ArrowRight className="w-4 h-4" />}
-              className="w-full justify-center shadow-lg shadow-blue-600/20"
-            >
-              Sign In as {selectedRole}
-            </Button>
+              <div className="space-y-2">
+                <Badge variant="amber" size="md">
+                  Application Pending Approval
+                </Badge>
+                <h2 className="text-2xl font-bold text-white font-heading">Account Under Executive Review</h2>
+                <p className="text-xs text-slate-300 leading-relaxed max-w-sm mx-auto">
+                  Thank you for applying. Your corporate membership application is currently being evaluated by our underwriting risk compliance team.
+                </p>
+              </div>
 
-            {/* Google Sign In Style */}
-            <button
-              type="button"
-              onClick={() => {
-                login({ role: selectedRole })
-                toast({
-                  title: 'Google SSO Authenticated',
-                  description: `Signed in as ${DEMO_PROFILES[selectedRole].name}`,
-                  type: 'success',
-                })
-                navigate('/portal/dashboard')
-              }}
-              className="w-full h-11 px-4 rounded-xl border border-slate-300 dark:border-[#1E3A5F] bg-white dark:bg-[#0D1E36] text-slate-700 dark:text-slate-200 font-semibold text-xs flex items-center justify-center gap-3 hover:bg-slate-50 dark:hover:bg-[#12294A] transition-colors"
-            >
-              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                <path
-                  fill="#4285F4"
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                />
-              </svg>
-              <span>Sign in with Google Workspace</span>
-            </button>
-          </div>
-        </form>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setStep('login')}
+                className="font-bold text-xs"
+              >
+                Back to Sign In
+              </Button>
+            </motion.div>
+          )}
 
-        <div className="mt-8 text-center text-xs text-slate-500 dark:text-slate-400">
-          <span>Don't have a portal account? </span>
-          <Link to="/portal/signup" className="text-blue-600 dark:text-blue-400 font-bold hover:underline">
-            Apply & Create Account
-          </Link>
         </div>
       </div>
     </div>

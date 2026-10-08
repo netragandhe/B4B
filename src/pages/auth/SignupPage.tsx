@@ -1,282 +1,402 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { motion } from 'framer-motion'
 import {
-  User,
-  Mail,
-  Lock,
-  Building,
-  DollarSign,
+  Users,
   Briefcase,
-  CheckCircle2,
+  Trophy,
+  Share2,
+  GraduationCap,
   ArrowRight,
   ArrowLeft,
-  ShieldCheck,
+  CheckCircle2,
+  Lock,
+  Mail,
+  User as UserIcon,
+  Phone,
+  Building2,
+  Sparkles,
+  CreditCard,
 } from 'lucide-react'
-import { Stepper, Step } from '@/components/ui/Stepper'
+import { BrandLogo } from '@/config/brand'
 import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
-import { PasswordInput } from '@/components/ui/PasswordInput'
-import { FormField } from '@/components/ui/FormField'
-import { Select } from '@/components/ui/Select'
-import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
-import { useAuth } from '@/hooks/useAuth'
+import { Input } from '@/components/ui/Input'
+import { FormField } from '@/components/ui/FormField'
+import { SEOHead } from '@/components/seo/SEOHead'
+import { useAuth, UserRole } from '@/hooks/useAuth'
 import { useToast } from '@/components/ui/Toast'
-import { BrandLogo, brandConfig } from '@/config/brand'
+
+const signupSchema = z.object({
+  accountType: z.enum(['Admin', 'Biz Pro', 'Client', 'Affiliate', 'Employer', 'Job Seeker']),
+  fullName: z.string().min(2, 'Full name is required'),
+  email: z.string().email('Valid email is required'),
+  phone: z.string().min(10, 'Valid phone number is required'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+  confirmPassword: z.string().min(6, 'Please confirm your password'),
+  companyName: z.string().optional(),
+  industry: z.string().optional(),
+  state: z.string().optional(),
+  referralCode: z.string().optional(),
+  socialLink: z.string().optional(),
+  website: z.string().optional(),
+  terms: z.boolean().refine((v) => v === true, { message: 'You must accept the terms' }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: 'Passwords do not match',
+  path: ['confirmPassword'],
+})
+
+type SignupFormData = z.infer<typeof signupSchema>
 
 export const SignupPage: React.FC = () => {
-  const { login } = useAuth()
   const navigate = useNavigate()
+  const { signup } = useAuth()
   const { toast } = useToast()
-  const [currentStep, setCurrentStep] = useState(0)
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Form State
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    companyName: '',
-    industry: 'Logistics & Transportation',
-    annualRevenue: '$1M - $5M',
-    plan: 'Gold Tier',
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1)
+  const [selectedRole, setSelectedRole] = useState<UserRole>('Client')
+  const [passwordInput, setPasswordInput] = useState('')
+
+  // Calculate Password Strength score (0 to 4)
+  const getPasswordStrength = (pass: string) => {
+    let score = 0
+    if (pass.length >= 6) score += 1
+    if (pass.length >= 10) score += 1
+    if (/[A-Z]/.test(pass)) score += 1
+    if (/[0-9]/.test(pass) && /[^A-Za-z0-9]/.test(pass)) score += 1
+    return score
+  }
+
+  const strengthScore = getPasswordStrength(passwordInput)
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<SignupFormData>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      accountType: 'Client',
+      fullName: '',
+      email: '',
+      phone: '',
+      password: '',
+      confirmPassword: '',
+      terms: true,
+    },
   })
 
-  const steps: Step[] = [
-    { title: 'Account Details', description: 'Personal credentials' },
-    { title: 'Business Info', description: 'Company & revenue' },
-    { title: 'Plan & Tier', description: 'Select advisory level' },
-  ]
+  const formValues = watch()
 
-  const handleChange = (field: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+  const handleRoleSelect = (role: UserRole) => {
+    setSelectedRole(role)
+    setValue('accountType', role)
+    setStep(2)
   }
 
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep((prev) => prev + 1)
+  const onFinalSubmit = async (data: SignupFormData) => {
+    const res = await signup(data)
+    if (res.success && res.user) {
+      toast({
+        title: '🎉 Account Created Successfully!',
+        description: `Welcome ${res.user.name}. Your ${res.user.role} account is ready.`,
+        type: 'success',
+      })
+      setStep(5) // Success step
     } else {
-      // Final Submit
-      setIsSubmitting(true)
-      setTimeout(() => {
-        login({ email: formData.email, role: 'Client' })
-        setIsSubmitting(false)
-        toast({
-          title: 'Account Created Successfully!',
-          description: `Welcome to ${brandConfig.portalName}, ${formData.fullName}`,
-          type: 'success',
-        })
-        navigate('/portal/otp-verification')
-      }, 700)
-    }
-  }
-
-  const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep((prev) => prev - 1)
+      toast({
+        title: 'Registration Error',
+        description: res.error || 'Failed to create account.',
+        type: 'error',
+      })
     }
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0A1628] text-slate-900 dark:text-slate-100 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-xl w-full mx-auto space-y-6">
-        {/* Brand Header */}
-        <div className="text-center space-y-3">
-          <Link to="/" className="inline-block">
-            <BrandLogo size="lg" />
+    <div className="min-h-screen bg-slate-900 text-white flex flex-col justify-between p-6 sm:p-12">
+      <SEOHead title="Create Account | B4B Network" description="Join B4B Capital Network as a Client, Biz Pro, Affiliate, Employer, or Job Seeker." />
+
+      <div className="max-w-4xl mx-auto w-full space-y-8">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-slate-800 pb-6">
+          <Link to="/">
+            <BrandLogo size="md" />
           </Link>
-          <h1 className="text-2xl sm:text-3xl font-bold font-heading">
-            Apply for Capital & Client Portal
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Set up your organization workspace in 3 quick steps.
-          </p>
+
+          <div className="text-xs text-slate-400">
+            Already have an account?{' '}
+            <Link to="/portal/login" className="text-blue-400 font-bold hover:underline">
+              Sign In
+            </Link>
+          </div>
         </div>
 
-        {/* Stepper Header */}
-        <div className="bg-white dark:bg-[#0D1E36] p-4 sm:p-6 rounded-2xl border border-slate-200 dark:border-[#1E3A5F] shadow-sm">
-          <Stepper steps={steps} currentStep={currentStep} />
+        {/* Stepper Header Bar */}
+        <div className="grid grid-cols-5 gap-2">
+          {[
+            { s: 1, label: '1. Role' },
+            { s: 2, label: '2. Account' },
+            { s: 3, label: '3. Details' },
+            { s: 4, label: '4. Plan' },
+            { s: 5, label: '5. Verify' },
+          ].map((item) => (
+            <div
+              key={item.s}
+              className={`py-2.5 text-center text-xs font-bold rounded-xl border transition-all ${
+                step === item.s
+                  ? 'bg-blue-600 border-blue-500 text-white shadow-md'
+                  : step > item.s
+                  ? 'bg-emerald-950/60 border-emerald-500 text-emerald-400'
+                  : 'bg-slate-800/60 border-slate-700 text-slate-500'
+              }`}
+            >
+              {item.label}
+            </div>
+          ))}
         </div>
 
-        {/* Form Card */}
-        <Card variant="bento" className="p-6 sm:p-8 space-y-6">
-          {/* STEP 1: ACCOUNT DETAILS */}
-          {currentStep === 0 && (
-            <div className="space-y-4 animate-fadeIn">
-              <div className="border-b border-slate-100 dark:border-[#1E3A5F] pb-3">
-                <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                  Step 1: Account Credentials
-                </h3>
-                <p className="text-xs text-slate-500">Enter your primary executive account details.</p>
-              </div>
-
-              <FormField label="Full Name" required id="signup-name">
-                <Input
-                  id="signup-name"
-                  placeholder="e.g. Marcus Vance"
-                  leftIcon={<User className="w-4 h-4" />}
-                  value={formData.fullName}
-                  onChange={(e) => handleChange('fullName', e.target.value)}
-                />
-              </FormField>
-
-              <FormField label="Work Email Address" required id="signup-email">
-                <Input
-                  id="signup-email"
-                  type="email"
-                  placeholder="name@company.com"
-                  leftIcon={<Mail className="w-4 h-4" />}
-                  value={formData.email}
-                  onChange={(e) => handleChange('email', e.target.value)}
-                />
-              </FormField>
-
-              <FormField label="Create Password" required id="signup-password">
-                <PasswordInput
-                  id="signup-password"
-                  placeholder="At least 8 characters"
-                  leftIcon={<Lock className="w-4 h-4" />}
-                  value={formData.password}
-                  onChange={(e) => handleChange('password', e.target.value)}
-                />
-              </FormField>
+        {/* STEP 1: CHOOSE ACCOUNT TYPE */}
+        {step === 1 && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 text-left">
+            <div className="text-center space-y-2">
+              <Badge variant="emerald" size="md">
+                Get Started
+              </Badge>
+              <h1 className="text-3xl font-extrabold font-heading text-white">Choose Your Account Role</h1>
+              <p className="text-xs text-slate-400">Select the account type that matches your goal on B4B</p>
             </div>
-          )}
 
-          {/* STEP 2: BUSINESS INFO */}
-          {currentStep === 1 && (
-            <div className="space-y-4 animate-fadeIn">
-              <div className="border-b border-slate-100 dark:border-[#1E3A5F] pb-3">
-                <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                  Step 2: Business Profile & Revenue
-                </h3>
-                <p className="text-xs text-slate-500">Helps us pre-qualify capital lines instantly.</p>
-              </div>
-
-              <FormField label="Legal Business Name" required id="signup-company">
-                <Input
-                  id="signup-company"
-                  placeholder="Apex Freight & Logistics LLC"
-                  leftIcon={<Building className="w-4 h-4" />}
-                  value={formData.companyName}
-                  onChange={(e) => handleChange('companyName', e.target.value)}
-                />
-              </FormField>
-
-              <FormField label="Primary Industry" required id="signup-industry">
-                <Select
-                  id="signup-industry"
-                  options={[
-                    { label: 'Logistics & Transportation', value: 'Logistics & Transportation' },
-                    { label: 'Software & Technology', value: 'Software & Technology' },
-                    { label: 'Healthcare & Life Sciences', value: 'Healthcare & Life Sciences' },
-                    { label: 'Manufacturing & Industrial', value: 'Manufacturing & Industrial' },
-                    { label: 'E-commerce & Retail', value: 'E-commerce & Retail' },
-                  ]}
-                  value={formData.industry}
-                  onChange={(e) => handleChange('industry', e.target.value)}
-                />
-              </FormField>
-
-              <FormField label="Estimated Annual Revenue" required id="signup-revenue">
-                <Select
-                  id="signup-revenue"
-                  options={[
-                    { label: '$250k - $1M', value: '$250k - $1M' },
-                    { label: '$1M - $5M', value: '$1M - $5M' },
-                    { label: '$5M - $15M', value: '$5M - $15M' },
-                    { label: '$15M+', value: '$15M+' },
-                  ]}
-                  value={formData.annualRevenue}
-                  onChange={(e) => handleChange('annualRevenue', e.target.value)}
-                />
-              </FormField>
-            </div>
-          )}
-
-          {/* STEP 3: PLAN SELECTION */}
-          {currentStep === 2 && (
-            <div className="space-y-4 animate-fadeIn">
-              <div className="border-b border-slate-100 dark:border-[#1E3A5F] pb-3">
-                <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                  Step 3: Select Advisory Tier
-                </h3>
-                <p className="text-xs text-slate-500">Choose your capital and CFO advisory scope.</p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  {
-                    tier: 'Gold Tier',
-                    badge: 'Popular',
-                    capital: 'Up to $500k Line',
-                    features: ['Monthly CFO Call', '13-Week Treasury Model', 'Standard Line Access'],
-                  },
-                  {
-                    tier: 'Platinum Tier',
-                    badge: 'Institutional',
-                    capital: 'Up to $2.5M Line',
-                    features: ['Weekly Fractional CFO', 'Custom Treasury Models', '24-hr Capital Draw'],
-                  },
-                ].map((plan) => {
-                  const selected = formData.plan === plan.tier
-                  return (
-                    <div
-                      key={plan.tier}
-                      onClick={() => handleChange('plan', plan.tier)}
-                      className={`p-4 rounded-xl border cursor-pointer transition-all ${
-                        selected
-                          ? 'bg-blue-50/80 dark:bg-[#12294A] border-blue-600 shadow-md ring-2 ring-blue-500/40'
-                          : 'bg-white dark:bg-[#0D1E36] border-slate-200 dark:border-[#1E3A5F] hover:border-slate-300'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-slate-900 dark:text-white">{plan.tier}</span>
-                        <Badge variant={selected ? 'primary' : 'navy'} size="sm">
-                          {plan.badge}
-                        </Badge>
-                      </div>
-                      <p className="text-sm font-extrabold text-emerald-600 dark:text-emerald-400 mt-2">
-                        {plan.capital}
-                      </p>
-                      <ul className="mt-3 space-y-1.5 text-[11px] text-slate-500 dark:text-slate-400">
-                        {plan.features.map((f, i) => (
-                          <li key={i} className="flex items-center gap-1.5">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                            <span>{f}</span>
-                          </li>
-                        ))}
-                      </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                { role: 'Client', icon: Users, title: 'Small Business Client', desc: 'Access debt facilities, business credit, POS terminals, & CFO advisory.' },
+                { role: 'Biz Pro', icon: Trophy, title: 'Biz Pro Sales Rep', desc: 'Sell 100+ business services, earn commissions, & climb the 9-rank scoreboard.' },
+                { role: 'Affiliate', icon: Share2, title: 'Affiliate & Partner', desc: 'Refer small business clients, track pipeline, & earn recurring revenue.' },
+                { role: 'Employer', icon: Briefcase, title: 'Corporate Employer', desc: 'Post open jobs, manage candidate pipelines, & hire top sales talent.' },
+                { role: 'Job Seeker', icon: GraduationCap, title: 'Job Seeker Candidate', desc: 'Find high-paying Account Executive, SaaS, & remote opportunities.' },
+              ].map((item) => {
+                const Icon = item.icon
+                return (
+                  <button
+                    key={item.role}
+                    type="button"
+                    onClick={() => handleRoleSelect(item.role as UserRole)}
+                    className="p-6 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-blue-400 hover:bg-slate-800 text-left space-y-3 transition-all hover:-translate-y-1 group cursor-pointer"
+                  >
+                    <div className="p-3 rounded-xl bg-blue-500/20 text-blue-400 group-hover:scale-110 transition-transform w-fit">
+                      <Icon className="w-6 h-6" />
                     </div>
-                  )
-                })}
+                    <h3 className="font-bold text-base text-white group-hover:text-blue-400">{item.title}</h3>
+                    <p className="text-xs text-slate-400 leading-relaxed">{item.desc}</p>
+                  </button>
+                )
+              })}
+            </div>
+          </motion.div>
+        )}
+
+        {/* STEP 2: ACCOUNT CREDENTIALS */}
+        {step === 2 && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 text-left max-w-xl mx-auto">
+            <h2 className="text-2xl font-bold font-heading text-white">Step 2: Basic Account Info</h2>
+
+            <div className="space-y-4">
+              <FormField label="Full Name" required error={errors.fullName?.message}>
+                <Input placeholder="John Doe" {...register('fullName')} />
+              </FormField>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <FormField label="Email Address" required error={errors.email?.message}>
+                  <Input type="email" placeholder="john@company.com" {...register('email')} />
+                </FormField>
+
+                <FormField label="Phone Number" required error={errors.phone?.message}>
+                  <Input placeholder="(555) 000-0000" {...register('phone')} />
+                </FormField>
+              </div>
+
+              <FormField label="Password" required error={errors.password?.message}>
+                <Input
+                  type="password"
+                  placeholder="••••••••"
+                  {...register('password', {
+                    onChange: (e) => setPasswordInput(e.target.value),
+                  })}
+                />
+              </FormField>
+
+              {/* Password Strength Meter */}
+              {passwordInput && (
+                <div className="space-y-1">
+                  <div className="flex justify-between text-[11px] font-bold">
+                    <span className="text-slate-400">Password Strength:</span>
+                    <span className={strengthScore >= 3 ? 'text-emerald-400' : strengthScore >= 2 ? 'text-amber-400' : 'text-rose-400'}>
+                      {strengthScore >= 4 ? 'Strong' : strengthScore >= 2 ? 'Medium' : 'Weak'}
+                    </span>
+                  </div>
+                  <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-300 ${
+                        strengthScore >= 4 ? 'bg-emerald-500 w-full' : strengthScore >= 2 ? 'bg-amber-400 w-2/3' : 'bg-rose-500 w-1/3'
+                      }`}
+                    />
+                  </div>
+                </div>
+              )}
+
+              <FormField label="Confirm Password" required error={errors.confirmPassword?.message}>
+                <Input type="password" placeholder="••••••••" {...register('confirmPassword')} />
+              </FormField>
+
+              <div className="flex items-center justify-between pt-4">
+                <Button type="button" variant="outline" size="sm" onClick={() => setStep(1)}>
+                  <ArrowLeft className="w-4 h-4 mr-1.5" /> Back
+                </Button>
+                <Button type="button" variant="primary" size="sm" onClick={() => setStep(3)}>
+                  Next: Role Details <ArrowRight className="w-4 h-4 ml-1.5" />
+                </Button>
               </div>
             </div>
-          )}
+          </motion.div>
+        )}
 
-          {/* Stepper Navigation Controls */}
-          <div className="pt-4 border-t border-slate-100 dark:border-[#1E3A5F] flex items-center justify-between">
-            {currentStep > 0 ? (
-              <Button variant="outline" size="sm" onClick={handleBack} leftIcon={<ArrowLeft className="w-4 h-4" />}>
-                Previous Step
-              </Button>
-            ) : (
-              <Link to="/portal/login" className="text-xs text-slate-500 hover:underline">
-                Already have an account? Sign In
-              </Link>
-            )}
+        {/* STEP 3: ROLE-SPECIFIC DETAILS */}
+        {step === 3 && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 text-left max-w-xl mx-auto">
+            <h2 className="text-2xl font-bold font-heading text-white">Step 3: {selectedRole} Details</h2>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                if (selectedRole === 'Biz Pro') {
+                  setStep(4)
+                } else {
+                  handleSubmit(onFinalSubmit)(e)
+                }
+              }}
+              className="space-y-4"
+            >
+              {selectedRole === 'Client' && (
+                <>
+                  <FormField label="Business Name">
+                    <Input placeholder="Apex Freight LLC" {...register('companyName')} />
+                  </FormField>
+                  <FormField label="Industry / Sector">
+                    <Input placeholder="Logistics & Transportation" {...register('industry')} />
+                  </FormField>
+                </>
+              )}
+
+              {selectedRole === 'Biz Pro' && (
+                <>
+                  <FormField label="Sponsor / Referral Code (Optional)">
+                    <Input placeholder="e.g. ROSS785" {...register('referralCode')} />
+                  </FormField>
+                  <FormField label="Target Territory / State">
+                    <Input placeholder="e.g. Illinois / Chicago District" {...register('state')} />
+                  </FormField>
+                </>
+              )}
+
+              {selectedRole === 'Affiliate' && (
+                <>
+                  <FormField label="Partner Type">
+                    <Input placeholder="Creator / Agency / Influencer" />
+                  </FormField>
+                  <FormField label="Website or Social Profile">
+                    <Input placeholder="https://instagram.com/..." {...register('socialLink')} />
+                  </FormField>
+                </>
+              )}
+
+              {selectedRole === 'Employer' && (
+                <>
+                  <FormField label="Corporate Company Name">
+                    <Input placeholder="TechScale Innovations" {...register('companyName')} />
+                  </FormField>
+                  <FormField label="Corporate Website">
+                    <Input placeholder="https://company.example.com" {...register('website')} />
+                  </FormField>
+                </>
+              )}
+
+              {selectedRole === 'Job Seeker' && (
+                <>
+                  <FormField label="Primary Sales / Tech Skill">
+                    <Input placeholder="B2B Account Executive / SaaS Sales" />
+                  </FormField>
+                </>
+              )}
+
+              <div className="flex items-center justify-between pt-4">
+                <Button type="button" variant="outline" size="sm" onClick={() => setStep(2)}>
+                  <ArrowLeft className="w-4 h-4 mr-1.5" /> Back
+                </Button>
+                <Button type="submit" variant="accent" size="sm" pill isLoading={isSubmitting} className="font-bold bg-emerald-600 text-white">
+                  {selectedRole === 'Biz Pro' ? 'Next: Plan Selection' : 'Create Account'} <ArrowRight className="w-4 h-4 ml-1.5" />
+                </Button>
+              </div>
+            </form>
+          </motion.div>
+        )}
+
+        {/* STEP 4: BIZ PRO PLAN SELECTION */}
+        {step === 4 && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 text-left max-w-xl mx-auto">
+            <h2 className="text-2xl font-bold font-heading text-white">Step 4: Biz Pro Starter Plan</h2>
+
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-900 to-slate-900 border border-blue-500 space-y-4">
+              <Badge variant="gold" size="sm">
+                Recommended
+              </Badge>
+              <h3 className="text-xl font-bold">Biz Pro Executive Membership</h3>
+              <div className="text-3xl font-black text-emerald-400">$25 / month</div>
+              <p className="text-xs text-blue-200">
+                Includes full access to eBOX, AI Marketing Hub, Lead CRM, and 100+ Service Catalog items.
+              </p>
+            </div>
 
             <Button
-              variant="primary"
-              size="sm"
+              type="button"
+              variant="accent"
+              size="md"
+              pill
+              onClick={handleSubmit(onFinalSubmit)}
               isLoading={isSubmitting}
-              onClick={handleNext}
-              rightIcon={<ArrowRight className="w-4 h-4" />}
+              className="w-full font-bold bg-emerald-600 hover:bg-emerald-500 text-white"
             >
-              {currentStep === steps.length - 1 ? 'Complete Setup & Verify' : 'Continue'}
+              Complete Registration & Pay $25 <CreditCard className="w-4 h-4 ml-1.5" />
             </Button>
-          </div>
-        </Card>
+          </motion.div>
+        )}
+
+        {/* STEP 5: SUCCESS CONFIRMATION */}
+        {step === 5 && (
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="space-y-6 text-center max-w-md mx-auto">
+            <div className="p-4 rounded-full bg-emerald-500/20 text-emerald-400 w-fit mx-auto">
+              <CheckCircle2 className="w-12 h-12" />
+            </div>
+
+            <h2 className="text-3xl font-extrabold font-heading text-white">Welcome to B4B Network!</h2>
+            <p className="text-xs text-slate-300">
+              Your account has been created. Click below to enter your personalized dashboard.
+            </p>
+
+            <Button
+              variant="accent"
+              size="md"
+              pill
+              onClick={() => navigate(`/portal/${selectedRole === 'Job Seeker' ? 'seeker/applications' : selectedRole.toLowerCase().replace(/\s+/g, '')}`)}
+              className="w-full font-bold bg-gradient-to-r from-blue-600 to-emerald-500 text-white"
+            >
+              Go to My Dashboard <ArrowRight className="w-4 h-4 ml-1.5" />
+            </Button>
+          </motion.div>
+        )}
       </div>
     </div>
   )

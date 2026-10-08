@@ -1,112 +1,80 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ShieldCheck, ArrowRight, RotateCw, CheckCircle2 } from 'lucide-react'
+import { KeyRound, ArrowLeft } from 'lucide-react'
+import { BrandLogo } from '@/config/brand'
 import { Button } from '@/components/ui/Button'
-import { OtpInput } from '@/components/ui/OtpInput'
-import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
+import { SEOHead } from '@/components/seo/SEOHead'
 import { useAuth } from '@/hooks/useAuth'
 import { useToast } from '@/components/ui/Toast'
-import { BrandLogo, brandConfig } from '@/config/brand'
 
 export const OtpVerificationPage: React.FC = () => {
-  const { user } = useAuth()
   const navigate = useNavigate()
+  const { verifyOtp } = useAuth()
   const { toast } = useToast()
-  const [otpValue, setOtpValue] = useState('')
-  const [timer, setTimer] = useState(45)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [otp, setOtp] = useState(['', '', '', '', '', ''])
 
-  useEffect(() => {
-    if (timer > 0) {
-      const interval = setInterval(() => setTimer((t) => t - 1), 1000)
-      return () => clearInterval(interval)
+  const handleChange = (index: number, val: string) => {
+    if (!/^\d*$/.test(val)) return
+    const newOtp = [...otp]
+    newOtp[index] = val.slice(-1)
+    setOtp(newOtp)
+
+    if (val && index < 5) {
+      const nextInput = document.getElementById(`standalone-otp-${index + 1}`)
+      if (nextInput) nextInput.focus()
     }
-  }, [timer])
-
-  const handleVerify = (code: string) => {
-    setIsSubmitting(true)
-    setTimeout(() => {
-      setIsSubmitting(false)
-      toast({
-        title: 'Two-Factor Authentication Verified',
-        description: `Welcome to ${brandConfig.portalName}! Workspace initialized.`,
-        type: 'success',
-      })
-      navigate('/portal/dashboard')
-    }, 600)
   }
 
-  const handleResend = () => {
-    setTimer(45)
-    toast({
-      title: 'New Security Code Sent',
-      description: 'Check your mobile device or business email inbox.',
-      type: 'info',
-    })
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const fullCode = otp.join('')
+    if (fullCode === '123456') {
+      toast({ title: 'OTP Verified', type: 'success' })
+      navigate('/portal/dashboard')
+    } else {
+      toast({ title: 'Invalid OTP Code', description: 'Demo code is 123456', type: 'error' })
+    }
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0A1628] text-slate-900 dark:text-slate-100 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full mx-auto space-y-6">
-        <div className="text-center space-y-2">
-          <Link to="/" className="inline-block">
-            <BrandLogo size="lg" />
-          </Link>
-          <div className="flex items-center justify-center gap-2 pt-2">
-            <Badge variant="emerald" size="sm" dot>
-              Two-Factor Authentication
-            </Badge>
-          </div>
-          <h1 className="text-2xl font-bold font-heading">Verify Security Code</h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            We sent a 6-digit authentication code to <strong className="text-slate-800 dark:text-slate-200">{user?.email || 'm.vance@apexlogistics.io'}</strong>.
-          </p>
-        </div>
+    <div className="min-h-screen bg-slate-900 text-white flex flex-col justify-center px-6 py-12 text-left">
+      <SEOHead title="Verify OTP | B4B Network" description="Enter 6-digit verification code." />
 
-        <Card variant="bento" className="p-6 sm:p-8 space-y-6 text-center">
-          <div className="space-y-4">
-            <OtpInput
-              length={6}
-              value={otpValue}
-              onChange={setOtpValue}
-              onComplete={handleVerify}
-            />
+      <div className="max-w-md mx-auto w-full space-y-6">
+        <Link to="/">
+          <BrandLogo size="md" />
+        </Link>
 
-            <p className="text-xs text-slate-500">
-              Enter the 6-digit code or paste it directly.
-            </p>
+        <form onSubmit={handleVerify} className="p-8 rounded-2xl bg-slate-800 border border-slate-700 space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-full bg-blue-500/20 text-blue-400">
+              <KeyRound className="w-6 h-6" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold font-heading text-white">2-Step Verification</h1>
+              <p className="text-xs text-slate-400">Demo Code: <span className="font-mono text-emerald-400 font-bold">123456</span></p>
+            </div>
           </div>
 
-          <div className="pt-2">
-            <Button
-              variant="primary"
-              size="lg"
-              disabled={otpValue.length < 6}
-              isLoading={isSubmitting}
-              onClick={() => handleVerify(otpValue)}
-              rightIcon={<ArrowRight className="w-4 h-4" />}
-              className="w-full justify-center"
-            >
-              Verify & Enter Terminal
-            </Button>
+          <div className="flex items-center justify-between gap-2">
+            {otp.map((d, i) => (
+              <input
+                key={i}
+                id={`standalone-otp-${i}`}
+                type="text"
+                maxLength={1}
+                value={d}
+                onChange={(e) => handleChange(i, e.target.value)}
+                className="w-12 h-14 rounded-xl bg-slate-900 border border-slate-700 text-center font-mono font-bold text-xl text-white focus:outline-none focus:border-blue-400"
+              />
+            ))}
           </div>
 
-          <div className="pt-4 border-t border-slate-100 dark:border-[#1E3A5F] flex items-center justify-between text-xs">
-            <span className="text-slate-500">Didn't receive the code?</span>
-            {timer > 0 ? (
-              <span className="font-semibold text-slate-400">Resend code in {timer}s</span>
-            ) : (
-              <button
-                onClick={handleResend}
-                className="font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
-              >
-                <RotateCw className="w-3.5 h-3.5" />
-                <span>Resend OTP</span>
-              </button>
-            )}
-          </div>
-        </Card>
+          <Button type="submit" variant="accent" size="md" pill className="w-full font-bold bg-blue-600 hover:bg-blue-500 text-white">
+            Verify Code
+          </Button>
+        </form>
       </div>
     </div>
   )

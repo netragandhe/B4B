@@ -9,14 +9,15 @@ import {
   Shield,
   Layers,
   ChevronRight,
-  UserCheck,
 } from 'lucide-react'
 import { BrandLogo, brandConfig } from '@/config/brand'
 import { Button } from '@/components/ui/Button'
 import { useTheme } from '@/hooks/useTheme'
+import { useAuth } from '@/hooks/useAuth'
 
 export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { theme, toggleTheme } = useTheme()
+  const { user } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -94,15 +95,26 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
               {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
             </button>
 
-            {/* WEBSITE LOG IN BUTTON -> Navigates to /portal/login */}
-            <Button
-              variant="outline"
-              size="md"
-              onClick={() => navigate('/portal/login')}
-              className="font-semibold border-slate-300 dark:border-[#1E3A5F]"
-            >
-              Log In
-            </Button>
+            {/* WEBSITE LOG IN BUTTON -> Navigates to /portal/login or Dashboard if authenticated */}
+            {user ? (
+              <Button
+                variant="outline"
+                size="md"
+                onClick={() => navigate('/portal/dashboard')}
+                className="font-semibold border-emerald-500/50 text-emerald-600 dark:text-emerald-400"
+              >
+                My Dashboard ({user.role})
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                size="md"
+                onClick={() => navigate('/portal/login')}
+                className="font-semibold border-slate-300 dark:border-[#1E3A5F]"
+              >
+                Log In
+              </Button>
+            )}
 
             {/* Main CTA */}
             <Button

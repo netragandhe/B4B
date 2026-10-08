@@ -31,9 +31,11 @@ import { useAuth, UserRole, DEMO_PROFILES } from '@/hooks/useAuth'
 import { useTheme } from '@/hooks/useTheme'
 import { useToast } from '@/components/ui/Toast'
 import { MENU_CONFIG, MenuItem } from '@/config/menus'
+import { LogoutConfirmModal } from '@/components/auth/LogoutConfirmModal'
+import { IdleTimeoutModal } from '@/components/auth/IdleTimeoutModal'
 
 export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, logout, switchRole } = useAuth()
+  const { user, logout, switchRole, setLogoutModalOpen } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const location = useLocation()
   const navigate = useNavigate()
@@ -94,13 +96,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
   const isActive = (href: string) => location.pathname === href
 
   const handleLogout = () => {
-    logout()
-    toast({
-      title: 'Signed Out',
-      description: 'You have been safely signed out of your portal session.',
-      type: 'info',
-    })
-    navigate('/portal/login')
+    setLogoutModalOpen(true)
   }
 
   const markAllNotificationsRead = () => {
@@ -608,6 +604,9 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
           </div>
         </div>
       )}
+      {/* Global Auth Modals */}
+      <LogoutConfirmModal />
+      <IdleTimeoutModal />
     </div>
   )
 }

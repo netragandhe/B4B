@@ -14,6 +14,7 @@ export interface FileUploadProps {
   maxSizeMB?: number
   multiple?: boolean
   label?: string
+  hint?: string
   helperText?: string
   onFilesSelected?: (files: File[]) => void
   className?: string
@@ -24,6 +25,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   accept = '.pdf,.csv,.xlsx,.doc,.docx,.png,.jpg',
   maxSizeMB = 15,
   multiple = true,
+  label,
+  hint,
+  helperText,
   onFilesSelected,
   className,
   error,
@@ -111,10 +115,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
         <div>
           <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-            <span className="text-blue-600 dark:text-blue-400 hover:underline">Click to upload</span> or drag & drop documents
+            {label ? label : <><span className="text-blue-600 dark:text-blue-400 hover:underline">Click to upload</span> or drag & drop documents</>}
           </p>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Financial statements, P&L, Tax returns or invoices (up to {maxSizeMB}MB)
+            {hint || helperText || `Financial statements, P&L, Tax returns or invoices (up to ${maxSizeMB}MB)`}
           </p>
         </div>
       </div>

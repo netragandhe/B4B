@@ -10,6 +10,7 @@ export interface DrawerProps {
   children: React.ReactNode
   footer?: React.ReactNode
   position?: 'right' | 'left'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
   className?: string
 }
 
@@ -21,6 +22,7 @@ export const Drawer: React.FC<DrawerProps> = ({
   children,
   footer,
   position = 'right',
+  size = 'md',
   className,
 }) => {
   useEffect(() => {
@@ -38,6 +40,13 @@ export const Drawer: React.FC<DrawerProps> = ({
   }, [isOpen, onClose])
 
   if (!isOpen) return null
+
+  const sizeClasses = {
+    sm: 'max-w-sm',
+    md: 'max-w-md',
+    lg: 'max-w-lg',
+    xl: 'max-w-xl',
+  }
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
@@ -58,7 +67,8 @@ export const Drawer: React.FC<DrawerProps> = ({
           role="dialog"
           aria-modal="true"
           className={cn(
-            'w-screen max-w-md bg-white dark:bg-[#0D1E36] border-l border-slate-200 dark:border-[#1E3A5F] shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out',
+            'w-screen bg-white dark:bg-[#0D1E36] border-l border-slate-200 dark:border-[#1E3A5F] shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out',
+            sizeClasses[size],
             className
           )}
         >

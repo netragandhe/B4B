@@ -1,87 +1,126 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Lock, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react'
-import { Button } from '@/components/ui/Button'
-import { PasswordInput } from '@/components/ui/PasswordInput'
-import { FormField } from '@/components/ui/FormField'
-import { Card } from '@/components/ui/Card'
-import { useToast } from '@/components/ui/Toast'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { Lock, CheckCircle2 } from 'lucide-react'
 import { BrandLogo } from '@/config/brand'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
+import { FormField } from '@/components/ui/FormField'
+import { SEOHead } from '@/components/seo/SEOHead'
+import { authService } from '@/lib/auth/authService'
+import { useToast } from '@/components/ui/Toast'
+
+const schema = z.object({
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+  confirmPassword: z.string().min(6, 'Please confirm your password'),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: 'Passwords do not match',
+  path: ['confirmPassword'],
+})
+
+type FormData = z.infer<typeof schema>
 
 export const ResetPasswordPage: React.FC = () => {
   const navigate = useNavigate()
   const { toast } = useToast()
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [passwordInput, setPasswordInput] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (password !== confirmPassword) {
-      toast({ title: 'Passwords mismatch', description: 'Ensure passwords match.', type: 'error' })
-      return
-    }
-    setIsSubmitting(true)
-    setTimeout(() => {
-      setIsSubmitting(false)
-      toast({
-        title: 'Password Updated',
-        description: 'Your new password has been updated securely. Please sign in.',
-        type: 'success',
-      })
-      navigate('/portal/login')
-    }, 600)
+  const getPasswordStrength = (pass: string) => {
+    let score = 0
+    if (pass.length >= 6) score += 1
+    if (pass.length >= 10) score += 1
+    if (/[A-Z]/.test(pass)) score += 1
+    if (/[0-9]/.test(pass) && /[^A-Za-z0-9]/.test(pass)) score += 1
+    return score
+  }
+
+  const strengthScore = getPasswordStrength(passwordInput)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  })
+
+  const onSubmit = async (data: FormData) => {
+    const res = await authService.resetPassword('mock_token', data.password)
+    setSuccess(true)
+    toast({ title: 'Password Reset Successful', description: res.message, type: 'success' })
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0A1628] text-slate-900 dark:text-slate-100 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full mx-auto space-y-6">
-        <div className="text-center space-y-2">
-          <Link to="/" className="inline-block">
-            <BrandLogo size="lg" />
+    <div className="min-h-screen bg-slate-900 text-white flex flex-col justify-center px-6 py-12">
+      <SEOHead title="Set New Password | B4B Network" description="Set your new portal password." />
+
+      <div className="max-w-md mx-auto w-full space-y-6 text-left">
+        <div className="pb-4">
+          <Link to="/">
+            <BrandLogo size="md" />
           </Link>
-          <h1 className="text-2xl font-bold font-heading">Set New Password</h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            Choose a strong, encrypted password for your portal access.
-          </p>
         </div>
 
-        <Card variant="bento" className="p-6 sm:p-8 space-y-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <FormField label="New Password" required id="reset-password">
-              <PasswordInput
-                id="reset-password"
-                placeholder="At least 8 characters"
-                leftIcon={<Lock className="w-4 h-4" />}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </FormField>
+        {!success ? (
+          <div className="space-y-6 bg-slate-800/80 p-8 rounded-2xl border border-slate-700">
+            <div>
+              <h1 className="text-2xl font-bold font-heading text-white">Set New Password</h1>
+              <p className="text-xs text-slate-400 mt-1">Please enter your new password below.</p>
+            </div>
 
-            <FormField label="Confirm New Password" required id="reset-confirm-password">
-              <PasswordInput
-                id="reset-confirm-password"
-                placeholder="Re-enter new password"
-                leftIcon={<Lock className="w-4 h-4" />}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-            </FormField>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <FormField label="New Password" required error={errors.password?.message}>
+                <Input
+                  type="password"
+                  placeholder="••••••••"
+                  {...register('password', {
+                    onChange: (e) => setPasswordInput(e.target.value),
+                  })}
+                />
+              </FormField>
 
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              isLoading={isSubmitting}
-              rightIcon={<ArrowRight className="w-4 h-4" />}
-              className="w-full justify-center"
-            >
-              Update Password & Sign In
+              {passwordInput && (
+                <div className="space-y-1">
+                  <div className="flex justify-between text-[11px] font-bold">
+                    <span className="text-slate-400">Password Strength:</span>
+                    <span className={strengthScore >= 3 ? 'text-emerald-400' : 'text-rose-400'}>
+                      {strengthScore >= 4 ? 'Strong' : strengthScore >= 2 ? 'Medium' : 'Weak'}
+                    </span>
+                  </div>
+                  <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-300 ${
+                        strengthScore >= 4 ? 'bg-emerald-500 w-full' : strengthScore >= 2 ? 'bg-amber-400 w-2/3' : 'bg-rose-500 w-1/3'
+                      }`}
+                    />
+                  </div>
+                </div>
+              )}
+
+              <FormField label="Confirm New Password" required error={errors.confirmPassword?.message}>
+                <Input type="password" placeholder="••••••••" {...register('confirmPassword')} />
+              </FormField>
+
+              <Button type="submit" variant="accent" size="md" pill isLoading={isSubmitting} className="w-full font-bold bg-emerald-600 hover:bg-emerald-500 text-white">
+                Update Password
+              </Button>
+            </form>
+          </div>
+        ) : (
+          <div className="p-8 rounded-2xl bg-slate-800 border border-slate-700 text-center space-y-4">
+            <div className="p-3 rounded-full bg-emerald-500/20 text-emerald-400 w-fit mx-auto">
+              <CheckCircle2 className="w-8 h-8" />
+            </div>
+            <h2 className="text-xl font-bold text-white">Password Updated!</h2>
+            <p className="text-xs text-slate-300">Your password has been changed successfully.</p>
+            <Button variant="accent" size="sm" pill onClick={() => navigate('/portal/login')} className="w-full font-bold bg-blue-600 text-white">
+              Sign In Now
             </Button>
-          </form>
-        </Card>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -5,6 +5,7 @@ export interface OtpInputProps {
   length?: number
   value?: string
   onChange?: (value: string) => void
+  onComplete?: (code: string) => void
   disabled?: boolean
   error?: boolean | string
   className?: string
@@ -14,6 +15,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({
   length = 6,
   value = '',
   onChange,
+  onComplete,
   disabled = false,
   error,
   className,
@@ -43,7 +45,12 @@ export const OtpInput: React.FC<OtpInputProps> = ({
     const newDigits = [...digits]
     newDigits[index] = char
     setDigits(newDigits)
-    onChange?.(newDigits.join(''))
+    const combined = newDigits.join('')
+    onChange?.(combined)
+
+    if (combined.length === length && newDigits.every((d) => d !== '')) {
+      onComplete?.(combined)
+    }
 
     if (char && index < length - 1) {
       inputsRef.current[index + 1]?.focus()
@@ -81,7 +88,12 @@ export const OtpInput: React.FC<OtpInputProps> = ({
       newDigits[i] = pasted[i]
     }
     setDigits(newDigits)
-    onChange?.(newDigits.join(''))
+    const combined = newDigits.join('')
+    onChange?.(combined)
+
+    if (combined.length === length && newDigits.every((d) => d !== '')) {
+      onComplete?.(combined)
+    }
 
     const targetIndex = Math.min(pasted.length, length - 1)
     inputsRef.current[targetIndex]?.focus()

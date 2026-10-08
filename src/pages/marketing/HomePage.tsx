@@ -1,567 +1,667 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
-  ArrowRight,
-  TrendingUp,
+  CreditCard,
+  LayoutGrid,
+  Palette,
   ShieldCheck,
+  FileSpreadsheet,
+  Landmark,
+  Target,
+  GraduationCap,
+  ShieldAlert,
   Briefcase,
+  Shield,
+  Server,
+  Megaphone,
+  Handshake,
+  BookOpen,
+  Globe,
   Sparkles,
-  Zap,
-  CheckCircle2,
-  DollarSign,
-  Building2,
-  Lock,
+  ArrowRight,
+  ChevronLeft,
   ChevronRight,
-  Calculator,
+  Star,
+  CheckCircle2,
+  Building2,
+  Clock,
+  DollarSign,
+  TrendingUp,
+  Bot,
+  MessageSquare,
+  HelpCircle,
+  Zap,
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { Card, CardContent } from '@/components/ui/Card'
+import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
+import { Tabs } from '@/components/ui/Tabs'
 import { CountUp } from '@/components/ui/CountUp'
+import { CoachRequestModal, CoachLeadForm } from '@/components/forms/CoachRequestModal'
+import { SEOHead } from '@/components/seo/SEOHead'
+import {
+  SOLUTIONS_DATA,
+  INDUSTRIES_SERVED,
+  HOW_IT_WORKS_STEPS,
+  TESTIMONIALS_DATA,
+} from '@/mock-data/solutions'
 import { brandConfig } from '@/config/brand'
-import { CASE_STUDIES } from '@/mock-data/fintechData'
-import { formatCurrency } from '@/lib/utils'
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate()
+  const [coachModalOpen, setCoachModalOpen] = useState(false)
+  const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null)
+  const [visionTab, setVisionTab] = useState('vision')
+  const [activeTestimonialIdx, setActiveTestimonialIdx] = useState(0)
 
-  // Interactive Capital Estimator State
-  const [monthlyRevenue, setMonthlyRevenue] = useState(225000)
-  const [yearsInBusiness, setYearsInBusiness] = useState(3)
-  const [industry, setIndustry] = useState('Logistics & Freight')
+  // Map icon names to Lucide icon components
+  const iconMap: Record<string, React.ElementType> = {
+    CreditCard,
+    LayoutGrid,
+    Palette,
+    ShieldCheck,
+    FileSpreadsheet,
+    Landmark,
+    Target,
+    GraduationCap,
+    ShieldAlert,
+    Briefcase,
+    Shield,
+    Server,
+    Megaphone,
+    Handshake,
+    BookOpen,
+    Globe,
+  }
 
-  // Dynamic estimate calculation
-  const estimatedCapital = Math.min(Math.round(monthlyRevenue * 2.8), 3500000)
-  const estimatedRate = yearsInBusiness >= 3 ? 'Prime + 1.5%' : 'Prime + 2.75%'
+  // Next / Prev Testimonials
+  const nextTestimonial = () => {
+    setActiveTestimonialIdx((prev) => (prev + 1) % TESTIMONIALS_DATA.length)
+  }
+  const prevTestimonial = () => {
+    setActiveTestimonialIdx((prev) => (prev - 1 + TESTIMONIALS_DATA.length) % TESTIMONIALS_DATA.length)
+  }
+
+  const currentTestimonial = TESTIMONIALS_DATA[activeTestimonialIdx]
 
   return (
-    <div className="space-y-24 pb-16">
+    <div className="space-y-24 pb-16 text-left">
+      <SEOHead
+        title="Small Business Financing, Credit & Coaching"
+        description="The Connection for Small Business Solutions. Access 16 solutions: business loans, building business credit, fractional CFO advisory, and payment processing."
+      />
+
       {/* 1. HERO SECTION */}
       <section className="relative pt-12 md:pt-20 overflow-hidden">
-        {/* Subtle background glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-96 bg-blue-600/10 dark:bg-blue-600/15 blur-[120px] pointer-events-none rounded-full" />
+        {/* Animated ambient gradient backdrops */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[480px] bg-gradient-to-tr from-blue-600/15 via-indigo-600/15 to-emerald-500/10 blur-[130px] pointer-events-none rounded-full" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left Column: Headline and CTAs */}
-            <div className="lg:col-span-7 space-y-6 text-left">
-              {/* Badge */}
+            {/* Left Headline Column */}
+            <div className="lg:col-span-7 space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-900/60 shadow-xs">
                 <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                 <span className="text-xs font-bold text-blue-700 dark:text-blue-300">
-                  {brandConfig.tagline}
+                  {brandConfig.brandName} • National SMB Advisory & Capital
                 </span>
               </div>
 
-              {/* Title */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-heading text-slate-900 dark:text-white leading-[1.1] tracking-tight">
-                Institutional Capital &{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500">
-                  Advisory Solutions
-                </span>{' '}
-                for Scaling Businesses.
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-heading text-slate-900 dark:text-white leading-[1.08] tracking-tight">
+                {brandConfig.tagline}
               </h1>
 
-              {/* Subhead */}
               <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-                Connect your business with non-dilutive credit facilities up to $5M, fractional CFO guidance, and real-time financial health scoring — with zero predatory warrants or equity dilution.
+                Connect your business to 16 vital solutions—from non-dilutive credit lines and building PAYDEX 80+ credit to lower merchant processing fees, custom websites, and dedicated 1-on-1 business coaches.
               </p>
 
-              {/* Action Buttons */}
+              {/* Two CTAs */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
                 <Button
                   variant="primary"
                   size="lg"
                   pill
-                  onClick={() => navigate('/apply')}
+                  onClick={() => setCoachModalOpen(true)}
                   rightIcon={<ArrowRight className="w-4 h-4" />}
-                  className="shadow-lg shadow-blue-600/25 text-base"
+                  className="shadow-lg shadow-blue-600/25 text-base font-bold"
                 >
-                  Apply For Pre-Approval
+                  Speak with a Business Coach
                 </Button>
 
                 <Button
                   variant="outline"
                   size="lg"
                   pill
-                  onClick={() => navigate('/portal/dashboard')}
-                  leftIcon={<Lock className="w-4 h-4 text-emerald-500" />}
-                  className="text-base"
+                  onClick={() => {
+                    const el = document.getElementById('solutions-grid')
+                    el?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  className="text-base font-semibold"
                 >
-                  Open Client Portal
+                  Explore 16 Solutions
                 </Button>
               </div>
 
-              {/* Metrics Ribbon */}
-              <div className="pt-6 border-t border-slate-200/80 dark:border-slate-800 grid grid-cols-3 gap-4 text-left">
-                <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 dark:text-white">
-                    <CountUp value={240} prefix="$" suffix="M+" />
-                  </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Capital Arranged</p>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 dark:text-white">
-                    <CountUp value={48} suffix="h" />
-                  </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Underwriting Term</p>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold font-heading text-emerald-500">
-                    <CountUp value={98.6} suffix="%" decimals={1} />
-                  </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Advisory Success Rate</p>
-                </div>
+              {/* Trust Subtext */}
+              <div className="flex items-center gap-4 text-xs text-slate-500 pt-2">
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <span>No upfront fees</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <span>Soft check pre-qualification</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <span>1-on-1 dedicated coach</span>
+                </span>
               </div>
             </div>
 
-            {/* Right Column: Premium Hero Glass Card */}
-            <div className="lg:col-span-5 relative">
-              <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-blue-600 to-emerald-500 opacity-20 blur-xl" />
-              
-              <Card variant="bento" className="p-6 relative shadow-2xl border-slate-200 dark:border-[#1E3A5F]">
-                {/* Header of Preview Card */}
-                <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-[#1E3A5F]/80">
+            {/* Right Column: Floating Glass Cards & Live Stats */}
+            <div className="lg:col-span-5 relative space-y-4">
+              <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 opacity-20 blur-xl pointer-events-none" />
+
+              {/* Floating Glass Stat Card 1: Funding Secured */}
+              <Card variant="bento" className="p-5 relative shadow-xl border-slate-200 dark:border-[#1E3A5F] animate-fadeIn">
+                <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold font-heading text-sm shadow-md">
-                      AF
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold shadow-md shadow-blue-500/25">
+                      <DollarSign className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-bold text-slate-900 dark:text-white">Apex Freight & Logistics</h3>
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400">Institutional Member ID: #8892</p>
+                      <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                        Capital Sourced & Funded
+                      </span>
+                      <div className="text-3xl font-extrabold font-heading text-slate-900 dark:text-white tracking-tight">
+                        <CountUp value={240} prefix="$" suffix="M+" />
+                      </div>
                     </div>
                   </div>
                   <Badge variant="emerald" size="sm" dot>
-                    Active Facility
+                    Verified
                   </Badge>
                 </div>
+                <p className="text-[11px] text-slate-500 mt-2">
+                  Prime-linked revolvers, SBA 7(a) packages & revenue-based funding.
+                </p>
+              </Card>
 
-                {/* Score and Main KPI */}
-                <div className="py-5 space-y-4">
-                  <div className="flex items-end justify-between">
+              {/* Floating Glass Stat Card 2: Businesses Helped */}
+              <Card variant="bento" className="p-5 relative shadow-xl border-slate-200 dark:border-[#1E3A5F]">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center font-bold shadow-md shadow-emerald-500/25">
+                      <Building2 className="w-6 h-6" />
+                    </div>
                     <div>
-                      <span className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">
-                        Pre-Approved Working Capital
+                      <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                        Independent Businesses Helped
                       </span>
-                      <div className="text-3xl font-black font-heading text-slate-900 dark:text-white tracking-tight mt-1">
-                        $850,000
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
-                        OAL Score
-                      </span>
-                      <div className="text-2xl font-black font-heading text-amber-500">
-                        92 <span className="text-xs font-normal text-slate-400">/ 100</span>
+                      <div className="text-3xl font-extrabold font-heading text-slate-900 dark:text-white tracking-tight">
+                        <CountUp value={12400} suffix="+" />
                       </div>
                     </div>
                   </div>
-
-                  {/* Visual Progress Bar */}
-                  <div>
-                    <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium">
-                      <span>Drawn: $320,000</span>
-                      <span className="text-emerald-500 font-bold">Available: $530,000</span>
-                    </div>
-                    <div className="h-2.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-blue-600 to-emerald-500 rounded-full w-[38%]" />
-                    </div>
-                  </div>
-
-                  {/* Micro stats grid */}
-                  <div className="grid grid-cols-2 gap-3 pt-2">
-                    <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#12294A]/60 border border-slate-200/60 dark:border-[#1E3A5F]/60">
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400">Cash Flow Runway</p>
-                      <p className="text-base font-bold text-slate-800 dark:text-slate-200 mt-0.5">18.5 Months</p>
-                    </div>
-                    <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#12294A]/60 border border-slate-200/60 dark:border-[#1E3A5F]/60">
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400">Assigned Partner</p>
-                      <p className="text-base font-bold text-slate-800 dark:text-slate-200 mt-0.5">V. Hastings, CFO</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Footer of Card */}
-                <div className="pt-4 border-t border-slate-100 dark:border-[#1E3A5F]/80 flex items-center justify-between">
-                  <span className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-                    <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                    Verified Underwriting
+                  <span className="text-xs font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full">
+                    ★ 4.9 / 5.0
                   </span>
-                  <Link
-                    to="/portal/dashboard"
-                    className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
-                  >
-                    <span>View Terminal Preview</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </Link>
                 </div>
+                <p className="text-[11px] text-slate-500 mt-2">
+                  Restaurants, freight, clinics, churches, contractors, and retail shops.
+                </p>
+              </Card>
+
+              {/* Floating Glass Stat Card 3: States Covered */}
+              <Card variant="bento" className="p-5 relative shadow-xl border-slate-200 dark:border-[#1E3A5F]">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 text-white flex items-center justify-center font-bold shadow-md shadow-amber-500/25">
+                      <Globe className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                        National Coverage
+                      </span>
+                      <div className="text-3xl font-extrabold font-heading text-slate-900 dark:text-white tracking-tight">
+                        50 States
+                      </div>
+                    </div>
+                  </div>
+                  <Badge variant="gold" size="sm">
+                    Coast to Coast
+                  </Badge>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-2">
+                  Dedicated regional advisory partners and local lender syndication.
+                </p>
               </Card>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. BENTO-GRID SOLUTIONS */}
+      {/* 2. TRUST STRIP WITH INDUSTRY CHIPS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <Badge variant="primary" size="md">
-            The OAL Advantage
-          </Badge>
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white mt-3">
-            Structured for Companies Ready to Expand
-          </h2>
-          <p className="text-slate-600 dark:text-slate-300 text-base mt-2">
-            Traditional banks move slowly and take months. Venture capitalists ask for your equity. We provide flexible, institutional capital lines matched with veteran advisory.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Bento Card 1: Revenue-Based Credit */}
-          <Card
-            variant="default"
-            hover
-            className="md:col-span-2 p-8 flex flex-col justify-between bg-gradient-to-br from-white via-white to-blue-50/40 dark:from-[#0D1E36] dark:via-[#0D1E36] dark:to-[#12294A]/40"
-          >
+        <div className="p-6 rounded-2xl bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] shadow-sm space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <div className="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-6 shadow-sm">
-                <TrendingUp className="w-6 h-6" />
-              </div>
-              <Badge variant="primary" size="sm" className="mb-2">
-                Non-Dilutive Financing
-              </Badge>
-              <h3 className="text-2xl font-bold font-heading text-slate-900 dark:text-white">
-                Revenue-Linked Capital & Revolving Lines
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300 text-sm mt-3 leading-relaxed max-w-xl">
-                Draw from $100,000 to $5,000,000 to purchase inventory, acquire commercial equipment, or fulfill high-volume purchase orders. Payments dynamically adjust to your monthly cash receipts so you never suffer seasonal strain.
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                Industry-Specific Solutions
               </p>
-            </div>
-
-            <div className="mt-8 pt-6 border-t border-slate-100 dark:border-[#1E3A5F] flex flex-wrap items-center gap-6 text-xs text-slate-600 dark:text-slate-300">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                <span>Prime + 1.25% starting rates</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                <span>Zero equity warrants</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                <span>12 to 36 month terms</span>
-              </div>
-            </div>
-          </Card>
-
-          {/* Bento Card 2: Fractional CFO */}
-          <Card
-            variant="default"
-            hover
-            className="p-8 flex flex-col justify-between bg-gradient-to-br from-white via-white to-emerald-50/40 dark:from-[#0D1E36] dark:via-[#0D1E36] dark:to-emerald-950/20"
-          >
-            <div>
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-6 shadow-sm">
-                <Briefcase className="w-6 h-6" />
-              </div>
-              <Badge variant="emerald" size="sm" className="mb-2">
-                Executive Leadership
-              </Badge>
-              <h3 className="text-xl font-bold font-heading text-slate-900 dark:text-white">
-                Fractional CFO & Treasury Leadership
+              <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white">
+                Tailored Solutions for Every Trade Across America
               </h3>
-              <p className="text-slate-600 dark:text-slate-300 text-sm mt-3 leading-relaxed">
-                Direct access to seasoned corporate controllers and fractional CFOs. We audit your margins, manage debt service covenants, and prepare board-ready data rooms.
-              </p>
             </div>
+            <span className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+              Click an industry to filter solutions below
+            </span>
+          </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-100 dark:border-[#1E3A5F]">
-              <Link
-                to="/advisory"
-                className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1"
-              >
-                <span>Meet our CFO roster</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </Card>
-
-          {/* Bento Card 3: 48-Hour Speed */}
-          <Card variant="default" hover className="p-8">
-            <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950/70 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-6 shadow-sm">
-              <Zap className="w-6 h-6" />
-            </div>
-            <Badge variant="gold" size="sm" className="mb-2">
-              Automated Intake
-            </Badge>
-            <h3 className="text-xl font-bold font-heading text-slate-900 dark:text-white">
-              Rapid 48-Hour Term Sheet
-            </h3>
-            <p className="text-slate-600 dark:text-slate-300 text-sm mt-3 leading-relaxed">
-              Connect your accounting software or upload 3 bank statements. Our machine-assisted underwriting generates competitive terms in under two business days.
-            </p>
-          </Card>
-
-          {/* Bento Card 4: Growth Diagnostics */}
-          <Card variant="default" hover className="md:col-span-2 p-8 flex flex-col justify-between">
-            <div>
-              <div className="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-950/70 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-6 shadow-sm">
-                <Building2 className="w-6 h-6" />
-              </div>
-              <Badge variant="navy" size="sm" className="mb-2">
-                Enterprise Readiness
-              </Badge>
-              <h3 className="text-2xl font-bold font-heading text-slate-900 dark:text-white">
-                M&A, Succession & Valuation Enhancements
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300 text-sm mt-3 leading-relaxed max-w-xl">
-                Preparing for an acquisition or partner buyout? Our transaction specialists optimize EBITDA multiples, structure seller note supplements, and negotiate senior syndication.
-              </p>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-slate-100 dark:border-[#1E3A5F] flex items-center justify-between">
-              <span className="text-xs text-slate-500">Average valuation lift: 28% prior to transaction</span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => navigate('/advisory')}
-                rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
-              >
-                Consulting Services
-              </Button>
-            </div>
-          </Card>
+          <div className="flex flex-wrap gap-2 pt-1">
+            {INDUSTRIES_SERVED.map((ind) => {
+              const isSelected = selectedIndustry === ind.name
+              return (
+                <button
+                  key={ind.name}
+                  onClick={() => setSelectedIndustry(isSelected ? null : ind.name)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 ${
+                    isSelected
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : 'bg-slate-100 dark:bg-[#12294A] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#1A3760]'
+                  }`}
+                >
+                  <span>{ind.name}</span>
+                  <span className="text-[10px] opacity-75 font-normal hidden sm:inline">
+                    ({ind.highlight})
+                  </span>
+                </button>
+              )
+            })}
+          </div>
         </div>
       </section>
 
-      {/* 3. INTERACTIVE CAPITAL PRE-QUALIFICATION ESTIMATOR */}
+      {/* 3. "16 SOLUTIONS EVERY SMALL BUSINESS NEEDS TO THRIVE" BENTO GRID */}
+      <section id="solutions-grid" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="text-center max-w-3xl mx-auto space-y-3">
+          <Badge variant="primary" size="md">
+            The Complete Ecosystem
+          </Badge>
+          <h2 className="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white tracking-tight">
+            16 Solutions Every Small Business Needs to Thrive
+          </h2>
+          <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+            From funding and credit building to payment terminals, custom branding, and cyber security—we connect your business with institutional tools at wholesale small-business pricing.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+          {SOLUTIONS_DATA.map((sol) => {
+            const IconComponent = iconMap[sol.iconName] || Briefcase
+            return (
+              <Link
+                key={sol.id}
+                to={`/solutions/${sol.slug}`}
+                className="group block h-full text-left focus:outline-none"
+              >
+                <Card
+                  variant="default"
+                  hover
+                  className="p-5 h-full flex flex-col justify-between transition-all duration-200 group-hover:border-blue-500 group-hover:shadow-lg group-hover:shadow-blue-500/10"
+                >
+                  <div>
+                    {/* Icon & Badge Header */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors shadow-xs">
+                        <IconComponent className="w-5 h-5" />
+                      </div>
+                      <Badge variant="outline" size="sm" className="text-[10px]">
+                        {sol.badge}
+                      </Badge>
+                    </div>
+
+                    {/* Title & Description */}
+                    <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      {sol.title}
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed line-clamp-3">
+                      {sol.shortDesc}
+                    </p>
+
+                    {sol.pricingNote && (
+                      <div className="mt-2 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                        Starts around $2,500
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Footer link */}
+                  <div className="mt-5 pt-3 border-t border-slate-100 dark:border-[#1E3A5F] flex items-center justify-between text-xs font-semibold text-blue-600 dark:text-blue-400">
+                    <span>Learn more</span>
+                    <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </Card>
+              </Link>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* 4. VISION / MISSION / VALUES TABS */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Card variant="bento" className="p-8 sm:p-12 border-blue-200 dark:border-[#1E3A5F] shadow-2xl relative overflow-hidden">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-slate-200/80 dark:border-[#1E3A5F]">
-            <div>
-              <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-bold text-xs uppercase tracking-wider">
-                <Calculator className="w-4 h-4" />
-                <span>Interactive Capital Estimator</span>
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 dark:text-white mt-1">
-                Estimate Your Working Capital Facility
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-                Calculate pre-qualified loan amounts and expected rate tier based on operating revenue.
-              </p>
-            </div>
-            <Badge variant="emerald" size="lg" dot>
-              No Impact to Credit
+        <Card variant="bento" className="p-8 sm:p-12 border-blue-200 dark:border-[#1E3A5F] shadow-xl text-left">
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <Badge variant="navy" size="md">
+              Our Core Identity
             </Badge>
+            <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 dark:text-white mt-2">
+              Driven by Real American Entrepreneurship
+            </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 pt-8 items-center">
-            {/* Sliders */}
-            <div className="space-y-6">
-              {/* Slider 1: Monthly Revenue */}
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
-                    Average Monthly Revenue
-                  </label>
-                  <span className="text-lg font-black font-heading text-blue-600 dark:text-blue-400">
-                    {formatCurrency(monthlyRevenue)}
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  min={30000}
-                  max={800000}
-                  step={10000}
-                  value={monthlyRevenue}
-                  onChange={(e) => setMonthlyRevenue(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                />
-                <div className="flex justify-between text-[11px] text-slate-400 mt-1">
-                  <span>$30,000 / mo</span>
-                  <span>$800,000+ / mo</span>
+          <div className="flex justify-center mb-8">
+            <Tabs
+              variant="segmented"
+              activeTab={visionTab}
+              onChange={setVisionTab}
+              tabs={[
+                { id: 'vision', label: 'Our Vision' },
+                { id: 'values', label: 'Our Core Values' },
+                { id: 'mission', label: 'Our Mission' },
+              ]}
+            />
+          </div>
+
+          <div className="animate-fadeIn">
+            {/* Vision Tab */}
+            {visionTab === 'vision' && (
+              <div className="p-8 rounded-2xl bg-gradient-to-br from-blue-50/80 to-white dark:from-[#12294A] dark:to-[#0D1E36] border border-blue-100 dark:border-[#1E3A5F] text-center space-y-4">
+                <span className="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
+                  The OAL Vision
+                </span>
+                <blockquote className="text-2xl sm:text-3xl font-black font-heading text-slate-900 dark:text-white leading-snug">
+                  "The Little Engine That Could, Made All The Small Businesses In America Thrive."
+                </blockquote>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed pt-2">
+                  No matter how small your start or how steep the financial mountain looks, with the right track, the right engine, and the right partners, every independent business owner can cross the finish line.
+                </p>
+              </div>
+            )}
+
+            {/* Values Tab */}
+            {visionTab === 'values' && (
+              <div className="p-8 rounded-2xl bg-gradient-to-br from-amber-50/80 to-white dark:from-[#12294A] dark:to-[#0D1E36] border border-amber-200 dark:border-[#1E3A5F] text-center space-y-4">
+                <span className="text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400">
+                  Our Uncompromising Values
+                </span>
+                <blockquote className="text-2xl sm:text-3xl font-black font-heading text-slate-900 dark:text-white leading-snug">
+                  "Dreamers, Wake Up, Write A Plan, Design It, Be Ambitious NOW Execute!"
+                </blockquote>
+                <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 pt-4 text-xs font-bold text-slate-800 dark:text-slate-200">
+                  <div className="p-3 rounded-xl bg-white dark:bg-[#0A1628] border">1. Wake Up</div>
+                  <div className="p-3 rounded-xl bg-white dark:bg-[#0A1628] border">2. Write A Plan</div>
+                  <div className="p-3 rounded-xl bg-white dark:bg-[#0A1628] border">3. Design It</div>
+                  <div className="p-3 rounded-xl bg-white dark:bg-[#0A1628] border">4. Be Ambitious</div>
+                  <div className="p-3 rounded-xl bg-emerald-600 text-white font-black shadow-md">5. NOW Execute!</div>
                 </div>
               </div>
+            )}
 
-              {/* Slider 2: Years in Business */}
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
-                    Time in Operation
-                  </label>
-                  <span className="text-lg font-black font-heading text-blue-600 dark:text-blue-400">
-                    {yearsInBusiness} {yearsInBusiness === 1 ? 'Year' : 'Years'}
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  min={1}
-                  max={10}
-                  step={1}
-                  value={yearsInBusiness}
-                  onChange={(e) => setYearsInBusiness(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                />
-                <div className="flex justify-between text-[11px] text-slate-400 mt-1">
-                  <span>1 Year Minimum</span>
-                  <span>10+ Years</span>
-                </div>
+            {/* Mission Tab */}
+            {visionTab === 'mission' && (
+              <div className="p-8 rounded-2xl bg-gradient-to-br from-emerald-50/80 to-white dark:from-[#12294A] dark:to-[#0D1E36] border border-emerald-200 dark:border-[#1E3A5F] text-center space-y-4">
+                <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
+                  Our Daily Mission
+                </span>
+                <blockquote className="text-xl sm:text-2xl font-bold font-heading text-slate-900 dark:text-white leading-relaxed max-w-2xl mx-auto">
+                  To democratize institutional capital, technology, and executive coaching for Main Street businesses without predatory fees or equity dilution.
+                </blockquote>
+                <p className="text-xs text-slate-500 max-w-xl mx-auto">
+                  We stand as your trusted fiduciary bridge between community commercial dreams and national institutional funding.
+                </p>
               </div>
-
-              {/* Industry Select */}
-              <div>
-                <label className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300 block mb-2">
-                  Business Industry
-                </label>
-                <select
-                  value={industry}
-                  onChange={(e) => setIndustry(e.target.value)}
-                  className="w-full h-10 px-3 text-sm bg-white dark:bg-[#0D1E36] rounded-[10px] border border-slate-300 dark:border-[#1E3A5F] outline-none focus:ring-2 focus:ring-blue-500/20"
-                >
-                  <option>Logistics & Freight</option>
-                  <option>B2B SaaS & Tech Services</option>
-                  <option>Healthcare & Medical Practices</option>
-                  <option>Manufacturing & Industrial</option>
-                  <option>Wholesale & Distribution</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Estimate Results Card */}
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#12294A] dark:via-[#0D1E36] dark:to-[#0A1628] border border-blue-200 dark:border-[#1E3A5F] text-center space-y-4 shadow-md">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                Estimated Pre-Qualified Facility
-              </span>
-
-              <div className="text-4xl sm:text-5xl font-black font-heading text-slate-900 dark:text-white tracking-tight">
-                {formatCurrency(estimatedCapital)}
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 py-2 text-xs">
-                <div className="p-2.5 rounded-xl bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-slate-800">
-                  <span className="text-slate-400 block text-[11px]">Indicative Pricing</span>
-                  <span className="font-bold text-emerald-600 dark:text-emerald-400 text-sm">
-                    {estimatedRate}
-                  </span>
-                </div>
-                <div className="p-2.5 rounded-xl bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-slate-800">
-                  <span className="text-slate-400 block text-[11px]">Funding Speed</span>
-                  <span className="font-bold text-blue-600 dark:text-blue-400 text-sm">
-                    48 - 72 Hours
-                  </span>
-                </div>
-              </div>
-
-              <Button
-                variant="primary"
-                size="lg"
-                pill
-                onClick={() => navigate('/apply')}
-                rightIcon={<ArrowRight className="w-4 h-4" />}
-                className="w-full text-sm font-bold shadow-lg shadow-blue-500/25"
-              >
-                Lock In Pre-Qualification
-              </Button>
-
-              <p className="text-[11px] text-slate-400">
-                Subject to final verification of corporate tax returns and bank feeds.
-              </p>
-            </div>
+            )}
           </div>
         </Card>
       </section>
 
-      {/* 4. REAL CLIENT CASE STUDIES */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-12">
+      {/* 5. HOW IT WORKS (4-STEP TIMELINE) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="text-center max-w-3xl mx-auto space-y-2">
           <Badge variant="emerald" size="md">
-            Proven Outcomes
+            The Process
           </Badge>
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white mt-3">
-            Trusted by Hundreds of Small Businesses
+          <h2 className="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white">
+            How OAL Network Propels Your Business
           </h2>
-          <p className="text-slate-600 dark:text-slate-300 text-sm mt-2">
-            Read how small business founders paired non-dilutive credit facilities with fractional CFO guidance to unlock explosive growth.
+          <p className="text-sm text-slate-500">
+            A simple, predictable 4-step execution framework from discovery to funded expansion.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {CASE_STUDIES.map((cs) => (
-            <Card key={cs.id} variant="default" hover className="p-6 flex flex-col justify-between">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+          {HOW_IT_WORKS_STEPS.map((st, i) => (
+            <Card
+              key={st.step}
+              variant="default"
+              className="p-6 relative flex flex-col justify-between hover:border-blue-400 transition-colors"
+            >
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <Badge variant="primary" size="sm">
-                    {cs.industry}
-                  </Badge>
-                  <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                    {cs.capitalReceived}
-                  </span>
+                <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center font-black font-heading text-sm mb-4 ring-4 ring-blue-500/10">
+                  {st.step}
                 </div>
-                <h4 className="text-lg font-bold font-heading text-slate-900 dark:text-white">
-                  {cs.clientName}
-                </h4>
-                <div className="text-xs font-semibold text-amber-500 mt-0.5">
-                  ★ {cs.growth}
-                </div>
-                <p className="text-xs text-slate-600 dark:text-slate-300 mt-4 italic leading-relaxed">
-                  "{cs.quote}"
+                <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white">
+                  {st.title}
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+                  {st.description}
                 </p>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-slate-100 dark:border-[#1E3A5F] flex items-center gap-3">
-                <img
-                  src={cs.avatar}
-                  alt={cs.advisor}
-                  className="w-9 h-9 rounded-full object-cover border border-slate-200 dark:border-slate-700"
-                />
-                <div>
-                  <p className="text-xs font-bold text-slate-800 dark:text-slate-200">{cs.advisor}</p>
-                  <p className="text-[10px] text-slate-400">OAL Advisory Practice</p>
-                </div>
+              <div className="mt-6 pt-3 border-t border-slate-100 dark:border-[#1E3A5F] flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>Step {i + 1} Milestone</span>
               </div>
             </Card>
           ))}
         </div>
       </section>
 
-      {/* 5. CALL TO ACTION BANNER */}
+      {/* 6. AI ASSISTANT TEASER SECTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl gradient-hero-navy text-white p-8 sm:p-14 relative overflow-hidden shadow-2xl border border-blue-900/60">
-          <div className="absolute right-0 bottom-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="rounded-3xl bg-gradient-to-br from-[#0A1628] via-[#12294A] to-[#1E3A8A] text-white p-8 sm:p-12 border border-blue-900/60 shadow-2xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Left Teaser Info */}
+            <div className="lg:col-span-6 space-y-5">
+              <Badge variant="gold" size="sm">
+                Next-Gen SMB AI Assistant
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl font-extrabold font-heading text-white leading-tight">
+                Ask Questions. Model Scenarios. Get Instant Answers 24/7.
+              </h2>
+              <p className="text-slate-300 text-sm leading-relaxed">
+                Our OAL Copilot combines knowledge from all 16 business solutions with real-time financial algorithms. Model loan repayments, verify credit tier requirements, or generate operational scripts in seconds.
+              </p>
 
-          <div className="max-w-2xl relative z-10 space-y-4 text-left">
-            <Badge variant="gold" size="sm">
-              Ready To Scale?
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-heading text-white tracking-tight">
-              Get Your Business Funded & Paired with a Dedicated CFO.
-            </h2>
-            <p className="text-slate-300 text-sm leading-relaxed">
-              No endless paperwork, no hidden covenant traps. Fill out our simple digital intake and receive your customized facility term sheet in 48 hours.
-            </p>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-3">
-              <Button
-                variant="accent"
-                size="lg"
-                pill
-                onClick={() => navigate('/apply')}
-                rightIcon={<ArrowRight className="w-4 h-4" />}
-                className="text-base"
-              >
-                Start Free Application
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                pill
-                onClick={() => navigate('/portal/dashboard')}
-                className="text-white border-slate-600 hover:bg-slate-800/80"
-              >
-                Log In to Client Portal
-              </Button>
+              <div className="pt-2 flex items-center gap-4">
+                <Button
+                  variant="accent"
+                  size="md"
+                  pill
+                  onClick={() => {
+                    const el = document.querySelector('button[aria-label="Open AI Business Advisor Chat"]') as HTMLButtonElement
+                    if (el) el.click()
+                  }}
+                  leftIcon={<Bot className="w-4 h-4" />}
+                >
+                  Launch AI Copilot Now
+                </Button>
+                <span className="text-xs text-slate-400">Available on desktop & mobile</span>
+              </div>
+            </div>
+
+            {/* Right Chat-Widget Mockup */}
+            <div className="lg:col-span-6">
+              <div className="rounded-2xl bg-white/95 dark:bg-[#0D1E36]/95 border border-white/20 dark:border-[#1E3A5F] shadow-2xl p-5 text-slate-800 dark:text-slate-100 text-xs space-y-3 backdrop-blur-md">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold">
+                      <Bot className="w-4 h-4" />
+                    </div>
+                    <span className="font-bold">OAL Small Business Copilot</span>
+                  </div>
+                  <span className="text-[10px] text-emerald-500 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                    Live Demo
+                  </span>
+                </div>
+
+                {/* Simulated Conversation */}
+                <div className="space-y-3 pt-1">
+                  <div className="flex justify-end">
+                    <div className="p-2.5 rounded-xl bg-blue-600 text-white max-w-[85%] rounded-br-xs">
+                      How much working capital can I qualify for with $75,000 in monthly restaurant sales?
+                    </div>
+                  </div>
+
+                  <div className="flex justify-start">
+                    <div className="p-3 rounded-xl bg-slate-100 dark:bg-[#12294A] text-slate-800 dark:text-slate-200 max-w-[90%] rounded-bl-xs border border-slate-200 dark:border-slate-700 space-y-2">
+                      <p>
+                        Based on $75k monthly gross sales ($900k ARR), your restaurant can qualify for:
+                      </p>
+                      <ul className="list-disc pl-4 space-y-1 text-[11px] text-slate-600 dark:text-slate-300">
+                        <li><strong>Revolving Credit Line:</strong> $150,000 – $210,000 at Prime + 1.5%</li>
+                        <li><strong>Equipment Lease:</strong> Up to $100,000 for POS & kitchen upgrades</li>
+                      </ul>
+                      <p className="text-[11px] text-blue-600 dark:text-blue-400 font-semibold">
+                        Would you like me to connect you with an OAL Restaurant Business Coach?
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* 7. TESTIMONIALS CAROUSEL */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div className="text-center max-w-2xl mx-auto space-y-2">
+          <Badge variant="emerald" size="md">
+            Customer Stories
+          </Badge>
+          <h2 className="text-3xl font-extrabold font-heading text-slate-900 dark:text-white">
+            Real Main Street Founders. Measurable Results.
+          </h2>
+        </div>
+
+        <Card variant="bento" className="p-8 sm:p-12 border-slate-200 dark:border-[#1E3A5F] shadow-xl relative">
+          <div className="flex flex-col sm:flex-row items-center gap-8">
+            <img
+              src={currentTestimonial.image}
+              alt={currentTestimonial.name}
+              className="w-28 h-28 sm:w-36 sm:h-36 rounded-2xl object-cover shadow-lg border-2 border-blue-500/20 shrink-0"
+            />
+            <div className="flex-1 space-y-3">
+              <div className="flex items-center gap-1 text-amber-500">
+                {[...Array(currentTestimonial.rating)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-current" />
+                ))}
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 ml-2">
+                  {currentTestimonial.metric}
+                </span>
+              </div>
+
+              <p className="text-base sm:text-lg italic text-slate-700 dark:text-slate-200 leading-relaxed font-medium">
+                "{currentTestimonial.quote}"
+              </p>
+
+              <div>
+                <h4 className="text-base font-bold font-heading text-slate-900 dark:text-white">
+                  {currentTestimonial.name}
+                </h4>
+                <p className="text-xs text-slate-500">
+                  {currentTestimonial.business} • {currentTestimonial.location}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Carousel Navigation Buttons */}
+          <div className="mt-8 pt-4 border-t border-slate-100 dark:border-[#1E3A5F] flex items-center justify-between">
+            <span className="text-xs text-slate-400">
+              Story {activeTestimonialIdx + 1} of {TESTIMONIALS_DATA.length}
+            </span>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={prevTestimonial}
+                aria-label="Previous Testimonial"
+                className="w-9 h-9 p-0 rounded-full"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={nextTestimonial}
+                aria-label="Next Testimonial"
+                className="w-9 h-9 p-0 rounded-full"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </Card>
+      </section>
+
+      {/* 8. FINAL CTA BANNER WITH EMBEDDED LEAD FORM */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Card variant="bento" className="p-8 sm:p-12 border-blue-300 dark:border-[#1E3A5F] shadow-2xl relative overflow-hidden bg-gradient-to-br from-white via-blue-50/40 to-emerald-50/30 dark:from-[#0D1E36] dark:via-[#12294A] dark:to-[#0A1628]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            {/* Left Pitch */}
+            <div className="lg:col-span-5 space-y-4">
+              <Badge variant="primary" size="md">
+                Fast Response
+              </Badge>
+              <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 dark:text-white">
+                Speak with a Business Coach Today
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Connect directly with a certified industry coach. We review your working capital needs, payment fees, credit profile, and strategic gameplan with zero high-pressure sales tactics.
+              </p>
+              <div className="space-y-2 pt-2 text-xs text-slate-600 dark:text-slate-400">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <span>30-minute free diagnostic review</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <span>Custom blueprint tailored to your trade</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <span>Direct phone callback within 1 business hour</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Embedded Form */}
+            <div className="lg:col-span-7 bg-white dark:bg-[#0A1628] p-6 sm:p-8 rounded-2xl border border-slate-200 dark:border-[#1E3A5F] shadow-lg">
+              <CoachLeadForm isInline />
+            </div>
+          </div>
+        </Card>
+      </section>
+
+      {/* Global Coach Modal Triggered by hero button */}
+      <CoachRequestModal
+        isOpen={coachModalOpen}
+        onClose={() => setCoachModalOpen(false)}
+      />
     </div>
   )
 }
