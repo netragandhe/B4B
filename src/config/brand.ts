@@ -40,10 +40,10 @@ export const brandConfig: BrandConfig = {
   },
   logos: {
     full: '/brand/logo-full.png',
-    fullSvg: '/brand/logo-full.svg',
-    wordmark: '/brand/logo-wordmark.svg',
-    icon: '/brand/logo-icon.svg',
-    darkWordmark: '/brand/logo-wordmark-dark.svg',
+    fullSvg: '/brand/logo-full.png',
+    wordmark: '/brand/logo-full.png',
+    icon: '/brand/logo-full.png',
+    darkWordmark: '/brand/logo-full.png',
   },
 }
 
