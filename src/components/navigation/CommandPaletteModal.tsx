@@ -15,6 +15,7 @@ import { Modal } from '@/components/ui/Modal'
 import { Badge } from '@/components/ui/Badge'
 import { SOLUTIONS_DATA } from '@/mock-data/solutions'
 import { brandConfig } from '@/config/brand'
+import { usePermission } from '@/hooks/usePermission'
 
 interface CommandPaletteModalProps {
   isOpen: boolean
@@ -28,6 +29,8 @@ export const CommandPaletteModal: React.FC<CommandPaletteModalProps> = ({
   onOpenCoachModal,
 }) => {
   const navigate = useNavigate()
+  const { getMenusForRole } = usePermission()
+  const allowedMenus = getMenusForRole()
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -61,31 +64,18 @@ export const CommandPaletteModal: React.FC<CommandPaletteModalProps> = ({
       s.category.toLowerCase().includes(query.toLowerCase())
   )
 
-  // Navigation Items
+  // Navigation Items: Public pages + dynamically allowed portal menus from RBAC
   const quickLinks = [
     { label: 'All 16 Small Business Solutions', href: '/solutions', category: 'Pages' },
     { label: 'Careers & Join Our Team', href: '/jobs', category: 'Company' },
     { label: 'Affiliates, Partners & Influencers', href: '/affiliates', category: 'Partners' },
-    { label: 'Partner Hub (Clicks, Leads, Earnings)', href: '/portal/affiliate/dashboard', category: 'Partners' },
-    { label: 'My Unique Links & QR Codes', href: '/portal/affiliate/links', category: 'Partners' },
-    { label: 'Submit Direct Client Lead', href: '/portal/affiliate/submit-lead', category: 'Partners' },
-    { label: 'Referrals Pipeline Table', href: '/portal/affiliate/referrals', category: 'Partners' },
-    { label: 'Commissions & Payouts', href: '/portal/affiliate/commissions', category: 'Partners' },
-    { label: 'Marketing Materials & Media Kit', href: '/portal/affiliate/marketing', category: 'Partners' },
     { label: 'About OAL Network (Vision & Values)', href: '/company', category: 'Company' },
     { label: 'Contact Business Advisory Desk', href: '/contact', category: 'Support' },
-    { label: 'Client Terminal Portal', href: '/portal/dashboard', category: 'Portal' },
-    { label: 'Biz Pro Role Dashboard (Ranks 1–9)', href: '/bizpro/dashboard', category: 'Biz Pro' },
-    { label: 'Biz Pro Leads Kanban & Table', href: '/bizpro/leads', category: 'Biz Pro' },
-    { label: 'Biz Pro Clients & Facilities Vault', href: '/bizpro/clients', category: 'Biz Pro' },
-    { label: 'Biz Pro Rank & Promotion Roadmap', href: '/bizpro/rank', category: 'Biz Pro' },
-    { label: 'Biz Pro Commission Statements', href: '/bizpro/commissions', category: 'Biz Pro' },
-    { label: 'Biz Pro National Bulletin Scoreboard', href: '/bizpro/scoreboard', category: 'Biz Pro' },
-    { label: 'Biz Pro Platform Subscription ($25/mo)', href: '/bizpro/subscription', category: 'Biz Pro' },
-    { label: 'Biz Pro My Team Org-Tree (Rank 4+)', href: '/bizpro/team', category: 'Biz Pro' },
-    { label: 'Biz Pro Recruit Advisors (Rank 4+)', href: '/bizpro/recruit', category: 'Biz Pro' },
-    { label: 'Biz Pro Team Reports (Rank 4+)', href: '/bizpro/team-reports', category: 'Biz Pro' },
-    { label: 'Design System & UI Kit', href: '/design-system', category: 'System' },
+    ...allowedMenus.map((m) => ({
+      label: `${m.label} (${m.group})`,
+      href: m.route,
+      category: m.module,
+    })),
   ].filter(
     (item) =>
       item.label.toLowerCase().includes(query.toLowerCase()) ||

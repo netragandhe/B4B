@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/Badge'
 import { useToast } from '@/components/ui/Toast'
 import { CMS_16_SOLUTION_PAGES } from '@/mock-data/adminFullData'
 import { formatCurrency } from '@/lib/utils'
+import { Can } from '@/components/auth/Can'
 
 export const AffiliateSubmitLeadPage: React.FC = () => {
   const { toast } = useToast()
@@ -145,9 +146,11 @@ export const AffiliateSubmitLeadPage: React.FC = () => {
           </div>
 
           <div className="pt-2">
-            <Button type="submit" variant="accent" size="md" className="w-full" leftIcon={<Send className="w-4 h-4" />}>
-              Submit Lead for Qualification
-            </Button>
+            <Can menuId="affiliate-submit-lead" action="create" disableInstead={true} tooltip="Create permission required to submit client leads">
+              <Button type="submit" variant="accent" size="md" className="w-full" leftIcon={<Send className="w-4 h-4" />}>
+                Submit Lead for Qualification
+              </Button>
+            </Can>
           </div>
         </form>
       </Card>

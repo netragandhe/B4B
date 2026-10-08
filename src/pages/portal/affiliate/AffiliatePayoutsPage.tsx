@@ -9,6 +9,7 @@ import { useToast } from '@/components/ui/Toast'
 import { MOCK_PAYOUT_RECORDS, PayoutRecord } from '@/mock-data/affiliateData'
 import { formatCurrency } from '@/lib/utils'
 import { exportToCsv, exportToPdf } from '@/lib/exportUtils'
+import { Can } from '@/components/auth/Can'
 
 export const AffiliatePayoutsPage: React.FC = () => {
   const { toast } = useToast()
@@ -75,17 +76,21 @@ export const AffiliatePayoutsPage: React.FC = () => {
         }
         actions={
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={handleExportCsv} leftIcon={<Download className="w-3.5 h-3.5" />}>
-              Download CSV
-            </Button>
-            <Button
-              variant="accent"
-              size="sm"
-              onClick={() => setIsModalOpen(true)}
-              leftIcon={<ArrowDownRight className="w-4 h-4" />}
-            >
-              Request Payout
-            </Button>
+            <Can menuId="affiliate-commissions" action="export" disableInstead={true} tooltip="Export permission required to download payout records">
+              <Button variant="outline" size="sm" onClick={handleExportCsv} leftIcon={<Download className="w-3.5 h-3.5" />}>
+                Download CSV
+              </Button>
+            </Can>
+            <Can menuId="affiliate-commissions" action="create" disableInstead={true} tooltip="Create permission required to request payouts">
+              <Button
+                variant="accent"
+                size="sm"
+                onClick={() => setIsModalOpen(true)}
+                leftIcon={<ArrowDownRight className="w-4 h-4" />}
+              >
+                Request Payout
+              </Button>
+            </Can>
           </div>
         }
       />

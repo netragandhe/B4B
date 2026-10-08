@@ -37,6 +37,7 @@ import { FileUpload } from '@/components/ui/FileUpload'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { useToast } from '@/components/ui/Toast'
 import { EBOX_CATEGORIES, EBOX_ITEMS, EboxItem } from '@/mock-data/ebox'
+import { Can } from '@/components/auth/Can'
 
 export const EboxPage: React.FC = () => {
   const { toast } = useToast()
@@ -174,15 +175,17 @@ export const EboxPage: React.FC = () => {
           </Badge>
         }
         actions={
-          <Button
-            variant="accent"
-            size="md"
-            onClick={() => setUploadModalOpen(true)}
-            leftIcon={<Upload className="w-4 h-4" />}
-            className="shadow-sm shadow-emerald-500/20"
-          >
-            Upload to eBOX
-          </Button>
+          <Can menuId="shared-ebox" action="create" disableInstead={true} tooltip="Create permission required to upload documents to eBOX">
+            <Button
+              variant="accent"
+              size="md"
+              onClick={() => setUploadModalOpen(true)}
+              leftIcon={<Upload className="w-4 h-4" />}
+              className="shadow-sm shadow-emerald-500/20"
+            >
+              Upload to eBOX
+            </Button>
+          </Can>
         }
       />
 

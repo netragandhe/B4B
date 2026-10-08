@@ -3,10 +3,12 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from '@/hooks/useTheme'
 import { AuthProvider, useAuth } from '@/hooks/useAuth'
+import { PermissionProvider } from '@/lib/rbac/PermissionContext'
 import { ToastProvider } from '@/components/ui/Toast'
 import { RoleGuard } from '@/components/auth/RoleGuard'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { PublicOnlyRoute } from '@/components/auth/PublicOnlyRoute'
+import { Forbidden403Page } from '@/pages/portal/Forbidden403Page'
 
 // Layouts
 import { MarketingLayout } from '@/layouts/MarketingLayout'
@@ -146,7 +148,8 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <AuthProvider>
-          <ToastProvider>
+          <PermissionProvider>
+            <ToastProvider>
             <BrowserRouter>
               <Routes>
                 {/* 1. Public Marketing Website */}
@@ -894,12 +897,23 @@ export default function App() {
                   }
                 />
 
+                {/* 403 Forbidden Access Route */}
+                <Route
+                  path="/403"
+                  element={
+                    <PortalLayout>
+                      <Forbidden403Page />
+                    </PortalLayout>
+                  }
+                />
+
                 {/* Fallback */}
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </BrowserRouter>
           </ToastProvider>
-        </AuthProvider>
+        </PermissionProvider>
+      </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   )

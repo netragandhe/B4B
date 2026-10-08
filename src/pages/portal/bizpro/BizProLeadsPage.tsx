@@ -30,6 +30,7 @@ import { FormField } from '@/components/ui/FormField'
 import { useToast } from '@/components/ui/Toast'
 import { INITIAL_LEADS, Lead } from '@/mock-data/bizproData'
 import { formatCurrency } from '@/lib/utils'
+import { Can } from '@/components/auth/Can'
 
 export const BizProLeadsPage: React.FC = () => {
   const { toast } = useToast()
@@ -129,15 +130,17 @@ export const BizProLeadsPage: React.FC = () => {
           </Badge>
         }
         actions={
-          <Button
-            variant="accent"
-            size="md"
-            onClick={() => setAddModalOpen(true)}
-            leftIcon={<Plus className="w-4 h-4" />}
-            className="shadow-sm shadow-emerald-500/20"
-          >
-            Add New Lead
-          </Button>
+          <Can menuId="bizpro-leads" action="create" disableInstead={true} tooltip="Create permission required to add new leads">
+            <Button
+              variant="accent"
+              size="md"
+              onClick={() => setAddModalOpen(true)}
+              leftIcon={<Plus className="w-4 h-4" />}
+              className="shadow-sm shadow-emerald-500/20"
+            >
+              Add New Lead
+            </Button>
+          </Can>
         }
       />
 

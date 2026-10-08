@@ -25,6 +25,12 @@ import { ADMIN_BIZPRO_LIST, AdminBizPro } from '@/mock-data/adminData'
 import { BIZPRO_RANKS } from '@/mock-data/bizproData'
 import { FED_REGIONS } from '@/mock-data/territoryScoreboardData'
 import { formatCurrency } from '@/lib/utils'
+import { MENU_CATALOG } from '@/config/menuCatalog'
+import { permissionService } from '@/lib/rbac/permissionService'
+import { MenuIcon } from '@/components/navigation/MenuIcon'
+import { PermissionItem } from '@/lib/rbac/types'
+import { KeyRound, ShieldAlert, Sparkles, Sliders } from 'lucide-react'
+import { Can } from '@/components/auth/Can'
 
 export const AdminBizProManagementPage: React.FC = () => {
   const { toast } = useToast()
@@ -33,6 +39,11 @@ export const AdminBizProManagementPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedRep, setSelectedRep] = useState<AdminBizPro | null>(null)
   const [inviteModalOpen, setInviteModalOpen] = useState(false)
+
+  // Drawer Tabs State
+  const [drawerTab, setDrawerTab] = useState<'rank' | 'customAccess'>('rank')
+  const [userOverrides, setUserOverrides] = useState<Record<string, Partial<PermissionItem>>>({})
+  const [loadingOverrides, setLoadingOverrides] = useState(false)
 
   // Edit rank state inside drawer
   const [newRankLevel, setNewRankLevel] = useState<number>(4)
@@ -108,14 +119,16 @@ export const AdminBizProManagementPage: React.FC = () => {
           </Badge>
         }
         actions={
-          <Button
-            variant="accent"
-            size="md"
-            onClick={() => setInviteModalOpen(true)}
-            leftIcon={<Plus className="w-4 h-4" />}
-          >
-            Invite New Biz Pro
-          </Button>
+          <Can menuId="admin-bizpro" action="create" disableInstead={true} tooltip="Create permission required to invite representatives">
+            <Button
+              variant="accent"
+              size="md"
+              onClick={() => setInviteModalOpen(true)}
+              leftIcon={<Plus className="w-4 h-4" />}
+            >
+              Invite New Biz Pro
+            </Button>
+          </Can>
         }
       />
 
@@ -195,24 +208,180 @@ export const AdminBizProManagementPage: React.FC = () => {
               </div>
             </div>
 
-            {/* EDIT RANK FORM */}
-            <div className="space-y-3">
-              <FormField label="Reassign Rank Tier (1 to 9)" id="edit-rank-level">
-                <Select
-                  id="edit-rank-level"
-                  options={BIZPRO_RANKS.map((r) => ({
-                    label: `Rank ${r.level}: ${r.title} (${r.commissionTier})`,
-                    value: r.level.toString(),
-                  }))}
-                  value={newRankLevel.toString()}
-                  onChange={(e) => setNewRankLevel(Number(e.target.value))}
-                />
-              </FormField>
-
-              <Button variant="accent" size="sm" onClick={handleUpdateRank} className="w-full justify-center text-xs">
-                Save & Update Rank Level
-              </Button>
+            {/* DRAWER TABS: RANK VS CUSTOM ACCESS OVERRIDES */}
+            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-[#12294A] border border-slate-200 dark:border-[#1E3A5F]">
+              <button
+                type="button"
+                onClick={() => setDrawerTab('rank')}
+                className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer ${
+                  drawerTab === 'rank'
+                    ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                }`}
+              >
+                Profile & Rank Tier
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  setDrawerTab('customAccess')
+                  setLoadingOverrides(true)
+                  try {
+                    const overrides = await permissionService.getUserOverrides(selectedRep.id)
+                    setUserOverrides(overrides)
+                  } catch (e) {
+                    console.error(e)
+                  } finally {
+                    setLoadingOverrides(false)
+                  }
+                }}
+                className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-1.5 ${
+                  drawerTab === 'customAccess'
+                    ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                }`}
+              >
+                <KeyRound className="w-3.5 h-3.5 text-amber-500" />
+                <span>Custom Access (Override)</span>
+              </button>
             </div>
+
+            {drawerTab === 'rank' ? (
+              /* EDIT RANK FORM */
+              <div className="space-y-3">
+                <FormField label="Reassign Rank Tier (1 to 9)" id="edit-rank-level">
+                  <Select
+                    id="edit-rank-level"
+                    options={BIZPRO_RANKS.map((r) => ({
+                      label: `Rank ${r.level}: ${r.title} (${r.commissionTier})`,
+                      value: r.level.toString(),
+                    }))}
+                    value={newRankLevel.toString()}
+                    onChange={(e) => setNewRankLevel(Number(e.target.value))}
+                  />
+                </FormField>
+
+                <Button variant="accent" size="sm" onClick={handleUpdateRank} className="w-full justify-center text-xs font-bold bg-blue-600 text-white">
+                  Save & Update Rank Level
+                </Button>
+              </div>
+            ) : (
+              /* USER-LEVEL OVERRIDE TAB */
+              <div className="space-y-3">
+                <div className="p-3 rounded-xl bg-amber-50/80 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-xs text-amber-900 dark:text-amber-300">
+                  <span className="font-bold block mb-0.5">User-Level Access Exceptions</span>
+                  Grant or revoke specific menus for <strong>{selectedRep.name}</strong> individually,
+                  on top of their Biz Pro role defaults. Overridden items are highlighted.
+                </div>
+
+                <div className="space-y-2 max-h-[420px] overflow-y-auto custom-scrollbar pr-1">
+                  {MENU_CATALOG.filter((m) => m.route.includes('/bizpro') || m.module === 'Shared' || m.id === 'bizpro-dashboard').map((menu) => {
+                    const override = userOverrides[menu.id]
+                    const hasOverride = override && override.view !== undefined
+                    const isGranted = override?.view === true
+                    const isRevoked = override?.view === false
+
+                    return (
+                      <div
+                        key={menu.id}
+                        className={`p-2.5 rounded-xl border transition-all text-xs flex items-center justify-between ${
+                          hasOverride
+                            ? 'bg-amber-50/50 dark:bg-amber-950/20 border-amber-300 dark:border-amber-800'
+                            : 'bg-slate-50/60 dark:bg-[#12294A]/30 border-slate-200 dark:border-[#1E3A5F]'
+                        }`}
+                      >
+                        <div className="min-w-0 flex-1 mr-2">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <MenuIcon name={menu.icon} className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                            <span className="font-bold text-slate-900 dark:text-white truncate">
+                              {menu.label}
+                            </span>
+                            {hasOverride ? (
+                              <Badge variant={isGranted ? 'emerald' : 'danger'} size="sm" className="text-[9px] px-1 py-0">
+                                {isGranted ? 'Override: Granted' : 'Override: Revoked'}
+                              </Badge>
+                            ) : (
+                              <Badge variant="navy" size="sm" className="text-[9px] px-1 py-0">
+                                Role Default
+                              </Badge>
+                            )}
+                          </div>
+                          <span className="text-[10px] text-slate-400 font-mono block truncate">
+                            {menu.module} • {menu.route}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-1 shrink-0">
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              await permissionService.setUserOverride(selectedRep.id, menu.id, { view: true })
+                              const updated = await permissionService.getUserOverrides(selectedRep.id)
+                              setUserOverrides(updated)
+                              toast({
+                                title: 'Access Override Granted',
+                                description: `Granted "${menu.label}" for ${selectedRep.name}.`,
+                                type: 'success',
+                              })
+                            }}
+                            className={`px-2 py-1 rounded text-[10px] font-bold cursor-pointer transition-colors ${
+                              isGranted
+                                ? 'bg-emerald-600 text-white'
+                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 hover:bg-emerald-100 hover:text-emerald-700'
+                            }`}
+                            title="Grant permission to this user"
+                          >
+                            Grant
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              await permissionService.setUserOverride(selectedRep.id, menu.id, { view: false })
+                              const updated = await permissionService.getUserOverrides(selectedRep.id)
+                              setUserOverrides(updated)
+                              toast({
+                                title: 'Access Override Revoked',
+                                description: `Revoked "${menu.label}" for ${selectedRep.name}.`,
+                                type: 'info',
+                              })
+                            }}
+                            className={`px-2 py-1 rounded text-[10px] font-bold cursor-pointer transition-colors ${
+                              isRevoked
+                                ? 'bg-rose-600 text-white'
+                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 hover:bg-rose-100 hover:text-rose-700'
+                            }`}
+                            title="Revoke permission for this user"
+                          >
+                            Revoke
+                          </button>
+
+                          {hasOverride && (
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                await permissionService.deleteUserOverride(selectedRep.id, menu.id)
+                                const updated = await permissionService.getUserOverrides(selectedRep.id)
+                                setUserOverrides(updated)
+                                toast({
+                                  title: 'Override Cleared',
+                                  description: `Reverted "${menu.label}" to standard Biz Pro role policy.`,
+                                  type: 'info',
+                                })
+                              }}
+                              className="px-1.5 py-1 rounded text-[10px] font-bold text-slate-400 hover:text-slate-700 cursor-pointer"
+                              title="Clear override and follow role"
+                            >
+                              Reset
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </Drawer>

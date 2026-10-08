@@ -22,11 +22,10 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
   const navigate = useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  const navLinks = [
+  const navLinks: Array<{ name: string; href: string; badge?: string }> = [
     { name: 'Solutions', href: '/solutions' },
     { name: 'Advisory & CFO', href: '/advisory' },
     { name: 'Apply For Capital', href: '/apply' },
-    { name: 'Design System', href: '/design-system', badge: 'Review' },
   ]
 
   const isActive = (path: string) => location.pathname === path

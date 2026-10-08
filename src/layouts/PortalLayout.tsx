@@ -28,6 +28,8 @@ import { Avatar } from '@/components/ui/Avatar'
 import { Modal } from '@/components/ui/Modal'
 import { Input } from '@/components/ui/Input'
 import { useAuth, UserRole, DEMO_PROFILES } from '@/hooks/useAuth'
+import { usePermission } from '@/hooks/usePermission'
+import { MenuIcon } from '@/components/navigation/MenuIcon'
 import { useTheme } from '@/hooks/useTheme'
 import { useToast } from '@/components/ui/Toast'
 import { MENU_CONFIG, MenuItem } from '@/config/menus'
@@ -90,10 +92,16 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  const currentRole: UserRole = user?.role || 'Client'
-  const navItems: MenuItem[] = MENU_CONFIG[currentRole] || MENU_CONFIG.Client
+  const { getMenusForRole, activeRoleId, roles } = usePermission()
+  const allowedMenus = getMenusForRole()
 
-  const isActive = (href: string) => location.pathname === href
+  const currentRole: string = user?.role || 'Client'
+
+  const isActive = (href: string) => {
+    const cleanHref = href.split('?')[0].replace(/\/$/, '')
+    const cleanCurrent = location.pathname.replace(/\/$/, '')
+    return cleanHref === cleanCurrent
+  }
 
   const handleLogout = () => {
     setLogoutModalOpen(true)
@@ -103,8 +111,6 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
     toast({ title: 'Notifications cleared', type: 'info' })
   }
-
-  const roleOptions: UserRole[] = ['Client', 'Admin', 'Biz Pro', 'Affiliate', 'Employer', 'Job Seeker']
 
   return (
     <div className="min-h-screen flex bg-slate-50 dark:bg-[#0A1628] text-slate-900 dark:text-slate-100 font-sans">
@@ -165,43 +171,37 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
           {!isCollapsed && (
             <div className="flex items-center justify-between px-2 mb-2">
               <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                {currentRole} Navigation
+                {currentRole} Navigation ({allowedMenus.length})
               </span>
               <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-bold">
-                Synced
+                Live RBAC
               </span>
             </div>
           )}
 
-          {navItems.map((item) => {
-            const Icon = item.icon
-            const active = isActive(item.href)
+          {allowedMenus.map((item) => {
+            const active = isActive(item.route)
             return (
               <Link
                 key={item.id}
-                to={item.href}
-                title={isCollapsed ? item.name : undefined}
+                to={item.route}
+                title={isCollapsed ? item.label : undefined}
                 className={`flex items-center ${
                   isCollapsed ? 'justify-center py-3' : 'justify-between px-3.5 py-2.5'
                 } rounded-xl text-xs font-bold transition-all relative ${
                   active
                     ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-                    : item.isHighlighted
-                    ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/80 hover:bg-emerald-100 dark:hover:bg-emerald-900/40'
                     : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <Icon
+                  <MenuIcon
+                    name={item.icon}
                     className={`w-4 h-4 shrink-0 ${
-                      active
-                        ? 'text-white'
-                        : item.isHighlighted
-                        ? 'text-emerald-600 dark:text-emerald-400'
-                        : 'text-slate-400'
+                      active ? 'text-white' : 'text-slate-400'
                     }`}
                   />
-                  {!isCollapsed && <span className="truncate">{item.name}</span>}
+                  {!isCollapsed && <span className="truncate">{item.label}</span>}
                 </div>
 
                 {!isCollapsed && item.badge && (
@@ -209,7 +209,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                     className={`text-[10px] px-2 py-0.3 rounded-full font-extrabold shrink-0 ${
                       active
                         ? 'bg-white/20 text-white'
-                        : item.badgeVariant === 'emerald' || item.isHighlighted
+                        : item.badgeVariant === 'emerald'
                         ? 'bg-emerald-500 text-white shadow-xs'
                         : 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900'
                     }`}
@@ -421,26 +421,33 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                       <span>Switch Demo Role</span>
                       <RefreshCw className="w-3 h-3 text-blue-500" />
                     </p>
-                    <div className="grid grid-cols-2 gap-1">
-                      {roleOptions.map((role) => (
+                    <div className="grid grid-cols-2 gap-1 max-h-40 overflow-y-auto custom-scrollbar">
+                      {(roles.length > 0 ? roles : [
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'bizpro', name: 'Biz Pro' },
+                        { id: 'client', name: 'Client' },
+                        { id: 'affiliate', name: 'Affiliate' },
+                        { id: 'employer', name: 'Employer' },
+                        { id: 'jobseeker', name: 'Job Seeker' },
+                      ]).map((r) => (
                         <button
-                          key={role}
+                          key={r.id}
                           onClick={() => {
-                            switchRole(role)
+                            switchRole(r.name as UserRole)
                             setProfileMenuOpen(false)
                             toast({
-                              title: `Switched to ${role}`,
-                              description: `Now previewing as ${DEMO_PROFILES[role].name}`,
+                              title: `Switched to ${r.name}`,
+                              description: `Now previewing with ${r.name} role access`,
                               type: 'info',
                             })
                           }}
-                          className={`px-2 py-1.5 rounded-lg text-[11px] font-bold text-left transition-colors ${
-                            user?.role === role
+                          className={`px-2 py-1.5 rounded-lg text-[11px] font-bold text-left transition-colors truncate ${
+                            user?.role === r.name
                               ? 'bg-blue-600 text-white'
                               : 'bg-slate-50 dark:bg-[#12294A] text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#1E3A5F]'
                           }`}
                         >
-                          {role}
+                          {r.name}
                         </button>
                       ))}
                     </div>
@@ -473,54 +480,86 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
         </header>
 
         {/* PAGE CONTENT SLOT */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">{children}</main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto pb-20 lg:pb-8">{children}</main>
       </div>
 
       {/* ========================================================================= */}
-      {/* GLOBAL SEARCH MODAL */}
+      {/* GLOBAL SEARCH MODAL (Built from dynamic getMenusForRole) */}
       {/* ========================================================================= */}
       <Modal
         isOpen={searchModalOpen}
         onClose={() => setSearchModalOpen(false)}
         title="Global Workspace Search"
-        description="Search across eBOX documents, capital lines, advisory sessions, and settings."
+        description="Search across all permitted portal modules, documents, and settings."
         maxWidth="md"
       >
         <div className="space-y-4">
           <Input
-            placeholder="Type a keyword (e.g. eBOX, Tax, Capital, CFO)..."
+            placeholder="Type a menu, module or action name..."
             leftIcon={<Search className="w-4 h-4" />}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             autoFocus
           />
 
-          <div className="space-y-2 max-h-60 overflow-y-auto">
-            {[
-              { title: 'eBOX Vault Repository', path: '/portal/ebox', cat: 'Top Priority' },
-              { title: 'Financial Scoreboard & Cash Flow', path: '/portal/dashboard', cat: 'Analytics' },
-              { title: 'Capital Facilities & Disbursement', path: '/portal/capital', cat: 'Facilities' },
-              { title: 'Fractional CFO Advisory Sessions', path: '/portal/advisory', cat: 'Advisory' },
-            ]
-              .filter((item) => item.title.toLowerCase().includes(searchQuery.toLowerCase()))
-              .map((item, idx) => (
+          <div className="space-y-1.5 max-h-64 overflow-y-auto">
+            {allowedMenus
+              .filter(
+                (item) =>
+                  item.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  item.module.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  item.group.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              .map((item) => (
                 <div
-                  key={idx}
+                  key={item.id}
                   onClick={() => {
                     setSearchModalOpen(false)
-                    navigate(item.path)
+                    navigate(item.route)
                   }}
-                  className="p-3 rounded-xl border border-slate-200 dark:border-[#1E3A5F] hover:border-blue-500 bg-slate-50/50 dark:bg-[#12294A]/50 cursor-pointer flex items-center justify-between text-xs transition-all"
+                  className="p-2.5 rounded-xl border border-slate-200 dark:border-[#1E3A5F] hover:border-blue-500 bg-slate-50/50 dark:bg-[#12294A]/50 cursor-pointer flex items-center justify-between text-xs transition-all hover:bg-blue-50/50 dark:hover:bg-blue-950/30"
                 >
-                  <span className="font-bold text-slate-900 dark:text-white">{item.title}</span>
-                  <Badge variant="navy" size="sm">
-                    {item.cat}
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <MenuIcon name={item.icon} className="w-4 h-4 text-blue-500 shrink-0" />
+                    <span className="font-bold text-slate-900 dark:text-white truncate">{item.label}</span>
+                  </div>
+                  <Badge variant="navy" size="sm" className="shrink-0 text-[10px]">
+                    {item.module}
                   </Badge>
                 </div>
               ))}
           </div>
         </div>
       </Modal>
+
+      {/* ========================================================================= */}
+      {/* MOBILE BOTTOM NAVIGATION BAR */}
+      {/* ========================================================================= */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0D1E36]/95 backdrop-blur-md border-t border-slate-200 dark:border-[#1E3A5F] px-3 py-2 flex items-center justify-around shadow-lg">
+        {allowedMenus.slice(0, 4).map((item) => {
+          const active = isActive(item.route)
+          return (
+            <Link
+              key={item.id}
+              to={item.route}
+              className={`flex flex-col items-center gap-1 text-[10px] font-bold transition-colors ${
+                active ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+              }`}
+            >
+              <MenuIcon name={item.icon} className={`w-4 h-4 ${active ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} />
+              <span className="truncate max-w-[64px]">{item.label}</span>
+            </Link>
+          )
+        })}
+
+        <button
+          onClick={() => setMobileSidebarOpen(true)}
+          className="flex flex-col items-center gap-1 text-[10px] font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer"
+        >
+          <Menu className="w-4 h-4 text-slate-400" />
+          <span>More ({allowedMenus.length})</span>
+        </button>
+      </nav>
 
       {/* ========================================================================= */}
       {/* MOBILE SIDEBAR DRAWER */}
@@ -543,7 +582,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                 </button>
               </div>
 
-              {/* Mobile Role Switcher */}
+              {/* Mobile Role Switcher Info */}
               <div className="mt-4 p-3 rounded-xl bg-blue-50 dark:bg-[#12294A] border border-blue-200 dark:border-blue-900 text-xs">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
                   Role: {user?.role}
@@ -551,14 +590,13 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                 <p className="font-bold text-slate-900 dark:text-white truncate">{user?.name}</p>
               </div>
 
-              <div className="mt-4 space-y-1.5">
-                {navItems.map((item) => {
-                  const Icon = item.icon
-                  const active = isActive(item.href)
+              <div className="mt-4 space-y-1.5 max-h-[60vh] overflow-y-auto custom-scrollbar">
+                {allowedMenus.map((item) => {
+                  const active = isActive(item.route)
                   return (
                     <Link
                       key={item.id}
-                      to={item.href}
+                      to={item.route}
                       onClick={() => setMobileSidebarOpen(false)}
                       className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold ${
                         active
@@ -566,9 +604,12 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                           : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A]'
                       }`}
                     >
-                      <div className="flex items-center gap-3">
-                        <Icon className="w-4 h-4" />
-                        <span>{item.name}</span>
+                      <div className="flex items-center gap-3 min-w-0">
+                        <MenuIcon
+                          name={item.icon}
+                          className={`w-4 h-4 shrink-0 ${active ? 'text-white' : 'text-slate-400'}`}
+                        />
+                        <span className="truncate">{item.label}</span>
                       </div>
                       {item.badge && (
                         <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-white/20">
