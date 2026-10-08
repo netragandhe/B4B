@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Lock, Mail, ArrowRight, ShieldCheck, Sparkles, Building2 } from 'lucide-react'
+import { Lock, Mail, ArrowRight, ShieldCheck, Sparkles, Building2, Users } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -27,10 +27,12 @@ export const PortalLoginPage: React.FC = () => {
   const navigate = useNavigate()
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [portalMode, setPortalMode] = useState<'client' | 'partner'>('client')
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -40,6 +42,15 @@ export const PortalLoginPage: React.FC = () => {
     },
   })
 
+  const handleSwitchMode = (mode: 'client' | 'partner') => {
+    setPortalMode(mode)
+    if (mode === 'partner') {
+      setValue('email', 'alex@vanceadvisory.com')
+    } else {
+      setValue('email', 'm.vance@apexlogistics.io')
+    }
+  }
+
   const onSubmit = (data: LoginFormValues) => {
     setIsSubmitting(true)
     setTimeout(() => {
@@ -47,14 +58,18 @@ export const PortalLoginPage: React.FC = () => {
       setIsSubmitting(false)
       toast({
         title: 'Authentication Successful',
-        description: `Welcome to ${brandConfig.portalName}`,
+        description: portalMode === 'partner' ? 'Welcome to OAL Partner Hub' : `Welcome to ${brandConfig.portalName}`,
         type: 'success',
       })
-      navigate('/portal/dashboard')
+      if (portalMode === 'partner') {
+        navigate('/portal/affiliate/dashboard')
+      } else {
+        navigate('/portal/dashboard')
+      }
     }, 600)
   }
 
-  const handleInstantDemoLogin = () => {
+  const handleInstantClientLogin = () => {
     login()
     toast({
       title: 'Demo Session Initialized',
@@ -64,9 +79,19 @@ export const PortalLoginPage: React.FC = () => {
     navigate('/portal/dashboard')
   }
 
+  const handleInstantPartnerLogin = () => {
+    login({ email: 'alex@vanceadvisory.com' })
+    toast({
+      title: 'Partner Session Initialized',
+      description: 'Logged in as Alex Vance (Platinum Partner, Vance Advisory Group)',
+      type: 'success',
+    })
+    navigate('/portal/affiliate/dashboard')
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-slate-50 dark:bg-[#0A1628] text-slate-900 dark:text-slate-100">
-      <SEOHead title="Client Terminal Login" description="Sign in to your OAL Network client terminal." />
+      <SEOHead title="Portal Terminal Login" description="Sign in to your OAL Network client terminal or partner hub." />
 
       <div className="w-full max-w-md space-y-6 text-left">
         <div className="text-center space-y-2">
@@ -74,31 +99,68 @@ export const PortalLoginPage: React.FC = () => {
             <BrandLogo size="lg" className="justify-center" />
           </Link>
           <h2 className="text-2xl font-extrabold font-heading text-slate-900 dark:text-white mt-2">
-            Client Terminal Sign In
+            Terminal Sign In
           </h2>
           <p className="text-xs text-slate-500">
-            Access your pre-approved facilities, cash flow scoreboard, and CFO sessions.
+            Secure multi-tenant gateway for business clients and certified partners.
           </p>
+        </div>
+
+        {/* Portal Mode Tabs */}
+        <div className="flex p-1 rounded-xl bg-slate-200/80 dark:bg-slate-800 text-xs font-semibold">
+          <button
+            onClick={() => handleSwitchMode('client')}
+            className={`flex-1 py-2 rounded-lg flex items-center justify-center gap-2 transition-all ${
+              portalMode === 'client'
+                ? 'bg-white dark:bg-[#0D1E36] text-blue-600 dark:text-blue-400 shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            <Building2 className="w-3.5 h-3.5" />
+            <span>Client Terminal</span>
+          </button>
+          <button
+            onClick={() => handleSwitchMode('partner')}
+            className={`flex-1 py-2 rounded-lg flex items-center justify-center gap-2 transition-all ${
+              portalMode === 'partner'
+                ? 'bg-white dark:bg-[#0D1E36] text-emerald-600 dark:text-emerald-400 shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            <Users className="w-3.5 h-3.5" />
+            <span>Partner Hub</span>
+          </button>
         </div>
 
         <Card variant="bento" className="p-6 sm:p-8 border-slate-200 dark:border-[#1E3A5F] shadow-xl space-y-5">
           {/* Quick Demo Fast-Track Card */}
-          <div className="p-3.5 rounded-xl bg-blue-50/80 dark:bg-[#12294A] border border-blue-200 dark:border-blue-900/60 flex items-center justify-between gap-3 text-xs">
+          <div className="p-3.5 rounded-xl bg-blue-50/80 dark:bg-[#12294A] border border-blue-200 dark:border-blue-900/60 space-y-2 text-xs">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
               <span className="text-slate-700 dark:text-slate-300 font-medium">
-                Reviewing the portal?
+                1-Click Instant Demo Exploration:
               </span>
             </div>
-            <Button
-              type="button"
-              size="sm"
-              variant="primary"
-              onClick={handleInstantDemoLogin}
-              className="shrink-0 text-xs py-1 h-7 font-bold"
-            >
-              1-Click Instant Login
-            </Button>
+            <div className="grid grid-cols-2 gap-2 pt-1">
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                onClick={handleInstantClientLogin}
+                className="text-xs py-1 h-7 font-bold text-blue-600 dark:text-blue-400"
+              >
+                Client Portal
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="accent"
+                onClick={handleInstantPartnerLogin}
+                className="text-xs py-1 h-7 font-bold"
+              >
+                Partner Hub
+              </Button>
+            </div>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -123,7 +185,14 @@ export const PortalLoginPage: React.FC = () => {
                 <input type="checkbox" defaultChecked className="rounded text-blue-600" />
                 <span>Remember this terminal</span>
               </label>
-              <a href="#reset" onClick={(e) => { e.preventDefault(); toast({ title: 'Password Reset', description: 'Reset instructions dispatched.', type: 'info' }) }} className="text-blue-600 dark:text-blue-400 hover:underline">
+              <a
+                href="#reset"
+                onClick={(e) => {
+                  e.preventDefault()
+                  toast({ title: 'Password Reset', description: 'Reset instructions dispatched.', type: 'info' })
+                }}
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+              >
                 Forgot password?
               </a>
             </div>
@@ -131,13 +200,13 @@ export const PortalLoginPage: React.FC = () => {
             <div className="pt-2 space-y-2">
               <Button
                 type="submit"
-                variant="primary"
+                variant={portalMode === 'partner' ? 'accent' : 'primary'}
                 size="lg"
                 isLoading={isSubmitting}
                 rightIcon={<ArrowRight className="w-4 h-4" />}
                 className="w-full font-bold shadow-md shadow-blue-500/20"
               >
-                Authenticate & Open Terminal
+                {portalMode === 'partner' ? 'Sign In to Partner Hub' : 'Authenticate & Open Terminal'}
               </Button>
             </div>
           </form>

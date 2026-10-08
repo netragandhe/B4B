@@ -1,6 +1,14 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
-import { User, UserRole, MOCK_USERS } from '@/mock-data/users'
-import { authService, LoginResponse, SignupData } from '@/lib/auth/authService'
+export const RANK_TITLES: Record<number, string> = {
+  1: 'Associate Advisor',
+  2: 'Senior Advisor',
+  3: 'Managing Advisor',
+  4: 'Regional Director',
+  5: 'Senior Regional Director',
+  6: 'Vice President',
+  7: 'Senior Vice President',
+  8: 'Executive Managing Director',
+  9: 'National Partner',
+}
 
 interface AuthContextType {
   user: User | null
@@ -13,6 +21,7 @@ interface AuthContextType {
   logout: () => Promise<void>
   switchRole: (role: UserRole) => void
   setBizProRank: (rank: number) => void
+  setRank: (rank: number) => void
   logoutModalOpen: boolean
   setLogoutModalOpen: (open: boolean) => void
   isIdleWarningOpen: boolean
@@ -254,6 +263,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         logout,
         switchRole,
         setBizProRank,
+        setRank: setBizProRank,
         logoutModalOpen,
         setLogoutModalOpen,
         isIdleWarningOpen,

@@ -15,6 +15,7 @@ export interface User {
   rankTitle?: string
   region?: string
   phone?: string
+  sponsorCode?: string
   creditScore?: number
   annualRevenue?: number
   capitalQualified?: number
