@@ -76,6 +76,39 @@ export const MOCK_TRACKING_LINKS: TrackingLinkItem[] = [
     createdAt: '2026-09-15',
     qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://b4b.com/ref/vance100-blog',
   },
+  {
+    id: 'lnk_4',
+    name: 'LinkedIn Executive Pulse Post',
+    url: 'https://b4b.com/ref/vance100?utm_source=linkedin',
+    channel: 'Social Media',
+    clicks: 650,
+    conversions: 18,
+    conversionRate: '2.8%',
+    createdAt: '2026-09-20',
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://b4b.com/ref/vance100-linkedin',
+  },
+  {
+    id: 'lnk_5',
+    name: 'Direct Partner VIP Referral Link',
+    url: 'https://b4b.com/ref/vance100?utm_source=direct',
+    channel: 'Direct Referral',
+    clicks: 310,
+    conversions: 14,
+    conversionRate: '4.5%',
+    createdAt: '2026-09-25',
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://b4b.com/ref/vance100-vip',
+  },
+  {
+    id: 'lnk_6',
+    name: 'Podcast Sponsorship Campaign',
+    url: 'https://b4b.com/ref/vance100?utm_source=podcast',
+    channel: 'Social Media',
+    clicks: 980,
+    conversions: 29,
+    conversionRate: '3.0%',
+    createdAt: '2026-10-02',
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://b4b.com/ref/vance100-podcast',
+  },
 ]
 
 export const MOCK_AFFILIATE_REFERRALS: AffiliateReferralDeal[] = [
@@ -129,6 +162,16 @@ export const MOCK_AFFILIATE_REFERRALS: AffiliateReferralDeal[] = [
     status: 'New Lead',
     submittedDate: '2026-10-07',
   },
+  {
+    id: 'ref_106',
+    clientName: 'Elena Rostova',
+    company: 'Rostova Global Freight',
+    serviceInterest: 'Commercial Real Estate Financing',
+    dealSize: 1500000,
+    estimatedCommission: 22500,
+    status: 'Underwriting Review',
+    submittedDate: '2026-10-08',
+  },
 ]
 
 export const MOCK_PAYOUT_RECORDS: PayoutRecord[] = [
@@ -155,6 +198,30 @@ export const MOCK_PAYOUT_RECORDS: PayoutRecord[] = [
     amount: 5200,
     method: 'Wire Transfer',
     status: 'Paid',
+  },
+  {
+    id: 'pay_4',
+    payoutId: 'PAY-2026-0610',
+    date: '2026-07-01',
+    amount: 12400,
+    method: 'ACH Direct Deposit',
+    status: 'Paid',
+  },
+  {
+    id: 'pay_5',
+    payoutId: 'PAY-2026-0504',
+    date: '2026-06-01',
+    amount: 9800,
+    method: 'PayPal',
+    status: 'Paid',
+  },
+  {
+    id: 'pay_6',
+    payoutId: 'PAY-2026-1002',
+    date: '2026-10-07',
+    amount: 6750,
+    method: 'ACH Direct Deposit',
+    status: 'Processing',
   },
 ]
 
@@ -192,5 +259,22 @@ export const MOCK_MARKETING_ASSETS: MarketingAssetItem[] = [
     format: 'MP4',
     fileSize: '48.0 MB',
     previewImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80',
+  },
+  {
+    id: 'ast_5',
+    title: 'Fractional CFO Advisory Services Pitch Deck',
+    type: 'One-Pager PDF',
+    format: 'PDF Presentation',
+    fileSize: '8.4 MB',
+    previewImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80',
+  },
+  {
+    id: 'ast_6',
+    title: 'Equipment & Fleet Financing Infographic Banner',
+    type: 'Banner Graphic',
+    dimensions: '1080x1080 Square',
+    format: 'PNG',
+    fileSize: '4.8 MB',
+    previewImage: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=400&q=80',
   },
 ]

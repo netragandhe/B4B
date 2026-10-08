@@ -1,14 +1,15 @@
-# OAL Network — Small Business Solutions Platform
+# B4B America — Small Business Solutions & Capital Platform
 
 > **The Connection for Small Business Solutions**  
-> A high-performance fintech & small business web platform with institutional capital access, fractional CFO advisory, and a complete Affiliate / Partner / Influencer portal.
+> A high-performance small business & fintech web platform with institutional capital access, fractional CFO advisory, B2B sales CRM, job board, and complete 6-role enterprise portal.
 
 ---
 
 ## Table of Contents
 1. [Project Overview](#project-overview)
-2. [Quick Start & Run Instructions](#quick-start--run-instructions)
-3. [Portals & Features](#portals--features)
+2. [Branding & Design Tokens](#branding--design-tokens)
+3. [Quick Start & Run Instructions](#quick-start--run-instructions)
+4. [Portals & Features](#portals--features)
    - [Public Marketing Experience](#1-public-marketing-experience)
    - [Client Financial Terminal](#2-client-financial-terminal)
    - [Affiliate, Partner & Influencer Portal](#3-affiliate-partner--influencer-portal)
@@ -38,6 +39,27 @@ OAL Network connects small businesses with:
 - **Affiliate / Partner / Influencer Portal**: Complete turnkey portal for brokers, CPAs, affiliates, and digital creators to monetize business traffic with custom links, QR codes, lead intake forms, referral tracking tables, automated ACH direct deposit payouts, and marketing media kits.
 
 Built with **React 19**, **Vite 8**, **TypeScript**, **Tailwind CSS v4**, **Framer Motion**, **TanStack Query v5**, and **Recharts**.
+
+---
+
+## Branding & Design Tokens
+
+### Logo Assets (`public/brand/`)
+* **`logo-full.png` / `logo-full.svg`**: USA Map + B4B + AMERICA. Used for Hero, Login side panels, Footers, and PDF Exports.
+* **`logo-wordmark.svg` / `logo-wordmark-dark.svg`**: B4B + AMERICA (no map). Used for Sticky Header Navbar & Expanded Portal Sidebar.
+* **`logo-icon.svg`**: B4B square badge. Used for Collapsed Sidebar, Favicon, Mobile Top Bar, and PWA icons.
+
+### Brand Color Tokens (`src/index.css`)
+* **Primary Blue**: `#0A3D9C` (`--brand-blue-600`) — Primary buttons, main titles, dark text on yellow.
+* **Dark Blue Surfaces**: `#072B6E` (`--brand-blue-800`), `#051E4D` (`--brand-blue-900`) — Header, sidebar, and dark mode surfaces.
+* **Light Blue Tints**: `#F0F4FC` (`--brand-blue-50`), `#E6EDFA` (`--brand-blue-100`) — Hover highlights, secondary badges.
+* **Accent Yellow**: `#FFC800` (`--brand-yellow-500`) — Key CTAs, active highlights, scoreboard rankings.
+* **Yellow Hover**: `#E6B400` (`--brand-yellow-600`) — Button hover & pressed states.
+
+### Clear Space & Typography Rules
+1. Maintain clear space around the logo equal to the height of the letter "B".
+2. Never stretch or distort the logo aspect ratio.
+3. Text on yellow background must **always be dark blue (`#0A3D9C`)**, never white, to guarantee WCAG AA contrast compliance.
 
 ---
 

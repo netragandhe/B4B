@@ -24,10 +24,10 @@ export const buttonVariants = cva(
           'bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold shadow-md shadow-amber-500/20 focus-visible:ring-amber-500 border border-transparent',
       },
       size: {
-        sm: 'h-8 px-3 text-xs gap-1.5 rounded-lg',
-        md: 'h-10 px-4 text-sm gap-2 rounded-xl',
-        lg: 'h-12 px-6 text-base gap-2.5 rounded-xl',
-        icon: 'h-10 w-10 p-0 rounded-xl',
+        sm: 'h-9 sm:h-8 px-3 text-xs gap-1.5 rounded-lg',
+        md: 'h-11 min-h-[44px] px-4 text-sm gap-2 rounded-xl',
+        lg: 'h-12 min-h-[48px] px-6 text-base gap-2.5 rounded-xl',
+        icon: 'h-11 w-11 min-h-[44px] min-w-[44px] p-0 rounded-xl',
       },
       pill: {
         true: 'rounded-full',

@@ -36,6 +36,8 @@ import { MENU_CONFIG, MenuItem } from '@/config/menus'
 import { LogoutConfirmModal } from '@/components/auth/LogoutConfirmModal'
 import { IdleTimeoutModal } from '@/components/auth/IdleTimeoutModal'
 
+const roleOptions: UserRole[] = ['Client', 'Admin', 'Biz Pro', 'Affiliate', 'Employer', 'Job Seeker']
+
 export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, logout, switchRole, setLogoutModalOpen } = useAuth()
   const { theme, toggleTheme } = useTheme()
@@ -79,6 +81,23 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
   ])
 
   const unreadCount = notifications.filter((n) => !n.read).length
+
+  // Auto-sync user role based on route URL so every page displays matching sidebar & mock data
+  useEffect(() => {
+    if (location.pathname.startsWith('/portal/admin') && user?.role !== 'Admin') {
+      switchRole('Admin')
+    } else if (location.pathname.startsWith('/portal/bizpro') && user?.role !== 'Biz Pro') {
+      switchRole('Biz Pro')
+    } else if (location.pathname.startsWith('/portal/client') && user?.role !== 'Client') {
+      switchRole('Client')
+    } else if (location.pathname.startsWith('/portal/affiliate') && user?.role !== 'Affiliate') {
+      switchRole('Affiliate')
+    } else if (location.pathname.startsWith('/portal/employer') && user?.role !== 'Employer') {
+      switchRole('Employer')
+    } else if (location.pathname.startsWith('/portal/seeker') && user?.role !== 'Job Seeker') {
+      switchRole('Job Seeker')
+    }
+  }, [location.pathname, user?.role, switchRole])
 
   // Quick keyboard shortcut for search (Ctrl+K)
   useEffect(() => {
@@ -125,7 +144,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
         {/* Brand Header */}
         <div className="p-4 sm:p-5 border-b border-slate-100 dark:border-[#1E3A5F]/70 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 truncate overflow-hidden">
-            <BrandLogo size={isCollapsed ? 'sm' : 'md'} showTagline={false} />
+            <BrandLogo variant={isCollapsed ? 'icon' : 'wordmark'} size={isCollapsed ? 'sm' : 'md'} showTagline={false} />
           </Link>
 
           <button
@@ -137,31 +156,24 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
           </button>
         </div>
 
-        {/* User Role Card snippet (Expanded view) */}
+        {/* User Role Card snippet (Compact & Sleek) */}
         {!isCollapsed && (
-          <div className="mx-4 my-3 p-3.5 rounded-2xl bg-gradient-to-br from-blue-50/90 to-indigo-50/60 dark:from-[#12294A] dark:to-[#0D1E36] border border-blue-100 dark:border-[#1E3A5F] relative">
-            <div className="flex items-center gap-3">
-              <Avatar src={user?.avatarUrl} name={user?.name || 'Marcus Vance'} size="md" status="online" />
+          <div className="mx-3 my-2 p-2.5 rounded-xl bg-slate-100/70 dark:bg-[#12294A]/70 border border-slate-200/80 dark:border-[#1E3A5F] flex items-center justify-between gap-2.5">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <Avatar src={user?.avatarUrl} name={user?.name || 'Marcus Vance'} size="sm" status="online" className="w-8 h-8 shrink-0" />
               <div className="min-w-0 flex-1">
-                <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
-                  {user?.company || 'Apex Freight LLC'}
+                <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate leading-tight">
+                  {user?.company || user?.name || 'Apex Freight LLC'}
                 </h4>
-                <div className="flex items-center gap-1.5 mt-0.5">
-                  <Badge variant="navy" size="sm" className="text-[10px] px-1.5 py-0">
+                <div className="flex items-center gap-1 mt-0.5">
+                  <Badge variant="navy" size="sm" className="text-[9px] px-1.5 py-0 font-bold">
                     {user?.role}
                   </Badge>
                   <span className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
-                    {user?.title}
+                    {user?.title || 'Account'}
                   </span>
                 </div>
               </div>
-            </div>
-
-            <div className="mt-3 pt-2.5 border-t border-blue-200/50 dark:border-[#1E3A5F] flex items-center justify-between text-[11px]">
-              <span className="text-slate-500 dark:text-slate-400">Credit Score</span>
-              <span className="font-bold text-amber-500 flex items-center gap-1">
-                {user?.creditScore || 785} <span className="text-[9px] text-emerald-500 font-normal">Tier 1</span>
-              </span>
             </div>
           </div>
         )}
@@ -222,28 +234,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
           })}
         </nav>
 
-        {/* eBOX Priority Callout Box in Sidebar (Expanded View) */}
-        {!isCollapsed && (
-          <div className="mx-3 my-2 p-3 rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-gradient-to-br from-emerald-50/70 to-teal-50/40 dark:from-emerald-950/30 dark:to-[#0D1E36]">
-            <div className="flex items-center justify-between text-xs mb-1">
-              <span className="font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-1.5">
-                <FolderArchive className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span>eBOX Vault</span>
-              </span>
-              <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded bg-emerald-500 text-white">
-                New
-              </span>
-            </div>
-            <p className="text-[11px] text-slate-600 dark:text-slate-400 mb-2">
-              Centralized secure repository for files & audits.
-            </p>
-            <Link to="/portal/ebox">
-              <Button size="sm" variant="accent" className="w-full text-xs h-7 justify-center">
-                Open eBOX Repository
-              </Button>
-            </Link>
-          </div>
-        )}
+
 
         {/* Sidebar Footer Controls */}
         <div className="p-3 border-t border-slate-100 dark:border-[#1E3A5F]/70 space-y-1">
@@ -415,41 +406,46 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                     <p className="text-[11px] text-slate-400 font-medium truncate mt-0.5">{user?.company}</p>
                   </div>
 
-                  {/* INSTANT DEMO ROLE SWITCHER IN MENU */}
-                  <div className="space-y-1.5">
-                    <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 flex items-center justify-between">
-                      <span>Switch Demo Role</span>
-                      <RefreshCw className="w-3 h-3 text-blue-500" />
-                    </p>
-                    <div className="grid grid-cols-2 gap-1 max-h-40 overflow-y-auto custom-scrollbar">
-                      {(roles.length > 0 ? roles : [
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'bizpro', name: 'Biz Pro' },
-                        { id: 'client', name: 'Client' },
-                        { id: 'affiliate', name: 'Affiliate' },
-                        { id: 'employer', name: 'Employer' },
-                        { id: 'jobseeker', name: 'Job Seeker' },
-                      ]).map((r) => (
-                        <button
-                          key={r.id}
-                          onClick={() => {
-                            switchRole(r.name as UserRole)
+                  {/* ACTIVE ROLE DISPLAY & CLEAN ROLE SWITCHER */}
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#12294A] border border-slate-200/80 dark:border-[#1E3A5F] space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                        Active Role
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black bg-blue-600 text-white shadow-xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        {user?.role}
+                      </span>
+                    </div>
+
+                    <div className="pt-2 border-t border-slate-200/60 dark:border-[#1E3A5F]/60 flex items-center justify-between gap-2">
+                      <label htmlFor="role-select" className="text-[11px] font-bold text-slate-600 dark:text-slate-300 shrink-0 flex items-center gap-1">
+                        <RefreshCw className="w-3 h-3 text-blue-500" />
+                        <span>Switch Role:</span>
+                      </label>
+                      <select
+                        id="role-select"
+                        value={user?.role || ''}
+                        onChange={(e) => {
+                          const newRole = e.target.value as UserRole
+                          if (newRole && newRole !== user?.role) {
+                            switchRole(newRole)
                             setProfileMenuOpen(false)
                             toast({
-                              title: `Switched to ${r.name}`,
-                              description: `Now previewing with ${r.name} role access`,
+                              title: `Switched to ${newRole}`,
+                              description: `Now previewing as ${DEMO_PROFILES[newRole]?.name || newRole}`,
                               type: 'info',
                             })
-                          }}
-                          className={`px-2 py-1.5 rounded-lg text-[11px] font-bold text-left transition-colors truncate ${
-                            user?.role === r.name
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-slate-50 dark:bg-[#12294A] text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#1E3A5F]'
-                          }`}
-                        >
-                          {r.name}
-                        </button>
-                      ))}
+                          }
+                        }}
+                        className="text-xs font-bold bg-white dark:bg-[#0D1E36] text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-[#1E3A5F] rounded-lg px-2 py-1 outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-xs"
+                      >
+                        {roleOptions.map((role) => (
+                          <option key={role} value={role}>
+                            {role} {role === user?.role ? '(Active)' : ''}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
 
@@ -480,7 +476,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
         </header>
 
         {/* PAGE CONTENT SLOT */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto pb-20 lg:pb-8">{children}</main>
+        <main className="flex-1 p-3 sm:p-6 lg:p-8 max-w-[1440px] w-full mx-auto pb-24 lg:pb-8">{children}</main>
       </div>
 
       {/* ========================================================================= */}

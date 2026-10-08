@@ -7,17 +7,44 @@ export interface BrandConfig {
   phone: string
   headquarters: string
   portalName: string
+  colors: {
+    primary: string
+    primaryDark: string
+    accent: string
+    accentDark: string
+  }
+  logos: {
+    full: string
+    fullSvg: string
+    wordmark: string
+    icon: string
+    darkWordmark: string
+  }
 }
 
 export const brandConfig: BrandConfig = {
-  brandName: "OAL Network",
-  shortName: "OAL",
-  tagline: "The Connection for Small Business Solutions",
-  description: "Bridging ambitious small businesses with institutional capital, revenue-based funding, strategic advisory, and automated financial growth intelligence.",
-  contactEmail: "advisory@oalnetwork.com",
-  phone: "+1 (888) 540-OALN",
-  headquarters: "Financial District, New York, NY",
-  portalName: "OAL Client Terminal",
+  brandName: 'B4B America',
+  shortName: 'B4B',
+  tagline: 'The Connection for Small Business Solutions',
+  description:
+    'Bridging ambitious small businesses with institutional capital, revenue-based funding, strategic advisory, B2B sales networks, and corporate talent.',
+  contactEmail: 'advisory@b4bamerica.com',
+  phone: '+1 (888) 540-B4BA',
+  headquarters: 'Financial District, New York, NY',
+  portalName: 'B4B America Portal',
+  colors: {
+    primary: '#0A3D9C',
+    primaryDark: '#072B6E',
+    accent: '#FFC800',
+    accentDark: '#E6B400',
+  },
+  logos: {
+    full: '/brand/logo-full.png',
+    fullSvg: '/brand/logo-full.svg',
+    wordmark: '/brand/logo-wordmark.svg',
+    icon: '/brand/logo-icon.svg',
+    darkWordmark: '/brand/logo-wordmark-dark.svg',
+  },
 }
 
 export { BrandLogo } from './BrandLogo'

@@ -23,9 +23,15 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({
   minBizProRank,
   module,
 }) => {
-  const { user } = useAuth()
-  const { can, activeRoleId } = usePermission()
+  const { user, switchRole } = useAuth()
+  const { can } = usePermission()
   const location = useLocation()
+
+  React.useEffect(() => {
+    if (user && allowedRoles && allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
+      switchRole(allowedRoles[0])
+    }
+  }, [user, allowedRoles, switchRole])
 
   if (!user) {
     return null

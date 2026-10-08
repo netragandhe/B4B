@@ -22,6 +22,18 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
   const navigate = useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+  // Lock body scroll when mobile menu is open
+  React.useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileMenuOpen])
+
   const navLinks: Array<{ name: string; href: string; badge?: string }> = [
     { name: 'Solutions', href: '/solutions' },
     { name: 'Advisory & CFO', href: '/advisory' },
@@ -31,10 +43,10 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
   const isActive = (path: string) => location.pathname === path
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-[#0A1628] text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-[#0A1628] text-slate-900 dark:text-slate-100 transition-colors duration-200 overflow-x-hidden">
       {/* Top Advisory Banner */}
       <div className="bg-gradient-to-r from-[#0A1628] via-[#12294A] to-blue-900 text-white text-xs py-2 px-4 border-b border-blue-950/40">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="max-w-[1440px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 truncate">
             <span className="bg-emerald-500/20 text-emerald-400 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">
               Q4 Allocation
@@ -58,7 +70,7 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           {/* Brand Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <BrandLogo size="md" showTagline={false} />
+            <BrandLogo variant="wordmark" size="md" showTagline={false} />
           </Link>
 
           {/* Desktop Navigation Links */}
@@ -199,7 +211,7 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
           <div className="grid grid-cols-1 md:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
             {/* Col 1: Brand Info */}
             <div className="md:col-span-2 space-y-4">
-              <BrandLogo size="lg" className="text-white" />
+              <BrandLogo variant="full" size="lg" showTagline />
               <p className="text-slate-400 text-sm max-w-sm leading-relaxed">
                 {brandConfig.description}
               </p>

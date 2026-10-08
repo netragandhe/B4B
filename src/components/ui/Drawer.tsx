@@ -60,14 +60,14 @@ export const Drawer: React.FC<DrawerProps> = ({
       <div
         className={cn(
           'fixed inset-y-0 flex max-w-full',
-          position === 'right' ? 'right-0 pl-10' : 'left-0 pr-10'
+          position === 'right' ? 'right-0 pl-0 sm:pl-10' : 'left-0 pr-0 sm:pr-10'
         )}
       >
         <div
           role="dialog"
           aria-modal="true"
           className={cn(
-            'w-screen bg-white dark:bg-[#0D1E36] border-l border-slate-200 dark:border-[#1E3A5F] shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out',
+            'w-screen max-w-full bg-white dark:bg-[#0D1E36] border-l border-slate-200 dark:border-[#1E3A5F] shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out',
             sizeClasses[size],
             className
           )}

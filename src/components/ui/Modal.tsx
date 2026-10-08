@@ -50,7 +50,7 @@ export const Modal: React.FC<ModalProps> = ({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity animate-fadeIn"
@@ -58,12 +58,12 @@ export const Modal: React.FC<ModalProps> = ({
         aria-hidden="true"
       />
 
-      {/* Modal Dialog */}
+      {/* Modal Dialog / Mobile Bottom Sheet */}
       <div
         role="dialog"
         aria-modal="true"
         className={cn(
-          'relative w-full rounded-2xl bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] shadow-2xl z-10 overflow-hidden animate-scaleUp',
+          'relative w-full rounded-t-3xl sm:rounded-2xl bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] shadow-2xl z-10 overflow-hidden animate-scaleUp max-h-[90vh] sm:max-h-[85vh]',
           maxWidthMap[maxWidth],
           className
         )}

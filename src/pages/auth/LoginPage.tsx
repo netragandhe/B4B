@@ -10,6 +10,8 @@ import {
   Lock,
   Mail,
   ArrowRight,
+  ArrowLeft,
+  Globe,
   Sparkles,
   Shield,
   CheckCircle2,
@@ -211,60 +213,125 @@ export const LoginPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-slate-900 text-white">
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-slate-50 text-slate-900">
       <SEOHead title="Portal Sign In | B4B Executive Platform" description="Sign in to your B4B client, Biz Pro, or corporate portal account." />
 
-      {/* LEFT SIDE PANEL: BRANDED GRADIENT & TESTIMONIAL */}
-      <div className="hidden lg:flex flex-col justify-between p-12 relative overflow-hidden bg-gradient-to-br from-blue-900 via-slate-900 to-emerald-950 border-r border-slate-800">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+      {/* LEFT SIDE PANEL: BRANDED GRADIENT & EXECUTIVE SHOWCASE */}
+      <div className="hidden lg:flex flex-col justify-between p-12 relative overflow-hidden bg-gradient-to-br from-[#051E4D] via-[#072B6E] to-[#0A3D9C] border-r border-slate-200 text-white">
+        {/* Ambient Glow Orbs */}
+        <div className="absolute top-[-50px] left-[-50px] w-96 h-96 bg-amber-400/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-[-50px] right-[-50px] w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
 
-        <div className="relative z-10">
-          <Link to="/">
-            <BrandLogo size="lg" />
+        {/* PROMINENT HIGH-VISIBILITY LOGO HEADER */}
+        <div className="relative z-10 flex items-center gap-4">
+          <Link to="/" className="inline-block group">
+            <div className="p-3 bg-white rounded-2xl shadow-2xl border border-amber-400/30 group-hover:scale-105 transition-transform duration-300">
+              <img
+                src="/brand/logo-full.png"
+                alt="B4B America Logo"
+                className="h-14 sm:h-16 w-auto object-contain"
+              />
+            </div>
           </Link>
-        </div>
-
-        <div className="relative z-10 max-w-lg space-y-6">
-          <Badge variant="emerald" size="md">
-            Verified Corporate Portal
-          </Badge>
-
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-heading tracking-tight leading-tight">
-            Empowering Main Street Businesses Across America
-          </h2>
-
-          <p className="text-sm text-slate-300 leading-relaxed">
-            "B4B Network transformed our capital stack. We secured $850k in working capital debt facilities within 10 days."
-          </p>
-
-          <div className="pt-2 flex items-center gap-3">
-            <img
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
-              alt="Marcus Vance"
-              className="w-11 h-11 rounded-full object-cover border-2 border-emerald-400"
-            />
-            <div>
-              <div className="text-xs font-bold text-white">Marcus Vance</div>
-              <div className="text-[11px] text-slate-400">CEO, Apex Freight & Logistics LLC</div>
+          <div>
+            <div className="text-xs font-black uppercase tracking-widest text-[#FFC800]">
+              Capital & Advisory Network
+            </div>
+            <div className="text-sm font-extrabold text-white">
+              B4B America Executive Portal
             </div>
           </div>
         </div>
 
-        <div className="relative z-10 text-xs text-slate-500">
-          © {new Date().getFullYear()} B4B Capital Network Inc. Encrypted 256-bit TLS Session.
+        {/* CENTER EXECUTIVE FEATURE & TESTIMONIAL CARDS */}
+        <div className="relative z-10 max-w-lg space-y-6">
+          <div className="flex items-center gap-2">
+            <Badge variant="gold" size="md" className="shadow-md">
+              Verified Executive Gateway
+            </Badge>
+            <Badge variant="emerald" size="sm" dot>
+              System Online
+            </Badge>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl font-black font-heading tracking-tight leading-tight text-white drop-shadow-sm">
+            Empowering Main Street Businesses Across America
+          </h2>
+
+          <p className="text-sm text-slate-200 leading-relaxed font-medium">
+            Institutional capital, revenue-based financing, 13-week CFO treasury modeling, and B2B executive sales networks.
+          </p>
+
+          {/* Floating Glass Testimonial Card */}
+          <div className="p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 space-y-3 shadow-xl">
+            <div className="flex items-center gap-1 text-amber-400">
+              {[...Array(5)].map((_, i) => (
+                <Sparkles key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+              ))}
+              <span className="text-xs font-bold text-white ml-2">5.0 Executive Verified</span>
+            </div>
+
+            <p className="text-xs text-slate-100 italic leading-relaxed">
+              "B4B Network transformed our capital stack. We secured $850k in working capital debt facilities within 10 days."
+            </p>
+
+            <div className="pt-2 flex items-center gap-3 border-t border-white/15">
+              <img
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+                alt="Marcus Vance"
+                className="w-10 h-10 rounded-full object-cover border-2 border-[#FFC800] shadow-md"
+              />
+              <div>
+                <div className="text-xs font-extrabold text-white">Marcus Vance</div>
+                <div className="text-[11px] text-slate-300">CEO, Apex Freight & Logistics LLC</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Metrics Strip */}
+          <div className="grid grid-cols-2 gap-3 pt-2">
+            <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-xs">
+              <div className="text-[10px] text-slate-400 uppercase font-bold">Network Volume</div>
+              <div className="text-base font-black text-emerald-400 mt-0.5">$14.8M+ Funded</div>
+            </div>
+            <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-xs">
+              <div className="text-[10px] text-slate-400 uppercase font-bold">Active Sales Reps</div>
+              <div className="text-base font-black text-amber-400 mt-0.5">148 Biz Pros</div>
+            </div>
+          </div>
+        </div>
+
+        {/* FOOTER DISCLOSURE */}
+        <div className="relative z-10 flex items-center justify-between text-xs text-slate-300 border-t border-white/10 pt-4">
+          <div className="flex items-center gap-2">
+            <Shield className="w-4 h-4 text-emerald-400" />
+            <span>256-bit TLS Encrypted & SOC2 Compliant</span>
+          </div>
+          <span>© {new Date().getFullYear()} B4B America</span>
         </div>
       </div>
 
-      {/* RIGHT SIDE PANEL: AUTH FORM & QUICK DEMO LOGIN */}
-      <div className="flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-12 space-y-8 bg-slate-900">
+      {/* RIGHT SIDE PANEL: AUTH FORM & QUICK DEMO LOGIN (LIGHT CLEAN BACKGROUND) */}
+      <div className="flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-12 space-y-8 bg-white text-slate-900">
         <div className="w-full max-w-md mx-auto space-y-6 text-left">
 
-          {/* Top Logo for mobile */}
-          <div className="lg:hidden pb-4">
-            <Link to="/">
-              <BrandLogo size="md" />
+          {/* Top Header Row with Back to Website Button & Mobile Logo */}
+          <div className="flex items-center justify-between gap-4 pb-2">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 text-xs font-extrabold transition-all border border-slate-200 shadow-xs group"
+            >
+              <ArrowLeft className="w-4 h-4 text-slate-500 group-hover:-translate-x-0.5 transition-transform" />
+              <span>Back to Website</span>
             </Link>
+
+            {/* Mobile Logo */}
+            <div className="lg:hidden">
+              <Link to="/">
+                <img src="/brand/logo-full.png" alt="B4B America" className="h-9 w-auto object-contain" />
+              </Link>
+            </div>
           </div>
 
           {/* STEP: LOGIN */}
@@ -276,19 +343,19 @@ export const LoginPage: React.FC = () => {
               className={`space-y-6 ${isShakeError ? 'animate-shake' : ''}`}
             >
               <div>
-                <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-white tracking-tight">
+                <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 tracking-tight">
                   Sign in to Portal
                 </h1>
-                <p className="text-xs sm:text-sm text-slate-400 mt-1">
+                <p className="text-xs sm:text-sm text-slate-500 mt-1">
                   Enter your corporate credentials or click a quick demo role below.
                 </p>
               </div>
 
               {/* DEMO QUICK LOGIN BUTTONS ROW */}
-              <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/80 space-y-3">
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-slate-300 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Demo Quick Role Login:
+                  <span className="font-bold text-slate-700 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Demo Quick Role Login:
                   </span>
                   <span className="text-[10px] text-slate-400">1-Click Preview</span>
                 </div>
@@ -299,7 +366,7 @@ export const LoginPage: React.FC = () => {
                       key={r}
                       type="button"
                       onClick={() => handleDemoQuickLogin(r)}
-                      className="py-2 px-1.5 rounded-xl bg-slate-900 hover:bg-blue-600/30 border border-slate-700 hover:border-blue-400 text-[11px] font-bold text-slate-200 hover:text-white transition-all text-center truncate"
+                      className="py-2 px-1.5 rounded-xl bg-white hover:bg-blue-50 border border-slate-200 text-[11px] font-bold text-slate-800 hover:text-[#0A3D9C] transition-all text-center truncate shadow-xs"
                     >
                       {r}
                     </button>
@@ -309,8 +376,8 @@ export const LoginPage: React.FC = () => {
 
               {/* Error Alert Box */}
               {formError && (
-                <div className="p-3.5 rounded-xl bg-rose-950/60 border border-rose-800 text-xs text-rose-300 flex items-center gap-2.5">
-                  <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700 flex items-center gap-2.5">
+                  <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
                   <span>{formError}</span>
                 </div>
               )}
@@ -323,7 +390,7 @@ export const LoginPage: React.FC = () => {
                     <Input
                       type="email"
                       placeholder="name@company.com"
-                      className="pl-9 text-xs"
+                      className="pl-9 text-xs border-slate-300 focus:border-[#0A3D9C]"
                       {...register('email')}
                     />
                   </div>
@@ -335,13 +402,13 @@ export const LoginPage: React.FC = () => {
                     <Input
                       type={showPassword ? 'text' : 'password'}
                       placeholder="••••••••"
-                      className="pl-9 pr-10 text-xs"
+                      className="pl-9 pr-10 text-xs border-slate-300 focus:border-[#0A3D9C]"
                       {...register('password')}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-3 text-slate-400 hover:text-white"
+                      className="absolute right-3 top-3 text-slate-400 hover:text-slate-600"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -349,35 +416,35 @@ export const LoginPage: React.FC = () => {
                 </FormField>
 
                 <div className="flex items-center justify-between text-xs pt-1">
-                  <label className="flex items-center gap-2 text-slate-400 cursor-pointer">
+                  <label className="flex items-center gap-2 text-slate-600 cursor-pointer font-medium">
                     <input
                       type="checkbox"
                       {...register('rememberMe')}
-                      className="w-4 h-4 accent-blue-600 rounded"
+                      className="w-4 h-4 accent-[#0A3D9C] rounded"
                     />
                     <span>Remember me</span>
                   </label>
 
-                  <Link to="/portal/forgot-password" className="text-blue-400 hover:underline font-semibold">
+                  <Link to="/portal/forgot-password" className="text-[#0A3D9C] hover:underline font-bold">
                     Forgot password?
                   </Link>
                 </div>
 
                 <Button
                   type="submit"
-                  variant="accent"
+                  variant="primary"
                   size="md"
                   pill
                   isLoading={isSubmitting}
-                  className="w-full font-bold bg-gradient-to-r from-blue-600 to-emerald-500 hover:from-blue-500 hover:to-emerald-400 text-white shadow-lg mt-2"
+                  className="w-full font-bold bg-[#0A3D9C] hover:bg-[#072B6E] text-white shadow-lg mt-2"
                 >
                   Sign In to Dashboard <ArrowRight className="w-4 h-4 ml-1.5" />
                 </Button>
               </form>
 
-              <div className="text-center text-xs text-slate-400 pt-4 border-t border-slate-800">
+              <div className="text-center text-xs text-slate-500 pt-4 border-t border-slate-100">
                 Don't have an account yet?{' '}
-                <Link to="/portal/signup" className="text-emerald-400 font-bold hover:underline">
+                <Link to="/portal/signup" className="text-[#0A3D9C] font-bold hover:underline">
                   Create New Account
                 </Link>
               </div>
@@ -392,7 +459,7 @@ export const LoginPage: React.FC = () => {
               onSubmit={handleOtpSubmit}
               className="space-y-6"
             >
-              <div className="p-3 rounded-full bg-blue-500/20 text-blue-400 w-fit">
+              <div className="p-3 rounded-full bg-blue-50 text-blue-600 w-fit">
                 <KeyRound className="w-6 h-6" />
               </div>
 
@@ -400,14 +467,14 @@ export const LoginPage: React.FC = () => {
                 <Badge variant="emerald" size="sm" className="mb-2">
                   2-Factor Authentication
                 </Badge>
-                <h2 className="text-2xl font-bold text-white font-heading">Enter Verification Code</h2>
-                <p className="text-xs text-slate-400 mt-1">
-                  We sent a 6-digit code to <strong className="text-white">{pendingEmail}</strong>. (Demo Code: <span className="font-mono text-emerald-400 font-bold">123456</span>)
+                <h2 className="text-2xl font-bold text-slate-900 font-heading">Enter Verification Code</h2>
+                <p className="text-xs text-slate-500 mt-1">
+                  We sent a 6-digit code to <strong className="text-slate-900">{pendingEmail}</strong>. (Demo Code: <span className="font-mono text-emerald-600 font-bold">123456</span>)
                 </p>
               </div>
 
               {formError && (
-                <div className="p-3 rounded-xl bg-rose-950/60 border border-rose-800 text-xs text-rose-300">
+                <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700">
                   {formError}
                 </div>
               )}
@@ -423,12 +490,12 @@ export const LoginPage: React.FC = () => {
                     value={digit}
                     onChange={(e) => handleOtpChange(idx, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(idx, e)}
-                    className="w-12 h-14 rounded-xl bg-slate-800 border border-slate-700 focus:border-emerald-400 text-center font-mono font-bold text-xl text-white focus:outline-none"
+                    className="w-12 h-14 rounded-xl bg-slate-50 border border-slate-300 focus:border-[#0A3D9C] text-center font-mono font-bold text-xl text-slate-900 focus:outline-none"
                   />
                 ))}
               </div>
 
-              <div className="flex items-center justify-between text-xs text-slate-400">
+              <div className="flex items-center justify-between text-xs text-slate-500">
                 <button
                   type="button"
                   disabled={isResendDisabled}
@@ -438,7 +505,7 @@ export const LoginPage: React.FC = () => {
                     toast({ title: 'Verification Code Resent', description: 'Demo code: 123456', type: 'info' })
                   }}
                   className={`flex items-center gap-1 font-semibold ${
-                    isResendDisabled ? 'text-slate-600 cursor-not-allowed' : 'text-blue-400 hover:underline'
+                    isResendDisabled ? 'text-slate-400 cursor-not-allowed' : 'text-[#0A3D9C] hover:underline'
                   }`}
                 >
                   <RefreshCw className="w-3.5 h-3.5" /> Resend Code {resendTimer > 0 ? `(${resendTimer}s)` : ''}
@@ -447,7 +514,7 @@ export const LoginPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setStep('login')}
-                  className="text-slate-400 hover:text-white"
+                  className="text-slate-500 hover:text-slate-800"
                 >
                   Cancel
                 </button>
@@ -458,7 +525,7 @@ export const LoginPage: React.FC = () => {
                 variant="accent"
                 size="md"
                 pill
-                className="w-full font-bold bg-emerald-600 hover:bg-emerald-500 text-white"
+                className="w-full font-bold bg-emerald-600 hover:bg-emerald-700 text-white"
               >
                 Verify & Continue
               </Button>
@@ -472,7 +539,7 @@ export const LoginPage: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-6 text-center"
             >
-              <div className="p-4 rounded-full bg-amber-500/20 text-amber-400 w-fit mx-auto">
+              <div className="p-4 rounded-full bg-amber-50 text-amber-600 w-fit mx-auto">
                 <Shield className="w-10 h-10" />
               </div>
 
@@ -480,8 +547,8 @@ export const LoginPage: React.FC = () => {
                 <Badge variant="amber" size="md">
                   Application Pending Approval
                 </Badge>
-                <h2 className="text-2xl font-bold text-white font-heading">Account Under Executive Review</h2>
-                <p className="text-xs text-slate-300 leading-relaxed max-w-sm mx-auto">
+                <h2 className="text-2xl font-bold text-slate-900 font-heading">Account Under Executive Review</h2>
+                <p className="text-xs text-slate-600 leading-relaxed max-w-sm mx-auto">
                   Thank you for applying. Your corporate membership application is currently being evaluated by our underwriting risk compliance team.
                 </p>
               </div>

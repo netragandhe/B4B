@@ -73,6 +73,39 @@ export const CLIENT_ACTIVE_ORDERS: ClientServiceOrder[] = [
     estimatedCompletion: '2026-11-15',
     assignedAdvisor: 'David Ross (District Leader)',
   },
+  {
+    id: 'ord_104',
+    serviceName: 'Equipment Lease & Fleet Expansion Line',
+    category: 'Capital',
+    amount: 350000,
+    progress: 90,
+    status: 'Active',
+    requestedDate: '2026-07-10',
+    estimatedCompletion: '2026-10-20',
+    assignedAdvisor: 'Marcus Vance (Senior Advisor)',
+  },
+  {
+    id: 'ord_105',
+    serviceName: 'Tax & Cash Conversion Optimization Audit',
+    category: 'Operations',
+    amount: 25000,
+    progress: 100,
+    status: 'Completed',
+    requestedDate: '2026-06-01',
+    estimatedCompletion: '2026-07-15',
+    assignedAdvisor: 'Sarah Jenkins (Compliance Advisor)',
+  },
+  {
+    id: 'ord_106',
+    serviceName: 'eBOX Enterprise Vault Setup',
+    category: 'Operations',
+    amount: 24000,
+    progress: 100,
+    status: 'Completed',
+    requestedDate: '2026-05-12',
+    estimatedCompletion: '2026-05-30',
+    assignedAdvisor: 'David Ross (District Leader)',
+  },
 ]
 
 export const CLIENT_FUNDING_APP: ClientFundingApplication = {
@@ -118,6 +151,24 @@ export const CLIENT_INVOICES: ClientInvoice[] = [
     issuedDate: '2026-08-15',
     status: 'Paid',
   },
+  {
+    id: 'inv_304',
+    invoiceNumber: 'INV-2026-0038',
+    serviceName: 'Equipment Lease Processing & Origination Fee',
+    amount: 3500,
+    dueDate: '2026-07-30',
+    issuedDate: '2026-07-15',
+    status: 'Paid',
+  },
+  {
+    id: 'inv_305',
+    invoiceNumber: 'INV-2026-0012',
+    serviceName: 'Tax Conversion Audit Deposit',
+    amount: 5000,
+    dueDate: '2026-06-15',
+    issuedDate: '2026-06-01',
+    status: 'Paid',
+  },
 ]
 
 export const CLIENT_COACH_MESSAGES: ClientCoachMessage[] = [
@@ -144,6 +195,22 @@ export const CLIENT_COACH_MESSAGES: ClientCoachMessage[] = [
     avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80',
     text: 'Got them! The underwriters marked your tax returns as Verified. Speak tomorrow at 2:00 PM EST.',
     timestamp: 'Today 9:10 AM',
+  },
+  {
+    id: 'msg_4',
+    sender: 'Client',
+    senderName: 'Apex Freight Team',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+    text: 'Great! Also, could you check the status of our equipment lease draw for the 2 new freight trucks?',
+    timestamp: 'Today 10:45 AM',
+  },
+  {
+    id: 'msg_5',
+    sender: 'Coach',
+    senderName: 'Marcus Vance',
+    avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80',
+    text: 'The $350k lease draw has reached 90% completion. Funds will hit your account by Thursday morning.',
+    timestamp: 'Today 11:20 AM',
   },
 ]
 
