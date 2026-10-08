@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from '@/hooks/useTheme'
 import { AuthProvider } from '@/hooks/useAuth'
 import { ToastProvider } from '@/components/ui/Toast'
+import { RoleGuard } from '@/components/auth/RoleGuard'
 
 // Layouts
 import { MarketingLayout } from '@/layouts/MarketingLayout'
@@ -15,7 +16,15 @@ import { SolutionsPage } from '@/pages/marketing/SolutionsPage'
 import { AdvisoryPage } from '@/pages/marketing/AdvisoryPage'
 import { ApplyPage } from '@/pages/marketing/ApplyPage'
 
+// Auth Pages
+import { LoginPage } from '@/pages/auth/LoginPage'
+import { SignupPage } from '@/pages/auth/SignupPage'
+import { ForgotPasswordPage } from '@/pages/auth/ForgotPasswordPage'
+import { ResetPasswordPage } from '@/pages/auth/ResetPasswordPage'
+import { OtpVerificationPage } from '@/pages/auth/OtpVerificationPage'
+
 // Portal Pages
+import { EboxPage } from '@/pages/portal/EboxPage'
 import { PortalDashboardPage } from '@/pages/portal/PortalDashboardPage'
 import { CapitalFacilitiesPage } from '@/pages/portal/CapitalFacilitiesPage'
 import { AdvisoryConsultingPage } from '@/pages/portal/AdvisoryConsultingPage'
@@ -42,7 +51,9 @@ export default function App() {
           <ToastProvider>
             <BrowserRouter>
               <Routes>
-                {/* 1. Public Marketing Website */}
+                {/* ------------------------------------------------------------------ */}
+                {/* 1. Public Marketing Website Routes */}
+                {/* ------------------------------------------------------------------ */}
                 <Route
                   path="/"
                   element={
@@ -76,51 +87,94 @@ export default function App() {
                   }
                 />
 
-                {/* 2. Hidden Design System Showcase */}
+                {/* Hidden Design System Showcase */}
                 <Route path="/design-system" element={<DesignSystemPage />} />
 
-                {/* 3. Logged-in Client Portal */}
+                {/* ------------------------------------------------------------------ */}
+                {/* 2. Authentication Routes (Under /portal/...) */}
+                {/* ------------------------------------------------------------------ */}
+                <Route path="/portal/login" element={<LoginPage />} />
+                <Route path="/portal/signup" element={<SignupPage />} />
+                <Route path="/portal/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/portal/reset-password" element={<ResetPasswordPage />} />
+                <Route path="/portal/otp-verification" element={<OtpVerificationPage />} />
+
+                {/* ------------------------------------------------------------------ */}
+                {/* 3. Logged-in Portal Routes */}
+                {/* ------------------------------------------------------------------ */}
                 <Route
                   path="/portal"
                   element={<Navigate to="/portal/dashboard" replace />}
                 />
+
+                {/* TOP PRIORITY: eBOX Page */}
+                <Route
+                  path="/portal/ebox"
+                  element={
+                    <PortalLayout>
+                      <RoleGuard allowedRoles={['Client', 'Admin', 'Biz Pro', 'Affiliate', 'Employer', 'Job Seeker']}>
+                        <EboxPage />
+                      </RoleGuard>
+                    </PortalLayout>
+                  }
+                />
+
+                {/* Portal Dashboard */}
                 <Route
                   path="/portal/dashboard"
                   element={
                     <PortalLayout>
-                      <PortalDashboardPage />
+                      <RoleGuard allowedRoles={['Client', 'Admin', 'Biz Pro', 'Affiliate', 'Employer', 'Job Seeker']}>
+                        <PortalDashboardPage />
+                      </RoleGuard>
                     </PortalLayout>
                   }
                 />
+
+                {/* Capital Facilities */}
                 <Route
                   path="/portal/capital"
                   element={
                     <PortalLayout>
-                      <CapitalFacilitiesPage />
+                      <RoleGuard allowedRoles={['Client', 'Admin', 'Biz Pro', 'Employer', 'Affiliate', 'Job Seeker']}>
+                        <CapitalFacilitiesPage />
+                      </RoleGuard>
                     </PortalLayout>
                   }
                 />
+
+                {/* Advisory & CFO Consulting */}
                 <Route
                   path="/portal/advisory"
                   element={
                     <PortalLayout>
-                      <AdvisoryConsultingPage />
+                      <RoleGuard allowedRoles={['Client', 'Admin', 'Biz Pro', 'Employer', 'Affiliate', 'Job Seeker']}>
+                        <AdvisoryConsultingPage />
+                      </RoleGuard>
                     </PortalLayout>
                   }
                 />
+
+                {/* Documents & Filings */}
                 <Route
                   path="/portal/documents"
                   element={
                     <PortalLayout>
-                      <DocumentsPage />
+                      <RoleGuard allowedRoles={['Client', 'Admin', 'Biz Pro', 'Employer', 'Affiliate', 'Job Seeker']}>
+                        <DocumentsPage />
+                      </RoleGuard>
                     </PortalLayout>
                   }
                 />
+
+                {/* Settings */}
                 <Route
                   path="/portal/settings"
                   element={
                     <PortalLayout>
-                      <SettingsPage />
+                      <RoleGuard allowedRoles={['Client', 'Admin', 'Biz Pro', 'Employer', 'Affiliate', 'Job Seeker']}>
+                        <SettingsPage />
+                      </RoleGuard>
                     </PortalLayout>
                   }
                 />

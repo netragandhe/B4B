@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   Menu,
   X,
@@ -9,17 +9,17 @@ import {
   Shield,
   Layers,
   ChevronRight,
+  UserCheck,
 } from 'lucide-react'
 import { BrandLogo, brandConfig } from '@/config/brand'
 import { Button } from '@/components/ui/Button'
 import { useTheme } from '@/hooks/useTheme'
-import { LoginModal } from '@/components/auth/LoginModal'
 
 export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { theme, toggleTheme } = useTheme()
   const location = useLocation()
+  const navigate = useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [loginModalOpen, setLoginModalOpen] = useState(false)
 
   const navLinks = [
     { name: 'Solutions', href: '/solutions' },
@@ -83,7 +83,7 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
             ))}
           </nav>
 
-          {/* Right Controls: Theme Toggle + Log In + Main CTA */}
+          {/* Right Controls: Theme Toggle + Log In (leads to /portal/login) + Main CTA */}
           <div className="hidden md:flex items-center gap-3">
             {/* Theme Toggle Button */}
             <button
@@ -94,12 +94,12 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
               {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
             </button>
 
-            {/* Log In Button (Opens Portal or Login Modal) */}
+            {/* WEBSITE LOG IN BUTTON -> Navigates to /portal/login */}
             <Button
               variant="outline"
               size="md"
-              onClick={() => setLoginModalOpen(true)}
-              className="font-semibold"
+              onClick={() => navigate('/portal/login')}
+              className="font-semibold border-slate-300 dark:border-[#1E3A5F]"
             >
               Log In
             </Button>
@@ -110,9 +110,7 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
               size="md"
               pill
               rightIcon={<ArrowRight className="w-4 h-4" />}
-              onClick={() => {
-                window.location.href = '/apply'
-              }}
+              onClick={() => navigate('/apply')}
             >
               Apply for Capital
             </Button>
@@ -160,7 +158,7 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
                 className="w-full justify-center"
                 onClick={() => {
                   setMobileMenuOpen(false)
-                  setLoginModalOpen(true)
+                  navigate('/portal/login')
                 }}
               >
                 Log In to Portal
@@ -171,7 +169,7 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
                 className="w-full justify-center"
                 onClick={() => {
                   setMobileMenuOpen(false)
-                  window.location.href = '/apply'
+                  navigate('/apply')
                 }}
               >
                 Apply for Capital
@@ -223,7 +221,7 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
                 <li><Link to="/advisory" className="hover:text-white transition-colors">Fractional CFO Services</Link></li>
                 <li><Link to="/advisory" className="hover:text-white transition-colors">Cash Conversion Audit</Link></li>
                 <li><Link to="/advisory" className="hover:text-white transition-colors">M&A & Expansion Strategy</Link></li>
-                <li><button onClick={() => setLoginModalOpen(true)} className="hover:text-white transition-colors text-left">Client Terminal Login</button></li>
+                <li><Link to="/portal/login" className="hover:text-white transition-colors">Client Terminal Login</Link></li>
                 <li><Link to="/design-system" className="hover:text-amber-400 transition-colors">Design System Showcase</Link></li>
               </ul>
             </div>
@@ -261,9 +259,6 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
           </div>
         </div>
       </footer>
-
-      {/* Global Login Modal triggered by "Log In" */}
-      <LoginModal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
     </div>
   )
 }
