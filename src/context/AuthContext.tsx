@@ -1,3 +1,7 @@
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { User, UserRole, MOCK_USERS } from '@/mock-data/users'
+import { authService, LoginResponse, SignupData } from '@/lib/auth/authService'
+
 export const RANK_TITLES: Record<number, string> = {
   1: 'Associate Advisor',
   2: 'Senior Advisor',
