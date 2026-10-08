@@ -19,11 +19,11 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   onClick,
 }) => {
   const heightMap = {
-    sm: 'h-8 sm:h-9',
-    md: 'h-11 sm:h-12',
-    lg: 'h-13 sm:h-14',
-    xl: 'h-16 sm:h-18',
-    hero: 'h-20 sm:h-24',
+    sm: 'h-8',
+    md: 'h-11',
+    lg: 'h-13',
+    xl: 'h-16',
+    hero: 'h-20',
   }
 
   const heightClass = heightMap[size] || heightMap.md

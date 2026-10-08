@@ -225,10 +225,8 @@ export const LoginPage: React.FC = () => {
 
         {/* PROMINENT UNIFORM LOGO HEADER */}
         <div className="relative z-10 flex items-center gap-4">
-          <Link to="/" className="inline-block group">
-            <div className="p-2 bg-white/95 rounded-xl shadow-lg border border-white/20 group-hover:scale-105 transition-transform duration-300">
-              <BrandLogo size="md" />
-            </div>
+          <Link to="/" className="inline-block group hover:scale-105 transition-transform duration-300">
+            <BrandLogo size="md" />
           </Link>
           <div>
             <div className="text-xs font-black uppercase tracking-widest text-[#FFC800]">
