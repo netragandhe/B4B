@@ -48,6 +48,7 @@ export const EmployerApplicantsPage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [candidateNotes, setCandidateNotes] = useState<Record<string, string>>({})
+  const [mobileStageTab, setMobileStageTab] = useState<CandidateStage | 'All'>('All')
 
   const moveStage = (id: string, newStage: CandidateStage) => {
     setApplicants((prev) =>
@@ -86,22 +87,39 @@ export const EmployerApplicantsPage: React.FC = () => {
           </Badge>
         }
         actions={
-          <div className="relative w-64">
-            <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
+          <div className="relative w-full sm:w-64">
+            <Search className="w-3.5 h-3.5 absolute left-3 top-3 text-slate-400" />
             <input
               type="text"
               placeholder="Search candidates by name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full pl-8 pr-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500 min-h-[44px] sm:min-h-[36px]"
             />
           </div>
         }
       />
 
+      {/* MOBILE STAGE TAB PILLS (UNDER MD) */}
+      <div className="md:hidden flex items-center gap-1.5 overflow-x-auto pb-2 custom-scrollbar">
+        {(['All', ...KANBAN_STAGES] as const).map((st) => (
+          <button
+            key={st}
+            onClick={() => setMobileStageTab(st)}
+            className={`px-3 py-2 text-xs font-bold rounded-xl whitespace-nowrap min-h-[40px] transition-all ${
+              mobileStageTab === st
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
+            }`}
+          >
+            {st}
+          </button>
+        ))}
+      </div>
+
       {/* KANBAN BOARD LAYOUT */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-3 overflow-x-auto pb-4">
-        {KANBAN_STAGES.map((stage) => {
+        {KANBAN_STAGES.filter((st) => mobileStageTab === 'All' || mobileStageTab === st).map((stage) => {
           const stageApps = filteredApplicants.filter((a) => (a.stage as any) === stage)
           return (
             <div

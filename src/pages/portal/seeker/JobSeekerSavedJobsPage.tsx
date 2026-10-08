@@ -19,7 +19,7 @@ import { useToast } from '@/components/ui/Toast'
 export const JobSeekerSavedJobsPage: React.FC = () => {
   const navigate = useNavigate()
   const { toast } = useToast()
-  const [savedJobs, setSavedJobs] = useState<JobItem[]>(MOCK_JOBS.slice(0, 3))
+  const [savedJobs, setSavedJobs] = useState<JobItem[]>(MOCK_JOBS.slice(0, 6))
 
   const removeBookmark = (id: string) => {
     setSavedJobs(savedJobs.filter((j) => j.id !== id))

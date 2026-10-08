@@ -1,27 +1,23 @@
 {
-  "short_name": "B4B",
-  "name": "B4B America - Small Business Connection & Capital Platform",
+  "short_name": "B4B America",
+  "name": "B4B America Executive Portal & Business Platform",
   "icons": [
     {
       "src": "/brand/logo-icon.svg",
       "type": "image/svg+xml",
-      "sizes": "any"
-    },
-    {
-      "src": "/brand/android-chrome-192x192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "/brand/android-chrome-512x512.png",
-      "type": "image/png",
-      "sizes": "512x512",
+      "sizes": "192x192 512x512",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/brand/logo-full.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ],
-  "start_url": "/",
-  "background_color": "#FFFFFF",
+  "start_url": "/portal/dashboard",
+  "background_color": "#072B6E",
   "theme_color": "#0A3D9C",
   "display": "standalone",
-  "orientation": "portrait"
+  "orientation": "any",
+  "description": "Connecting small businesses with institutional capital, revenue-based financing, strategic advisory, B2B sales reps, and corporate job opportunities."
 }

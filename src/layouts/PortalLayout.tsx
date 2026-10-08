@@ -78,6 +78,23 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
   const unreadCount = notifications.filter((n) => !n.read).length
 
+  // Auto-sync user role based on route URL so every page displays matching sidebar & mock data
+  useEffect(() => {
+    if (location.pathname.startsWith('/portal/admin') && user?.role !== 'Admin') {
+      switchRole('Admin')
+    } else if (location.pathname.startsWith('/portal/bizpro') && user?.role !== 'Biz Pro') {
+      switchRole('Biz Pro')
+    } else if (location.pathname.startsWith('/portal/client') && user?.role !== 'Client') {
+      switchRole('Client')
+    } else if (location.pathname.startsWith('/portal/affiliate') && user?.role !== 'Affiliate') {
+      switchRole('Affiliate')
+    } else if (location.pathname.startsWith('/portal/employer') && user?.role !== 'Employer') {
+      switchRole('Employer')
+    } else if (location.pathname.startsWith('/portal/seeker') && user?.role !== 'Job Seeker') {
+      switchRole('Job Seeker')
+    }
+  }, [location.pathname, user?.role, switchRole])
+
   // Quick keyboard shortcut for search (Ctrl+K)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -131,31 +148,24 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
           </button>
         </div>
 
-        {/* User Role Card snippet (Expanded view) */}
+        {/* User Role Card snippet (Compact & Sleek) */}
         {!isCollapsed && (
-          <div className="mx-4 my-3 p-3.5 rounded-2xl bg-gradient-to-br from-blue-50/90 to-indigo-50/60 dark:from-[#12294A] dark:to-[#0D1E36] border border-blue-100 dark:border-[#1E3A5F] relative">
-            <div className="flex items-center gap-3">
-              <Avatar src={user?.avatarUrl} name={user?.name || 'Marcus Vance'} size="md" status="online" />
+          <div className="mx-3 my-2 p-2.5 rounded-xl bg-slate-100/70 dark:bg-[#12294A]/70 border border-slate-200/80 dark:border-[#1E3A5F] flex items-center justify-between gap-2.5">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <Avatar src={user?.avatarUrl} name={user?.name || 'Marcus Vance'} size="sm" status="online" className="w-8 h-8 shrink-0" />
               <div className="min-w-0 flex-1">
-                <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
-                  {user?.company || 'Apex Freight LLC'}
+                <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate leading-tight">
+                  {user?.company || user?.name || 'Apex Freight LLC'}
                 </h4>
-                <div className="flex items-center gap-1.5 mt-0.5">
-                  <Badge variant="navy" size="sm" className="text-[10px] px-1.5 py-0">
+                <div className="flex items-center gap-1 mt-0.5">
+                  <Badge variant="navy" size="sm" className="text-[9px] px-1.5 py-0 font-bold">
                     {user?.role}
                   </Badge>
                   <span className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
-                    {user?.title}
+                    {user?.title || 'Account'}
                   </span>
                 </div>
               </div>
-            </div>
-
-            <div className="mt-3 pt-2.5 border-t border-blue-200/50 dark:border-[#1E3A5F] flex items-center justify-between text-[11px]">
-              <span className="text-slate-500 dark:text-slate-400">Credit Score</span>
-              <span className="font-bold text-amber-500 flex items-center gap-1">
-                {user?.creditScore || 785} <span className="text-[9px] text-emerald-500 font-normal">Tier 1</span>
-              </span>
             </div>
           </div>
         )}
@@ -452,7 +462,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
         </header>
 
         {/* PAGE CONTENT SLOT */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">{children}</main>
+        <main className="flex-1 p-3 sm:p-6 lg:p-8 max-w-[1440px] w-full mx-auto pb-24 lg:pb-8">{children}</main>
       </div>
 
       {/* ========================================================================= */}
@@ -583,6 +593,35 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
           </div>
         </div>
       )}
+      {/* ========================================================================= */}
+      {/* MOBILE BOTTOM NAVIGATION BAR */}
+      {/* ========================================================================= */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0D1E36]/95 backdrop-blur-md border-t border-slate-200 dark:border-[#1E3A5F] px-1 py-1 flex items-center justify-around text-[10px] font-semibold text-slate-500 dark:text-slate-400 pb-[calc(0.5rem+env(safe-area-inset-bottom))] shadow-lg">
+        {navItems.slice(0, 4).map((item) => {
+          const Icon = item.icon
+          const active = isActive(item.href)
+          return (
+            <Link
+              key={item.id}
+              to={item.href}
+              className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl transition-colors ${
+                active ? 'text-blue-600 dark:text-blue-400 font-bold' : 'hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <Icon className={`w-5 h-5 ${active ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} />
+              <span className="truncate max-w-[68px] text-[10px]">{item.name.split(' ')[0]}</span>
+            </Link>
+          )
+        })}
+        <button
+          onClick={() => setMobileSidebarOpen(true)}
+          className="flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+        >
+          <Menu className="w-5 h-5 text-slate-400" />
+          <span className="text-[10px]">More</span>
+        </button>
+      </div>
+
       {/* Global Auth Modals */}
       <LogoutConfirmModal />
       <IdleTimeoutModal />

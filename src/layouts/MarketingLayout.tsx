@@ -22,6 +22,18 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
   const navigate = useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+  // Lock body scroll when mobile menu is open
+  React.useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileMenuOpen])
+
   const navLinks = [
     { name: 'Solutions', href: '/solutions' },
     { name: 'Advisory & CFO', href: '/advisory' },
@@ -32,10 +44,10 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
   const isActive = (path: string) => location.pathname === path
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-[#0A1628] text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-[#0A1628] text-slate-900 dark:text-slate-100 transition-colors duration-200 overflow-x-hidden">
       {/* Top Advisory Banner */}
       <div className="bg-gradient-to-r from-[#0A1628] via-[#12294A] to-blue-900 text-white text-xs py-2 px-4 border-b border-blue-950/40">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="max-w-[1440px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 truncate">
             <span className="bg-emerald-500/20 text-emerald-400 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">
               Q4 Allocation
