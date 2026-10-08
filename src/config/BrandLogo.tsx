@@ -28,21 +28,8 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 
   const heightClass = heightMap[size] || heightMap.md
 
-  // Determine logo source
-  let logoSrc = brandConfig.logos.wordmark
-  if (variant === 'full') {
-    logoSrc = brandConfig.logos.full
-  } else if (variant === 'fullSvg') {
-    logoSrc = brandConfig.logos.fullSvg
-  } else if (variant === 'icon') {
-    logoSrc = brandConfig.logos.icon
-  } else if (variant === 'wordmark') {
-    if (theme === 'dark') {
-      logoSrc = brandConfig.logos.darkWordmark
-    } else {
-      logoSrc = brandConfig.logos.wordmark
-    }
-  }
+  // Always use the official full B4B America logo
+  const logoSrc = brandConfig.logos.full
 
   return (
     <div
