@@ -223,15 +223,11 @@ export const LoginPage: React.FC = () => {
         <div className="absolute bottom-[-50px] right-[-50px] w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
 
-        {/* PROMINENT HIGH-VISIBILITY LOGO HEADER */}
+        {/* PROMINENT UNIFORM LOGO HEADER */}
         <div className="relative z-10 flex items-center gap-4">
           <Link to="/" className="inline-block group">
-            <div className="p-3 bg-white rounded-2xl shadow-2xl border border-amber-400/30 group-hover:scale-105 transition-transform duration-300">
-              <img
-                src="/brand/logo-full.png"
-                alt="B4B America Logo"
-                className="h-14 sm:h-16 w-auto object-contain"
-              />
+            <div className="p-2 bg-white/95 rounded-xl shadow-lg border border-white/20 group-hover:scale-105 transition-transform duration-300">
+              <BrandLogo size="md" />
             </div>
           </Link>
           <div>
@@ -329,7 +325,7 @@ export const LoginPage: React.FC = () => {
             {/* Mobile Logo */}
             <div className="lg:hidden">
               <Link to="/">
-                <img src="/brand/logo-full.png" alt="B4B America" className="h-9 w-auto object-contain" />
+                <BrandLogo size="md" />
               </Link>
             </div>
           </div>
