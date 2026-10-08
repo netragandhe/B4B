@@ -10,6 +10,8 @@ import {
   Lock,
   Mail,
   ArrowRight,
+  ArrowLeft,
+  Globe,
   Sparkles,
   Shield,
   CheckCircle2,
@@ -314,13 +316,22 @@ export const LoginPage: React.FC = () => {
       <div className="flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-12 space-y-8 bg-white text-slate-900">
         <div className="w-full max-w-md mx-auto space-y-6 text-left">
 
-          {/* Top Logo for mobile */}
-          <div className="lg:hidden pb-4">
-            <Link to="/" className="inline-block">
-              <div className="p-2 bg-white rounded-xl border border-slate-200 shadow-sm inline-flex items-center gap-2">
-                <img src="/brand/logo-full.png" alt="B4B America" className="h-10 w-auto object-contain" />
-              </div>
+          {/* Top Header Row with Back to Website Button & Mobile Logo */}
+          <div className="flex items-center justify-between gap-4 pb-2">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 text-xs font-extrabold transition-all border border-slate-200 shadow-xs group"
+            >
+              <ArrowLeft className="w-4 h-4 text-slate-500 group-hover:-translate-x-0.5 transition-transform" />
+              <span>Back to Website</span>
             </Link>
+
+            {/* Mobile Logo */}
+            <div className="lg:hidden">
+              <Link to="/">
+                <img src="/brand/logo-full.png" alt="B4B America" className="h-9 w-auto object-contain" />
+              </Link>
+            </div>
           </div>
 
           {/* STEP: LOGIN */}

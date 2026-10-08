@@ -404,34 +404,46 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                     <p className="text-[11px] text-slate-400 font-medium truncate mt-0.5">{user?.company}</p>
                   </div>
 
-                  {/* INSTANT DEMO ROLE SWITCHER IN MENU */}
-                  <div className="space-y-1.5">
-                    <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 flex items-center justify-between">
-                      <span>Switch Demo Role</span>
-                      <RefreshCw className="w-3 h-3 text-blue-500" />
-                    </p>
-                    <div className="grid grid-cols-2 gap-1">
-                      {roleOptions.map((role) => (
-                        <button
-                          key={role}
-                          onClick={() => {
-                            switchRole(role)
+                  {/* ACTIVE ROLE DISPLAY & CLEAN ROLE SWITCHER */}
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#12294A] border border-slate-200/80 dark:border-[#1E3A5F] space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                        Active Role
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black bg-blue-600 text-white shadow-xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        {user?.role}
+                      </span>
+                    </div>
+
+                    <div className="pt-2 border-t border-slate-200/60 dark:border-[#1E3A5F]/60 flex items-center justify-between gap-2">
+                      <label htmlFor="role-select" className="text-[11px] font-bold text-slate-600 dark:text-slate-300 shrink-0 flex items-center gap-1">
+                        <RefreshCw className="w-3 h-3 text-blue-500" />
+                        <span>Switch Role:</span>
+                      </label>
+                      <select
+                        id="role-select"
+                        value={user?.role || ''}
+                        onChange={(e) => {
+                          const newRole = e.target.value as UserRole
+                          if (newRole && newRole !== user?.role) {
+                            switchRole(newRole)
                             setProfileMenuOpen(false)
                             toast({
-                              title: `Switched to ${role}`,
-                              description: `Now previewing as ${DEMO_PROFILES[role].name}`,
+                              title: `Switched to ${newRole}`,
+                              description: `Now previewing as ${DEMO_PROFILES[newRole]?.name || newRole}`,
                               type: 'info',
                             })
-                          }}
-                          className={`px-2 py-1.5 rounded-lg text-[11px] font-bold text-left transition-colors ${
-                            user?.role === role
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-slate-50 dark:bg-[#12294A] text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#1E3A5F]'
-                          }`}
-                        >
-                          {role}
-                        </button>
-                      ))}
+                          }
+                        }}
+                        className="text-xs font-bold bg-white dark:bg-[#0D1E36] text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-[#1E3A5F] rounded-lg px-2 py-1 outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-xs"
+                      >
+                        {roleOptions.map((role) => (
+                          <option key={role} value={role}>
+                            {role} {role === user?.role ? '(Active)' : ''}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
 
