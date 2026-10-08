@@ -399,61 +399,23 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
               </button>
 
               {profileMenuOpen && (
-                <div className="absolute right-0 mt-2 w-72 bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] rounded-2xl shadow-2xl p-4 z-50 animate-fadeIn space-y-3">
-                  <div className="pb-3 border-b border-slate-100 dark:border-[#1E3A5F]">
-                    <h4 className="text-xs font-bold text-slate-900 dark:text-white">{user?.name}</h4>
-                    <p className="text-[11px] text-slate-500 truncate">{user?.email}</p>
-                    <p className="text-[11px] text-slate-400 font-medium truncate mt-0.5">{user?.company}</p>
-                  </div>
-
-                  {/* ACTIVE ROLE DISPLAY & CLEAN ROLE SWITCHER */}
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#12294A] border border-slate-200/80 dark:border-[#1E3A5F] space-y-2.5">
+                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] rounded-2xl shadow-2xl p-4 z-50 animate-fadeIn space-y-3">
+                  <div className="pb-3 border-b border-slate-100 dark:border-[#1E3A5F] space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                        Active Role
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black bg-blue-600 text-white shadow-xs">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <h4 className="text-xs font-bold text-slate-900 dark:text-white">{user?.name}</h4>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-600 text-white">
                         {user?.role}
                       </span>
                     </div>
-
-                    <div className="pt-2 border-t border-slate-200/60 dark:border-[#1E3A5F]/60 flex items-center justify-between gap-2">
-                      <label htmlFor="role-select" className="text-[11px] font-bold text-slate-600 dark:text-slate-300 shrink-0 flex items-center gap-1">
-                        <RefreshCw className="w-3 h-3 text-blue-500" />
-                        <span>Switch Role:</span>
-                      </label>
-                      <select
-                        id="role-select"
-                        value={user?.role || ''}
-                        onChange={(e) => {
-                          const newRole = e.target.value as UserRole
-                          if (newRole && newRole !== user?.role) {
-                            switchRole(newRole)
-                            setProfileMenuOpen(false)
-                            toast({
-                              title: `Switched to ${newRole}`,
-                              description: `Now previewing as ${DEMO_PROFILES[newRole]?.name || newRole}`,
-                              type: 'info',
-                            })
-                          }
-                        }}
-                        className="text-xs font-bold bg-white dark:bg-[#0D1E36] text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-[#1E3A5F] rounded-lg px-2 py-1 outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-xs"
-                      >
-                        {roleOptions.map((role) => (
-                          <option key={role} value={role}>
-                            {role} {role === user?.role ? '(Active)' : ''}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    <p className="text-[11px] text-slate-500 truncate">{user?.email}</p>
+                    <p className="text-[11px] text-slate-400 font-medium truncate">{user?.company}</p>
                   </div>
 
-                  <div className="pt-2 border-t border-slate-100 dark:border-[#1E3A5F] space-y-1">
+                  <div className="pt-1 space-y-1">
                     <Link
                       to="/portal/settings"
                       onClick={() => setProfileMenuOpen(false)}
-                      className="flex items-center gap-2 px-3 py-1.5 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] rounded-lg"
+                      className="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] rounded-lg transition-colors font-medium"
                     >
                       <Settings className="w-3.5 h-3.5 text-slate-400" />
                       <span>Account Settings</span>
@@ -463,7 +425,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                         setProfileMenuOpen(false)
                         handleLogout()
                       }}
-                      className="w-full flex items-center justify-between gap-2 px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg font-semibold"
+                      className="w-full flex items-center justify-between gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg font-semibold transition-colors"
                     >
                       <span>Sign Out Terminal</span>
                       <LogOut className="w-3.5 h-3.5" />
