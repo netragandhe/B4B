@@ -243,18 +243,6 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
         {/* Sidebar Footer Controls */}
         <div className="p-3 border-t border-slate-100 dark:border-[#1E3A5F]/70 space-y-1">
-          <Link
-            to="/"
-            title="Public Website"
-            className={`flex items-center ${
-              isCollapsed ? 'justify-center p-2' : 'justify-between px-3 py-2'
-            } text-xs text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:bg-slate-50 dark:hover:bg-[#12294A] rounded-lg transition-colors`}
-          >
-            <div className="flex items-center gap-2">
-              <ExternalLink className="w-3.5 h-3.5" />
-              {!isCollapsed && <span>Public Website</span>}
-            </div>
-          </Link>
           <button
             onClick={handleLogout}
             title="Sign Out"

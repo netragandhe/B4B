@@ -752,6 +752,66 @@ export default function App() {
                     </PortalLayout>
                   }
                 />
+                <Route
+                  path="/portal/bizpro/scoreboard"
+                  element={
+                    <PortalLayout>
+                      <RoleGuard allowedRoles={['Biz Pro', 'Admin']}>
+                        <BizProScoreboardPage />
+                      </RoleGuard>
+                    </PortalLayout>
+                  }
+                />
+                <Route
+                  path="/portal/bizpro/territory"
+                  element={
+                    <PortalLayout>
+                      <RoleGuard allowedRoles={['Biz Pro', 'Admin']}>
+                        <BizProTerritoryPage />
+                      </RoleGuard>
+                    </PortalLayout>
+                  }
+                />
+                <Route
+                  path="/portal/bizpro/branding"
+                  element={
+                    <PortalLayout>
+                      <RoleGuard allowedRoles={['Biz Pro', 'Admin']}>
+                        <BizProBrandingPage />
+                      </RoleGuard>
+                    </PortalLayout>
+                  }
+                />
+                <Route
+                  path="/portal/bizpro/support"
+                  element={
+                    <PortalLayout>
+                      <RoleGuard allowedRoles={['Biz Pro', 'Admin']}>
+                        <BizProSupportPage />
+                      </RoleGuard>
+                    </PortalLayout>
+                  }
+                />
+                <Route
+                  path="/portal/bizpro/subscription"
+                  element={
+                    <PortalLayout>
+                      <RoleGuard allowedRoles={['Biz Pro', 'Admin']}>
+                        <BizProSubscriptionPage />
+                      </RoleGuard>
+                    </PortalLayout>
+                  }
+                />
+                <Route
+                  path="/portal/bizpro/team"
+                  element={
+                    <PortalLayout>
+                      <RoleGuard allowedRoles={['Biz Pro', 'Admin']}>
+                        <BizProTeamPage />
+                      </RoleGuard>
+                    </PortalLayout>
+                  }
+                />
 
                 {/* Employer Portal Routes */}
                 <Route
