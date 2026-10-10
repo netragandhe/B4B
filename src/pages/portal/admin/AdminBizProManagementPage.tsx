@@ -83,7 +83,7 @@ export const AdminBizProManagementPage: React.FC = () => {
     setBizPros((prev) => [created, ...prev])
     setInviteModalOpen(false)
     toast({
-      title: 'Biz Pro Invited!',
+      title: 'B4B Coach Invited!',
       description: `Dispatched onboarding credentials to ${created.email}`,
       type: 'success',
     })
@@ -107,15 +107,15 @@ export const AdminBizProManagementPage: React.FC = () => {
   return (
     <div className="space-y-6 text-left">
       <PageHeader
-        title="Biz Pro Sales Rep Management"
-        description="Manage company sales representatives, edit rank levels, assign regions, and invite new reps."
+        title="B4B Coach Management"
+        description="Manage B4B Coaches, edit rank levels, assign regions, and invite new coaches."
         breadcrumbs={[
           { label: 'Portal', href: '/portal/dashboard' },
-          { label: 'Biz Pro Management', icon: <Users className="w-3.5 h-3.5 text-blue-500" /> },
+          { label: 'B4B Coach Management', icon: <Users className="w-3.5 h-3.5 text-blue-500" /> },
         ]}
         badge={
           <Badge variant="primary" size="md">
-            {filtered.length} Reps Enrolled
+            {filtered.length} Coaches Enrolled
           </Badge>
         }
         actions={
@@ -126,7 +126,7 @@ export const AdminBizProManagementPage: React.FC = () => {
               onClick={() => setInviteModalOpen(true)}
               leftIcon={<Plus className="w-4 h-4" />}
             >
-              Invite New Biz Pro
+              Invite New B4B Coach
             </Button>
           </Can>
         }
@@ -135,7 +135,7 @@ export const AdminBizProManagementPage: React.FC = () => {
       {/* SEARCH BAR */}
       <Card variant="default" className="p-4 flex items-center gap-3">
         <Input
-          placeholder="Search Biz Pros by name, email, company, region..."
+          placeholder="Search B4B Coaches by name, email, company, region..."
           leftIcon={<Search className="w-4 h-4" />}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -190,7 +190,7 @@ export const AdminBizProManagementPage: React.FC = () => {
       <Drawer
         isOpen={!!selectedRep}
         onClose={() => setSelectedRep(null)}
-        title="Edit Biz Pro Account & Rank"
+        title="Edit B4B Coach Account & Rank"
         size="md"
       >
         {selectedRep && (
@@ -271,7 +271,7 @@ export const AdminBizProManagementPage: React.FC = () => {
                 <div className="p-3 rounded-xl bg-amber-50/80 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-xs text-amber-900 dark:text-amber-300">
                   <span className="font-bold block mb-0.5">User-Level Access Exceptions</span>
                   Grant or revoke specific menus for <strong>{selectedRep.name}</strong> individually,
-                  on top of their Biz Pro role defaults. Overridden items are highlighted.
+                  on top of their B4B Coach role defaults. Overridden items are highlighted.
                 </div>
 
                 <div className="space-y-2 max-h-[420px] overflow-y-auto custom-scrollbar pr-1">
@@ -365,7 +365,7 @@ export const AdminBizProManagementPage: React.FC = () => {
                                 setUserOverrides(updated)
                                 toast({
                                   title: 'Override Cleared',
-                                  description: `Reverted "${menu.label}" to standard Biz Pro role policy.`,
+                                  description: `Reverted "${menu.label}" to standard B4B Coach role policy.`,
                                   type: 'info',
                                 })
                               }}
@@ -386,11 +386,11 @@ export const AdminBizProManagementPage: React.FC = () => {
         )}
       </Drawer>
 
-      {/* INVITE BIZ PRO MODAL */}
+      {/* INVITE B4B COACH MODAL */}
       <Modal
         isOpen={inviteModalOpen}
         onClose={() => setInviteModalOpen(false)}
-        title="Invite New Biz Pro Sales Executive"
+        title="Invite New B4B Coach Sales Executive"
         description="Dispatch onboard credentials and assign default territory."
         maxWidth="md"
       >

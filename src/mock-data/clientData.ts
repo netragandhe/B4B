@@ -42,7 +42,7 @@ export interface ClientCoachMessage {
 export const CLIENT_ACTIVE_ORDERS: ClientServiceOrder[] = [
   {
     id: 'ord_101',
-    serviceName: 'Revenue-Based Working Capital Line',
+    serviceName: 'Business Funding and Loans ($500k)',
     category: 'Capital',
     amount: 500000,
     progress: 75,
@@ -53,7 +53,7 @@ export const CLIENT_ACTIVE_ORDERS: ClientServiceOrder[] = [
   },
   {
     id: 'ord_102',
-    serviceName: 'Fractional CFO & Treasury Advisory',
+    serviceName: 'Business Management & Advisory',
     category: 'Advisory',
     amount: 48000,
     progress: 40,
@@ -64,7 +64,7 @@ export const CLIENT_ACTIVE_ORDERS: ClientServiceOrder[] = [
   },
   {
     id: 'ord_103',
-    serviceName: 'Business Credit Builder Suite',
+    serviceName: 'Build Business Credit Score Suite',
     category: 'Growth',
     amount: 12000,
     progress: 60,
@@ -75,7 +75,7 @@ export const CLIENT_ACTIVE_ORDERS: ClientServiceOrder[] = [
   },
   {
     id: 'ord_104',
-    serviceName: 'Equipment Lease & Fleet Expansion Line',
+    serviceName: 'Business Funding and Loans (Equipment)',
     category: 'Capital',
     amount: 350000,
     progress: 90,
@@ -86,7 +86,7 @@ export const CLIENT_ACTIVE_ORDERS: ClientServiceOrder[] = [
   },
   {
     id: 'ord_105',
-    serviceName: 'Tax & Cash Conversion Optimization Audit',
+    serviceName: 'Bookkeeping and Tax Prep Audit',
     category: 'Operations',
     amount: 25000,
     progress: 100,

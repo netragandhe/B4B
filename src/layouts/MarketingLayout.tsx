@@ -32,8 +32,10 @@ export const MarketingLayout: React.FC<{ children: React.ReactNode }> = ({ child
 
   const navLinks: Array<{ name: string; href: string; badge?: string }> = [
     { name: 'Solutions', href: '/solutions' },
+    { name: 'Job Finder', href: '/jobs', badge: 'Hiring' },
     { name: 'Advisory & CFO', href: '/advisory' },
     { name: 'Apply For Capital', href: '/apply' },
+    { name: 'Affiliates', href: '/affiliates' },
   ]
 
   const isActive = (path: string) => location.pathname === path

@@ -20,7 +20,8 @@ export const Switch: React.FC<SwitchProps> = ({
   className,
   id,
 }) => {
-  const generatedId = id || React.useId()
+  const autoId = React.useId()
+  const generatedId = id || autoId
 
   return (
     <div className={cn('flex items-center justify-between gap-4', className)}>

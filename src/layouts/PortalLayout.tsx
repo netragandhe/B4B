@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   Menu,
   X,
+  Sun,
+  Moon,
   ExternalLink,
   PlusCircle,
   Bell,
@@ -18,6 +20,7 @@ import {
   RefreshCw,
   Sparkles,
   Command,
+  Globe,
 } from 'lucide-react'
 import { BrandLogo, brandConfig } from '@/config/brand'
 import { Button } from '@/components/ui/Button'
@@ -28,6 +31,7 @@ import { Input } from '@/components/ui/Input'
 import { useAuth, UserRole, DEMO_PROFILES } from '@/hooks/useAuth'
 import { usePermission } from '@/hooks/usePermission'
 import { MenuIcon } from '@/components/navigation/MenuIcon'
+import { useTheme } from '@/hooks/useTheme'
 import { useToast } from '@/components/ui/Toast'
 import { MENU_CONFIG, MenuItem } from '@/config/menus'
 import { LogoutConfirmModal } from '@/components/auth/LogoutConfirmModal'
@@ -37,6 +41,7 @@ const roleOptions: UserRole[] = ['Client', 'Admin', 'Biz Pro', 'Affiliate', 'Emp
 
 export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, logout, switchRole, setLogoutModalOpen } = useAuth()
+  const { theme, toggleTheme } = useTheme()
   const location = useLocation()
   const navigate = useNavigate()
   const { toast } = useToast()
@@ -78,22 +83,19 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
   const unreadCount = notifications.filter((n) => !n.read).length
 
-  // Auto-sync user role based on route URL so every page displays matching sidebar & mock data
+  // Track and persist last visited portal route with active user role in sessionStorage for portal <-> website continuity
   useEffect(() => {
-    if (location.pathname.startsWith('/portal/admin') && user?.role !== 'Admin') {
-      switchRole('Admin')
-    } else if (location.pathname.startsWith('/portal/bizpro') && user?.role !== 'Biz Pro') {
-      switchRole('Biz Pro')
-    } else if (location.pathname.startsWith('/portal/client') && user?.role !== 'Client') {
-      switchRole('Client')
-    } else if (location.pathname.startsWith('/portal/affiliate') && user?.role !== 'Affiliate') {
-      switchRole('Affiliate')
-    } else if (location.pathname.startsWith('/portal/employer') && user?.role !== 'Employer') {
-      switchRole('Employer')
-    } else if (location.pathname.startsWith('/portal/seeker') && user?.role !== 'Job Seeker') {
-      switchRole('Job Seeker')
+    if (location.pathname.startsWith('/portal') && !location.pathname.includes('/login') && user?.role) {
+      try {
+        sessionStorage.setItem(
+          'b4b_last_portal_path',
+          JSON.stringify({ path: location.pathname + location.search, role: user.role })
+        )
+      } catch {
+        // ignore
+      }
     }
-  }, [location.pathname, user?.role, switchRole])
+  }, [location.pathname, location.search, user?.role])
 
   // Quick keyboard shortcut for search (Ctrl+K)
   useEffect(() => {
@@ -128,21 +130,21 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   return (
-    <div className="min-h-screen flex bg-[var(--bg)] text-[var(--text)] font-sans">
+    <div className="min-h-screen flex bg-slate-50 dark:bg-[#0A1628] text-slate-900 dark:text-slate-100 font-sans">
       {/* ========================================================================= */}
       {/* DESKTOP COLLAPSIBLE SIDEBAR */}
       {/* ========================================================================= */}
       <aside
-        className={`hidden lg:flex flex-col border-r border-[var(--border)] bg-[var(--surface)] shrink-0 sticky top-0 h-screen transition-all duration-300 z-40 ${
+        className={`hidden lg:flex flex-col border-r border-slate-200 dark:border-[#1E3A5F] bg-white dark:bg-[#0D1E36] shrink-0 sticky top-0 h-screen transition-all duration-300 z-40 ${
           isCollapsed ? 'w-20' : 'w-72'
         }`}
       >
         {/* Brand Header */}
-        <div className="p-4 sm:p-5 border-b border-[var(--border)] flex items-center justify-between">
+        <div className="p-4 sm:p-5 border-b border-slate-100 dark:border-[#1E3A5F]/70 flex items-center justify-between">
           <Link to="/portal/dashboard" className="flex items-center gap-2.5 truncate overflow-hidden">
             <BrandLogo variant={isCollapsed ? 'icon' : 'wordmark'} size={isCollapsed ? 'sm' : 'md'} showTagline={false} />
             {!isCollapsed && (
-              <span className="text-lg font-black text-[var(--blue-600)] tracking-tight leading-none">
+              <span className="text-lg font-black text-[#0A3D9C] dark:text-white tracking-tight leading-none">
                 B4B
               </span>
             )}
@@ -150,7 +152,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg)] text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+            className="p-1.5 rounded-lg border border-slate-200 dark:border-[#1E3A5F] bg-slate-50 dark:bg-[#12294A] text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
             title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
           >
             {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
@@ -159,18 +161,18 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
         {/* User Role Card snippet (Compact & Sleek) */}
         {!isCollapsed && (
-          <div className="mx-3 my-2 p-2.5 rounded-xl bg-[var(--bg)] border border-[var(--border)] flex items-center justify-between gap-2.5">
+          <div className="mx-3 my-2 p-2.5 rounded-xl bg-slate-100/70 dark:bg-[#12294A]/70 border border-slate-200/80 dark:border-[#1E3A5F] flex items-center justify-between gap-2.5">
             <div className="flex items-center gap-2.5 min-w-0">
               <Avatar src={user?.avatarUrl} name={user?.name || 'Marcus Vance'} size="sm" status="online" className="w-8 h-8 shrink-0" />
               <div className="min-w-0 flex-1">
-                <h4 className="text-xs font-bold text-[var(--text)] truncate leading-tight">
+                <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate leading-tight">
                   {user?.company || user?.name || 'Apex Freight LLC'}
                 </h4>
                 <div className="flex items-center gap-1 mt-0.5">
                   <Badge variant="navy" size="sm" className="text-[9px] px-1.5 py-0 font-bold">
                     {user?.role}
                   </Badge>
-                  <span className="text-[10px] text-[var(--text-muted)] truncate">
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
                     {user?.title || 'Account'}
                   </span>
                 </div>
@@ -183,10 +185,10 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
         <nav className="flex-1 px-3 py-3 space-y-1 overflow-y-auto custom-scrollbar">
           {!isCollapsed && (
             <div className="flex items-center justify-between px-2 mb-2">
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-[var(--text-muted)]">
+              <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                 {currentRole} Navigation ({allowedMenus.length})
               </span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded bg-[var(--green-600)]/15 text-[var(--green-600)] font-bold">
+              <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-bold">
                 Live RBAC
               </span>
             </div>
@@ -203,15 +205,15 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                   isCollapsed ? 'justify-center py-3' : 'justify-between px-3.5 py-2.5'
                 } rounded-xl text-xs font-bold transition-all relative ${
                   active
-                    ? 'bg-[var(--blue-600)] text-white shadow-md shadow-[var(--blue-600)]/20'
-                    : 'text-[var(--text-muted)] hover:bg-[var(--bg)] hover:text-[var(--text)]'
+                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <MenuIcon
                     name={item.icon}
                     className={`w-4 h-4 shrink-0 ${
-                      active ? 'text-white' : 'text-[var(--text-muted)]'
+                      active ? 'text-white' : 'text-slate-400'
                     }`}
                   />
                   {!isCollapsed && <span className="truncate">{item.label}</span>}
@@ -238,7 +240,21 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
 
         {/* Sidebar Footer Controls */}
-        <div className="p-3 border-t border-[var(--border)] space-y-1">
+        <div className="p-3 border-t border-slate-100 dark:border-[#1E3A5F]/70 space-y-1">
+          <Link
+            to="/"
+            title="Marketing Website"
+            className={`w-full flex items-center ${
+              isCollapsed ? 'justify-center p-2' : 'justify-between px-3 py-2'
+            } text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] rounded-lg transition-colors`}
+          >
+            <div className="flex items-center gap-2">
+              <Globe className="w-3.5 h-3.5 text-blue-500" />
+              {!isCollapsed && <span>Marketing Website</span>}
+            </div>
+            {!isCollapsed && <ExternalLink className="w-3 h-3 text-slate-400" />}
+          </Link>
+
           <button
             onClick={handleLogout}
             title="Sign Out"
@@ -257,12 +273,12 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
       {/* ========================================================================= */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* TOP BAR */}
-        <header className="sticky top-0 z-30 h-16 border-b border-[var(--border)] bg-[var(--surface)]/85 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between gap-4">
+        <header className="sticky top-0 z-30 h-16 border-b border-slate-200 dark:border-[#1E3A5F] bg-white/85 dark:bg-[#0D1E36]/85 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between gap-4">
           {/* Left section: Mobile menu + Global Search trigger */}
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-xl border border-[var(--border)] text-[var(--text-muted)] hover:bg-[var(--bg)]"
+              className="lg:hidden p-2 rounded-xl border border-slate-200 dark:border-[#1E3A5F] text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A]"
             >
               <Menu className="w-5 h-5" />
             </button>
@@ -270,11 +286,11 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
             {/* Global Search Bar Trigger */}
             <button
               onClick={() => setSearchModalOpen(true)}
-              className="hidden sm:flex items-center gap-3 px-3.5 py-1.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-xs text-[var(--text-muted)] hover:bg-[var(--bg)] transition-colors w-64 lg:w-80"
+              className="hidden sm:flex items-center gap-3 px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-[#1E3A5F] bg-slate-50/80 dark:bg-[#12294A]/80 text-xs text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#12294A] transition-colors w-64 lg:w-80"
             >
-              <Search className="w-4 h-4 text-[var(--text-muted)]" />
+              <Search className="w-4 h-4 text-slate-400" />
               <span className="flex-1 text-left truncate">Search facilities, eBOX, advisory...</span>
-              <kbd className="hidden lg:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono bg-[var(--surface)] border border-[var(--border)] rounded text-[var(--text-muted)]">
+              <kbd className="hidden lg:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-slate-700 rounded text-slate-400">
                 <Command className="w-2.5 h-2.5" /> K
               </kbd>
             </button>
@@ -282,16 +298,29 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
           {/* Right section: Quick role indicator, Notifications, Theme toggle, Profile menu */}
           <div className="flex items-center gap-2.5">
+            {/* Quick link to public marketing website */}
+            <Link to="/" className="hidden sm:flex">
+              <Button
+                size="sm"
+                variant="outline"
+                className="text-xs h-8 border-slate-200 dark:border-[#1E3A5F] text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
+                leftIcon={<Globe className="w-3.5 h-3.5 text-blue-500" />}
+              >
+                <span>Marketing Website</span>
+                <ExternalLink className="w-3 h-3 text-slate-400 ml-0.5" />
+              </Button>
+            </Link>
+
             {/* Quick eBOX shortcut button in top bar */}
             <Link to="/portal/ebox" className="hidden md:flex">
               <Button
                 size="sm"
                 variant="outline"
-                className="text-xs h-8 border-[var(--green-600)] text-[var(--green-600)] hover:bg-[var(--green-600)]/10"
-                leftIcon={<FolderArchive className="w-3.5 h-3.5 text-[var(--green-600)]" />}
+                className="text-xs h-8 border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
+                leftIcon={<FolderArchive className="w-3.5 h-3.5 text-emerald-500" />}
               >
                 <span>eBOX</span>
-                <span className="px-1 py-0.1 text-[9px] rounded font-extrabold bg-[var(--green-600)] text-white">
+                <span className="px-1 py-0.1 text-[9px] rounded font-extrabold bg-emerald-500 text-white">
                   NEW
                 </span>
               </Button>
@@ -301,20 +330,20 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
             <div className="relative">
               <button
                 onClick={() => setNotificationsOpen(!notificationsOpen)}
-                className="p-2 rounded-xl text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--bg)] relative transition-colors"
+                className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#12294A] relative transition-colors"
                 aria-label="Notifications"
               >
                 <Bell className="w-4 h-4" />
                 {unreadCount > 0 && (
-                  <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[var(--blue-600)] ring-2 ring-[var(--surface)] animate-pulse" />
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-blue-600 ring-2 ring-white dark:ring-[#0D1E36] animate-pulse" />
                 )}
               </button>
 
               {notificationsOpen && (
-                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl p-4 z-50 animate-fadeIn space-y-3">
-                  <div className="flex items-center justify-between pb-2 border-b border-[var(--border)]">
+                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] rounded-2xl shadow-2xl p-4 z-50 animate-fadeIn space-y-3">
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-[#1E3A5F]">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-xs text-[var(--text)]">Notifications</span>
+                      <span className="font-bold text-xs text-slate-900 dark:text-white">Notifications</span>
                       {unreadCount > 0 && (
                         <Badge variant="primary" size="sm">
                           {unreadCount} New
@@ -323,7 +352,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                     </div>
                     <button
                       onClick={markAllNotificationsRead}
-                      className="text-[11px] text-[var(--blue-600)] hover:underline"
+                      className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline"
                     >
                       Mark all read
                     </button>
@@ -335,24 +364,24 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                         key={n.id}
                         className={`p-2.5 rounded-xl border text-xs transition-colors ${
                           n.read
-                            ? 'bg-[var(--bg)] border-[var(--border)] text-[var(--text-muted)]'
-                            : 'bg-[var(--sky-50)] dark:bg-[var(--sky-50)]/10 border-[var(--border)] text-[var(--text)]'
+                            ? 'bg-slate-50/50 dark:bg-[#12294A]/30 border-slate-100 dark:border-slate-800 text-slate-500'
+                            : 'bg-blue-50/60 dark:bg-blue-950/40 border-blue-100 dark:border-blue-900 text-slate-800 dark:text-slate-200'
                         }`}
                       >
                         <div className="flex items-center justify-between font-bold">
                           <span>{n.title}</span>
-                          <span className="text-[10px] text-[var(--text-muted)]">{n.time}</span>
+                          <span className="text-[10px] text-slate-400">{n.time}</span>
                         </div>
-                        <p className="text-[11px] mt-0.5 text-[var(--text-muted)]">{n.desc}</p>
+                        <p className="text-[11px] mt-0.5 text-slate-600 dark:text-slate-400">{n.desc}</p>
                       </div>
                     ))}
                   </div>
 
-                  <div className="pt-2 border-t border-[var(--border)] text-center">
+                  <div className="pt-2 border-t border-slate-100 dark:border-[#1E3A5F] text-center">
                     <Link
                       to="/portal/ebox"
                       onClick={() => setNotificationsOpen(false)}
-                      className="text-xs font-semibold text-[var(--blue-600)] hover:underline"
+                      className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline"
                     >
                       View all activity in eBOX
                     </Link>
@@ -361,44 +390,72 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
               )}
             </div>
 
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#12294A] transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
+            </button>
+
             {/* Profile Dropdown Menu */}
-            <div className="relative pl-2 border-l border-[var(--border)]">
+            <div className="relative pl-2 border-l border-slate-200 dark:border-[#1E3A5F]">
               <button
                 onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-                className="flex items-center gap-2 p-1 rounded-xl hover:bg-[var(--bg)] transition-colors"
+                className="flex items-center gap-2 p-1 rounded-xl hover:bg-slate-100 dark:hover:bg-[#12294A] transition-colors"
               >
                 <Avatar src={user?.avatarUrl} name={user?.name || 'Marcus Vance'} size="sm" />
                 <span className="hidden sm:block text-left">
-                  <span className="block text-xs font-bold leading-tight text-[var(--text)]">
+                  <span className="block text-xs font-bold leading-tight text-slate-900 dark:text-white">
                     {user?.name}
                   </span>
-                  <span className="block text-[10px] text-[var(--blue-600)] font-semibold">
+                  <span className="block text-[10px] text-blue-600 dark:text-blue-400 font-semibold">
                     {user?.role}
                   </span>
                 </span>
               </button>
 
               {profileMenuOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl p-4 z-50 animate-fadeIn space-y-3">
-                  <div className="pb-3 border-b border-[var(--border)] space-y-1">
+                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] rounded-2xl shadow-2xl p-4 z-50 animate-fadeIn space-y-3">
+                  <div className="pb-3 border-b border-slate-100 dark:border-[#1E3A5F] space-y-1">
                     <div className="flex items-center justify-between">
-                      <h4 className="text-xs font-bold text-[var(--text)]">{user?.name}</h4>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[var(--blue-600)] text-white">
+                      <h4 className="text-xs font-bold text-slate-900 dark:text-white">{user?.name}</h4>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-600 text-white">
                         {user?.role}
                       </span>
                     </div>
-                    <p className="text-[11px] text-[var(--text-muted)] truncate">{user?.email}</p>
-                    <p className="text-[11px] text-[var(--text-muted)] font-medium truncate">{user?.company}</p>
+                    <p className="text-[11px] text-slate-500 truncate">{user?.email}</p>
+                    <p className="text-[11px] text-slate-400 font-medium truncate">{user?.company}</p>
                   </div>
 
                   <div className="pt-1 space-y-1">
                     <Link
+                      to="/"
+                      onClick={() => setProfileMenuOpen(false)}
+                      className="flex items-center justify-between px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] rounded-lg transition-colors font-medium"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Globe className="w-3.5 h-3.5 text-blue-500" />
+                        <span>Marketing Website</span>
+                      </div>
+                      <ExternalLink className="w-3 h-3 text-slate-400" />
+                    </Link>
+                    <Link
+                      to="/portal/profile"
+                      onClick={() => setProfileMenuOpen(false)}
+                      className="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] rounded-lg transition-colors font-medium"
+                    >
+                      <User className="w-3.5 h-3.5 text-slate-400" />
+                      <span>Profile & Account</span>
+                    </Link>
+                    <Link
                       to="/portal/settings"
                       onClick={() => setProfileMenuOpen(false)}
-                      className="flex items-center gap-2 px-3 py-2 text-xs text-[var(--text)] hover:bg-[var(--bg)] rounded-lg transition-colors font-medium"
+                      className="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] rounded-lg transition-colors font-medium"
                     >
-                      <Settings className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-                      <span>Account Settings</span>
+                      <Settings className="w-3.5 h-3.5 text-slate-400" />
+                      <span>Portal Settings</span>
                     </Link>
                     <button
                       onClick={() => {
@@ -455,11 +512,11 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                     setSearchModalOpen(false)
                     navigate(item.route)
                   }}
-                  className="p-2.5 rounded-xl border border-[var(--border)] hover:border-[var(--blue-600)] bg-[var(--bg)]/50 cursor-pointer flex items-center justify-between text-xs transition-all hover:bg-[var(--sky-50)]/50"
+                  className="p-2.5 rounded-xl border border-slate-200 dark:border-[#1E3A5F] hover:border-blue-500 bg-slate-50/50 dark:bg-[#12294A]/50 cursor-pointer flex items-center justify-between text-xs transition-all hover:bg-blue-50/50 dark:hover:bg-blue-950/30"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <MenuIcon name={item.icon} className="w-4 h-4 text-[var(--blue-600)] shrink-0" />
-                    <span className="font-bold text-[var(--text)] truncate">{item.label}</span>
+                    <MenuIcon name={item.icon} className="w-4 h-4 text-blue-500 shrink-0" />
+                    <span className="font-bold text-slate-900 dark:text-white truncate">{item.label}</span>
                   </div>
                   <Badge variant="navy" size="sm" className="shrink-0 text-[10px]">
                     {item.module}
@@ -473,7 +530,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
       {/* ========================================================================= */}
       {/* MOBILE BOTTOM NAVIGATION BAR */}
       {/* ========================================================================= */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[var(--surface)]/95 backdrop-blur-md border-t border-[var(--border)] px-3 py-2 flex items-center justify-around shadow-lg">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0D1E36]/95 backdrop-blur-md border-t border-slate-200 dark:border-[#1E3A5F] px-3 py-2 flex items-center justify-around shadow-lg">
         {allowedMenus.slice(0, 4).map((item) => {
           const active = isActive(item.route)
           return (
@@ -481,10 +538,10 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
               key={item.id}
               to={item.route}
               className={`flex flex-col items-center gap-1 text-[10px] font-bold transition-colors ${
-                active ? 'text-[var(--blue-600)]' : 'text-[var(--text-muted)] hover:text-[var(--text)]'
+                active ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
               }`}
             >
-              <MenuIcon name={item.icon} className={`w-4 h-4 ${active ? 'text-[var(--blue-600)]' : 'text-[var(--text-muted)]'}`} />
+              <MenuIcon name={item.icon} className={`w-4 h-4 ${active ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} />
               <span className="truncate max-w-[64px]">{item.label}</span>
             </Link>
           )
@@ -492,9 +549,9 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
         <button
           onClick={() => setMobileSidebarOpen(true)}
-          className="flex flex-col items-center gap-1 text-[10px] font-bold text-[var(--text-muted)] hover:text-[var(--text)] cursor-pointer"
+          className="flex flex-col items-center gap-1 text-[10px] font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer"
         >
-          <Menu className="w-4 h-4 text-[var(--text-muted)]" />
+          <Menu className="w-4 h-4 text-slate-400" />
           <span>More ({allowedMenus.length})</span>
         </button>
       </nav>
@@ -505,27 +562,27 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
       {mobileSidebarOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
-            className="fixed inset-0 bg-[var(--navy-950)]/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs"
             onClick={() => setMobileSidebarOpen(false)}
           />
-          <div className="fixed inset-y-0 left-0 w-72 bg-[var(--surface)] p-5 shadow-2xl flex flex-col justify-between overflow-y-auto">
+          <div className="fixed inset-y-0 left-0 w-72 bg-white dark:bg-[#0D1E36] p-5 shadow-2xl flex flex-col justify-between overflow-y-auto">
             <div>
-              <div className="flex items-center justify-between pb-4 border-b border-[var(--border)]">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-[#1E3A5F]">
                 <BrandLogo size="md" />
                 <button
                   onClick={() => setMobileSidebarOpen(false)}
-                  className="p-1 rounded-lg text-[var(--text-muted)]"
+                  className="p-1 rounded-lg text-slate-400"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
               {/* Mobile Role Switcher Info */}
-              <div className="mt-4 p-3 rounded-xl bg-[var(--sky-50)] dark:bg-[var(--surface)] border border-[var(--border)] text-xs">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+              <div className="mt-4 p-3 rounded-xl bg-blue-50 dark:bg-[#12294A] border border-blue-200 dark:border-blue-900 text-xs">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
                   Role: {user?.role}
                 </span>
-                <p className="font-bold text-[var(--text)] truncate">{user?.name}</p>
+                <p className="font-bold text-slate-900 dark:text-white truncate">{user?.name}</p>
               </div>
 
               <div className="mt-4 space-y-1.5 max-h-[60vh] overflow-y-auto custom-scrollbar">
@@ -538,14 +595,14 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                       onClick={() => setMobileSidebarOpen(false)}
                       className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold ${
                         active
-                          ? 'bg-[var(--blue-600)] text-white'
-                          : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--bg)]'
+                          ? 'bg-blue-600 text-white'
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A]'
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
                         <MenuIcon
                           name={item.icon}
-                          className={`w-4 h-4 shrink-0 ${active ? 'text-white' : 'text-[var(--text-muted)]'}`}
+                          className={`w-4 h-4 shrink-0 ${active ? 'text-white' : 'text-slate-400'}`}
                         />
                         <span className="truncate">{item.label}</span>
                       </div>
@@ -560,11 +617,11 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
               </div>
             </div>
 
-            <div className="pt-4 border-t border-[var(--border)] space-y-2">
+            <div className="pt-4 border-t border-slate-100 dark:border-[#1E3A5F] space-y-2">
               <Link
                 to="/"
                 onClick={() => setMobileSidebarOpen(false)}
-                className="flex items-center gap-2 text-xs text-[var(--text-muted)]"
+                className="flex items-center gap-2 text-xs text-slate-500"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
                 <span>Marketing Website</span>

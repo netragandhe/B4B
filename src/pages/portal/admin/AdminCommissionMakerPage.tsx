@@ -63,7 +63,7 @@ export const AdminCommissionMakerPage: React.FC = () => {
   const handleSaveRule = () => {
     toast({
       title: 'Commission Rule Published',
-      description: 'Updated commission rates and live multipliers across all Biz Pro tiers.',
+      description: 'Updated commission rates and live multipliers across all B4B Coach tiers.',
       type: 'success',
     })
   }
@@ -170,7 +170,7 @@ export const AdminCommissionMakerPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="font-bold text-blue-200 block mb-1">Biz Pro Rank Level (1-9)</label>
+                <label className="font-bold text-blue-200 block mb-1">B4B Coach Rank Level (1-9)</label>
                 <select
                   value={calcRankLevel}
                   onChange={(e) => setCalcRankLevel(Number(e.target.value))}

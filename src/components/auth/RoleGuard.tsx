@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Navigate } from 'react-router-dom'
 import { useAuth, UserRole } from '@/hooks/useAuth'
 import { usePermission } from '@/hooks/usePermission'
 import { PermissionAction } from '@/lib/rbac/types'
@@ -23,18 +23,13 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({
   minBizProRank,
   module,
 }) => {
-  const { user, switchRole } = useAuth()
+  const { user } = useAuth()
   const { can } = usePermission()
   const location = useLocation()
 
-  React.useEffect(() => {
-    if (user && allowedRoles && allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
-      switchRole(allowedRoles[0])
-    }
-  }, [user, allowedRoles, switchRole])
-
   if (!user) {
-    return null
+    const redirectUrl = encodeURIComponent(location.pathname + location.search)
+    return <Navigate to={`/portal/login?redirect=${redirectUrl}`} replace />
   }
 
   const rankLevel = user.rankLevel || user.rank || 1

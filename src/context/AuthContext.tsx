@@ -18,6 +18,7 @@ interface AuthContextType {
   user: User | null
   isAuthenticated: boolean
   status: 'loading' | 'authenticated' | 'unauthenticated'
+  dashboardPath: string
   login: (emailOrOpts?: string | { email?: string; role?: UserRole; password?: string }, password?: string, rememberMe?: boolean) => Promise<LoginResponse>
   loginAsDemoRole: (role: UserRole) => Promise<LoginResponse>
   verifyOtp: (email: string, otp: string) => Promise<LoginResponse>
@@ -34,6 +35,73 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
+
+export const isPathAllowedForRole = (path: string, role?: UserRole): boolean => {
+  if (!role || !path || !path.startsWith('/portal') || path.includes('/login')) {
+    return false
+  }
+
+  const cleanPath = path.split('?')[0].replace(/\/$/, '')
+
+  // Admin has access to all portal routes
+  if (role === 'Admin') {
+    return true
+  }
+
+  // Shared portal paths allowed for all authenticated roles
+  const sharedPaths = [
+    '/portal/dashboard',
+    '/portal/profile',
+    '/portal/settings',
+    '/portal/ebox',
+    '/portal/scoreboard',
+    '/portal/territory',
+    '/portal/capital',
+    '/portal/advisory',
+    '/portal/documents',
+  ]
+  if (sharedPaths.some((p) => cleanPath === p || cleanPath.startsWith(p + '/'))) {
+    return true
+  }
+
+  // Role-specific prefixes
+  if (role === 'Biz Pro' && (cleanPath === '/portal/bizpro' || cleanPath.startsWith('/portal/bizpro/'))) {
+    return true
+  }
+  if (role === 'Client' && (cleanPath === '/portal/client' || cleanPath.startsWith('/portal/client/'))) {
+    return true
+  }
+  if (role === 'Affiliate' && (cleanPath === '/portal/affiliate' || cleanPath.startsWith('/portal/affiliate/'))) {
+    return true
+  }
+  if (role === 'Employer' && (cleanPath === '/portal/employer' || cleanPath.startsWith('/portal/employer/'))) {
+    return true
+  }
+  if (role === 'Job Seeker' && (cleanPath === '/portal/seeker' || cleanPath.startsWith('/portal/seeker/'))) {
+    return true
+  }
+
+  return false
+}
+
+export const getDefaultLandingPath = (role?: UserRole): string => {
+  switch (role) {
+    case 'Admin':
+      return '/portal/admin/dashboard'
+    case 'Biz Pro':
+      return '/portal/bizpro/bulletin'
+    case 'Client':
+      return '/portal/client/dashboard'
+    case 'Affiliate':
+      return '/portal/affiliate/dashboard'
+    case 'Employer':
+      return '/portal/employer/dashboard'
+    case 'Job Seeker':
+      return '/portal/seeker/dashboard'
+    default:
+      return '/portal/dashboard'
+  }
+}
 
 const IDLE_TIMEOUT_MS = 14 * 60 * 1000 // 14 mins idle threshold
 const COUNTDOWN_SECONDS = 60 // 60 seconds warning countdown
@@ -189,9 +257,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loginAsDemoRole = async (role: UserRole) => {
     const email = `${role.toLowerCase().replace(/\s+/g, '')}@demo.com`
-    const user = MOCK_USERS[email] || Object.values(MOCK_USERS).find((u) => u.role === role) || MOCK_USERS['client@demo.com']
-    const res = await authService.login(user.email, 'Demo@1234')
-    if (res.success && res.user && !res.requiresOtp) {
+    const user = MOCK_USERS[email] || Object.values(MOCK_USERS).find((u) => u.role === role) || MOCK_USERS['admin@demo.com']
+    const res = await authService.login(user.email, 'Demo@1234', true, true)
+    if (res.success && res.user) {
       setUser(res.user)
       setStatus('authenticated')
     }
@@ -216,14 +284,56 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return res
   }
 
+
+  const getDashboardPath = (role?: UserRole): string => {
+    const currentRole = role || user?.role
+    if (!currentRole) return '/portal/dashboard'
+
+    const raw = sessionStorage.getItem('b4b_last_portal_path')
+    if (raw) {
+      try {
+        let savedPath: string | null = null
+        let savedRole: UserRole | undefined = undefined
+
+        if (raw.startsWith('{')) {
+          const parsed = JSON.parse(raw)
+          savedPath = parsed.path
+          savedRole = parsed.role
+        } else if (raw.startsWith('/portal')) {
+          // Legacy plain string fallback: only allow if matches target role guard
+          savedPath = raw
+          savedRole = currentRole
+        }
+
+        if (savedPath && savedRole === currentRole && isPathAllowedForRole(savedPath, currentRole)) {
+          return savedPath
+        }
+      } catch {
+        // parsing failure -> fallback
+      }
+    }
+
+    return getDefaultLandingPath(currentRole)
+  }
+
   const logout = async () => {
     await authService.logout()
+    try {
+      sessionStorage.removeItem('b4b_last_portal_path')
+    } catch {
+      // ignore
+    }
     setUser(null)
     setStatus('unauthenticated')
     setLogoutModalOpen(false)
   }
 
   const switchRole = (newRole: UserRole) => {
+    try {
+      sessionStorage.removeItem('b4b_last_portal_path')
+    } catch {
+      // ignore
+    }
     const target = Object.values(MOCK_USERS).find((u) => u.role === newRole)
     if (target) {
       setUser(target)
@@ -260,6 +370,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         user,
         isAuthenticated: !!user,
         status,
+        dashboardPath: getDashboardPath(user?.role),
         login,
         loginAsDemoRole,
         verifyOtp,

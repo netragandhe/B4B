@@ -22,7 +22,7 @@ const getRoleDashboard = (role?: UserRole): string => {
 }
 
 export const PublicOnlyRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, status } = useAuth()
+  const { user, status, dashboardPath } = useAuth()
   const [searchParams] = useSearchParams()
 
   if (status === 'loading') {
@@ -31,7 +31,7 @@ export const PublicOnlyRoute: React.FC<{ children: React.ReactNode }> = ({ child
 
   if (user && status === 'authenticated') {
     const redirectParam = searchParams.get('redirect')
-    const targetPath = redirectParam ? decodeURIComponent(redirectParam) : getRoleDashboard(user.role)
+    const targetPath = redirectParam ? decodeURIComponent(redirectParam) : (dashboardPath || '/portal/dashboard')
     return <Navigate to={targetPath} replace />
   }
 

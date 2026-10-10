@@ -35,8 +35,8 @@ export const authService = {
   /**
    * Authenticates user against mock user database
    */
-  async login(email: string, password: string, rememberMe: boolean = true): Promise<LoginResponse> {
-    await delay(750)
+  async login(email: string, password: string, rememberMe: boolean = true, bypassOtp: boolean = false): Promise<LoginResponse> {
+    await delay(300)
 
     const normalizedEmail = email.toLowerCase().trim()
     const user = MOCK_USERS[normalizedEmail]
@@ -70,8 +70,8 @@ export const authService = {
       }
     }
 
-    // Require OTP 2-step verification for Admin and Biz Pro roles
-    if (user.role === 'Admin' || user.role === 'Biz Pro') {
+    // Require OTP 2-step verification for Admin and Biz Pro roles only when not in 1-click demo bypass
+    if (!bypassOtp && (user.role === 'Admin' || user.role === 'Biz Pro')) {
       return {
         success: true,
         requiresOtp: true,
@@ -80,10 +80,8 @@ export const authService = {
     }
 
     const mockToken = `b4b_jwt_${user.id}_${Date.now()}`
-    if (rememberMe) {
-      localStorage.setItem(STORAGE_SESSION_KEY, mockToken)
-      localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user))
-    }
+    localStorage.setItem(STORAGE_SESSION_KEY, mockToken)
+    localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user))
 
     return {
       success: true,

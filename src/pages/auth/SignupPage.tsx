@@ -119,7 +119,7 @@ export const SignupPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-900 text-white flex flex-col justify-between p-6 sm:p-12">
-      <SEOHead title="Create Account | B4B Network" description="Join B4B Capital Network as a Client, Biz Pro, Affiliate, Employer, or Job Seeker." />
+      <SEOHead title="Create Account | B4B Network" description="Join B4B Capital Network as a Client, B4B Coach, Affiliate, Employer, or Job Seeker." />
 
       <div className="max-w-4xl mx-auto w-full space-y-8">
         {/* Header */}
@@ -174,7 +174,7 @@ export const SignupPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
                 { role: 'Client', icon: Users, title: 'Small Business Client', desc: 'Access debt facilities, business credit, POS terminals, & CFO advisory.' },
-                { role: 'Biz Pro', icon: Trophy, title: 'Biz Pro Sales Rep', desc: 'Sell 100+ business services, earn commissions, & climb the 9-rank scoreboard.' },
+                { role: 'Biz Pro', icon: Trophy, title: 'B4B Coach', desc: 'Sell 16 commercial solutions, earn commissions, & climb the 9-rank scoreboard.' },
                 { role: 'Affiliate', icon: Share2, title: 'Affiliate & Partner', desc: 'Refer small business clients, track pipeline, & earn recurring revenue.' },
                 { role: 'Employer', icon: Briefcase, title: 'Corporate Employer', desc: 'Post open jobs, manage candidate pipelines, & hire top sales talent.' },
                 { role: 'Job Seeker', icon: GraduationCap, title: 'Job Seeker Candidate', desc: 'Find high-paying Account Executive, SaaS, & remote opportunities.' },
@@ -344,19 +344,19 @@ export const SignupPage: React.FC = () => {
           </motion.div>
         )}
 
-        {/* STEP 4: BIZ PRO PLAN SELECTION */}
+        {/* STEP 4: B4B COACH PLAN SELECTION */}
         {step === 4 && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 text-left max-w-xl mx-auto">
-            <h2 className="text-2xl font-bold font-heading text-white">Step 4: Biz Pro Starter Plan</h2>
+            <h2 className="text-2xl font-bold font-heading text-white">Step 4: B4B Coach Starter Plan</h2>
 
             <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-900 to-slate-900 border border-blue-500 space-y-4">
               <Badge variant="gold" size="sm">
                 Recommended
               </Badge>
-              <h3 className="text-xl font-bold">Biz Pro Executive Membership</h3>
+              <h3 className="text-xl font-bold">B4B Coach Membership</h3>
               <div className="text-3xl font-black text-emerald-400">$25 / month</div>
               <p className="text-xs text-blue-200">
-                Includes full access to eBOX, AI Marketing Hub, Lead CRM, and 100+ Service Catalog items.
+                Includes full access to eBOX, AI Marketing Hub, Lead CRM, and 16 Solution items.
               </p>
             </div>
 
