@@ -36,6 +36,8 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>
 
+import { getRoleLabel } from '@/config/roles'
+
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -104,7 +106,7 @@ export const LoginPage: React.FC = () => {
       if (res.success) {
         toast({
           title: `Welcome back!`,
-          description: `Logged in as ${role} (${res.user?.name}).`,
+          description: `Logged in as ${getRoleLabel(role)} (${res.user?.name}).`,
           type: 'success',
         })
         const targetPath = redirectUrl ? decodeURIComponent(redirectUrl) : getRolePath(role)
@@ -120,7 +122,7 @@ export const LoginPage: React.FC = () => {
       case 'Admin':
         return '/portal/admin/dashboard'
       case 'Biz Pro':
-        return '/portal/bizpro/dashboard'
+        return '/portal/bizpro/bulletin'
       case 'Client':
         return '/portal/client/dashboard'
       case 'Affiliate':
@@ -214,7 +216,7 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-slate-50 text-slate-900">
-      <SEOHead title="Portal Sign In | B4B Executive Platform" description="Sign in to your B4B client, Biz Pro, or corporate portal account." />
+      <SEOHead title="Portal Sign In | B4B Executive Platform" description="Sign in to your B4B client, B4B Coach, or corporate portal account." />
 
       {/* LEFT SIDE PANEL: BRANDED GRADIENT & EXECUTIVE SHOWCASE */}
       <div className="hidden lg:flex flex-col justify-between p-12 relative overflow-hidden bg-gradient-to-br from-[#051E4D] via-[#072B6E] to-[#0A3D9C] border-r border-slate-200 text-white">
@@ -291,7 +293,7 @@ export const LoginPage: React.FC = () => {
             </div>
             <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-xs">
               <div className="text-[10px] text-slate-400 uppercase font-bold">Active Sales Reps</div>
-              <div className="text-base font-black text-amber-400 mt-0.5">148 Biz Pros</div>
+              <div className="text-base font-black text-amber-400 mt-0.5">148 B4B Coaches</div>
             </div>
           </div>
         </div>
@@ -362,7 +364,7 @@ export const LoginPage: React.FC = () => {
                       onClick={() => handleDemoQuickLogin(r)}
                       className="py-2 px-1.5 rounded-xl bg-white hover:bg-blue-50 border border-slate-200 text-[11px] font-bold text-slate-800 hover:text-[#0A3D9C] transition-all text-center truncate shadow-xs"
                     >
-                      {r}
+                      {getRoleLabel(r)}
                     </button>
                   ))}
                 </div>

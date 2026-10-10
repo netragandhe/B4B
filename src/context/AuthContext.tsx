@@ -18,6 +18,7 @@ interface AuthContextType {
   user: User | null
   isAuthenticated: boolean
   status: 'loading' | 'authenticated' | 'unauthenticated'
+  dashboardPath: string
   login: (emailOrOpts?: string | { email?: string; role?: UserRole; password?: string }, password?: string, rememberMe?: boolean) => Promise<LoginResponse>
   loginAsDemoRole: (role: UserRole) => Promise<LoginResponse>
   verifyOtp: (email: string, otp: string) => Promise<LoginResponse>
@@ -216,8 +217,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return res
   }
 
+  const getDashboardPath = (role?: UserRole): string => {
+    const lastPath = sessionStorage.getItem('b4b_last_portal_path')
+    if (lastPath && lastPath.startsWith('/portal') && !lastPath.includes('/login')) {
+      return lastPath
+    }
+    switch (role) {
+      case 'Admin':
+        return '/portal/admin/dashboard'
+      case 'Biz Pro':
+        return '/portal/bizpro/bulletin'
+      case 'Client':
+        return '/portal/client/dashboard'
+      case 'Affiliate':
+        return '/portal/affiliate/dashboard'
+      case 'Employer':
+        return '/portal/employer/dashboard'
+      case 'Job Seeker':
+        return '/portal/seeker/dashboard'
+      default:
+        return '/portal/dashboard'
+    }
+  }
+
   const logout = async () => {
     await authService.logout()
+    sessionStorage.removeItem('b4b_last_portal_path')
     setUser(null)
     setStatus('unauthenticated')
     setLogoutModalOpen(false)
@@ -260,6 +285,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         user,
         isAuthenticated: !!user,
         status,
+        dashboardPath: getDashboardPath(user?.role),
         login,
         loginAsDemoRole,
         verifyOtp,

@@ -1769,7 +1769,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
               New Role Name
             </label>
             <Input
-              placeholder="e.g. Senior Regional Biz Pro..."
+              placeholder="e.g. Senior Regional B4B Coach..."
               value={newRoleName}
               onChange={(e) => setNewRoleName(e.target.value)}
             />

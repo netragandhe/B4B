@@ -3,6 +3,7 @@ import {
   LayoutDashboard,
   Wallet,
   Users,
+  Megaphone,
   FileCheck2,
   Settings,
   ShieldAlert,
@@ -60,6 +61,7 @@ export const ALL_MENU_ITEMS: Record<string, MenuItem> = {
   dashboard: { id: 'dashboard', name: 'Dashboard Overview', href: '/portal/dashboard', icon: LayoutDashboard, module: 'dashboard' },
   
   // Biz Pro Core & Leader
+  bulletin: { id: 'bulletin', name: 'B4B Bulletin', href: '/portal/bizpro/bulletin', icon: Megaphone, module: 'dashboard', badge: 'Live', badgeVariant: 'primary' },
   bizproDashboard: { id: 'bizpro-dash', name: 'Sales Dashboard', href: '/portal/bizpro/dashboard', icon: LayoutDashboard, module: 'dashboard' },
   leads: { id: 'leads', name: 'Leads CRM', href: '/portal/bizpro/leads', icon: Target, module: 'leads', badge: '24 Active', badgeVariant: 'primary' },
   clients: { id: 'clients', name: 'Clients Directory', href: '/portal/bizpro/clients', icon: Users, module: 'clients' },
@@ -81,7 +83,8 @@ export const ALL_MENU_ITEMS: Record<string, MenuItem> = {
   teamReports: { id: 'team-reports', name: 'Team Reports', href: '/portal/bizpro/team-reports', icon: FileText, module: 'reports', isLeaderOnly: true },
 
   // Admin Specific
-  adminBizPro: { id: 'admin-bizpro', name: 'Biz Pro Management', href: '/portal/admin/bizpro', icon: Users, module: 'bizproManagement', badge: '148 Active', badgeVariant: 'primary' },
+  adminBizPro: { id: 'admin-bizpro', name: 'B4B Coach Management', href: '/portal/admin/bizpro', icon: Users, module: 'bizproManagement', badge: '148 Active', badgeVariant: 'primary' },
+  adminBulletin: { id: 'admin-bulletin', name: 'Bulletin CMS', href: '/portal/admin/bulletin', icon: Megaphone, module: 'cms' },
   rankRules: { id: 'rank-rules', name: 'Rank & Promotion Rules', href: '/portal/admin/rank-rules', icon: Trophy, module: 'rankRules' },
   commissionMaker: { id: 'commission-maker', name: 'Commission Maker', href: '/portal/admin/commission-maker', icon: Sliders, module: 'commissionMaker', badge: 'Rule Builder', badgeVariant: 'gold' },
   servicesInventory: { id: 'services', name: 'Service Inventory', href: '/portal/admin/services', icon: ShoppingBag, module: 'inventory', badge: '100 Items' },
@@ -140,6 +143,7 @@ export function getMenuItemsForRole(role: UserRole, rankLevel: number = 1): Menu
       'ebox',
       'dashboard',
       'adminBizPro',
+      'adminBulletin',
       'rankRules',
       'commissionMaker',
       'territory',
@@ -157,6 +161,7 @@ export function getMenuItemsForRole(role: UserRole, rankLevel: number = 1): Menu
     ],
     'Biz Pro': [
       'ebox',
+      'bulletin',
       'bizproDashboard',
       'leads',
       'clients',

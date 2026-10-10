@@ -20,6 +20,7 @@ import {
   RefreshCw,
   Sparkles,
   Command,
+  Globe,
 } from 'lucide-react'
 import { BrandLogo, brandConfig } from '@/config/brand'
 import { Button } from '@/components/ui/Button'
@@ -82,22 +83,12 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
   const unreadCount = notifications.filter((n) => !n.read).length
 
-  // Auto-sync user role based on route URL so every page displays matching sidebar & mock data
+  // Track and persist last visited portal route in sessionStorage for portal <-> website continuity
   useEffect(() => {
-    if (location.pathname.startsWith('/portal/admin') && user?.role !== 'Admin') {
-      switchRole('Admin')
-    } else if (location.pathname.startsWith('/portal/bizpro') && user?.role !== 'Biz Pro') {
-      switchRole('Biz Pro')
-    } else if (location.pathname.startsWith('/portal/client') && user?.role !== 'Client') {
-      switchRole('Client')
-    } else if (location.pathname.startsWith('/portal/affiliate') && user?.role !== 'Affiliate') {
-      switchRole('Affiliate')
-    } else if (location.pathname.startsWith('/portal/employer') && user?.role !== 'Employer') {
-      switchRole('Employer')
-    } else if (location.pathname.startsWith('/portal/seeker') && user?.role !== 'Job Seeker') {
-      switchRole('Job Seeker')
+    if (location.pathname.startsWith('/portal') && !location.pathname.includes('/login')) {
+      sessionStorage.setItem('b4b_last_portal_path', location.pathname + location.search)
     }
-  }, [location.pathname, user?.role, switchRole])
+  }, [location.pathname, location.search])
 
   // Quick keyboard shortcut for search (Ctrl+K)
   useEffect(() => {
@@ -243,6 +234,20 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
         {/* Sidebar Footer Controls */}
         <div className="p-3 border-t border-slate-100 dark:border-[#1E3A5F]/70 space-y-1">
+          <Link
+            to="/"
+            title="Marketing Website"
+            className={`w-full flex items-center ${
+              isCollapsed ? 'justify-center p-2' : 'justify-between px-3 py-2'
+            } text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] rounded-lg transition-colors`}
+          >
+            <div className="flex items-center gap-2">
+              <Globe className="w-3.5 h-3.5 text-blue-500" />
+              {!isCollapsed && <span>Marketing Website</span>}
+            </div>
+            {!isCollapsed && <ExternalLink className="w-3 h-3 text-slate-400" />}
+          </Link>
+
           <button
             onClick={handleLogout}
             title="Sign Out"
@@ -286,6 +291,19 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
           {/* Right section: Quick role indicator, Notifications, Theme toggle, Profile menu */}
           <div className="flex items-center gap-2.5">
+            {/* Quick link to public marketing website */}
+            <Link to="/" className="hidden sm:flex">
+              <Button
+                size="sm"
+                variant="outline"
+                className="text-xs h-8 border-slate-200 dark:border-[#1E3A5F] text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
+                leftIcon={<Globe className="w-3.5 h-3.5 text-blue-500" />}
+              >
+                <span>Marketing Website</span>
+                <ExternalLink className="w-3 h-3 text-slate-400 ml-0.5" />
+              </Button>
+            </Link>
+
             {/* Quick eBOX shortcut button in top bar */}
             <Link to="/portal/ebox" className="hidden md:flex">
               <Button
@@ -406,12 +424,31 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
                   <div className="pt-1 space-y-1">
                     <Link
+                      to="/"
+                      onClick={() => setProfileMenuOpen(false)}
+                      className="flex items-center justify-between px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] rounded-lg transition-colors font-medium"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Globe className="w-3.5 h-3.5 text-blue-500" />
+                        <span>Marketing Website</span>
+                      </div>
+                      <ExternalLink className="w-3 h-3 text-slate-400" />
+                    </Link>
+                    <Link
+                      to="/portal/profile"
+                      onClick={() => setProfileMenuOpen(false)}
+                      className="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] rounded-lg transition-colors font-medium"
+                    >
+                      <User className="w-3.5 h-3.5 text-slate-400" />
+                      <span>Profile & Account</span>
+                    </Link>
+                    <Link
                       to="/portal/settings"
                       onClick={() => setProfileMenuOpen(false)}
                       className="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] rounded-lg transition-colors font-medium"
                     >
                       <Settings className="w-3.5 h-3.5 text-slate-400" />
-                      <span>Account Settings</span>
+                      <span>Portal Settings</span>
                     </Link>
                     <button
                       onClick={() => {

@@ -17,6 +17,7 @@ import {
   ChevronRight,
   Award,
   Zap,
+  Megaphone,
 } from 'lucide-react'
 import {
   ResponsiveContainer,

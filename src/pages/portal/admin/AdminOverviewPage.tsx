@@ -53,7 +53,7 @@ export const AdminOverviewPage: React.FC = () => {
 
   const [approvals, setApprovals] = useState<PendingApproval[]>(ADMIN_PENDING_APPROVALS)
   const [searchQuery, setSearchQuery] = useState('')
-  const [typeFilter, setTypeFilter] = useState<'All' | 'Biz Pro' | 'Employer' | 'Draw/Underwriting'>('All')
+  const [typeFilter, setTypeFilter] = useState<'All' | 'B4B Coach' | 'Employer' | 'Draw/Underwriting'>('All')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 4
@@ -91,8 +91,8 @@ export const AdminOverviewPage: React.FC = () => {
         item.subtitle.toLowerCase().includes(searchQuery.toLowerCase())
 
       let matchesType = true
-      if (typeFilter === 'Biz Pro') {
-        matchesType = item.type === 'Rank Promotion' || item.type === 'New Biz Pro Onboarding'
+      if (typeFilter === 'B4B Coach') {
+        matchesType = item.type === 'Rank Promotion' || item.type === 'New B4B Coach Onboarding'
       } else if (typeFilter === 'Employer') {
         matchesType = item.subtitle.toLowerCase().includes('employer') || item.type === 'Underwriting Term Sheet'
       } else if (typeFilter === 'Draw/Underwriting') {
@@ -128,7 +128,7 @@ export const AdminOverviewPage: React.FC = () => {
     <div className="space-y-8 text-left">
       <PageHeader
         title="Super Admin Command Center"
-        description="Company-wide KPI oversight, regional revenue breakdown, Biz Pro & Employer approval flow, and 9-rank distribution analytics."
+        description="Company-wide KPI oversight, regional revenue breakdown, B4B Coach & Employer approval flow, and 9-rank distribution analytics."
         breadcrumbs={[
           { label: 'Portal', href: '/portal/dashboard' },
           { label: 'Admin Overview', icon: <ShieldAlert className="w-3.5 h-3.5 text-blue-500" /> },
@@ -154,7 +154,7 @@ export const AdminOverviewPage: React.FC = () => {
               onClick={() => navigate('/portal/admin/bizpro')}
               leftIcon={<Plus className="w-3.5 h-3.5" />}
             >
-              Invite Biz Pro
+              Invite B4B Coach
             </Button>
           </>
         }
@@ -173,7 +173,7 @@ export const AdminOverviewPage: React.FC = () => {
         />
 
         <StatCard
-          title="Active Biz Pros"
+          title="Active B4B Coaches"
           value="148 Reps"
           change={12.0}
           changePeriod="+6 new this month"
@@ -186,7 +186,7 @@ export const AdminOverviewPage: React.FC = () => {
           title="New Signups (30d)"
           value="32 Accounts"
           change={18.4}
-          changePeriod="24 Biz Pros • 8 Employers"
+          changePeriod="24 B4B Coaches • 8 Employers"
           icon={<UserCheck className="w-5 h-5 text-emerald-500" />}
           variant="gold"
           caption="Pending onboarding verification"
@@ -246,7 +246,7 @@ export const AdminOverviewPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white">
-                Biz Pro 9-Rank Force Distribution
+                B4B Coach 9-Rank Force Distribution
               </h3>
               <p className="text-xs text-slate-500">Number of active reps per rank level.</p>
             </div>
@@ -278,13 +278,13 @@ export const AdminOverviewPage: React.FC = () => {
         </Card>
       </div>
 
-      {/* PENDING APPROVALS FLOW TABLE (BIZ PROS & EMPLOYERS) */}
+      {/* PENDING APPROVALS FLOW TABLE (B4B COACHES & EMPLOYERS) */}
       <Card variant="default" className="p-5 border border-slate-200 dark:border-slate-800 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white flex items-center gap-2">
               <Zap className="w-4 h-4 text-amber-500" />
-              <span>Approval Flow: New Biz Pros, Employers & Risk Queue</span>
+              <span>Approval Flow: New B4B Coaches, Employers & Risk Queue</span>
             </h3>
             <p className="text-xs text-slate-500">Authorize candidate onboarding, rank advancements, and high-value underwriting draws.</p>
           </div>
@@ -317,7 +317,7 @@ export const AdminOverviewPage: React.FC = () => {
 
             {/* Type Filter Buttons */}
             <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
-              {(['All', 'Biz Pro', 'Employer', 'Draw/Underwriting'] as const).map((t) => (
+              {(['All', 'B4B Coach', 'Employer', 'Draw/Underwriting'] as const).map((t) => (
                 <button
                   key={t}
                   onClick={() => {
@@ -372,7 +372,7 @@ export const AdminOverviewPage: React.FC = () => {
                         variant={
                           app.type === 'Rank Promotion'
                             ? 'gold'
-                            : app.type === 'New Biz Pro Onboarding'
+                            : app.type === 'New B4B Coach Onboarding'
                             ? 'emerald'
                             : app.type === 'High-Value Draw'
                             ? 'navy'

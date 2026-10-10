@@ -29,7 +29,7 @@ export const MENU_CATALOG: Menu[] = [
   },
   {
     id: 'admin-bizpro',
-    label: 'Biz Pro Management',
+    label: 'B4B Coach Management',
     icon: 'Users',
     route: '/portal/admin/bizpro',
     module: 'Leads and Clients',
@@ -39,6 +39,17 @@ export const MENU_CATALOG: Menu[] = [
     badge: '148 Active',
     badgeVariant: 'primary',
     description: 'Broker roster, licensing compliance, and downline hierarchy.',
+  },
+  {
+    id: 'admin-bulletin',
+    label: 'Bulletin CMS',
+    icon: 'Megaphone',
+    route: '/portal/admin/bulletin',
+    module: 'Content',
+    group: 'Content & Communications',
+    order: 2.5,
+    isCore: false,
+    description: 'Author, edit, pin, and manage executive communications for the network.',
   },
   {
     id: 'admin-rank-rules',
@@ -204,8 +215,21 @@ export const MENU_CATALOG: Menu[] = [
   },
 
   // ==========================================
-  // 2. BIZ PRO CORE MENUS (14)
+  // 2. BIZ PRO CORE MENUS (15)
   // ==========================================
+  {
+    id: 'bizpro-bulletin',
+    label: 'B4B Bulletin',
+    icon: 'Megaphone',
+    route: '/portal/bizpro/bulletin',
+    module: 'Dashboard',
+    group: 'Biz Pro Core',
+    order: 100,
+    isCore: true,
+    badge: 'Live',
+    badgeVariant: 'primary',
+    description: 'Executive national announcements, commercial program rollouts, and updates feed.',
+  },
   {
     id: 'bizpro-dashboard',
     label: 'Sales Dashboard',
@@ -322,7 +346,7 @@ export const MENU_CATALOG: Menu[] = [
     group: 'Biz Pro Core',
     order: 110,
     isCore: false,
-    description: 'Biz Pro Academy certification masterclasses and underwriting scripts.',
+    description: 'B4B Coach Academy certification masterclasses and underwriting scripts.',
   },
   {
     id: 'bizpro-territory',
@@ -844,7 +868,7 @@ export const MENU_CATALOG: Menu[] = [
     id: 'shared-profile',
     label: 'Profile & Account',
     icon: 'User',
-    route: '/portal/settings',
+    route: '/portal/profile',
     module: 'Shared',
     group: 'Shared Platform',
     order: 603,

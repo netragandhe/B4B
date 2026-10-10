@@ -38,7 +38,7 @@ export const AdminTrainingCmsPage: React.FC = () => {
   const handleCreateNew = () => {
     const newMod: TrainingModule = {
       id: `tr_${Date.now()}`,
-      title: 'New Biz Pro Training Video',
+      title: 'New B4B Coach Training Video',
       category: 'Capital',
       minRankRequired: 1,
       duration: '15 mins',
@@ -71,8 +71,8 @@ export const AdminTrainingCmsPage: React.FC = () => {
   return (
     <div className="space-y-6 text-left max-w-7xl mx-auto">
       <PageHeader
-        title="Biz Pro Training Content CMS"
-        description="Manage video modules, onboarding courses, and rank-gated training videos for Biz Pros."
+        title="B4B Coach Training Content CMS"
+        description="Manage video modules, onboarding courses, and rank-gated training videos for B4B Coaches."
         breadcrumbs={[
           { label: 'Portal', href: '/portal/dashboard' },
           { label: 'Training CMS', icon: <GraduationCap className="w-3.5 h-3.5 text-blue-500" /> },

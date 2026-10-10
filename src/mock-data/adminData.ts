@@ -8,7 +8,7 @@ export interface AdminKpi {
 
 export interface PendingApproval {
   id: string
-  type: 'Rank Promotion' | 'High-Value Draw' | 'New Biz Pro Onboarding' | 'Underwriting Term Sheet'
+  type: 'Rank Promotion' | 'High-Value Draw' | 'New B4B Coach Onboarding' | 'Underwriting Term Sheet'
   title: string
   subtitle: string
   amount?: string
@@ -81,7 +81,7 @@ export const ADMIN_PENDING_APPROVALS: PendingApproval[] = [
   },
   {
     id: 'app_4',
-    type: 'New Biz Pro Onboarding',
+    type: 'New B4B Coach Onboarding',
     title: 'Kevin Zhao — Account Executive Onboarding',
     subtitle: 'District 11 - Dallas Territory',
     date: '2026-10-05',

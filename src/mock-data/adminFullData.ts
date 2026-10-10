@@ -79,35 +79,60 @@ export const ADMIN_ACTIVITY_FEED: AdminActivityFeedItem[] = [
 
 // 100 MOCK INVENTORY SERVICES GENERATOR
 export const GENERATE_100_INVENTORY_PRODUCTS = (): InventoryServiceProduct[] => {
-  const categories: ('Capital' | 'Advisory' | 'Operations' | 'Growth')[] = ['Capital', 'Advisory', 'Operations', 'Growth']
-  const prefixes = [
-    'Revenue-Based', 'Express', 'Syndicated', 'Mezzanine', 'Revolving', 'Equipment',
-    'Commercial Real Estate', 'SBA 7(a)', 'Invoice Factoring', 'Bridge', 'Asset-Backed',
-    'Payroll', 'Corporate CFO', 'Tax Audit', 'Merchant Cash', 'Franchise', 'Healthcare',
-    'Tech Leasing', 'Fleet Purchase', 'M&A Advisory'
+  const CORE_16_NAMES: { title: string; category: 'Capital' | 'Advisory' | 'Operations' | 'Growth'; price: number; rate: string }[] = [
+    { title: 'Accept Payments', category: 'Operations', price: 65000, rate: '10.0%' },
+    { title: 'Business Management', category: 'Advisory', price: 48000, rate: '15.0%' },
+    { title: 'Business Branding (Print My LOGO)', category: 'Growth', price: 15000, rate: '20.0%' },
+    { title: 'Build Business Credit', category: 'Growth', price: 12000, rate: '25.0%' },
+    { title: 'Business Plan Writing', category: 'Advisory', price: 8500, rate: '25.0%' },
+    { title: 'Business Funding and Loans', category: 'Capital', price: 350000, rate: '3.5%' },
+    { title: 'Lead Generation', category: 'Growth', price: 22000, rate: '18.0%' },
+    { title: 'Customer Service Academy', category: 'Operations', price: 18000, rate: '20.0%' },
+    { title: 'Cyber Security', category: 'Operations', price: 36000, rate: '15.0%' },
+    { title: 'Find Jobs (B4B Jobs)', category: 'Growth', price: 14000, rate: '20.0%' },
+    { title: 'Insurance', category: 'Capital', price: 28000, rate: '12.0%' },
+    { title: 'IT Solutions', category: 'Operations', price: 45000, rate: '15.0%' },
+    { title: 'Marketing', category: 'Growth', price: 32000, rate: '18.0%' },
+    { title: 'Affiliates and Partners', category: 'Growth', price: 20000, rate: '25.0%' },
+    { title: 'Bookkeeping and Tax Prep', category: 'Advisory', price: 24000, rate: '20.0%' },
+    { title: 'Web Design Pros', category: 'Growth', price: 25000, rate: '20.0%' },
   ]
-  const suffixes = [
-    'Facility', 'Line of Credit', 'Term Loan', 'Retainer', 'Consulting Package',
-    'Guarantee Line', 'Advance Program', 'Audit Suite', 'Growth Accelerator', 'Capital Reserve'
+
+  const prefixes = [
+    'Express', 'Enterprise', 'Syndicated', 'Tier-1', 'Regional', 'Custom', 'Corporate',
+    'Commercial', 'Prime', 'Advanced', 'Integrated', 'Turnkey', 'Direct', 'Institutional'
   ]
 
   const products: InventoryServiceProduct[] = []
 
-  for (let i = 1; i <= 100; i++) {
+  // First 16 are the primary client solutions
+  CORE_16_NAMES.forEach((core, idx) => {
+    products.push({
+      id: `prd_${String(idx + 1).padStart(3, '0')}`,
+      title: core.title,
+      sku: `SKU-B4B-${String(idx + 1).padStart(3, '0')}`,
+      category: core.category,
+      basePrice: core.price,
+      commissionRate: core.rate,
+      status: 'Active',
+      updatedAt: '2026-10-01',
+    })
+  })
+
+  // Next 84 products are specialized packages and tier variations of the 16 solutions
+  for (let i = 17; i <= 100; i++) {
+    const coreTemplate = CORE_16_NAMES[(i - 1) % CORE_16_NAMES.length]
     const pIndex = (i - 1) % prefixes.length
-    const sIndex = (i - 1) % suffixes.length
-    const cat = categories[(i - 1) % categories.length]
-    const price = 10000 + (i * 12500) % 1500000
-    const rate = (1.5 + ((i * 0.3) % 18)).toFixed(1) + '%'
+    const price = Math.round(coreTemplate.price * (1 + ((i % 5) * 0.25)))
     const status: 'Active' | 'Archived' | 'Draft' = i % 15 === 0 ? 'Archived' : i % 9 === 0 ? 'Draft' : 'Active'
 
     products.push({
       id: `prd_${String(i).padStart(3, '0')}`,
-      title: `${prefixes[pIndex]} ${suffixes[sIndex]} #${i}`,
+      title: `${prefixes[pIndex]} ${coreTemplate.title} Package #${i}`,
       sku: `SKU-B4B-${String(i).padStart(3, '0')}`,
-      category: cat,
+      category: coreTemplate.category,
       basePrice: price,
-      commissionRate: rate,
+      commissionRate: coreTemplate.rate,
       status: status,
       updatedAt: `2026-10-${String((i % 28) + 1).padStart(2, '0')}`,
     })
