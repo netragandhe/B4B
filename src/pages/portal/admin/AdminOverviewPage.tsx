@@ -610,39 +610,54 @@ export const AdminOverviewPage: React.FC = () => {
         onClose={() => setRankRulesModalOpen(false)}
         title="B4B Coach 9-Rank Compensation & Promotion Matrix"
         description="Official client commission structure, monthly promotion rules, direct/group overrides, and perks."
-        maxWidth="xl"
+        maxWidth="2xl"
       >
-        <div className="space-y-4 max-h-[65vh] overflow-y-auto pr-1 text-xs">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {BIZPRO_RANKS.map((r) => (
-              <div
-                key={r.level}
-                className="p-3.5 rounded-xl border bg-slate-50 dark:bg-[#12294A] border-slate-200 dark:border-[#1E3A5F] space-y-2"
-              >
-                <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
-                  <Badge variant="navy" size="sm">
-                    Rank {r.level}
-                  </Badge>
-                  <span className="font-extrabold text-emerald-600 dark:text-emerald-400">
-                    {r.commissionTier}
-                  </span>
-                </div>
-
-                <h4 className="font-bold text-sm text-slate-900 dark:text-white">{r.title}</h4>
-                <p className="text-[11px] text-slate-500 font-medium">{r.promotionCriteria}</p>
-
-                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-1 text-[11px]">
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Monthly Target:</span>
-                    <span className="font-bold text-slate-700 dark:text-slate-300">{r.monthlyCommissionRange}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Annual Potential:</span>
-                    <span className="font-bold text-slate-700 dark:text-slate-300">{r.yearlyIncomeRange}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+        <div className="space-y-4 text-xs text-left">
+          <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#1E3A5F] max-h-[55vh] overflow-y-auto custom-scrollbar">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead className="sticky top-0 bg-slate-100 dark:bg-[#0D1E36] border-b border-slate-200 dark:border-[#1E3A5F] text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+                <tr>
+                  <th className="p-3 w-20">Rank</th>
+                  <th className="p-3">Title & Level</th>
+                  <th className="p-3">Monthly Target</th>
+                  <th className="p-3">Annual Potential</th>
+                  <th className="p-3 min-w-[240px]">Qualification Criteria</th>
+                  <th className="p-3 text-right">Perks Count</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-[#1E3A5F] bg-white dark:bg-[#12294A]">
+                {BIZPRO_RANKS.map((r) => (
+                  <tr
+                    key={r.level}
+                    className="hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors"
+                  >
+                    <td className="p-3">
+                      <Badge variant={r.isLeader ? 'primary' : 'navy'} size="sm">
+                        Rank {r.level}
+                      </Badge>
+                    </td>
+                    <td className="p-3">
+                      <div className="font-bold text-slate-900 dark:text-white">{r.title}</div>
+                      <div className="text-[10px] text-slate-400">
+                        {r.isLeader ? 'District Leadership' : 'Individual Producer'}
+                      </div>
+                    </td>
+                    <td className="p-3 font-bold text-emerald-600 dark:text-emerald-400">
+                      {r.monthlyCommissionRange}
+                    </td>
+                    <td className="p-3 font-bold text-slate-700 dark:text-slate-300">
+                      {r.yearlyIncomeRange}
+                    </td>
+                    <td className="p-3 text-[11px] text-slate-600 dark:text-slate-300 leading-snug">
+                      {r.promotionCriteria}
+                    </td>
+                    <td className="p-3 text-right font-medium text-slate-500">
+                      {r.perks.length} Perks Unlocked
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </Modal>

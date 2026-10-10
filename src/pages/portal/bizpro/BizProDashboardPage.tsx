@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Target,
   DollarSign,
   Trophy,
   TrendingUp,
   ArrowUpRight,
+  ArrowRight,
   PlusCircle,
   Sparkles,
   CheckCircle2,
@@ -615,57 +617,94 @@ ${currentRank.title} | B4B America`
         onClose={() => setRoadmapOpen(false)}
         title="B4B Coach 9-Rank Compensation & Promotion Matrix"
         description="Official client commission structure, monthly promotion rules, direct/group overrides, and perks."
-        maxWidth="xl"
+        maxWidth="2xl"
       >
-        <div className="space-y-4 max-h-[65vh] overflow-y-auto pr-1 text-xs">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {BIZPRO_RANKS.map((r) => {
-              const isCurrent = r.level === currentRank.level
-              const isPassed = r.level < currentRank.level
+        <div className="space-y-4 text-xs text-left">
+          {/* Quick Summary Pill Row */}
+          <div className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60">
+            <div className="flex items-center gap-2">
+              <Trophy className="w-4 h-4 text-amber-500" />
+              <span className="font-bold text-slate-900 dark:text-white">
+                Your Current Status: <span className="text-blue-600 dark:text-blue-400 font-extrabold">{currentRank.title} (Rank {currentRank.level})</span>
+              </span>
+            </div>
+            <Link
+              to="/portal/bizpro/rank"
+              onClick={() => setRoadmapOpen(false)}
+              className="text-xs font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 inline-flex items-center gap-1"
+            >
+              <span>Open Full Rank Portal</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
 
-              return (
-                <div
-                  key={r.level}
-                  className={`p-3.5 rounded-xl border transition-all ${
-                    isCurrent
-                      ? 'bg-blue-50/90 dark:bg-blue-950/60 border-blue-500 shadow-md ring-2 ring-blue-500/20'
-                      : isPassed
-                      ? 'bg-emerald-50/40 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-900/60'
-                      : 'bg-slate-50 dark:bg-[#12294A] border-slate-200 dark:border-[#1E3A5F]'
-                  }`}
-                >
-                  <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
-                    <div className="flex items-center gap-1.5">
-                      <Badge variant={isCurrent ? 'primary' : isPassed ? 'emerald' : 'navy'} size="sm">
-                        Rank {r.level}
-                      </Badge>
-                      {isCurrent && (
-                        <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-blue-600 text-white">
-                          CURRENT
-                        </span>
-                      )}
-                    </div>
-                    <span className="font-extrabold text-emerald-600 dark:text-emerald-400">
-                      {r.commissionTier}
-                    </span>
-                  </div>
+          {/* Clean Executive Matrix Table */}
+          <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#1E3A5F] max-h-[55vh] overflow-y-auto custom-scrollbar">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead className="sticky top-0 bg-slate-100 dark:bg-[#0D1E36] border-b border-slate-200 dark:border-[#1E3A5F] text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+                <tr>
+                  <th className="p-3 w-20">Rank</th>
+                  <th className="p-3">Title & Classification</th>
+                  <th className="p-3">Monthly Target</th>
+                  <th className="p-3">Annual Potential</th>
+                  <th className="p-3 min-w-[220px]">Qualification Criteria</th>
+                  <th className="p-3 text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-[#1E3A5F] bg-white dark:bg-[#12294A]">
+                {BIZPRO_RANKS.map((r) => {
+                  const isCurrent = r.level === currentRank.level
+                  const isPassed = r.level < currentRank.level
 
-                  <h4 className="font-bold text-sm text-slate-900 dark:text-white mt-2">{r.title}</h4>
-                  <p className="text-[11px] text-slate-500 mt-0.5 font-medium">{r.promotionCriteria}</p>
-
-                  <div className="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800 space-y-1 text-[11px]">
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Monthly Target:</span>
-                      <span className="font-bold text-slate-700 dark:text-slate-300">{r.monthlyCommissionRange}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Annual Potential:</span>
-                      <span className="font-bold text-slate-700 dark:text-slate-300">{r.yearlyIncomeRange}</span>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
+                  return (
+                    <tr
+                      key={r.level}
+                      className={`transition-colors ${
+                        isCurrent
+                          ? 'bg-blue-50/80 dark:bg-blue-950/40 font-semibold'
+                          : 'hover:bg-slate-50/60 dark:hover:bg-slate-800/30'
+                      }`}
+                    >
+                      <td className="p-3">
+                        <Badge variant={isCurrent ? 'primary' : isPassed ? 'emerald' : 'navy'} size="sm">
+                          Rank {r.level}
+                        </Badge>
+                      </td>
+                      <td className="p-3">
+                        <div className="font-bold text-slate-900 dark:text-white">{r.title}</div>
+                        <div className="text-[10px] text-slate-400">
+                          {r.isLeader ? 'District Leadership' : 'Individual Producer'}
+                        </div>
+                      </td>
+                      <td className="p-3 font-bold text-emerald-600 dark:text-emerald-400">
+                        {r.monthlyCommissionRange}
+                      </td>
+                      <td className="p-3 font-bold text-slate-700 dark:text-slate-300">
+                        {r.yearlyIncomeRange}
+                      </td>
+                      <td className="p-3 text-[11px] text-slate-600 dark:text-slate-300 leading-snug">
+                        {r.promotionCriteria}
+                      </td>
+                      <td className="p-3 text-right whitespace-nowrap">
+                        {isCurrent ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-600 text-white shadow-xs">
+                            CURRENT
+                          </span>
+                        ) : isPassed ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400">
+                            ACHIEVED
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium text-slate-400 bg-slate-100 dark:bg-slate-800">
+                            LOCKED
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       </Modal>
