@@ -83,12 +83,19 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
   const unreadCount = notifications.filter((n) => !n.read).length
 
-  // Track and persist last visited portal route in sessionStorage for portal <-> website continuity
+  // Track and persist last visited portal route with active user role in sessionStorage for portal <-> website continuity
   useEffect(() => {
-    if (location.pathname.startsWith('/portal') && !location.pathname.includes('/login')) {
-      sessionStorage.setItem('b4b_last_portal_path', location.pathname + location.search)
+    if (location.pathname.startsWith('/portal') && !location.pathname.includes('/login') && user?.role) {
+      try {
+        sessionStorage.setItem(
+          'b4b_last_portal_path',
+          JSON.stringify({ path: location.pathname + location.search, role: user.role })
+        )
+      } catch {
+        // ignore
+      }
     }
-  }, [location.pathname, location.search])
+  }, [location.pathname, location.search, user?.role])
 
   // Quick keyboard shortcut for search (Ctrl+K)
   useEffect(() => {

@@ -144,13 +144,13 @@ export const BizProDashboardPage: React.FC = () => {
         />
 
         <StatCard
-          title="Rank Promotion Progress"
-          value="75%"
-          change={5.0}
-          changePeriod={`$90k to ${nextRank.title}`}
+          title="Rank Promotion Status"
+          value={currentRank.title}
+          change={10.0}
+          changePeriod={`Next target: ${nextRank.title}`}
           icon={<Trophy className="w-5 h-5 text-amber-500" />}
           variant="default"
-          caption="Target promotion by Q4 end"
+          caption="Promotion based on qualifying monthly commission"
         />
       </div>
 
