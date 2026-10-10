@@ -108,7 +108,7 @@ export const CoachLeadForm: React.FC<CoachFormProps> = ({
           Coach Assigned Successfully
         </h4>
         <p className="text-xs text-[var(--text-muted)] max-w-sm mx-auto">
-          Thank you! An OAL Business Coach specializing in your industry will review your requirements and reach out via phone.
+          Thank you! A B4B America Business Coach specializing in your industry will review your requirements and reach out via phone.
         </p>
         <Button variant="outline" size="sm" onClick={() => setSubmitted(false)}>
           Submit Another Request
@@ -128,16 +128,9 @@ export const CoachLeadForm: React.FC<CoachFormProps> = ({
         </FormField>
       </div>
 
-      <FormField label="Business Email" required error={errors.email?.message}>
-        <Input type="email" placeholder="john@mybusiness.com" {...register('email')} />
-      </FormField>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-        <FormField label="Industry / Trade" required error={errors.businessType?.message}>
-          <Select
-            options={BUSINESS_TYPES.map((b) => ({ label: b, value: b }))}
-            {...register('businessType')}
-          />
+        <FormField label="Business Email" required error={errors.email?.message}>
+          <Input type="email" placeholder="john@mybusiness.com" {...register('email')} />
         </FormField>
 
         <FormField label="State Located" required error={errors.state?.message}>
@@ -147,6 +140,13 @@ export const CoachLeadForm: React.FC<CoachFormProps> = ({
           />
         </FormField>
       </div>
+
+      <FormField label="Industry / Trade" required error={errors.businessType?.message}>
+        <Select
+          options={BUSINESS_TYPES.map((b) => ({ label: b, value: b }))}
+          {...register('businessType')}
+        />
+      </FormField>
 
       <FormField label="What are your immediate goals or challenges?">
         <Textarea
@@ -165,7 +165,7 @@ export const CoachLeadForm: React.FC<CoachFormProps> = ({
             onChange={(e) => field.onChange(e.target.checked)}
             error={errors.consent?.message}
             label="I consent to receive phone calls and text messages"
-            description="I agree to receive communications from an OAL Network certified business coach regarding small business advisory services. Message/data rates may apply."
+            description="I agree to receive communications from a B4B America certified business coach regarding small business advisory services. Message/data rates may apply."
           />
         )}
       />

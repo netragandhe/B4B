@@ -25,6 +25,7 @@ import {
   Tooltip as RechartsTooltip,
 } from 'recharts'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { StatCard } from '@/components/ui/StatCard'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -71,7 +72,20 @@ export const AffiliateDashboardPage: React.FC = () => {
   ]
 
   const handleCopyTopLink = () => {
-    navigator.clipboard.writeText(topLink.url)
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(topLink.url)
+      } else {
+        const textArea = document.createElement('textarea')
+        textArea.value = topLink.url
+        document.body.appendChild(textArea)
+        textArea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textArea)
+      }
+    } catch {
+      // fallback
+    }
     setCopied(true)
     toast({
       title: 'Tracking Link Copied!',
@@ -79,6 +93,15 @@ export const AffiliateDashboardPage: React.FC = () => {
       type: 'success',
     })
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleDownloadQr = () => {
+    const link = document.createElement('a')
+    link.href = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><rect width="300" height="300" fill="%23ffffff"/><text x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-size="16" fill="%2306201A">B4B Referral QR Code</text></svg>'
+    link.download = 'B4B_Referral_QR.svg'
+    link.click()
+    setQrModalOpen(false)
+    toast({ title: 'QR Code Downloaded', description: 'Saved as B4B_Referral_QR.svg', type: 'success' })
   }
 
   const handleSubmitLead = (e: React.FormEvent) => {
@@ -123,25 +146,40 @@ export const AffiliateDashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-6 text-left max-w-7xl mx-auto">
-      <PageHeader
-        title={currentAdaptive.title}
-        description={currentAdaptive.subtitle}
-        breadcrumbs={[{ label: 'Portal', href: '/portal/dashboard' }, { label: 'Affiliate Dashboard' }]}
-        badge={
-          <Badge variant="gold" size="md">
-            {currentAdaptive.badge}
-          </Badge>
-        }
-        actions={
-          <div className="flex items-center gap-2">
+      {/* HEADER SECTION - Clean, responsive, never misaligned or staggered */}
+      <div className="space-y-3">
+        <Breadcrumb
+          items={[{ label: 'Portal', href: '/portal/dashboard' }, { label: 'Affiliate Dashboard' }]}
+        />
+
+        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
+          <div>
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 dark:text-white tracking-tight">
+                {currentAdaptive.title}
+              </h1>
+              <Badge variant="gold" size="md" className="shrink-0">
+                {currentAdaptive.badge}
+              </Badge>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl leading-relaxed">
+              {currentAdaptive.subtitle}
+            </p>
+          </div>
+
+          {/* Action Toolbar: Switcher + Button on their own unified horizontal line */}
+          <div className="flex items-center gap-2.5 shrink-0 self-start xl:self-center">
             {/* Quick Type Selector for Previewing Adaptive UI */}
-            <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg text-xs">
+            <div className="inline-flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
               {(['Affiliate', 'Partner', 'Influencer'] as PartnerType[]).map((t) => (
                 <button
                   key={t}
+                  type="button"
                   onClick={() => setPartnerType(t)}
-                  className={`px-2 py-1 rounded font-bold transition-all ${
-                    partnerType === t ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400'
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    partnerType === t
+                      ? 'bg-[#0E7A5A] text-white shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   {t}
@@ -150,16 +188,16 @@ export const AffiliateDashboardPage: React.FC = () => {
             </div>
 
             <Button
-              variant="accent"
               size="sm"
               onClick={() => setSubmitLeadOpen(true)}
-              leftIcon={<Share2 className="w-3.5 h-3.5" />}
+              leftIcon={<Share2 className="w-3.5 h-3.5 text-[#06201A]" />}
+              className="bg-[#C8793A] hover:bg-[#b56b30] text-[#06201A] font-extrabold shadow-md border border-[#96521E]/30 px-4 py-2 rounded-xl cursor-pointer !opacity-100 transition-all hover:scale-[1.02]"
             >
               Submit Direct Lead
             </Button>
           </div>
-        }
-      />
+        </div>
+      </div>
 
       {/* TOP PERFORMING TRACKING LINK BANNER */}
       <Card variant="bento" className="p-4 bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white border-0 shadow-xl space-y-3">
@@ -185,16 +223,15 @@ export const AffiliateDashboardPage: React.FC = () => {
               size="sm"
               onClick={() => setQrModalOpen(true)}
               leftIcon={<QrCode className="w-3.5 h-3.5 text-white" />}
-              className="bg-white/10 text-white border-white/20 hover:bg-white/20"
+              className="bg-white/10 text-white border-white/20 hover:bg-white/20 cursor-pointer"
             >
               QR Code
             </Button>
             <Button
-              variant="accent"
               size="sm"
               onClick={handleCopyTopLink}
-              leftIcon={copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-              className="bg-blue-600 hover:bg-blue-500 text-white"
+              leftIcon={copied ? <Check className="w-3.5 h-3.5 text-[#06201A]" /> : <Copy className="w-3.5 h-3.5 text-[#06201A]" />}
+              className="bg-[#C8793A] hover:bg-[#b56b30] text-[#06201A] font-bold shadow-md cursor-pointer !opacity-100 px-3.5 py-2"
             >
               {copied ? 'Copied' : 'Copy Link'}
             </Button>
@@ -380,10 +417,15 @@ export const AffiliateDashboardPage: React.FC = () => {
           </FormField>
 
           <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
-            <Button variant="outline" size="sm" type="button" onClick={() => setSubmitLeadOpen(false)}>
+            <Button variant="outline" size="sm" type="button" onClick={() => setSubmitLeadOpen(false)} className="cursor-pointer">
               Cancel
             </Button>
-            <Button variant="accent" size="sm" type="submit" leftIcon={<Send className="w-3.5 h-3.5" />}>
+            <Button
+              size="sm"
+              type="submit"
+              leftIcon={<Send className="w-3.5 h-3.5 text-white" />}
+              className="bg-[#0E7A5A] hover:bg-[#0B6349] text-white font-bold px-4 py-2 rounded-xl cursor-pointer"
+            >
               Submit Referral
             </Button>
           </div>
@@ -401,7 +443,7 @@ export const AffiliateDashboardPage: React.FC = () => {
         maxWidth="sm"
       >
         <div className="space-y-4 text-center">
-          <div className="p-6 rounded-2xl bg-white text-slate-900 inline-block shadow-lg mx-auto border-4 border-blue-600">
+          <div className="p-6 rounded-2xl bg-white text-slate-900 inline-block shadow-lg mx-auto border-4 border-[#0E7A5A]">
             {/* SVG QR Code Simulation */}
             <div className="w-48 h-48 bg-slate-950 p-2 rounded-lg flex items-center justify-center">
               <QrCode className="w-40 h-40 text-white" />
@@ -413,14 +455,10 @@ export const AffiliateDashboardPage: React.FC = () => {
           </div>
 
           <Button
-            variant="accent"
             size="sm"
-            onClick={() => {
-              setQrModalOpen(false)
-              toast({ title: 'QR Code Downloaded', description: 'Saved as B4B_Referral_QR.png', type: 'success' })
-            }}
-            leftIcon={<Download className="w-3.5 h-3.5" />}
-            className="w-full justify-center"
+            onClick={handleDownloadQr}
+            leftIcon={<Download className="w-3.5 h-3.5 text-[#06201A]" />}
+            className="w-full justify-center bg-[#C8793A] hover:bg-[#b56b30] text-[#06201A] font-extrabold py-2.5 rounded-xl cursor-pointer shadow-md"
           >
             Download PNG (300 DPI)
           </Button>

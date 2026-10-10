@@ -144,13 +144,21 @@ export const Footer: React.FC = () => {
                 </li>
               ))}
               <li className="pt-2">
-                <a
-                  href="#software"
-                  className="text-xs font-bold text-white hover:text-[#C8793A] transition-colors flex items-center gap-1"
+                <button
+                  type="button"
+                  onClick={() => {
+                    const el = document.getElementById('software')
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth' })
+                    } else {
+                      window.location.href = '/#software'
+                    }
+                  }}
+                  className="text-xs font-bold text-white hover:text-[#C8793A] transition-colors flex items-center gap-1 cursor-pointer"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-[#C8793A]" />
                   <span>B4BAPP Portal ($25/mo)</span>
-                </a>
+                </button>
               </li>
               <li>
                 <Link
@@ -164,32 +172,6 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* 12 Territory Division Micro-Bar */}
-        <div className="py-6 border-b border-[#0B4A3A] flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#B9CBC3]">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#C8793A] animate-pulse" />
-            <span className="text-white font-semibold">12 Territory Divisions:</span>
-            <span>Covering all 50 states via Federal Reserve District geographic framework.</span>
-          </div>
-          <div className="flex items-center gap-2 text-[11px] font-mono">
-            <span className="px-2 py-0.5 rounded bg-[#0B4A3A] text-white">
-              Boston
-            </span>
-            <span className="px-2 py-0.5 rounded bg-[#0B4A3A] text-white">
-              New York
-            </span>
-            <span className="px-2 py-0.5 rounded bg-[#0B4A3A] text-white">
-              Chicago
-            </span>
-            <span className="px-2 py-0.5 rounded bg-[#0B4A3A] text-white">
-              Dallas
-            </span>
-            <span className="px-2 py-0.5 rounded bg-[#0B4A3A] text-white">
-              San Francisco
-            </span>
-            <span className="text-[#C8793A] font-bold">+ 7 More Hubs</span>
-          </div>
-        </div>
 
         {/* Bottom Legal Links & Disclaimers */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#B9CBC3]">

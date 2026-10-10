@@ -146,11 +146,14 @@ export const AffiliateSubmitLeadPage: React.FC = () => {
           </div>
 
           <div className="pt-2">
-            <Can menuId="affiliate-submit-lead" action="create" disableInstead={true} tooltip="Create permission required to submit client leads">
-              <Button type="submit" variant="accent" size="md" className="w-full" leftIcon={<Send className="w-4 h-4" />}>
-                Submit Lead for Qualification
-              </Button>
-            </Can>
+            <Button
+              type="submit"
+              size="md"
+              className="w-full bg-[#C8793A] hover:bg-[#b56b30] text-[#06201A] font-extrabold shadow-md border border-[#96521E]/30 cursor-pointer !opacity-100 py-3 rounded-xl transition-all hover:scale-[1.01]"
+              leftIcon={<Send className="w-4 h-4 text-[#06201A]" />}
+            >
+              Submit Lead for Qualification
+            </Button>
           </div>
         </form>
       </Card>

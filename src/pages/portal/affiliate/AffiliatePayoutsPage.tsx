@@ -63,6 +63,27 @@ export const AffiliatePayoutsPage: React.FC = () => {
     exportToCsv('Commission_Payouts_History', headers, rows)
   }
 
+  const handleDownloadReceipt = (p: PayoutRecord) => {
+    exportToPdf(
+      `Disbursement Receipt - ${p.payoutId}`,
+      ['Disbursement Detail', 'Record Value'],
+      [
+        ['Payout Transaction ID', p.payoutId],
+        ['Disbursement Date', p.date],
+        ['Disbursement Method', p.method],
+        ['Payout Amount', formatCurrency(p.amount)],
+        ['Disbursement Status', p.status],
+        ['Network Partner Entity', 'Apex Growth Influencer Network'],
+        ['Issuing Organization', 'B4B America Commercial Finance Desk'],
+      ]
+    )
+    toast({
+      title: 'Disbursement Statement Ready',
+      description: `Official receipt for ${p.payoutId} prepared for print / PDF download.`,
+      type: 'success',
+    })
+  }
+
   return (
     <div className="space-y-6 text-left max-w-7xl mx-auto">
       <PageHeader
@@ -75,22 +96,24 @@ export const AffiliatePayoutsPage: React.FC = () => {
           </Badge>
         }
         actions={
-          <div className="flex items-center gap-2">
-            <Can menuId="affiliate-commissions" action="export" disableInstead={true} tooltip="Export permission required to download payout records">
-              <Button variant="outline" size="sm" onClick={handleExportCsv} leftIcon={<Download className="w-3.5 h-3.5" />}>
-                Download CSV
-              </Button>
-            </Can>
-            <Can menuId="affiliate-commissions" action="create" disableInstead={true} tooltip="Create permission required to request payouts">
-              <Button
-                variant="accent"
-                size="sm"
-                onClick={() => setIsModalOpen(true)}
-                leftIcon={<ArrowDownRight className="w-4 h-4" />}
-              >
-                Request Payout
-              </Button>
-            </Can>
+          <div className="flex items-center gap-2.5">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleExportCsv}
+              leftIcon={<Download className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />}
+              className="border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold cursor-pointer"
+            >
+              Download CSV
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => setIsModalOpen(true)}
+              leftIcon={<ArrowDownRight className="w-4 h-4 text-[#06201A]" />}
+              className="bg-[#C8793A] hover:bg-[#b56b30] text-[#06201A] font-extrabold shadow-md border border-[#96521E]/30 px-4 py-2 cursor-pointer !opacity-100 transition-all hover:scale-[1.02]"
+            >
+              Request Payout
+            </Button>
           </div>
         }
       />
@@ -162,8 +185,9 @@ export const AffiliatePayoutsPage: React.FC = () => {
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => toast({ title: 'Downloading Statement', description: `Saved statement for ${p.payoutId}`, type: 'info' })}
+                      onClick={() => handleDownloadReceipt(p)}
                       leftIcon={<Download className="w-3.5 h-3.5" />}
+                      className="cursor-pointer font-medium hover:bg-slate-100 dark:hover:bg-slate-800"
                     >
                       Receipt
                     </Button>

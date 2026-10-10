@@ -130,7 +130,7 @@ export const HomePage: React.FC = () => {
     TERRITORY_DIVISIONS[0]
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#14231E] transition-colors duration-200 overflow-x-hidden font-body">
+    <div className="min-h-screen bg-[#F8FAFC] text-[#14231E] transition-colors duration-200 overflow-x-hidden">
       {/* Dynamic CSS override for legacy layout headers/footers */}
       <style>{`
         body > #root > .min-h-screen > header.sticky,
@@ -187,9 +187,8 @@ export const HomePage: React.FC = () => {
               <div className="space-y-3">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-heading text-[#06201A] leading-[1.08] tracking-tight">
                   {BRAND_IDENTITY.tagline.split('Small Business')[0]}
-                  <span className="relative inline-block text-[#0E7A5A]">
+                  <span className="text-[#0E7A5A]">
                     Small Business
-                    <span className="absolute -bottom-1 left-0 w-full h-2 bg-[#0E7A5A]/15 -z-10 rounded-sm" />
                   </span>{' '}
                   Solutions.
                 </h1>
@@ -446,7 +445,7 @@ export const HomePage: React.FC = () => {
               16 Solutions. One Platform.
             </h2>
 
-            <p className="text-base sm:text-lg text-[#14231E]/75 font-body leading-relaxed">
+            <p className="text-base sm:text-lg text-[#14231E]/75 leading-relaxed">
               A unified operating system for American small businesses and growing enterprises — fully integrated, enterprise-grade, and built to scale.
             </p>
 
@@ -504,7 +503,7 @@ export const HomePage: React.FC = () => {
                     </h3>
 
                     {/* Short Description */}
-                    <p className="text-xs text-[#14231E]/75 leading-relaxed font-body">
+                    <p className="text-xs text-[#14231E]/75 leading-relaxed">
                       {solution.shortDesc}
                     </p>
                   </div>
@@ -571,7 +570,7 @@ export const HomePage: React.FC = () => {
                 Enterprise CRM & ERP Designed For Small Business Pros
               </h2>
 
-              <p className="text-base text-[#B9CBC3] leading-relaxed font-body">
+              <p className="text-base text-[#B9CBC3] leading-relaxed">
                 {B4BAPP_SOFTWARE.description}
               </p>
 
@@ -766,7 +765,7 @@ export const HomePage: React.FC = () => {
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-heading text-[#06201A] tracking-tight">
                 Industries We Serve
               </h2>
-              <p className="text-base text-[#14231E]/75 font-body">
+              <p className="text-base text-[#14231E]/75">
                 Tailored solutions for 32 key business trades operating in towns and cities across America.
               </p>
             </div>
@@ -821,12 +820,12 @@ export const HomePage: React.FC = () => {
                   See B4B America in Action
                 </h2>
 
-                <p className="text-sm sm:text-base text-[#B9CBC3] leading-relaxed font-body">
+                <p className="text-sm sm:text-base text-[#B9CBC3] leading-relaxed">
                   Book a personalized consultation or live walkthrough with an executive business coach. 
                   Learn how to optimize working capital, POS rates, and software workflow without high-pressure sales tactics.
                 </p>
 
-                <div className="space-y-3 pt-2 text-xs text-white font-medium font-body">
+                <div className="space-y-3 pt-2 text-xs text-white font-medium">
                   <div className="flex items-center gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-[#C8793A] shrink-0" />
                     <span>30-minute free diagnostic review</span>
@@ -898,7 +897,7 @@ export const HomePage: React.FC = () => {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-heading text-[#06201A] tracking-tight">
               Real Businesses. Real Results.
             </h2>
-            <p className="text-base text-slate-600 font-body">
+            <p className="text-base text-slate-600">
               How businesses nationwide streamline operations, secure non-dilutive capital, and scale with B4B America.
             </p>
           </div>
@@ -956,8 +955,11 @@ export const HomePage: React.FC = () => {
             <h2 className="text-3xl sm:text-4xl font-extrabold font-heading text-white tracking-tight">
               "{BRAND_IDENTITY.vision}"
             </h2>
-            <p className="text-sm sm:text-base text-[#B9CBC3] font-body">
-              The B4B America Mantra: <strong className="text-white font-mono">{BRAND_IDENTITY.mantra}</strong>
+            <p className="text-sm sm:text-base text-[#B9CBC3] max-w-2xl mx-auto">
+              The B4B America Mantra:{' '}
+              <span className="text-[#C8793A] font-bold font-mono">
+                {BRAND_IDENTITY.mantra}
+              </span>
             </p>
           </div>
 
@@ -974,7 +976,7 @@ export const HomePage: React.FC = () => {
                 <h4 className="text-sm font-extrabold text-white font-heading">
                   {step.title}
                 </h4>
-                <p className="text-xs text-[#B9CBC3] leading-relaxed font-body">
+                <p className="text-xs text-[#B9CBC3] leading-relaxed">
                   {step.desc}
                 </p>
               </div>
