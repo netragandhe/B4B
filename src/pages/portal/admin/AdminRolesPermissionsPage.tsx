@@ -83,6 +83,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [filterStatus, setFilterStatus] = useState<'all' | 'enabled' | 'disabled'>('all')
   const [selectedModuleFilter, setSelectedModuleFilter] = useState<string>('all')
+  const [catalogScope, setCatalogScope] = useState<'roleOnly' | 'allCatalog'>('roleOnly')
   const [matrixViewMode, setMatrixViewMode] = useState<'simple' | 'detailed'>('simple')
   const [expandedMenuIds, setExpandedMenuIds] = useState<Record<string, boolean>>({})
   const [collapsedModules, setCollapsedModules] = useState<Record<string, boolean>>({})
@@ -430,6 +431,39 @@ export const AdminRolesPermissionsPage: React.FC = () => {
     setCollapsedModules((prev) => ({ ...prev, [moduleName]: !prev[moduleName] }))
   }
 
+  const isMenuRelevantForRole = (rId: RoleId, menu: Menu): boolean => {
+    if (currentRoleDraftPerms[menu.id]?.view) return true
+
+    if (rId === 'admin') {
+      return (
+        menu.id.startsWith('admin-') ||
+        menu.group.includes('Admin') ||
+        menu.group.includes('Management') ||
+        menu.group.includes('Compensation') ||
+        menu.group.includes('System') ||
+        menu.group.includes('Catalog') ||
+        menu.group.includes('Reports') ||
+        menu.module === 'Shared'
+      )
+    }
+    if (rId === 'bizpro') {
+      return menu.id.startsWith('bizpro-') || menu.group.includes('Biz Pro') || menu.module === 'Shared'
+    }
+    if (rId === 'client') {
+      return menu.id.startsWith('client-') || menu.group.includes('Client') || menu.id === 'shared-ebox' || menu.id === 'shared-profile' || menu.id === 'shared-settings'
+    }
+    if (rId === 'affiliate') {
+      return menu.id.startsWith('affiliate-') || menu.group.includes('Affiliate') || menu.id === 'shared-ebox' || menu.id === 'shared-profile' || menu.id === 'shared-settings'
+    }
+    if (rId === 'employer') {
+      return menu.id.startsWith('employer-') || menu.group.includes('Employer') || menu.id === 'shared-ebox' || menu.id === 'shared-profile' || menu.id === 'shared-settings'
+    }
+    if (rId === 'jobseeker') {
+      return menu.id.startsWith('seeker-') || menu.group.includes('Job Seeker') || menu.id === 'shared-messages' || menu.id === 'shared-profile' || menu.id === 'shared-settings'
+    }
+    return true
+  }
+
   // Filtered menus for Matrix Tab
   const filteredMenusByModule = useMemo(() => {
     const modulesMap: Record<string, Menu[]> = {}
@@ -438,6 +472,13 @@ export const AdminRolesPermissionsPage: React.FC = () => {
     })
 
     MENU_CATALOG.forEach((menu) => {
+      // 0. Role-specific catalog scoping (when in roleOnly mode)
+      if (catalogScope === 'roleOnly') {
+        if (!isMenuRelevantForRole(selectedRoleId, menu)) {
+          return
+        }
+      }
+
       // 1. Search Query
       if (searchQuery) {
         const q = searchQuery.toLowerCase()
@@ -465,7 +506,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
     })
 
     return modulesMap
-  }, [searchQuery, filterStatus, selectedModuleFilter, currentRoleDraftPerms])
+  }, [catalogScope, selectedRoleId, searchQuery, filterStatus, selectedModuleFilter, currentRoleDraftPerms])
 
   // Save changes handler
   const handleConfirmSave = async () => {
@@ -994,6 +1035,30 @@ export const AdminRolesPermissionsPage: React.FC = () => {
 
               {/* Status Filters & Mode Switcher */}
               <div className="flex items-center gap-2 flex-wrap self-end md:self-auto">
+                {/* Catalog Scope: Role Dedicated vs All Global */}
+                <div className="flex items-center rounded-xl bg-slate-100 dark:bg-[#12294A] p-0.5 border border-slate-200 dark:border-slate-800">
+                  <button
+                    onClick={() => setCatalogScope('roleOnly')}
+                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors ${
+                      catalogScope === 'roleOnly'
+                        ? 'bg-blue-600 text-white shadow-xs'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                    }`}
+                  >
+                    {selectedRole.name} Tools Only
+                  </button>
+                  <button
+                    onClick={() => setCatalogScope('allCatalog')}
+                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors ${
+                      catalogScope === 'allCatalog'
+                        ? 'bg-blue-600 text-white shadow-xs'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                    }`}
+                  >
+                    All 60 Menus
+                  </button>
+                </div>
+
                 <div className="flex items-center rounded-xl bg-slate-100 dark:bg-[#12294A] p-0.5 border border-slate-200 dark:border-slate-800">
                   {(['all', 'enabled', 'disabled'] as const).map((st) => (
                     <button
@@ -1001,11 +1066,11 @@ export const AdminRolesPermissionsPage: React.FC = () => {
                       onClick={() => setFilterStatus(st)}
                       className={`px-3 py-1 text-xs font-bold rounded-lg capitalize transition-colors ${
                         filterStatus === st
-                          ? 'bg-blue-600 text-white shadow-xs'
+                          ? 'bg-white dark:bg-[#0D1E36] text-blue-600 dark:text-blue-400 shadow-xs'
                           : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
                       }`}
                     >
-                      {st === 'all' ? 'All' : st === 'enabled' ? 'Active in Sidebar' : 'Hidden'}
+                      {st === 'all' ? 'All' : st === 'enabled' ? 'Active' : 'Hidden'}
                     </button>
                   ))}
                 </div>
