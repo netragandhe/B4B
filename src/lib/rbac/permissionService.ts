@@ -17,10 +17,10 @@ import {
 } from '@/config/defaultPermissions'
 
 const STORAGE_KEYS = {
-  PERMISSIONS: 'b4b_rbac_permissions_v3',
-  ROLES: 'b4b_rbac_roles_v3',
-  AUDIT_LOG: 'b4b_rbac_audit_log_v3',
-  USER_OVERRIDES: 'b4b_rbac_user_overrides_v3',
+  PERMISSIONS: 'b4b_rbac_permissions_v4',
+  ROLES: 'b4b_rbac_roles_v4',
+  AUDIT_LOG: 'b4b_rbac_audit_log_v4',
+  USER_OVERRIDES: 'b4b_rbac_user_overrides_v4',
 }
 
 // Simulated mock delay

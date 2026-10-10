@@ -120,6 +120,25 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
     return cleanHref === cleanCurrent
   }
 
+  const getHomeRoute = () => {
+    switch (user?.role) {
+      case 'Admin':
+        return '/portal/admin/dashboard'
+      case 'Biz Pro':
+        return '/portal/bizpro/bulletin'
+      case 'Client':
+        return '/portal/dashboard'
+      case 'Affiliate':
+        return '/portal/affiliate/dashboard'
+      case 'Employer':
+        return '/portal/employer/dashboard'
+      case 'Job Seeker':
+        return '/portal/seeker/dashboard'
+      default:
+        return '/portal/dashboard'
+    }
+  }
+
   const handleLogout = () => {
     setLogoutModalOpen(true)
   }
@@ -141,7 +160,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
       >
         {/* Brand Header */}
         <div className="p-4 sm:p-5 border-b border-slate-100 dark:border-[#1E3A5F]/70 flex items-center justify-between">
-          <Link to="/portal/dashboard" className="flex items-center gap-2.5 truncate overflow-hidden">
+          <Link to={getHomeRoute()} className="flex items-center gap-2.5 truncate overflow-hidden">
             <BrandLogo variant={isCollapsed ? 'icon' : 'wordmark'} size={isCollapsed ? 'sm' : 'md'} showTagline={false} />
             {!isCollapsed && (
               <span className="text-lg font-black text-[#0A3D9C] dark:text-white tracking-tight leading-none">
@@ -184,12 +203,9 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
         {/* Dynamic Role Navigation Links */}
         <nav className="flex-1 px-3 py-3 space-y-1 overflow-y-auto custom-scrollbar">
           {!isCollapsed && (
-            <div className="flex items-center justify-between px-2 mb-2">
+            <div className="px-2 mb-2">
               <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                {currentRole} Navigation ({allowedMenus.length})
-              </span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-bold">
-                Live RBAC
+                Menu
               </span>
             </div>
           )}
@@ -202,8 +218,8 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                 to={item.route}
                 title={isCollapsed ? item.label : undefined}
                 className={`flex items-center ${
-                  isCollapsed ? 'justify-center py-3' : 'justify-between px-3.5 py-2.5'
-                } rounded-xl text-xs font-bold transition-all relative ${
+                  isCollapsed ? 'justify-center py-3' : 'px-3.5 py-2.5'
+                } rounded-xl text-xs font-semibold transition-all relative ${
                   active
                     ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
                     : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A] hover:text-slate-900 dark:hover:text-white'
@@ -213,25 +229,11 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                   <MenuIcon
                     name={item.icon}
                     className={`w-4 h-4 shrink-0 ${
-                      active ? 'text-white' : 'text-slate-400'
+                      active ? 'text-white' : 'text-slate-400 dark:text-slate-400'
                     }`}
                   />
                   {!isCollapsed && <span className="truncate">{item.label}</span>}
                 </div>
-
-                {!isCollapsed && item.badge && (
-                  <span
-                    className={`text-[10px] px-2 py-0.3 rounded-full font-extrabold shrink-0 ${
-                      active
-                        ? 'bg-white/20 text-white'
-                        : item.badgeVariant === 'emerald'
-                        ? 'bg-emerald-500 text-white shadow-xs'
-                        : 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900'
-                    }`}
-                  >
-                    {item.badge}
-                  </span>
-                )}
               </Link>
             )
           })}
@@ -593,7 +595,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                       key={item.id}
                       to={item.route}
                       onClick={() => setMobileSidebarOpen(false)}
-                      className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold ${
+                      className={`flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold ${
                         active
                           ? 'bg-blue-600 text-white'
                           : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#12294A]'
@@ -606,11 +608,6 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                         />
                         <span className="truncate">{item.label}</span>
                       </div>
-                      {item.badge && (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-white/20">
-                          {item.badge}
-                        </span>
-                      )}
                     </Link>
                   )
                 })}

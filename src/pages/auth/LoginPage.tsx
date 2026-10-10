@@ -143,6 +143,24 @@ export const LoginPage: React.FC = () => {
     }
   }
 
+  const resolveSafeTargetPath = (role: UserRole, rawRedirect: string | null) => {
+    if (!rawRedirect) return getRolePath(role)
+    const decoded = decodeURIComponent(rawRedirect)
+    if (decoded.startsWith('/portal/admin') && role !== 'Admin') {
+      return getRolePath(role)
+    }
+    if (decoded.startsWith('/portal/bizpro') && role !== 'Biz Pro' && role !== 'Admin') {
+      return getRolePath(role)
+    }
+    if (decoded.startsWith('/portal/employer') && role !== 'Employer' && role !== 'Admin') {
+      return getRolePath(role)
+    }
+    if (decoded.startsWith('/portal/seeker') && role !== 'Job Seeker' && role !== 'Admin') {
+      return getRolePath(role)
+    }
+    return decoded
+  }
+
   const onSubmit = async (data: LoginFormData) => {
     setFormError(null)
     setIsShakeError(false)
@@ -174,7 +192,7 @@ export const LoginPage: React.FC = () => {
         description: `Successfully signed in to ${res.user.role} portal.`,
         type: 'success',
       })
-      const targetPath = redirectUrl ? decodeURIComponent(redirectUrl) : getRolePath(res.user.role)
+      const targetPath = resolveSafeTargetPath(res.user.role, redirectUrl)
       navigate(targetPath)
     }
   }
@@ -194,7 +212,7 @@ export const LoginPage: React.FC = () => {
         description: `Access granted as ${res.user.role}.`,
         type: 'success',
       })
-      const targetPath = redirectUrl ? decodeURIComponent(redirectUrl) : getRolePath(res.user.role)
+      const targetPath = resolveSafeTargetPath(res.user.role, redirectUrl)
       navigate(targetPath)
     } else {
       setFormError(res.error || 'Invalid OTP code.')

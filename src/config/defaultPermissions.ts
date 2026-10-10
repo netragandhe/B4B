@@ -130,38 +130,50 @@ function buildDefaultPermissions(): SystemPermissionMatrix {
     matrix.jobseeker[menu.id] = createEmptyPerm()
   })
 
-  // 2. ADMIN gets ALL menus with full access
+  // 2. ADMIN: Give full action permissions to all modules, but default sidebar to core management hubs (10)
   MENU_CATALOG.forEach((menu) => {
-    matrix.admin[menu.id] = createAdminPerm()
+    matrix.admin[menu.id] = {
+      ...createAdminPerm(),
+      view: false, // only core management hubs visible in sidebar by default
+    }
   })
 
-  // 3. BIZ PRO default menus
-  // Base 15 menus
+  const adminSidebarMenus = [
+    'admin-overview',
+    'admin-bizpro',
+    'admin-bulletin',
+    'admin-rank-rules',
+    'admin-commission-maker',
+    'admin-territory',
+    'admin-services',
+    'admin-affiliates',
+    'admin-jobs-moderation',
+    'admin-roles-permissions',
+    'shared-ebox',
+  ]
+  adminSidebarMenus.forEach((id) => {
+    if (matrix.admin[id]) {
+      matrix.admin[id].view = true
+    }
+  })
+
+  // 3. BIZ PRO default menus (Streamlined 9 base + 1 leader)
   const bizProBaseMenus = [
     'bizpro-bulletin',
     'bizpro-dashboard',
     'bizpro-leads',
     'bizpro-clients',
     'bizpro-communication',
-    'bizpro-marketing',
     'bizpro-services',
     'bizpro-commissions',
     'bizpro-rank',
-    'bizpro-scoreboard',
     'bizpro-training',
-    'bizpro-territory',
-    'bizpro-branding',
-    'bizpro-support',
-    'bizpro-subscription',
     'shared-ebox',
-    'shared-messages',
-    'shared-profile',
-    'shared-settings',
   ]
   bizProBaseMenus.forEach((id) => {
     if (matrix.bizpro[id]) {
       matrix.bizpro[id] = createStandardPerm({
-        scope: id === 'bizpro-scoreboard' || id === 'bizpro-services' || id === 'bizpro-training' ? 'all' : 'team',
+        scope: id === 'bizpro-services' || id === 'bizpro-training' ? 'all' : 'team',
         delete: id === 'bizpro-leads',
         export: true,
       })
@@ -171,86 +183,66 @@ function buildDefaultPermissions(): SystemPermissionMatrix {
   // Biz Pro Leader menus (Rank 4+)
   const bizProLeaderMenus = [
     'bizpro-team',
-    'bizpro-team-commissions',
-    'bizpro-recruit',
-    'bizpro-team-scoreboard',
-    'bizpro-territory-assignment',
-    'bizpro-team-reports',
   ]
   bizProLeaderMenus.forEach((id) => {
     if (matrix.bizpro[id]) {
       matrix.bizpro[id] = createStandardPerm({
         minRank: 4,
         scope: 'team',
-        approve: id === 'bizpro-team-commissions',
+        approve: true,
         export: true,
       })
     }
   })
 
-  // 4. CLIENT default menus (8) + shared
+  // 4. CLIENT default menus (Streamlined 6)
   const clientMenus = [
     'client-dashboard',
     'client-orders',
     'client-funding',
-    'client-documents',
     'client-messages',
     'client-invoices',
-    'client-book-coach',
-    'client-support',
     'shared-ebox',
-    'shared-profile',
-    'shared-settings',
   ]
   clientMenus.forEach((id) => {
     if (matrix.client[id]) {
       matrix.client[id] = createStandardPerm({
-        create: id === 'client-orders' || id === 'client-documents' || id === 'client-messages' || id === 'client-support',
-        edit: id === 'client-documents' || id === 'shared-profile',
+        create: id === 'client-orders' || id === 'client-messages',
+        edit: false,
         delete: false,
-        export: id === 'client-invoices' || id === 'client-documents',
+        export: id === 'client-invoices',
         scope: 'own',
       })
     }
   })
 
-  // 5. AFFILIATE default menus (7) + shared
+  // 5. AFFILIATE default menus (Streamlined 5)
   const affiliateMenus = [
     'affiliate-dashboard',
     'affiliate-links',
-    'affiliate-submit-lead',
     'affiliate-referrals',
     'affiliate-commissions',
-    'affiliate-marketing',
-    'affiliate-profile',
     'shared-ebox',
-    'shared-profile',
-    'shared-settings',
   ]
   affiliateMenus.forEach((id) => {
     if (matrix.affiliate[id]) {
       matrix.affiliate[id] = createStandardPerm({
-        create: id === 'affiliate-submit-lead' || id === 'affiliate-links',
-        edit: id === 'affiliate-profile' || id === 'shared-profile',
+        create: id === 'affiliate-links',
+        edit: false,
         delete: false,
-        export: id === 'affiliate-commissions' || id === 'affiliate-marketing' || id === 'affiliate-links',
+        export: id === 'affiliate-commissions' || id === 'affiliate-links',
         scope: 'own',
       })
     }
   })
 
-  // 6. EMPLOYER default menus (7) + shared
+  // 6. EMPLOYER default menus (Streamlined 5)
   const employerMenus = [
     'employer-dashboard',
     'employer-post-job',
     'employer-jobs',
     'employer-applicants',
-    'employer-company',
-    'employer-billing',
     'employer-messages',
-    'shared-ebox',
-    'shared-profile',
-    'shared-settings',
   ]
   employerMenus.forEach((id) => {
     if (matrix.employer[id]) {
@@ -265,25 +257,20 @@ function buildDefaultPermissions(): SystemPermissionMatrix {
     }
   })
 
-  // 7. JOB SEEKER default menus (6) + shared
+  // 7. JOB SEEKER default menus (Streamlined 5)
   const seekerMenus = [
     'seeker-dashboard',
     'seeker-search',
-    'seeker-saved',
     'seeker-applications',
     'seeker-profile',
-    'seeker-alerts',
-    'shared-ebox',
     'shared-messages',
-    'shared-profile',
-    'shared-settings',
   ]
   seekerMenus.forEach((id) => {
     if (matrix.jobseeker[id]) {
       matrix.jobseeker[id] = createStandardPerm({
-        create: id === 'seeker-applications' || id === 'seeker-saved' || id === 'seeker-alerts',
-        edit: id === 'seeker-profile' || id === 'shared-profile',
-        delete: id === 'seeker-saved' || id === 'seeker-alerts',
+        create: id === 'seeker-applications',
+        edit: id === 'seeker-profile',
+        delete: false,
         export: false,
         scope: 'own',
       })

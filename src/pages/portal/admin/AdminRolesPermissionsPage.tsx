@@ -83,6 +83,10 @@ export const AdminRolesPermissionsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [filterStatus, setFilterStatus] = useState<'all' | 'enabled' | 'disabled'>('all')
   const [selectedModuleFilter, setSelectedModuleFilter] = useState<string>('all')
+  const [catalogScope, setCatalogScope] = useState<'roleOnly' | 'allCatalog'>('roleOnly')
+  const [matrixViewMode, setMatrixViewMode] = useState<'simple' | 'detailed'>('simple')
+  const [expandedMenuIds, setExpandedMenuIds] = useState<Record<string, boolean>>({})
+  const [collapsedModules, setCollapsedModules] = useState<Record<string, boolean>>({})
 
   // Draft Permissions Matrix: roleId -> menuId -> PermissionItem
   const [draftPermissions, setDraftPermissions] = useState<Record<string, Record<string, PermissionItem>>>({})
@@ -371,6 +375,95 @@ export const AdminRolesPermissionsPage: React.FC = () => {
     })
   }
 
+  const handleSetPreset = (roleId: RoleId, menuId: string, preset: 'full' | 'readonly' | 'hidden') => {
+    const menu = MENU_MAP[menuId]
+    if (!menu) return
+    const lockInfo = isLockedItem(roleId, menu)
+    if (lockInfo.locked && preset === 'hidden') return
+
+    setDraftPermissions((prev) => {
+      const copy = JSON.parse(JSON.stringify(prev))
+      if (!copy[roleId]) copy[roleId] = {}
+      
+      if (preset === 'full') {
+        copy[roleId][menuId] = {
+          view: true,
+          create: true,
+          edit: true,
+          delete: true,
+          approve: true,
+          export: true,
+          scope: 'all',
+          minRank: copy[roleId][menuId]?.minRank || menu.minRank || 1,
+        }
+      } else if (preset === 'readonly') {
+        copy[roleId][menuId] = {
+          view: true,
+          create: false,
+          edit: false,
+          delete: false,
+          approve: false,
+          export: false,
+          scope: 'own',
+          minRank: copy[roleId][menuId]?.minRank || menu.minRank || 1,
+        }
+      } else {
+        copy[roleId][menuId] = {
+          view: false,
+          create: false,
+          edit: false,
+          delete: false,
+          approve: false,
+          export: false,
+          scope: 'none',
+          minRank: copy[roleId][menuId]?.minRank || menu.minRank || 1,
+        }
+      }
+      return copy
+    })
+  }
+
+  const toggleExpandMenu = (menuId: string) => {
+    setExpandedMenuIds((prev) => ({ ...prev, [menuId]: !prev[menuId] }))
+  }
+
+  const toggleCollapseModule = (moduleName: string) => {
+    setCollapsedModules((prev) => ({ ...prev, [moduleName]: !prev[moduleName] }))
+  }
+
+  const isMenuRelevantForRole = (rId: RoleId, menu: Menu): boolean => {
+    if (currentRoleDraftPerms[menu.id]?.view) return true
+
+    if (rId === 'admin') {
+      return (
+        menu.id.startsWith('admin-') ||
+        menu.group.includes('Admin') ||
+        menu.group.includes('Management') ||
+        menu.group.includes('Compensation') ||
+        menu.group.includes('System') ||
+        menu.group.includes('Catalog') ||
+        menu.group.includes('Reports') ||
+        menu.module === 'Shared'
+      )
+    }
+    if (rId === 'bizpro') {
+      return menu.id.startsWith('bizpro-') || menu.group.includes('Biz Pro') || menu.module === 'Shared'
+    }
+    if (rId === 'client') {
+      return menu.id.startsWith('client-') || menu.group.includes('Client') || menu.id === 'shared-ebox' || menu.id === 'shared-profile' || menu.id === 'shared-settings'
+    }
+    if (rId === 'affiliate') {
+      return menu.id.startsWith('affiliate-') || menu.group.includes('Affiliate') || menu.id === 'shared-ebox' || menu.id === 'shared-profile' || menu.id === 'shared-settings'
+    }
+    if (rId === 'employer') {
+      return menu.id.startsWith('employer-') || menu.group.includes('Employer') || menu.id === 'shared-ebox' || menu.id === 'shared-profile' || menu.id === 'shared-settings'
+    }
+    if (rId === 'jobseeker') {
+      return menu.id.startsWith('seeker-') || menu.group.includes('Job Seeker') || menu.id === 'shared-messages' || menu.id === 'shared-profile' || menu.id === 'shared-settings'
+    }
+    return true
+  }
+
   // Filtered menus for Matrix Tab
   const filteredMenusByModule = useMemo(() => {
     const modulesMap: Record<string, Menu[]> = {}
@@ -379,6 +472,13 @@ export const AdminRolesPermissionsPage: React.FC = () => {
     })
 
     MENU_CATALOG.forEach((menu) => {
+      // 0. Role-specific catalog scoping (when in roleOnly mode)
+      if (catalogScope === 'roleOnly') {
+        if (!isMenuRelevantForRole(selectedRoleId, menu)) {
+          return
+        }
+      }
+
       // 1. Search Query
       if (searchQuery) {
         const q = searchQuery.toLowerCase()
@@ -406,7 +506,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
     })
 
     return modulesMap
-  }, [searchQuery, filterStatus, selectedModuleFilter, currentRoleDraftPerms])
+  }, [catalogScope, selectedRoleId, searchQuery, filterStatus, selectedModuleFilter, currentRoleDraftPerms])
 
   // Save changes handler
   const handleConfirmSave = async () => {
@@ -814,70 +914,27 @@ export const AdminRolesPermissionsPage: React.FC = () => {
       {/* ========================================================================= */}
       {/* MAIN VIEW AREA: TWO COLUMN LAYOUT (LEFT ROLES LIST, RIGHT CONTENT) */}
       {/* ========================================================================= */}
+      {/* ========================================================================= */}
+      {/* MAIN VIEW AREA: SIMPLIFIED ROLES PERMISSIONS MATRIX */}
+      {/* ========================================================================= */}
       {activeTab === 'matrix' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* LEFT: ROLES MANAGEMENT SIDEBAR */}
-          <div className="lg:col-span-3 space-y-4">
-            <Card variant="default" className="p-4 bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] rounded-2xl shadow-sm space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                  <Users className="w-3.5 h-3.5 text-blue-500" />
-                  <span>Platform Roles ({roles.length})</span>
-                </span>
+        <div className="space-y-6">
+          {/* 1. HORIZONTAL ROLE CARDS CAROUSEL */}
+          <div className="space-y-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <span className="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                <Users className="w-3.5 h-3.5 text-blue-500" />
+                <span>Select Target Role ({roles.length})</span>
+              </span>
+              <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setAddRoleModalOpen(true)}
-                  className="text-[11px] h-7 px-2"
+                  className="text-xs h-8"
                 >
-                  <Plus className="w-3 h-3 mr-1" /> Add Role
+                  <Plus className="w-3.5 h-3.5 mr-1" /> Add Custom Role
                 </Button>
-              </div>
-
-              {/* Roles List */}
-              <div className="space-y-1.5 max-h-[550px] overflow-y-auto custom-scrollbar">
-                {roles.map((role) => {
-                  const isSelected = selectedRoleId === role.id
-                  return (
-                    <div
-                      key={role.id}
-                      onClick={() => setSelectedRoleId(role.id)}
-                      className={`p-3 rounded-xl border transition-all cursor-pointer text-left ${
-                        isSelected
-                          ? 'bg-blue-50 dark:bg-blue-950/40 border-blue-500 ring-1 ring-blue-500/20'
-                          : 'bg-slate-50/50 dark:bg-[#12294A]/30 border-slate-200 dark:border-[#1E3A5F] hover:border-slate-300 dark:hover:border-slate-700'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-1">
-                        <span className={`text-xs font-extrabold ${isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-slate-900 dark:text-white'}`}>
-                          {role.name}
-                        </span>
-                        <div className="flex items-center gap-1">
-                          {role.isSystem ? (
-                            <Badge variant="navy" size="sm" className="text-[9px] px-1.5 py-0">
-                              System
-                            </Badge>
-                          ) : (
-                            <Badge variant="royal" size="sm" className="text-[9px] px-1.5 py-0">
-                              Custom
-                            </Badge>
-                          )}
-                          <Badge variant="primary" size="sm" className="text-[9px] px-1.5 py-0">
-                            {role.userCount} Users
-                          </Badge>
-                        </div>
-                      </div>
-
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1">
-                        {role.description}
-                      </p>
-                    </div>
-                  )
-                })}
-              </div>
-
-              {/* Selected Role Actions */}
-              <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center gap-2">
                 <Button
                   variant="outline"
                   size="sm"
@@ -885,375 +942,506 @@ export const AdminRolesPermissionsPage: React.FC = () => {
                     setCloneSourceRoleId(selectedRoleId)
                     setCloneRoleModalOpen(true)
                   }}
-                  className="flex-1 text-[11px] h-7"
+                  className="text-xs h-8"
                 >
-                  <Copy className="w-3 h-3 mr-1" /> Clone Role
+                  <Copy className="w-3.5 h-3.5 mr-1" /> Clone Role
                 </Button>
                 {!selectedRole.isSystem && (
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setDeleteRoleModalOpen(true)}
-                    className="text-[11px] h-7 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                    className="text-xs h-8 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
                   >
-                    <Trash2 className="w-3 h-3" />
+                    <Trash2 className="w-3.5 h-3.5" />
                   </Button>
                 )}
               </div>
-            </Card>
+            </div>
 
-            {/* Quick Safety Summary Card */}
-            <Card variant="default" className="p-4 bg-slate-50 dark:bg-[#12294A]/40 border border-slate-200 dark:border-[#1E3A5F] rounded-2xl text-xs space-y-2">
-              <div className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                <span>Active Safety Rules</span>
-              </div>
-              <ul className="text-[11px] text-slate-600 dark:text-slate-400 space-y-1 list-disc pl-4">
-                <li>Admin lockout protection: Core system controls remain locked.</li>
-                <li>Action requires View: Turning view off disables sub-actions.</li>
-                <li>Core menus (Dashboard, Profile) cannot be removed.</li>
-                <li>Scope &quot;None&quot; restricts interactive write actions.</li>
-              </ul>
-            </Card>
-          </div>
-
-          {/* RIGHT: MATRIX TAB FOR SELECTED ROLE */}
-          <div className="lg:col-span-9 space-y-4">
-            {/* Filter Bar */}
-            <Card variant="default" className="p-4 bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] rounded-2xl shadow-sm">
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-3 flex-1">
-                  <div className="relative flex-1">
-                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                    <Input
-                      placeholder="Search menus by label, route or keyword..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-9 h-9 text-xs"
-                    />
-                  </div>
-
-                  <select
-                    value={selectedModuleFilter}
-                    onChange={(e) => setSelectedModuleFilter(e.target.value)}
-                    className="h-9 px-3 text-xs rounded-xl border border-slate-200 dark:border-[#1E3A5F] bg-white dark:bg-[#12294A] text-slate-800 dark:text-slate-200 outline-none"
-                  >
-                    <option value="all">All Modules</option>
-                    {MODULE_ORDER.map((mod: string) => (
-                      <option key={mod} value={mod}>
-                        {mod}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="flex items-center gap-1.5 self-end sm:self-auto">
-                  {(['all', 'enabled', 'disabled'] as const).map((st) => (
-                    <button
-                      key={st}
-                      onClick={() => setFilterStatus(st)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-colors ${
-                        filterStatus === st
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-slate-100 dark:bg-[#12294A] text-slate-600 dark:text-slate-400 hover:text-slate-900'
-                      }`}
-                    >
-                      {st}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </Card>
-
-            {/* Matrix Table Grouped by Module */}
-            <div className="space-y-6">
-              {MODULE_ORDER.map((moduleName: string) => {
-                const groupMenus = filteredMenusByModule[moduleName] || []
-                if (groupMenus.length === 0) return null
-
-                const allInGroupEnabled = groupMenus.every(
-                  (m) => currentRoleDraftPerms[m.id]?.view || m.isCore
-                )
+            {/* Role Cards Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              {roles.map((role) => {
+                const isSelected = selectedRoleId === role.id
+                const rolePerms = draftPermissions[role.id] || {}
+                const activeCount = Object.values(rolePerms).filter((p) => p.view).length
 
                 return (
-                  <Card
-                    key={moduleName}
-                    variant="default"
-                    className="bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] rounded-2xl shadow-sm overflow-hidden"
+                  <button
+                    key={role.id}
+                    onClick={() => setSelectedRoleId(role.id)}
+                    className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer relative flex flex-col justify-between ${
+                      isSelected
+                        ? 'bg-blue-50/90 dark:bg-[#12294A] border-blue-500 shadow-md ring-2 ring-blue-500/20'
+                        : 'bg-white dark:bg-[#0D1E36] border-slate-200 dark:border-[#1E3A5F] hover:border-blue-300 dark:hover:border-slate-700'
+                    }`}
                   >
-                    {/* Module Header Bar */}
-                    <div className="px-5 py-3.5 bg-slate-50/80 dark:bg-[#12294A]/60 border-b border-slate-200 dark:border-[#1E3A5F] flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 dark:text-white">
-                          {moduleName}
-                        </h3>
-                        <Badge variant="navy" size="sm" className="text-[10px]">
-                          {groupMenus.length} Menus
-                        </Badge>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleToggleGroup(selectedRoleId, groupMenus)}
-                          className="text-[11px] h-7 text-blue-600 dark:text-blue-400 font-bold"
-                        >
-                          {allInGroupEnabled ? 'Disable Group' : 'Enable All'}
-                        </Button>
-                      </div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-1.5 rounded-xl bg-blue-100 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400">
+                        <Shield className="w-4 h-4" />
+                      </span>
+                      {role.isSystem ? (
+                        <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500">System</span>
+                      ) : (
+                        <span className="text-[10px] font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/50 px-1.5 py-0.2 rounded-full">Custom</span>
+                      )}
                     </div>
 
-                    {/* Menus Table */}
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left text-xs border-collapse">
-                        <thead>
-                          <tr className="border-b border-slate-100 dark:border-slate-800 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider bg-slate-50/30 dark:bg-slate-900/20">
-                            <th className="py-2.5 px-4">Menu & Route</th>
-                            <th className="py-2.5 px-3 text-center">Show in Menu</th>
-                            <th className="py-2.5 px-3">Action Checkboxes</th>
-                            <th className="py-2.5 px-3">Data Scope</th>
-                            {selectedRoleId === 'bizpro' && (
-                              <th className="py-2.5 px-3">Min Rank</th>
-                            )}
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
-                          {groupMenus.map((menu) => {
-                            const perm = currentRoleDraftPerms[menu.id] || {
-                              view: false,
-                              create: false,
-                              edit: false,
-                              delete: false,
-                              approve: false,
-                              export: false,
-                              scope: 'own',
-                              minRank: menu.minRank || 1,
-                            }
-                            const lockInfo = isLockedItem(selectedRoleId, menu)
-                            const isViewOn = menu.isCore || perm.view
-
-                            return (
-                              <tr
-                                key={menu.id}
-                                className={`hover:bg-slate-50/70 dark:hover:bg-[#12294A]/30 transition-colors ${
-                                  !isViewOn ? 'opacity-60 bg-slate-50/20 dark:bg-slate-900/10' : ''
-                                }`}
-                              >
-                                {/* 1. Menu Name, Icon & Route */}
-                                <td className="py-3 px-4">
-                                  <div className="flex items-start gap-3 min-w-[220px]">
-                                    <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5">
-                                      <MenuIcon name={menu.icon} className="w-4 h-4" />
-                                    </div>
-                                    <div className="min-w-0">
-                                      <div className="flex items-center gap-1.5 flex-wrap">
-                                        <span className="font-bold text-slate-900 dark:text-white">
-                                          {menu.label}
-                                        </span>
-                                        {menu.isCore && (
-                                          <Badge variant="gold" size="sm" className="text-[9px] px-1 py-0">
-                                            Core
-                                          </Badge>
-                                        )}
-                                        {menu.isLeaderOnly && (
-                                          <Badge variant="amber" size="sm" className="text-[9px] px-1 py-0">
-                                            Rank 4+ Leader
-                                          </Badge>
-                                        )}
-                                        {lockInfo.locked && (
-                                          <span title={lockInfo.reason} className="cursor-help text-amber-500">
-                                            <Lock className="w-3 h-3 inline" />
-                                          </span>
-                                        )}
-                                      </div>
-                                      <span className="text-[10px] text-slate-400 font-mono block truncate">
-                                        {menu.route}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </td>
-
-                                {/* 2. Master "Show in Menu" Switch */}
-                                <td className="py-3 px-3 text-center">
-                                  <div className="flex items-center justify-center">
-                                    {lockInfo.locked ? (
-                                      <div title={lockInfo.reason} className="cursor-not-allowed">
-                                        <Switch checked={true} onChange={() => {}} disabled={true} />
-                                      </div>
-                                    ) : (
-                                      <Switch
-                                        checked={Boolean(perm.view)}
-                                        onChange={() => handleToggleMenuShow(selectedRoleId, menu.id)}
-                                      />
-                                    )}
-                                  </div>
-                                </td>
-
-                                {/* 3. Action Checkboxes (View, Create, Edit, Delete, Approve, Export) */}
-                                <td className="py-3 px-3">
-                                  <div className="flex items-center gap-2.5 flex-wrap min-w-[280px]">
-                                    {/* View */}
-                                    <label
-                                      className={`inline-flex items-center gap-1 text-[11px] font-semibold cursor-pointer ${
-                                        lockInfo.locked ? 'cursor-not-allowed text-slate-400' : ''
-                                      }`}
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        checked={Boolean(isViewOn)}
-                                        disabled={lockInfo.locked}
-                                        onChange={() => handleToggleMenuShow(selectedRoleId, menu.id)}
-                                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-3.5 h-3.5"
-                                      />
-                                      <span>View</span>
-                                    </label>
-
-                                    {/* Create */}
-                                    <label
-                                      className={`inline-flex items-center gap-1 text-[11px] font-semibold cursor-pointer ${
-                                        !isViewOn ? 'opacity-40 cursor-not-allowed' : ''
-                                      }`}
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        checked={Boolean(perm.create)}
-                                        disabled={!isViewOn}
-                                        onChange={() => handleToggleAction(selectedRoleId, menu.id, 'create')}
-                                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-3.5 h-3.5"
-                                      />
-                                      <span>Create</span>
-                                    </label>
-
-                                    {/* Edit */}
-                                    <label
-                                      className={`inline-flex items-center gap-1 text-[11px] font-semibold cursor-pointer ${
-                                        !isViewOn ? 'opacity-40 cursor-not-allowed' : ''
-                                      }`}
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        checked={Boolean(perm.edit)}
-                                        disabled={!isViewOn}
-                                        onChange={() => handleToggleAction(selectedRoleId, menu.id, 'edit')}
-                                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-3.5 h-3.5"
-                                      />
-                                      <span>Edit</span>
-                                    </label>
-
-                                    {/* Dangerous Action: Delete */}
-                                    <label
-                                      className={`inline-flex items-center gap-1 text-[11px] font-semibold cursor-pointer ${
-                                        !isViewOn ? 'opacity-40 cursor-not-allowed' : 'text-rose-700 dark:text-rose-400'
-                                      }`}
-                                      title="High Risk Action: Irreversible deletion permission"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        checked={Boolean(perm.delete)}
-                                        disabled={!isViewOn}
-                                        onChange={() => handleToggleAction(selectedRoleId, menu.id, 'delete')}
-                                        className="rounded border-slate-300 text-rose-600 focus:ring-rose-500 w-3.5 h-3.5"
-                                      />
-                                      <span className="flex items-center gap-0.5">
-                                        <span>Delete</span>
-                                        <AlertTriangle className="w-3 h-3 text-rose-500 inline" />
-                                      </span>
-                                    </label>
-
-                                    {/* Dangerous Action: Approve */}
-                                    <label
-                                      className={`inline-flex items-center gap-1 text-[11px] font-semibold cursor-pointer ${
-                                        !isViewOn ? 'opacity-40 cursor-not-allowed' : 'text-amber-700 dark:text-amber-400'
-                                      }`}
-                                      title="High Risk Action: Financial disbursement or approval authority"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        checked={Boolean(perm.approve)}
-                                        disabled={!isViewOn}
-                                        onChange={() => handleToggleAction(selectedRoleId, menu.id, 'approve')}
-                                        className="rounded border-slate-300 text-amber-600 focus:ring-amber-500 w-3.5 h-3.5"
-                                      />
-                                      <span className="flex items-center gap-0.5">
-                                        <span>Approve</span>
-                                        <AlertTriangle className="w-3 h-3 text-amber-500 inline" />
-                                      </span>
-                                    </label>
-
-                                    {/* Dangerous Action: Export */}
-                                    <label
-                                      className={`inline-flex items-center gap-1 text-[11px] font-semibold cursor-pointer ${
-                                        !isViewOn ? 'opacity-40 cursor-not-allowed' : ''
-                                      }`}
-                                      title="High Risk Action: Bulk data export capability"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        checked={Boolean(perm.export)}
-                                        disabled={!isViewOn}
-                                        onChange={() => handleToggleAction(selectedRoleId, menu.id, 'export')}
-                                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-3.5 h-3.5"
-                                      />
-                                      <span className="flex items-center gap-0.5">
-                                        <span>Export</span>
-                                        <AlertTriangle className="w-3 h-3 text-amber-500 inline" />
-                                      </span>
-                                    </label>
-                                  </div>
-                                </td>
-
-                                {/* 4. Data Scope Dropdown (All / Team / Own / None) */}
-                                <td className="py-3 px-3">
-                                  <select
-                                    value={perm.scope || 'own'}
-                                    disabled={!isViewOn}
-                                    onChange={(e) =>
-                                      handleScopeChange(selectedRoleId, menu.id, e.target.value as ScopeType)
-                                    }
-                                    className={`h-8 px-2.5 text-xs font-semibold rounded-lg border outline-none ${
-                                      perm.scope === 'none'
-                                        ? 'border-rose-300 dark:border-rose-900 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300'
-                                        : 'border-slate-200 dark:border-[#1E3A5F] bg-white dark:bg-[#12294A] text-slate-800 dark:text-slate-200'
-                                    }`}
-                                  >
-                                    <option value="all">All (Global)</option>
-                                    <option value="team">Team (Downline)</option>
-                                    <option value="own">Own (Self Only)</option>
-                                    <option value="none">None (Deny All)</option>
-                                  </select>
-                                </td>
-
-                                {/* 5. Min Rank Selector (for Biz Pro) */}
-                                {selectedRoleId === 'bizpro' && (
-                                  <td className="py-3 px-3">
-                                    <select
-                                      value={perm.minRank || menu.minRank || 1}
-                                      disabled={!isViewOn}
-                                      onChange={(e) =>
-                                        handleMinRankChange(selectedRoleId, menu.id, Number(e.target.value))
-                                      }
-                                      className="h-8 px-2 text-xs font-semibold rounded-lg border border-slate-200 dark:border-[#1E3A5F] bg-white dark:bg-[#12294A] text-slate-800 dark:text-slate-200 outline-none"
-                                    >
-                                      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((rank) => (
-                                        <option key={rank} value={rank}>
-                                          Rank {rank} {rank >= 4 ? '(Leader)' : ''}
-                                        </option>
-                                      ))}
-                                    </select>
-                                  </td>
-                                )}
-                              </tr>
-                            )
-                          })}
-                        </tbody>
-                      </table>
+                    <div>
+                      <h4 className={`text-xs font-bold truncate ${isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-slate-900 dark:text-white'}`}>
+                        {role.name}
+                      </h4>
+                      <div className="flex items-center gap-1 mt-1">
+                        <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                          {activeCount} active
+                        </span>
+                        <span className="text-[11px] text-slate-400">· {role.userCount} users</span>
+                      </div>
                     </div>
-                  </Card>
+                  </button>
                 )
               })}
             </div>
           </div>
+
+          {/* 2. FILTER & TOOLBAR HEADER */}
+          <Card variant="default" className="p-4 bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] rounded-2xl shadow-sm">
+            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+              {/* Search & Category */}
+              <div className="flex items-center gap-3 flex-1">
+                <div className="relative flex-1 max-w-md">
+                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <Input
+                    placeholder={`Search menus in ${selectedRole.name}...`}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-9 h-9 text-xs"
+                  />
+                </div>
+
+                <select
+                  value={selectedModuleFilter}
+                  onChange={(e) => setSelectedModuleFilter(e.target.value)}
+                  className="h-9 px-3 text-xs rounded-xl border border-slate-200 dark:border-[#1E3A5F] bg-white dark:bg-[#12294A] text-slate-800 dark:text-slate-200 outline-none"
+                >
+                  <option value="all">All Modules</option>
+                  {MODULE_ORDER.map((mod: string) => (
+                    <option key={mod} value={mod}>
+                      {mod}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Status Filters & Mode Switcher */}
+              <div className="flex items-center gap-2 flex-wrap self-end md:self-auto">
+                {/* Catalog Scope: Role Dedicated vs All Global */}
+                <div className="flex items-center rounded-xl bg-slate-100 dark:bg-[#12294A] p-0.5 border border-slate-200 dark:border-slate-800">
+                  <button
+                    onClick={() => setCatalogScope('roleOnly')}
+                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors ${
+                      catalogScope === 'roleOnly'
+                        ? 'bg-blue-600 text-white shadow-xs'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                    }`}
+                  >
+                    {selectedRole.name} Tools Only
+                  </button>
+                  <button
+                    onClick={() => setCatalogScope('allCatalog')}
+                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors ${
+                      catalogScope === 'allCatalog'
+                        ? 'bg-blue-600 text-white shadow-xs'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                    }`}
+                  >
+                    All 60 Menus
+                  </button>
+                </div>
+
+                <div className="flex items-center rounded-xl bg-slate-100 dark:bg-[#12294A] p-0.5 border border-slate-200 dark:border-slate-800">
+                  {(['all', 'enabled', 'disabled'] as const).map((st) => (
+                    <button
+                      key={st}
+                      onClick={() => setFilterStatus(st)}
+                      className={`px-3 py-1 text-xs font-bold rounded-lg capitalize transition-colors ${
+                        filterStatus === st
+                          ? 'bg-white dark:bg-[#0D1E36] text-blue-600 dark:text-blue-400 shadow-xs'
+                          : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                      }`}
+                    >
+                      {st === 'all' ? 'All' : st === 'enabled' ? 'Active' : 'Hidden'}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="h-4 w-px bg-slate-200 dark:bg-slate-700 hidden sm:block" />
+
+                {/* Simple / Detailed View Mode Toggle */}
+                <div className="flex items-center rounded-xl bg-slate-100 dark:bg-[#12294A] p-0.5 border border-slate-200 dark:border-slate-800">
+                  <button
+                    onClick={() => setMatrixViewMode('simple')}
+                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 ${
+                      matrixViewMode === 'simple'
+                        ? 'bg-white dark:bg-[#0D1E36] text-blue-600 dark:text-blue-400 shadow-xs'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                    }`}
+                  >
+                    <Sliders className="w-3.5 h-3.5" />
+                    <span>Simple (Show/Hide)</span>
+                  </button>
+                  <button
+                    onClick={() => setMatrixViewMode('detailed')}
+                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 ${
+                      matrixViewMode === 'detailed'
+                        ? 'bg-white dark:bg-[#0D1E36] text-blue-600 dark:text-blue-400 shadow-xs'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                    }`}
+                  >
+                    <Layers className="w-3.5 h-3.5" />
+                    <span>Detailed CRUD</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* 3. GROUPED MODULE CARDS */}
+          <div className="space-y-4">
+            {MODULE_ORDER.map((moduleName: string) => {
+              const groupMenus = filteredMenusByModule[moduleName] || []
+              if (groupMenus.length === 0) return null
+
+              const isCollapsed = Boolean(collapsedModules[moduleName])
+              const activeMenusInGroup = groupMenus.filter(
+                (m) => currentRoleDraftPerms[m.id]?.view || m.isCore
+              )
+              const allInGroupEnabled = groupMenus.every(
+                (m) => currentRoleDraftPerms[m.id]?.view || m.isCore
+              )
+
+              return (
+                <Card
+                  key={moduleName}
+                  variant="default"
+                  className="bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] rounded-2xl shadow-sm overflow-hidden p-0"
+                >
+                  {/* Category Header Bar */}
+                  <div className="px-5 py-3.5 bg-slate-50/80 dark:bg-[#12294A]/60 border-b border-slate-200 dark:border-[#1E3A5F] flex items-center justify-between">
+                    <div
+                      className="flex items-center gap-3 cursor-pointer select-none"
+                      onClick={() => toggleCollapseModule(moduleName)}
+                    >
+                      <span className="p-1 rounded-lg bg-slate-200/70 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                        {isCollapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                      </span>
+                      <div>
+                        <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 dark:text-white">
+                          {moduleName}
+                        </h3>
+                        <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                          {activeMenusInGroup.length} of {groupMenus.length} menus enabled
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleToggleGroup(selectedRoleId, groupMenus)}
+                        className="text-xs h-7 text-blue-600 dark:text-blue-400 font-bold"
+                      >
+                        {allInGroupEnabled ? 'Hide All' : 'Show All in Sidebar'}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Menu Rows List */}
+                  {!isCollapsed && (
+                    <div className="divide-y divide-slate-100 dark:divide-slate-800/60">
+                      {groupMenus.map((menu) => {
+                        const perm = currentRoleDraftPerms[menu.id] || {
+                          view: false,
+                          create: false,
+                          edit: false,
+                          delete: false,
+                          approve: false,
+                          export: false,
+                          scope: 'own',
+                          minRank: menu.minRank || 1,
+                        }
+                        const lockInfo = isLockedItem(selectedRoleId, menu)
+                        const isViewOn = menu.isCore || perm.view
+                        const isMenuExpanded = Boolean(expandedMenuIds[menu.id])
+
+                        return (
+                          <div
+                            key={menu.id}
+                            className={`p-4 transition-colors ${
+                              !isViewOn
+                                ? 'bg-slate-50/30 dark:bg-slate-900/20 opacity-70'
+                                : 'hover:bg-slate-50/70 dark:hover:bg-[#12294A]/30'
+                            }`}
+                          >
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                              {/* Left: Icon, Title, Route */}
+                              <div className="flex items-center gap-3.5 min-w-[260px]">
+                                <div className={`p-2.5 rounded-xl shrink-0 ${
+                                  isViewOn
+                                    ? 'bg-blue-100 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400'
+                                    : 'bg-slate-100 dark:bg-slate-800 text-slate-400'
+                                }`}>
+                                  <MenuIcon name={menu.icon} className="w-5 h-5" />
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="flex items-center gap-2 flex-wrap">
+                                    <span className="font-bold text-sm text-slate-900 dark:text-white">
+                                      {menu.label}
+                                    </span>
+                                    {menu.isCore && (
+                                      <Badge variant="gold" size="sm" className="text-[9px] px-1.5 py-0 font-bold">
+                                        Core
+                                      </Badge>
+                                    )}
+                                    {menu.isLeaderOnly && (
+                                      <Badge variant="amber" size="sm" className="text-[9px] px-1.5 py-0 font-bold">
+                                        Rank 4+ Leader
+                                      </Badge>
+                                    )}
+                                    {lockInfo.locked && (
+                                      <span title={lockInfo.reason} className="cursor-help text-amber-500">
+                                        <Lock className="w-3.5 h-3.5 inline" />
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="flex items-center gap-2 mt-0.5">
+                                    <span className="text-[11px] font-mono text-slate-400 truncate">
+                                      {menu.route}
+                                    </span>
+                                    {menu.description && (
+                                      <span className="text-[11px] text-slate-400 truncate hidden lg:inline">
+                                        · {menu.description}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Right: Master Toggle & Action Pills */}
+                              <div className="flex items-center gap-4 self-end md:self-auto flex-wrap">
+                                {/* Sidebar Visibility Switch */}
+                                <div className="flex items-center gap-2.5 bg-slate-100/70 dark:bg-[#12294A]/70 px-3 py-1.5 rounded-xl border border-slate-200/80 dark:border-[#1E3A5F]">
+                                  <span className={`text-xs font-bold ${
+                                    isViewOn ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'
+                                  }`}>
+                                    {isViewOn ? 'Visible in Sidebar' : 'Hidden'}
+                                  </span>
+                                  {lockInfo.locked ? (
+                                    <div title={lockInfo.reason} className="cursor-not-allowed">
+                                      <Switch checked={true} onChange={() => {}} disabled={true} />
+                                    </div>
+                                  ) : (
+                                    <Switch
+                                      checked={Boolean(perm.view)}
+                                      onChange={() => handleToggleMenuShow(selectedRoleId, menu.id)}
+                                    />
+                                  )}
+                                </div>
+
+                                {/* Preset Quick Actions */}
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    onClick={() => handleSetPreset(selectedRoleId, menu.id, 'full')}
+                                    className="px-2 py-1 text-[11px] font-bold rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-blue-950/40 hover:text-blue-600 text-slate-600 dark:text-slate-400 transition-colors"
+                                    title="Grant full CRUD and All scope"
+                                  >
+                                    Full Access
+                                  </button>
+                                  <button
+                                    onClick={() => handleSetPreset(selectedRoleId, menu.id, 'readonly')}
+                                    className="px-2 py-1 text-[11px] font-bold rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-[#12294A] text-slate-600 dark:text-slate-400 transition-colors"
+                                    title="Set View Only"
+                                  >
+                                    View Only
+                                  </button>
+                                </div>
+
+                                {/* Customize Button (in simple mode) */}
+                                {matrixViewMode === 'simple' && (
+                                  <button
+                                    onClick={() => toggleExpandMenu(menu.id)}
+                                    className="px-2 py-1 text-[11px] font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                                  >
+                                    <span>{isMenuExpanded ? 'Hide Details' : 'Configure CRUD'}</span>
+                                    {isMenuExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Granular Actions Drawer (When in Detailed Mode or when expanded) */}
+                            {(matrixViewMode === 'detailed' || isMenuExpanded) && (
+                              <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 bg-slate-50/50 dark:bg-[#12294A]/30 p-3 rounded-xl">
+                                <div className="flex items-center gap-1.5 flex-wrap">
+                                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1">
+                                    Actions:
+                                  </span>
+
+                                  {/* Create */}
+                                  <button
+                                    disabled={!isViewOn}
+                                    onClick={() => handleToggleAction(selectedRoleId, menu.id, 'create')}
+                                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                      perm.create
+                                        ? 'bg-blue-600 text-white shadow-xs'
+                                        : 'bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-slate-900'
+                                    }`}
+                                  >
+                                    + Create
+                                  </button>
+
+                                  {/* Edit */}
+                                  <button
+                                    disabled={!isViewOn}
+                                    onClick={() => handleToggleAction(selectedRoleId, menu.id, 'edit')}
+                                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                      perm.edit
+                                        ? 'bg-blue-600 text-white shadow-xs'
+                                        : 'bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-slate-900'
+                                    }`}
+                                  >
+                                    ✎ Edit
+                                  </button>
+
+                                  {/* Delete */}
+                                  <button
+                                    disabled={!isViewOn}
+                                    onClick={() => handleToggleAction(selectedRoleId, menu.id, 'delete')}
+                                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                      perm.delete
+                                        ? 'bg-rose-600 text-white shadow-xs'
+                                        : 'bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-rose-600'
+                                    }`}
+                                  >
+                                    🗑 Delete
+                                  </button>
+
+                                  {/* Approve */}
+                                  <button
+                                    disabled={!isViewOn}
+                                    onClick={() => handleToggleAction(selectedRoleId, menu.id, 'approve')}
+                                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                      perm.approve
+                                        ? 'bg-amber-600 text-white shadow-xs'
+                                        : 'bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-amber-600'
+                                    }`}
+                                  >
+                                    ⭐ Approve
+                                  </button>
+
+                                  {/* Export */}
+                                  <button
+                                    disabled={!isViewOn}
+                                    onClick={() => handleToggleAction(selectedRoleId, menu.id, 'export')}
+                                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                      perm.export
+                                        ? 'bg-purple-600 text-white shadow-xs'
+                                        : 'bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-purple-600'
+                                    }`}
+                                  >
+                                    ⤓ Export
+                                  </button>
+                                </div>
+
+                                {/* Scope & Min Rank */}
+                                <div className="flex items-center gap-2">
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="text-[11px] font-bold text-slate-400">Scope:</span>
+                                    <select
+                                      value={perm.scope || 'own'}
+                                      disabled={!isViewOn}
+                                      onChange={(e) =>
+                                        handleScopeChange(selectedRoleId, menu.id, e.target.value as ScopeType)
+                                      }
+                                      className="h-7 px-2 text-xs font-bold rounded-lg border border-slate-200 dark:border-[#1E3A5F] bg-white dark:bg-[#0D1E36] text-slate-800 dark:text-slate-200 outline-none"
+                                    >
+                                      <option value="all">All (Global)</option>
+                                      <option value="team">Team (Downline)</option>
+                                      <option value="own">Own (Self Only)</option>
+                                      <option value="none">None (Deny All)</option>
+                                    </select>
+                                  </div>
+
+                                  {selectedRoleId === 'bizpro' && (
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="text-[11px] font-bold text-slate-400">Min Rank:</span>
+                                      <select
+                                        value={perm.minRank || menu.minRank || 1}
+                                        disabled={!isViewOn}
+                                        onChange={(e) =>
+                                          handleMinRankChange(selectedRoleId, menu.id, Number(e.target.value))
+                                        }
+                                        className="h-7 px-2 text-xs font-bold rounded-lg border border-slate-200 dark:border-[#1E3A5F] bg-white dark:bg-[#0D1E36] text-slate-800 dark:text-slate-200 outline-none"
+                                      >
+                                        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((rank) => (
+                                          <option key={rank} value={rank}>
+                                            Rank {rank} {rank >= 4 ? '(Leader)' : ''}
+                                          </option>
+                                        ))}
+                                      </select>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+                </Card>
+              )
+            })}
+          </div>
+
+          {/* 4. FLOATING SAVE BAR WHEN CHANGES ARE PENDING */}
+          {pendingDiffs.length > 0 && (
+            <div className="fixed bottom-6 inset-x-0 max-w-xl mx-auto z-50 animate-slideUp px-4">
+              <div className="p-4 rounded-2xl bg-slate-900 text-white shadow-2xl border border-slate-700 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
+                  <div>
+                    <span className="text-xs font-extrabold block">
+                      {pendingDiffs.length} Unsaved Permissions Changes
+                    </span>
+                    <span className="text-[11px] text-slate-400">
+                      Changes will take effect instantly across all portals.
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleDiscardChanges}
+                    className="text-xs h-8 text-slate-300 hover:text-white border-slate-700 hover:bg-slate-800"
+                  >
+                    Discard
+                  </Button>
+                  <Button
+                    variant="accent"
+                    size="sm"
+                    onClick={() => setSaveConfirmModalOpen(true)}
+                    className="text-xs h-8 font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20"
+                  >
+                    <Save className="w-3.5 h-3.5 mr-1.5" /> Save Changes
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
