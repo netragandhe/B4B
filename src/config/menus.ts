@@ -140,7 +140,6 @@ export const ALL_MENU_ITEMS: Record<string, MenuItem> = {
 export function getMenuItemsForRole(role: UserRole, rankLevel: number = 1): MenuItem[] {
   const roleDefinitions: Record<UserRole, string[]> = {
     Admin: [
-      'ebox',
       'dashboard',
       'adminBizPro',
       'adminBulletin',
@@ -148,55 +147,52 @@ export function getMenuItemsForRole(role: UserRole, rankLevel: number = 1): Menu
       'commissionMaker',
       'territory',
       'servicesInventory',
-      'adminSubscriptions',
-      'adminLeads',
-      'scoreboardSettings',
-      'jobsModeration',
       'affiliates',
-      'websiteContent',
-      'trainingContent',
-      'adminReports',
+      'jobsModeration',
       'rolesPermissions',
-      'settings',
+      'ebox',
     ],
     'Biz Pro': [
-      'ebox',
       'bulletin',
       'bizproDashboard',
       'leads',
       'clients',
       'communication',
-      'marketing',
       'catalog',
       'commissions',
       'rank',
-      'scoreboard',
       'training',
-      'territory',
+      'ebox',
     ],
     Client: [
-      'ebox',
       'dashboard',
       'clientOrders',
       'clientFundingStatus',
-      'clientDocuments',
       'clientMessages',
       'clientInvoices',
-      'clientBookCoach',
-      'clientSupport',
+      'ebox',
     ],
     Affiliate: [
-      'ebox',
       'dashboard',
       'affiliateLinks',
-      'affiliateSubmitLead',
       'affiliateReferrals',
       'affiliatePayouts',
-      'affiliateMarketing',
-      'affiliateProfile',
+      'ebox',
     ],
-    Employer: ['ebox', 'employerDashboard', 'postJob', 'myJobs', 'applicants', 'companyProfile', 'employerBilling', 'employerMessages'],
-    'Job Seeker': ['ebox', 'seekerDashboard', 'searchJobs', 'savedJobs', 'myApplications', 'seekerProfile', 'jobAlerts', 'seekerMessages'],
+    Employer: [
+      'employerDashboard',
+      'postJob',
+      'myJobs',
+      'applicants',
+      'employerMessages',
+    ],
+    'Job Seeker': [
+      'seekerDashboard',
+      'searchJobs',
+      'myApplications',
+      'seekerProfile',
+      'seekerMessages',
+    ],
   }
 
   const baseKeys = roleDefinitions[role] || roleDefinitions.Client
@@ -211,11 +207,6 @@ export function getMenuItemsForRole(role: UserRole, rankLevel: number = 1): Menu
   if (role === 'Biz Pro' && rankLevel >= 4) {
     const leaderItems: MenuItem[] = [
       ALL_MENU_ITEMS.team,
-      ALL_MENU_ITEMS.teamCommissions,
-      ALL_MENU_ITEMS.recruit,
-      ALL_MENU_ITEMS.teamScoreboard,
-      ALL_MENU_ITEMS.territoryAssignment,
-      ALL_MENU_ITEMS.teamReports,
     ]
 
     const rankIdx = filtered.findIndex((i) => i.id === 'rank')
