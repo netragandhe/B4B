@@ -120,6 +120,25 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
     return cleanHref === cleanCurrent
   }
 
+  const getHomeRoute = () => {
+    switch (user?.role) {
+      case 'Admin':
+        return '/portal/admin/dashboard'
+      case 'Biz Pro':
+        return '/portal/bizpro/bulletin'
+      case 'Client':
+        return '/portal/dashboard'
+      case 'Affiliate':
+        return '/portal/affiliate/dashboard'
+      case 'Employer':
+        return '/portal/employer/dashboard'
+      case 'Job Seeker':
+        return '/portal/seeker/dashboard'
+      default:
+        return '/portal/dashboard'
+    }
+  }
+
   const handleLogout = () => {
     setLogoutModalOpen(true)
   }
@@ -141,7 +160,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
       >
         {/* Brand Header */}
         <div className="p-4 sm:p-5 border-b border-slate-100 dark:border-[#1E3A5F]/70 flex items-center justify-between">
-          <Link to="/portal/dashboard" className="flex items-center gap-2.5 truncate overflow-hidden">
+          <Link to={getHomeRoute()} className="flex items-center gap-2.5 truncate overflow-hidden">
             <BrandLogo variant={isCollapsed ? 'icon' : 'wordmark'} size={isCollapsed ? 'sm' : 'md'} showTagline={false} />
             {!isCollapsed && (
               <span className="text-lg font-black text-[#0A3D9C] dark:text-white tracking-tight leading-none">
