@@ -43,10 +43,10 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   )
 
   const icons = {
-    success: <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />,
+    success: <CheckCircle2 className="w-5 h-5 text-[var(--green-600)] shrink-0" />,
     error: <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />,
-    warning: <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />,
-    info: <Info className="w-5 h-5 text-blue-500 shrink-0" />,
+    warning: <AlertTriangle className="w-5 h-5 text-[var(--gold-500)] shrink-0" />,
+    info: <Info className="w-5 h-5 text-[var(--blue-600)] shrink-0" />,
   }
 
   return (
@@ -57,23 +57,23 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           <div
             key={t.id}
             className={cn(
-              'pointer-events-auto flex items-start gap-3 p-4 rounded-xl border shadow-xl bg-white dark:bg-[#0D1E36] text-left transition-all transform animate-slideUp',
-              t.type === 'success' && 'border-emerald-500/40 shadow-emerald-500/10',
+              'pointer-events-auto flex items-start gap-3 p-4 rounded-xl border shadow-xl bg-[var(--surface)] text-left transition-all transform animate-slideUp',
+              t.type === 'success' && 'border-[var(--green-600)]/40 shadow-[var(--green-600)]/10',
               t.type === 'error' && 'border-red-500/40 shadow-red-500/10',
-              t.type === 'warning' && 'border-amber-500/40 shadow-amber-500/10',
-              t.type === 'info' && 'border-blue-500/40 shadow-blue-500/10'
+              t.type === 'warning' && 'border-[var(--gold-500)]/40 shadow-[var(--gold-500)]/10',
+              t.type === 'info' && 'border-[var(--blue-600)]/40 shadow-[var(--blue-600)]/10'
             )}
           >
             {icons[t.type]}
             <div className="flex-1 min-w-0">
-              <h5 className="text-sm font-bold text-slate-900 dark:text-slate-100">{t.title}</h5>
+              <h5 className="text-sm font-bold text-[var(--text)]">{t.title}</h5>
               {t.description && (
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{t.description}</p>
+                <p className="text-xs text-[var(--text-muted)] mt-0.5">{t.description}</p>
               )}
             </div>
             <button
               onClick={() => removeToast(t.id)}
-              className="p-0.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+              className="p-0.5 text-[var(--text-muted)] hover:text-[var(--text)]"
             >
               <X className="w-4 h-4" />
             </button>

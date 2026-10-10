@@ -28,7 +28,7 @@ export const Tabs: React.FC<TabsProps> = ({
     return (
       <div
         className={cn(
-          'inline-flex p-1 rounded-xl bg-slate-100 dark:bg-[#12294A] border border-slate-200/60 dark:border-[#1E3A5F]',
+          'inline-flex p-1 rounded-xl bg-[var(--sky-50)] border border-[var(--border)]',
           className
         )}
         role="tablist"
@@ -43,10 +43,10 @@ export const Tabs: React.FC<TabsProps> = ({
               disabled={tab.disabled}
               onClick={() => onChange(tab.id)}
               className={cn(
-                'flex items-center gap-2 px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-200 select-none outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
+                'flex items-center gap-2 px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-200 select-none outline-none focus-visible:ring-2 focus-visible:ring-[var(--blue-600)]',
                 isActive
-                  ? 'bg-white dark:bg-[#0D1E36] text-blue-600 dark:text-blue-400 shadow-xs'
-                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white',
+                  ? 'bg-[var(--blue-600)] text-white shadow-xs'
+                  : 'text-[var(--navy-900)] hover:text-[var(--blue-600)]',
                 tab.disabled && 'opacity-40 cursor-not-allowed'
               )}
             >
@@ -57,8 +57,8 @@ export const Tabs: React.FC<TabsProps> = ({
                   className={cn(
                     'px-1.5 py-0.2 rounded-full text-[10px] font-bold',
                     isActive
-                      ? 'bg-blue-100 dark:bg-blue-900/60 text-blue-600 dark:text-blue-300'
-                      : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
+                      ? 'bg-white/20 text-white'
+                      : 'bg-[var(--surface)] text-[var(--text-muted)]'
                   )}
                 >
                   {tab.badge}
@@ -72,7 +72,7 @@ export const Tabs: React.FC<TabsProps> = ({
   }
 
   return (
-    <div className={cn('border-b border-slate-200 dark:border-[#1E3A5F] flex gap-6', className)} role="tablist">
+    <div className={cn('border-b border-[var(--border)] flex gap-6', className)} role="tablist">
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id
         return (
@@ -85,15 +85,15 @@ export const Tabs: React.FC<TabsProps> = ({
             className={cn(
               'flex items-center gap-2 pb-3 text-sm font-semibold border-b-2 transition-all outline-none select-none',
               isActive
-                ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-                : 'border-transparent text-slate-500 hover:text-slate-900 dark:hover:text-slate-200 hover:border-slate-300',
+                ? 'border-[var(--blue-600)] text-[var(--blue-600)]'
+                : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border)]',
               tab.disabled && 'opacity-40 cursor-not-allowed'
             )}
           >
             {tab.icon && <span>{tab.icon}</span>}
             <span>{tab.label}</span>
             {tab.badge !== undefined && (
-              <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+              <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-[var(--sky-50)] text-[var(--text-muted)]">
                 {tab.badge}
               </span>
             )}

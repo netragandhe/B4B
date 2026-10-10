@@ -33,10 +33,10 @@ export const brandConfig: BrandConfig = {
   headquarters: 'Financial District, New York, NY',
   portalName: 'B4B America Portal',
   colors: {
-    primary: '#0A3D9C',
-    primaryDark: '#072B6E',
-    accent: '#FFC800',
-    accentDark: '#E6B400',
+    primary: '#1D4ED8',
+    primaryDark: '#0B1F3A',
+    accent: '#F5B301',
+    accentDark: '#14305E',
   },
   logos: {
     full: '/brand/logo-full.png',

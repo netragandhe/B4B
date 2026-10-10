@@ -32,11 +32,11 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
               if (target) target.click()
             }}
             className={cn(
-              'w-5 h-5 rounded-[6px] border border-slate-300 dark:border-[#1E3A5F] bg-white dark:bg-[#0D1E36] transition-all duration-150 flex items-center justify-center cursor-pointer',
-              'hover:border-blue-500 peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500/30',
-              'peer-checked:bg-blue-600 peer-checked:border-blue-600 peer-checked:text-white',
+              'w-5 h-5 rounded-[6px] border border-[var(--border)] bg-[var(--surface)] transition-all duration-150 flex items-center justify-center cursor-pointer',
+              'hover:border-[var(--blue-600)] peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--blue-600)]/30',
+              'peer-checked:bg-[var(--blue-600)] peer-checked:border-[var(--blue-600)] peer-checked:text-white',
               error && 'border-red-500',
-              disabled && 'opacity-50 cursor-not-allowed bg-slate-100 dark:bg-slate-800'
+              disabled && 'opacity-50 cursor-not-allowed bg-[var(--border)] text-[var(--text-muted)]'
             )}
           >
             <Check className={cn('w-3.5 h-3.5 stroke-[3] transition-transform duration-150', checked ? 'scale-100' : 'scale-0')} />
@@ -46,12 +46,12 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         {(label || description) && (
           <label htmlFor={generatedId} className="cursor-pointer select-none text-left">
             {label && (
-              <span className="block text-sm font-medium text-slate-800 dark:text-slate-200">
+              <span className="block text-sm font-medium text-[var(--text)]">
                 {label}
               </span>
             )}
             {description && (
-              <span className="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <span className="block text-xs text-[var(--text-muted)] mt-0.5">
                 {description}
               </span>
             )}

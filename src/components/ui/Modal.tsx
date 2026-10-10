@@ -53,7 +53,7 @@ export const Modal: React.FC<ModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity animate-fadeIn"
+        className="fixed inset-0 bg-[var(--navy-950)]/60 backdrop-blur-sm transition-opacity animate-fadeIn"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -63,28 +63,28 @@ export const Modal: React.FC<ModalProps> = ({
         role="dialog"
         aria-modal="true"
         className={cn(
-          'relative w-full rounded-t-3xl sm:rounded-2xl bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] shadow-2xl z-10 overflow-hidden animate-scaleUp max-h-[90vh] sm:max-h-[85vh]',
+          'relative w-full rounded-t-3xl sm:rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-2xl z-10 overflow-hidden animate-scaleUp max-h-[90vh] sm:max-h-[85vh]',
           maxWidthMap[maxWidth],
           className
         )}
       >
         {/* Header */}
-        <div className="p-5 pb-3 border-b border-slate-100 dark:border-[#1E3A5F]/70 flex items-start justify-between gap-4">
+        <div className="p-5 pb-3 border-b border-[var(--border)] flex items-start justify-between gap-4">
           <div>
             {title && (
-              <h3 className="text-lg font-bold font-heading text-slate-900 dark:text-slate-100">
+              <h3 className="text-lg font-bold font-heading text-[var(--text)]">
                 {title}
               </h3>
             )}
             {description && (
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <p className="text-xs text-[var(--text-muted)] mt-1">
                 {description}
               </p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:outline-none"
+            className="p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--sky-50)] transition-colors focus:outline-none"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -96,7 +96,7 @@ export const Modal: React.FC<ModalProps> = ({
 
         {/* Footer */}
         {footer && (
-          <div className="p-4 bg-slate-50 dark:bg-[#0A1628]/60 border-t border-slate-100 dark:border-[#1E3A5F]/70 flex items-center justify-end gap-3">
+          <div className="p-4 bg-[var(--bg)] border-t border-[var(--border)] flex items-center justify-end gap-3">
             {footer}
           </div>
         )}

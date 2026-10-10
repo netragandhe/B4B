@@ -8,23 +8,25 @@ export const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700',
+          'bg-[var(--sky-50)] text-[var(--text)] border border-[var(--border)]',
         primary:
-          'bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900',
+          'bg-[var(--sky-50)] text-[var(--blue-600)] border border-[var(--border)]',
         emerald:
-          'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800',
+          'bg-[var(--green-600)]/10 text-[var(--green-600)] border border-[var(--green-600)]/20',
+        success:
+          'bg-[var(--green-600)]/10 text-[var(--green-600)] border border-[var(--green-600)]/20',
         gold:
-          'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800',
+          'bg-[var(--gold-500)] text-[var(--navy-900)] border border-[var(--gold-500)]',
         amber:
-          'bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700',
+          'bg-[var(--gold-500)] text-[var(--navy-900)] border border-[var(--gold-500)]',
         danger:
-          'bg-red-50 dark:bg-red-950/60 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900',
+          'bg-red-50 text-red-700 border border-red-200',
         navy:
-          'bg-[#0A1628] text-white border border-[#1E3A5F]',
+          'bg-[var(--navy-900)] text-[var(--gold-500)] border border-[var(--navy-800)]',
         royal:
-          'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xs',
+          'bg-[var(--blue-600)] text-white shadow-xs',
         outline:
-          'border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300',
+          'border border-[var(--border)] text-[var(--text-muted)]',
       },
       size: {
         sm: 'text-[10px] px-2 py-0.2',

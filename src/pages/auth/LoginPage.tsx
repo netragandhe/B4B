@@ -217,11 +217,11 @@ export const LoginPage: React.FC = () => {
       <SEOHead title="Portal Sign In | B4B Executive Platform" description="Sign in to your B4B client, Biz Pro, or corporate portal account." />
 
       {/* LEFT SIDE PANEL: BRANDED GRADIENT & EXECUTIVE SHOWCASE */}
-      <div className="hidden lg:flex flex-col justify-between p-12 relative overflow-hidden bg-gradient-to-br from-[#051E4D] via-[#072B6E] to-[#0A3D9C] border-r border-slate-200 text-white">
+      <div data-theme="dark" className="hidden lg:flex flex-col justify-between p-12 relative overflow-hidden bg-gradient-to-br from-[var(--navy-950)] via-[var(--navy-900)] to-[var(--navy-800)] border-r border-[var(--border)] text-white">
         {/* Ambient Glow Orbs */}
-        <div className="absolute top-[-50px] left-[-50px] w-96 h-96 bg-amber-400/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-[-50px] right-[-50px] w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute top-[-50px] left-[-50px] w-96 h-96 bg-[var(--gold-500)]/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-[-50px] right-[-50px] w-[500px] h-[500px] bg-[var(--blue-400)]/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-[var(--blue-600)]/10 rounded-full blur-2xl pointer-events-none" />
 
         {/* PROMINENT UNIFORM LOGO HEADER */}
         <div className="relative z-10 flex items-center gap-4">
@@ -229,7 +229,7 @@ export const LoginPage: React.FC = () => {
             <BrandLogo size="md" />
           </Link>
           <div>
-            <div className="text-xs font-black uppercase tracking-widest text-[#FFC800]">
+            <div className="text-xs font-black uppercase tracking-widest text-[var(--gold-500)]">
               Capital & Advisory Network
             </div>
             <div className="text-sm font-extrabold text-white">
@@ -244,7 +244,7 @@ export const LoginPage: React.FC = () => {
             <Badge variant="gold" size="md" className="shadow-md">
               Verified Executive Gateway
             </Badge>
-            <Badge variant="emerald" size="sm" dot>
+            <Badge variant="success" size="sm" dot>
               System Online
             </Badge>
           </div>
@@ -259,9 +259,9 @@ export const LoginPage: React.FC = () => {
 
           {/* Floating Glass Testimonial Card */}
           <div className="p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 space-y-3 shadow-xl">
-            <div className="flex items-center gap-1 text-amber-400">
+            <div className="flex items-center gap-1 text-[var(--gold-500)]">
               {[...Array(5)].map((_, i) => (
-                <Sparkles key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                <Sparkles key={i} className="w-4 h-4 fill-[var(--gold-500)] text-[var(--gold-500)]" />
               ))}
               <span className="text-xs font-bold text-white ml-2">5.0 Executive Verified</span>
             </div>
@@ -274,7 +274,7 @@ export const LoginPage: React.FC = () => {
               <img
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
                 alt="Marcus Vance"
-                className="w-10 h-10 rounded-full object-cover border-2 border-[#FFC800] shadow-md"
+                className="w-10 h-10 rounded-full object-cover border-2 border-[var(--gold-500)] shadow-md"
               />
               <div>
                 <div className="text-xs font-extrabold text-white">Marcus Vance</div>
@@ -349,7 +349,7 @@ export const LoginPage: React.FC = () => {
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-bold text-slate-700 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Demo Quick Role Login:
+                    <Sparkles className="w-3.5 h-3.5 text-[var(--gold-500)]" /> Demo Quick Role Login:
                   </span>
                   <span className="text-[10px] text-slate-400">1-Click Preview</span>
                 </div>
@@ -360,7 +360,7 @@ export const LoginPage: React.FC = () => {
                       key={r}
                       type="button"
                       onClick={() => handleDemoQuickLogin(r)}
-                      className="py-2 px-1.5 rounded-xl bg-white hover:bg-blue-50 border border-slate-200 text-[11px] font-bold text-slate-800 hover:text-[#0A3D9C] transition-all text-center truncate shadow-xs"
+                      className="py-2 px-1.5 rounded-xl bg-[var(--surface)] hover:bg-[var(--sky-50)] border border-[var(--border)] text-[11px] font-bold text-[var(--text)] hover:text-[var(--blue-600)] transition-all text-center truncate shadow-xs"
                     >
                       {r}
                     </button>
@@ -384,7 +384,7 @@ export const LoginPage: React.FC = () => {
                     <Input
                       type="email"
                       placeholder="name@company.com"
-                      className="pl-9 text-xs border-slate-300 focus:border-[#0A3D9C]"
+                      className="pl-9 text-xs border-[var(--border)] focus:border-[var(--blue-600)]"
                       {...register('email')}
                     />
                   </div>
@@ -396,7 +396,7 @@ export const LoginPage: React.FC = () => {
                     <Input
                       type={showPassword ? 'text' : 'password'}
                       placeholder="••••••••"
-                      className="pl-9 pr-10 text-xs border-slate-300 focus:border-[#0A3D9C]"
+                      className="pl-9 pr-10 text-xs border-[var(--border)] focus:border-[var(--blue-600)]"
                       {...register('password')}
                     />
                     <button
@@ -414,12 +414,12 @@ export const LoginPage: React.FC = () => {
                     <input
                       type="checkbox"
                       {...register('rememberMe')}
-                      className="w-4 h-4 accent-[#0A3D9C] rounded"
+                      className="w-4 h-4 accent-[var(--blue-600)] rounded"
                     />
                     <span>Remember me</span>
                   </label>
 
-                  <Link to="/portal/forgot-password" className="text-[#0A3D9C] hover:underline font-bold">
+                  <Link to="/portal/forgot-password" className="text-[var(--blue-600)] hover:underline font-bold">
                     Forgot password?
                   </Link>
                 </div>
@@ -431,7 +431,7 @@ export const LoginPage: React.FC = () => {
                   pill
                   isLoading={isSubmitting}
                   rightIcon={<ArrowRight className="w-4 h-4" />}
-                  className="w-full font-bold bg-[#0A3D9C] hover:bg-[#072B6E] text-white shadow-lg mt-2"
+                  className="w-full font-bold bg-[var(--blue-600)] hover:brightness-90 text-white shadow-lg mt-2"
                 >
                   Sign In to Dashboard
                 </Button>
@@ -439,7 +439,7 @@ export const LoginPage: React.FC = () => {
 
               <div className="text-center text-xs text-slate-500 pt-4 border-t border-slate-100">
                 Don't have an account yet?{' '}
-                <Link to="/portal/signup" className="text-[#0A3D9C] font-bold hover:underline">
+                <Link to="/portal/signup" className="text-[var(--blue-600)] font-bold hover:underline">
                   Create New Account
                 </Link>
               </div>
@@ -454,17 +454,17 @@ export const LoginPage: React.FC = () => {
               onSubmit={handleOtpSubmit}
               className="space-y-6"
             >
-              <div className="p-3 rounded-full bg-blue-50 text-blue-600 w-fit">
+              <div className="p-3 rounded-full bg-[var(--sky-50)] text-[var(--blue-600)] w-fit">
                 <KeyRound className="w-6 h-6" />
               </div>
 
               <div>
-                <Badge variant="emerald" size="sm" className="mb-2">
+                <Badge variant="success" size="sm" className="mb-2">
                   2-Factor Authentication
                 </Badge>
                 <h2 className="text-2xl font-bold text-slate-900 font-heading">Enter Verification Code</h2>
                 <p className="text-xs text-slate-500 mt-1">
-                  We sent a 6-digit code to <strong className="text-slate-900">{pendingEmail}</strong>. (Demo Code: <span className="font-mono text-emerald-600 font-bold">123456</span>)
+                  We sent a 6-digit code to <strong className="text-slate-900">{pendingEmail}</strong>. (Demo Code: <span className="font-mono text-[var(--green-600)] font-bold">123456</span>)
                 </p>
               </div>
 
@@ -485,7 +485,7 @@ export const LoginPage: React.FC = () => {
                     value={digit}
                     onChange={(e) => handleOtpChange(idx, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(idx, e)}
-                    className="w-12 h-14 rounded-xl bg-slate-50 border border-slate-300 focus:border-[#0A3D9C] text-center font-mono font-bold text-xl text-slate-900 focus:outline-none"
+                    className="w-12 h-14 rounded-xl bg-[var(--bg)] border border-[var(--border)] focus:border-[var(--blue-600)] text-center font-mono font-bold text-xl text-slate-900 focus:outline-none"
                   />
                 ))}
               </div>
@@ -500,7 +500,7 @@ export const LoginPage: React.FC = () => {
                     toast({ title: 'Verification Code Resent', description: 'Demo code: 123456', type: 'info' })
                   }}
                   className={`flex items-center gap-1 font-semibold ${
-                    isResendDisabled ? 'text-slate-400 cursor-not-allowed' : 'text-[#0A3D9C] hover:underline'
+                    isResendDisabled ? 'text-slate-400 cursor-not-allowed' : 'text-[var(--blue-600)] hover:underline'
                   }`}
                 >
                   <RefreshCw className="w-3.5 h-3.5" /> Resend Code {resendTimer > 0 ? `(${resendTimer}s)` : ''}

@@ -95,8 +95,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         className={cn(
           'relative border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center gap-2 group',
           isDragOver
-            ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-950/20 scale-[0.99]'
-            : 'border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-[#0D1E36]/50 hover:bg-slate-100/70 dark:hover:bg-[#12294A]/70 hover:border-blue-400',
+            ? 'border-[var(--blue-600)] bg-[var(--sky-50)]/50 scale-[0.99]'
+            : 'border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--sky-50)]/70 hover:border-[var(--blue-600)]',
           error && 'border-red-400 dark:border-red-600 bg-red-50/20'
         )}
       >
@@ -109,15 +109,15 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           className="sr-only"
         />
 
-        <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+        <div className="w-12 h-12 rounded-full bg-[var(--sky-50)] text-[var(--blue-600)] flex items-center justify-center group-hover:scale-110 transition-transform">
           <UploadCloud className="w-6 h-6" />
         </div>
 
         <div>
-          <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-            {label ? label : <><span className="text-blue-600 dark:text-blue-400 hover:underline">Click to upload</span> or drag & drop documents</>}
+          <p className="text-sm font-semibold text-[var(--text)]">
+            {label ? label : <><span className="text-[var(--blue-600)] hover:underline">Click to upload</span> or drag & drop documents</>}
           </p>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs text-[var(--text-muted)] mt-1">
             {hint || helperText || `Financial statements, P&L, Tax returns or invoices (up to ${maxSizeMB}MB)`}
           </p>
         </div>
@@ -129,18 +129,18 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           {fileList.map((file, idx) => (
             <div
               key={`${file.name}-${idx}`}
-              className="flex items-center justify-between p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1E36] text-xs shadow-sm animate-fadeIn"
+              className="flex items-center justify-between p-2.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] text-xs shadow-sm animate-fadeIn"
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                <FileText className="w-4 h-4 text-blue-500 shrink-0" />
+                <FileText className="w-4 h-4 text-[var(--blue-600)] shrink-0" />
                 <div className="truncate">
-                  <p className="font-medium text-slate-800 dark:text-slate-200 truncate">{file.name}</p>
-                  <p className="text-[11px] text-slate-500">{formatFileSize(file.size)}</p>
+                  <p className="font-medium text-[var(--text)] truncate">{file.name}</p>
+                  <p className="text-[11px] text-[var(--text-muted)]">{formatFileSize(file.size)}</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
-                <span className="inline-flex items-center gap-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+                <span className="inline-flex items-center gap-1 text-[11px] text-[var(--green-600)] font-medium">
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   Ready
                 </span>
@@ -150,7 +150,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                     e.stopPropagation()
                     removeFile(idx)
                   }}
-                  className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-red-500 transition-colors"
+                  className="p-1 hover:bg-[var(--sky-50)] rounded text-[var(--text-muted)] hover:text-red-500 transition-colors"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>

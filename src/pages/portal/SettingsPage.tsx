@@ -18,12 +18,10 @@ import { OtpInput } from '@/components/ui/OtpInput'
 import { Badge } from '@/components/ui/Badge'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { useAuth } from '@/hooks/useAuth'
-import { useTheme } from '@/hooks/useTheme'
 import { useToast } from '@/components/ui/Toast'
 
 export const SettingsPage: React.FC = () => {
   const { user } = useAuth()
-  const { theme, toggleTheme } = useTheme()
   const { toast } = useToast()
 
   // Profile State
@@ -180,16 +178,7 @@ export const SettingsPage: React.FC = () => {
         </div>
 
         <div className="mt-5 space-y-4 divide-y divide-slate-100 dark:divide-[#1E3A5F]/60">
-          <div className="pt-2">
-            <Switch
-              checked={theme === 'dark'}
-              onChange={() => toggleTheme()}
-              label="Dark Theme Mode"
-              description="Toggle between high-contrast Navy Dark and Clean Slate Light mode."
-            />
-          </div>
-
-          <div className="pt-4">
+          <div>
             <Switch
               checked={notifyDraws}
               onChange={setNotifyDraws}

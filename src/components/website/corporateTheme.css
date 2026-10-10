@@ -1,0 +1,228 @@
+/* ==========================================================================
+   B4B AMERICA — MNC-LEVEL CORPORATE DESIGN SYSTEM (GREEN & COPPER PALETTE)
+   Strict Token Definitions (No Blue, No Yellow, No Pure White Pages)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Public+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap');
+
+:root {
+  /* Core Corporate Color System */
+  --color-forest: #06201A;         /* Hero, nav, dark sections, footer */
+  --color-deep-emerald: #0B4A3A;   /* Cards on dark, gradients, section band */
+  --color-emerald: #0E7A5A;        /* Primary buttons & links on light sections */
+  --color-copper: #C8793A;         /* Primary buttons on dark, key numbers, accents */
+  --color-stone: #EEF1EC;          /* Light section background (no pure white pages) */
+  --color-card-white: #FFFFFF;     /* Cards and forms only */
+  
+  /* Text Contrast System */
+  --color-text-light: #14231E;     /* Text on light / stone backgrounds */
+  --color-text-dark: #B9CBC3;      /* Text on dark backgrounds */
+  --color-text-on-copper: #06201A; /* Text on copper buttons (ALWAYS #06201A) */
+  
+  /* Typography Variables */
+  --font-heading: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* Global Token Aliases (Completely replaces legacy navy/blue/gold tokens) */
+  --navy-950: #06201A;
+  --navy-900: #06201A;
+  --navy-800: #0B4A3A;
+  --blue-600: #0E7A5A;
+  --blue-700: #0B4A3A;
+  --blue-500: #0E7A5A;
+  --blue-400: #0E7A5A;
+  --gold-500: #C8793A;
+  --gold-400: #C8793A;
+  --sky-50: #EEF1EC;
+  --bg: #EEF1EC;
+  --surface: #FFFFFF;
+  --text: #14231E;
+  --text-muted: rgba(20, 35, 30, 0.72);
+  --border: rgba(20, 35, 30, 0.12);
+}
+
+/* Typography Assignments */
+body, .font-body {
+  font-family: var(--font-body);
+  color: var(--color-text-light);
+  background-color: var(--color-stone);
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: var(--font-heading);
+  letter-spacing: -0.025em;
+}
+
+.font-mono, [data-mono="true"], .tabular-nums {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum' on, 'zero' on;
+}
+
+/* Section Rhythm Full-Width Classes */
+.section-hero {
+  background-color: var(--color-forest);
+  color: #FFFFFF;
+}
+
+.section-solutions {
+  background-color: var(--color-stone);
+  color: var(--color-text-light);
+}
+
+.section-crm {
+  background-color: var(--color-forest);
+  color: #FFFFFF;
+}
+
+.section-philosophy {
+  background-color: var(--color-deep-emerald);
+  color: #FFFFFF;
+}
+
+.section-industries {
+  background-color: var(--color-stone);
+  color: var(--color-text-light);
+}
+
+.section-contact {
+  background: linear-gradient(135deg, var(--color-emerald) 0%, var(--color-forest) 100%);
+  color: #FFFFFF;
+}
+
+.section-footer {
+  background-color: var(--color-forest);
+  color: var(--color-text-dark);
+}
+
+/* Corporate Button Styles Site-Wide */
+/* 1. Primary Button On Dark: Copper fill, Forest Black text */
+.btn-copper-dark {
+  min-height: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: var(--color-copper);
+  color: var(--color-forest) !important;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(200, 121, 58, 0.4);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(200, 121, 58, 0.25);
+  cursor: pointer;
+}
+.btn-copper-dark:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(200, 121, 58, 0.35);
+  filter: brightness(1.05);
+}
+.btn-copper-dark:active {
+  transform: translateY(0);
+}
+.btn-copper-dark:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(200, 121, 58, 0.5);
+}
+
+/* 2. Primary Button On Light: Emerald fill, White text */
+.btn-emerald-light {
+  min-height: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: var(--color-emerald);
+  color: #FFFFFF !important;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(14, 122, 90, 0.4);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(14, 122, 90, 0.25);
+  cursor: pointer;
+}
+.btn-emerald-light:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(14, 122, 90, 0.35);
+  filter: brightness(1.05);
+}
+.btn-emerald-light:active {
+  transform: translateY(0);
+}
+.btn-emerald-light:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(14, 122, 90, 0.5);
+}
+
+/* 3. Secondary Outlined Button (1.5px outline, no fill) */
+.btn-outline-dark {
+  min-height: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: transparent;
+  color: #FFFFFF;
+  border: 1.5px solid rgba(238, 241, 236, 0.35);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.btn-outline-dark:hover {
+  background-color: rgba(238, 241, 236, 0.08);
+  border-color: var(--color-copper);
+  color: var(--color-copper);
+  transform: translateY(-2px);
+}
+.btn-outline-dark:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(200, 121, 58, 0.5);
+}
+
+.btn-outline-light {
+  min-height: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: transparent;
+  color: var(--color-emerald);
+  border: 1.5px solid var(--color-emerald);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.btn-outline-light:hover {
+  background-color: rgba(14, 122, 90, 0.08);
+  transform: translateY(-2px);
+}
+.btn-outline-light:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(14, 122, 90, 0.4);
+}
+
+/* Angled & USA-Map-Inspired Section Dividers */
+.divider-angled-dark {
+  clip-path: polygon(0 0, 100% 3vw, 100% 100%, 0 100%);
+}
+.divider-angled-light {
+  clip-path: polygon(0 3vw, 100% 0, 100% 100%, 0 100%);
+}

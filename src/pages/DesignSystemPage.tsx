@@ -13,8 +13,6 @@ import {
   DollarSign,
   TrendingUp,
   Shield,
-  Sun,
-  Moon,
   ExternalLink,
 } from 'lucide-react'
 import {
@@ -52,10 +50,8 @@ import {
   useToast,
 } from '@/components/ui'
 import { BrandLogo, brandConfig } from '@/config/brand'
-import { useTheme } from '@/hooks/useTheme'
 
 export const DesignSystemPage: React.FC = () => {
-  const { theme, toggleTheme } = useTheme()
   const { toast } = useToast()
 
   // State for interactive component demos
@@ -72,13 +68,14 @@ export const DesignSystemPage: React.FC = () => {
 
   // B4B America Brand Color Tokens
   const colorSwatches = [
-    { name: 'Brand Blue 600 (Primary)', hex: '#0A3D9C', class: 'bg-[#0A3D9C]', dark: true },
-    { name: 'Brand Blue 800 (Card Surface)', hex: '#072B6E', class: 'bg-[#072B6E]', dark: true },
-    { name: 'Brand Blue 900 (Canvas Dark)', hex: '#051E4D', class: 'bg-[#051E4D]', dark: true },
-    { name: 'Brand Yellow 500 (Accent CTA)', hex: '#FFC800', class: 'bg-[#FFC800]', dark: false },
-    { name: 'Brand Yellow 600 (Hover Accent)', hex: '#E6B400', class: 'bg-[#E6B400]', dark: false },
-    { name: 'Brand Blue 50 (Soft Tint)', hex: '#F0F4FC', class: 'bg-[#F0F4FC]', dark: false },
-    { name: 'Red 500 (Destructive)', hex: '#EF4444', class: 'bg-[#EF4444]', dark: true },
+    { name: '--navy-900', hex: 'var(--navy-900)', class: 'bg-[var(--navy-900)]', dark: true },
+    { name: '--navy-800', hex: 'var(--navy-800)', class: 'bg-[var(--navy-800)]', dark: true },
+    { name: '--navy-950', hex: 'var(--navy-950)', class: 'bg-[var(--navy-950)]', dark: true },
+    { name: '--blue-600', hex: 'var(--blue-600)', class: 'bg-[var(--blue-600)]', dark: true },
+    { name: '--blue-400', hex: 'var(--blue-400)', class: 'bg-[var(--blue-400)]', dark: false },
+    { name: '--sky-50', hex: 'var(--sky-50)', class: 'bg-[var(--sky-50)]', dark: false },
+    { name: '--gold-500', hex: 'var(--gold-500)', class: 'bg-[var(--gold-500)]', dark: false },
+    { name: '--green-600', hex: 'var(--green-600)', class: 'bg-[var(--green-600)]', dark: true },
   ]
 
   // Demo DataTable sample
@@ -107,10 +104,10 @@ export const DesignSystemPage: React.FC = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0A1628] text-slate-900 dark:text-slate-100 py-12 px-4 sm:px-6 lg:px-8 text-left transition-colors">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] py-12 px-4 sm:px-6 lg:px-8 text-left transition-colors">
       <div className="max-w-7xl mx-auto space-y-16">
         {/* Title Bar & Quick Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-[#1E3A5F]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--border)]">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <BrandLogo size="md" />
@@ -118,23 +115,15 @@ export const DesignSystemPage: React.FC = () => {
                 Master Design System
               </Badge>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white mt-1">
+            <h1 className="text-3xl sm:text-4xl font-extrabold font-heading text-[var(--text)] mt-1">
               Fintech Component & Token Library
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500">
+            <p className="text-xs sm:text-sm text-[var(--text-muted)]">
               Interactive review of all color variables, button variants, input states, cards, and modal dialogs.
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={toggleTheme}
-              leftIcon={theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
-            >
-              Mode: {theme.toUpperCase()}
-            </Button>
             <Button
               variant="primary"
               size="sm"
@@ -162,22 +151,22 @@ export const DesignSystemPage: React.FC = () => {
             {colorSwatches.map((swatch) => (
               <div
                 key={swatch.name}
-                className="rounded-xl border border-slate-200 dark:border-[#1E3A5F] overflow-hidden bg-white dark:bg-[#0D1E36] shadow-xs"
+                className="rounded-xl border border-[var(--border)] overflow-hidden bg-[var(--surface)] shadow-xs"
               >
                 <div className={`h-16 w-full ${swatch.class} flex items-end p-2`}>
                   <span
                     className={`text-[10px] font-mono font-bold ${
-                      swatch.dark ? 'text-white' : 'text-slate-900'
+                      swatch.dark ? 'text-white' : 'text-[var(--navy-900)]'
                     }`}
                   >
                     {swatch.hex}
                   </span>
                 </div>
                 <div className="p-2.5 text-left">
-                  <p className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">
+                  <p className="text-xs font-bold text-[var(--text)] truncate">
                     {swatch.name.split(' ')[0]}
                   </p>
-                  <p className="text-[10px] text-slate-400 truncate">{swatch.name}</p>
+                  <p className="text-[10px] text-[var(--text-muted)] truncate">{swatch.name}</p>
                 </div>
               </div>
             ))}
@@ -186,49 +175,49 @@ export const DesignSystemPage: React.FC = () => {
 
         {/* SECTION 1B: B4B AMERICA BRAND LOGO VARIANTS */}
         <section className="space-y-4">
-          <h2 className="text-xl font-bold font-heading flex items-center gap-2 text-slate-900 dark:text-white">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#FFC800]" />
+          <h2 className="text-xl font-bold font-heading flex items-center gap-2 text-[var(--text)]">
+            <span className="w-2.5 h-2.5 rounded-full bg-[var(--gold-500)]" />
             1B. B4B America Logo Variants & Clear Space
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card variant="default" className="p-6 space-y-3 border border-slate-200 dark:border-slate-800 text-center flex flex-col items-center justify-center">
+            <Card variant="default" className="p-6 space-y-3 border border-[var(--border)] text-center flex flex-col items-center justify-center">
               <Badge variant="primary" size="sm">Full Logo (`variant="full"`)</Badge>
-              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl w-full flex items-center justify-center">
+              <div className="p-4 bg-[var(--surface)] rounded-xl w-full flex items-center justify-center">
                 <BrandLogo variant="full" size="lg" />
               </div>
-              <p className="text-xs text-slate-500">Used for Hero, Login side panels, Footers, and PDF Exports.</p>
+              <p className="text-xs text-[var(--text-muted)]">Used for Hero, Login side panels, Footers, and PDF Exports.</p>
             </Card>
 
-            <Card variant="default" className="p-6 space-y-3 border border-slate-200 dark:border-slate-800 text-center flex flex-col items-center justify-center">
-              <Badge variant="emerald" size="sm">Wordmark (`variant="wordmark"`)</Badge>
-              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl w-full flex items-center justify-center">
+            <Card variant="default" className="p-6 space-y-3 border border-[var(--border)] text-center flex flex-col items-center justify-center">
+              <Badge variant="success" size="sm">Wordmark (`variant="wordmark"`)</Badge>
+              <div className="p-4 bg-[var(--surface)] rounded-xl w-full flex items-center justify-center">
                 <BrandLogo variant="wordmark" size="md" />
               </div>
-              <p className="text-xs text-slate-500">Used for Sticky Header Navbar & Expanded Portal Sidebar.</p>
+              <p className="text-xs text-[var(--text-muted)]">Used for Sticky Header Navbar & Expanded Portal Sidebar.</p>
             </Card>
 
-            <Card variant="default" className="p-6 space-y-3 border border-slate-200 dark:border-slate-800 text-center flex flex-col items-center justify-center">
+            <Card variant="default" className="p-6 space-y-3 border border-[var(--border)] text-center flex flex-col items-center justify-center">
               <Badge variant="gold" size="sm">Square Icon (`variant="icon"`)</Badge>
-              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl w-full flex items-center justify-center">
+              <div className="p-4 bg-[var(--surface)] rounded-xl w-full flex items-center justify-center">
                 <BrandLogo variant="icon" size="lg" />
               </div>
-              <p className="text-xs text-slate-500">Used for Collapsed Sidebar, Favicon, Mobile Top Bar, PWA.</p>
+              <p className="text-xs text-[var(--text-muted)]">Used for Collapsed Sidebar, Favicon, Mobile Top Bar, PWA.</p>
             </Card>
           </div>
         </section>
 
         {/* SECTION 2: BUTTON VARIANTS & SIZES */}
         <section className="space-y-4">
-          <h2 className="text-xl font-bold font-heading flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+          <h2 className="text-xl font-bold font-heading flex items-center gap-2 text-[var(--text)]">
+            <span className="w-2.5 h-2.5 rounded-full bg-[var(--green-600)]" />
             2. Button Variants, Sizes & States
           </h2>
 
           <Card variant="default" className="p-6 space-y-6">
             {/* Variants */}
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+              <p className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] mb-3">
                 Style Variants (sm, md, lg, Pill)
               </p>
               <div className="flex flex-wrap items-center gap-3">
@@ -246,7 +235,7 @@ export const DesignSystemPage: React.FC = () => {
             </div>
 
             {/* Sizes & States */}
-            <div className="pt-4 border-t border-slate-100 dark:border-[#1E3A5F]">
+            <div className="pt-4 border-t border-[var(--border)]">
               <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
                 Sizes & Dynamic States (Loading, Disabled, Icons)
               </p>
@@ -455,7 +444,7 @@ export const DesignSystemPage: React.FC = () => {
                 <Badge variant="outline">Outline</Badge>
               </div>
 
-              <h3 className="text-sm font-bold font-heading pt-3 border-t border-slate-100 dark:border-[#1E3A5F]">
+              <h3 className="text-sm font-bold font-heading pt-3 border-t border-[var(--border)]">
                 Avatars with Fallbacks & Statuses
               </h3>
               <div className="flex items-center gap-3">
@@ -469,7 +458,7 @@ export const DesignSystemPage: React.FC = () => {
                 />
               </div>
 
-              <h3 className="text-sm font-bold font-heading pt-3 border-t border-slate-100 dark:border-[#1E3A5F]">
+              <h3 className="text-sm font-bold font-heading pt-3 border-t border-[var(--border)]">
                 Breadcrumb Navigation
               </h3>
               <Breadcrumb items={[{ label: 'Client Portal', href: '/portal/dashboard' }, { label: 'Capital' }, { label: 'Draw' }]} />
@@ -501,7 +490,7 @@ export const DesignSystemPage: React.FC = () => {
                 />
               </div>
 
-              <h3 className="text-sm font-bold font-heading pt-3 border-t border-slate-100 dark:border-[#1E3A5F]">
+              <h3 className="text-sm font-bold font-heading pt-3 border-t border-[var(--border)]">
                 Interactive Stepper Component
               </h3>
               <Stepper
@@ -567,9 +556,9 @@ export const DesignSystemPage: React.FC = () => {
             </div>
 
             {/* Skeleton Loaders & Empty State */}
-            <div className="pt-4 border-t border-slate-100 dark:border-[#1E3A5F] grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="pt-4 border-t border-[var(--border)] grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <p className="text-xs font-bold uppercase text-slate-400">Skeleton Loaders</p>
+                <p className="text-xs font-bold uppercase text-[var(--text-muted)]">Skeleton Loaders</p>
                 <Skeleton className="h-6 w-3/4" />
                 <Skeleton className="h-4 w-full" />
                 <Skeleton className="h-4 w-5/6" />
@@ -580,7 +569,7 @@ export const DesignSystemPage: React.FC = () => {
               </div>
 
               <div>
-                <p className="text-xs font-bold uppercase text-slate-400 mb-2">Empty State Component</p>
+                <p className="text-xs font-bold uppercase text-[var(--text-muted)] mb-2">Empty State Component</p>
                 <EmptyState
                   title="No Invoices Pending"
                   description="All receivables for current cycle have been liquidated."
@@ -590,7 +579,7 @@ export const DesignSystemPage: React.FC = () => {
             </div>
 
             {/* DataTable */}
-            <div className="pt-6 border-t border-slate-100 dark:border-[#1E3A5F]">
+            <div className="pt-6 border-t border-[var(--border)]">
               <h3 className="text-sm font-bold font-heading mb-3">
                 Interactive DataTable (Search, Sort, Pagination)
               </h3>
@@ -616,9 +605,9 @@ export const DesignSystemPage: React.FC = () => {
             </Button>
           }
         >
-          <div className="text-xs text-slate-600 dark:text-slate-300 space-y-2">
+          <div className="text-xs text-[var(--text-muted)] space-y-2">
             <p>This modal is fully keyboard-accessible and locks background scrolling.</p>
-            <p className="font-semibold text-slate-900 dark:text-white">
+            <p className="font-semibold text-[var(--text)]">
               Includes customizable title, description, body slots, and action footer.
             </p>
           </div>
@@ -636,11 +625,11 @@ export const DesignSystemPage: React.FC = () => {
             </Button>
           }
         >
-          <div className="text-xs text-slate-600 dark:text-slate-300 space-y-3">
+          <div className="text-xs text-[var(--text-muted)] space-y-3">
             <p>Slide over panels provide deep dive information without losing context.</p>
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#12294A] border border-slate-200 dark:border-[#1E3A5F]">
-              <p className="font-bold text-slate-800 dark:text-slate-200">Terminal Telemetry:</p>
-              <p className="text-slate-500 mt-1">Status: Active Synchronized</p>
+            <div className="p-3 rounded-xl bg-[var(--bg)] border border-[var(--border)]">
+              <p className="font-bold text-[var(--text)]">Terminal Telemetry:</p>
+              <p className="text-[var(--text-muted)] mt-1">Status: Active Synchronized</p>
             </div>
           </div>
         </Drawer>

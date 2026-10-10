@@ -45,8 +45,8 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
             className={cn(
               'relative flex items-start gap-3 p-3 rounded-xl border transition-all duration-150 cursor-pointer text-left',
               isChecked
-                ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/20 shadow-sm'
-                : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1E36] hover:border-slate-300 dark:hover:border-slate-700',
+                ? 'border-[var(--blue-600)] bg-[var(--sky-50)] dark:bg-[var(--sky-50)]/10 shadow-sm'
+                : 'border-[var(--border)] bg-[var(--surface)] hover:border-[var(--blue-600)]/40',
               isOptionDisabled && 'opacity-50 cursor-not-allowed'
             )}
           >
@@ -63,18 +63,18 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
               className={cn(
                 'w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-colors',
                 isChecked
-                  ? 'border-blue-600 bg-blue-600'
-                  : 'border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900'
+                  ? 'border-[var(--blue-600)] bg-[var(--blue-600)]'
+                  : 'border-[var(--border)] bg-[var(--surface)]'
               )}
             >
               {isChecked && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
             </div>
             <div>
-              <span className="block text-sm font-medium text-slate-800 dark:text-slate-100">
+              <span className="block text-sm font-medium text-[var(--text)]">
                 {opt.label}
               </span>
               {opt.description && (
-                <span className="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                <span className="block text-xs text-[var(--text-muted)] mt-0.5">
                   {opt.description}
                 </span>
               )}

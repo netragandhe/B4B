@@ -77,7 +77,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
       title={
         <div className="flex items-center gap-2">
           <span>Sign In to {brandConfig.portalName}</span>
-          <span className="px-2 py-0.5 rounded-full text-[10px] bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 font-bold">
+          <span className="px-2 py-0.5 rounded-full text-[10px] bg-[var(--green-600)]/15 text-[var(--green-600)] font-bold">
             256-Bit Encrypted
           </span>
         </div>
@@ -87,10 +87,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Demo Fast Track Banner */}
-        <div className="p-3 rounded-xl bg-blue-50/80 dark:bg-[#12294A] border border-blue-200 dark:border-blue-900/60 flex items-center justify-between gap-3 text-xs">
+        <div className="p-3 rounded-xl bg-[var(--sky-50)] dark:bg-[var(--sky-50)]/10 border border-[var(--border)] flex items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
-            <span className="text-slate-700 dark:text-slate-300">
+            <Sparkles className="w-4 h-4 text-[var(--blue-600)] shrink-0" />
+            <span className="text-[var(--text)]">
               Reviewing the demo? Use instant 1-click access.
             </span>
           </div>
@@ -124,8 +124,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
         </FormField>
 
         <div className="flex items-center justify-between text-xs pt-1">
-          <label className="flex items-center gap-2 text-slate-600 dark:text-slate-400 cursor-pointer">
-            <input type="checkbox" defaultChecked className="rounded text-blue-600" />
+          <label className="flex items-center gap-2 text-[var(--text-muted)] cursor-pointer">
+            <input type="checkbox" defaultChecked className="rounded text-[var(--blue-600)]" />
             <span>Remember this device</span>
           </label>
           <a
@@ -134,7 +134,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
               e.preventDefault()
               toast({ title: 'Password Reset', description: 'Reset link dispatched to email.', type: 'info' })
             }}
-            className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+            className="text-[var(--blue-600)] hover:underline font-medium"
           >
             Forgot password?
           </a>
@@ -152,8 +152,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
             Authenticate & Open Portal
           </Button>
 
-          <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-400 pt-2">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+          <div className="flex items-center justify-center gap-1.5 text-[11px] text-[var(--text-muted)] pt-2">
+            <ShieldCheck className="w-3.5 h-3.5 text-[var(--green-600)]" />
             <span>SOC2 Type II Certified • Bank-grade encrypted credentials</span>
           </div>
         </div>

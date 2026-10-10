@@ -29,10 +29,10 @@ export const FormField: React.FC<FormFieldProps> = ({
       {label && (
         <label
           htmlFor={id}
-          className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1 select-none"
+          className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider flex items-center gap-1 select-none"
         >
           <span>{label}</span>
-          {required && <span className="text-red-500 font-bold">*</span>}
+          {required && <span className="text-[var(--blue-600)] font-bold">*</span>}
         </label>
       )}
       
@@ -44,7 +44,7 @@ export const FormField: React.FC<FormFieldProps> = ({
           <span>{error}</span>
         </p>
       ) : displayHelper ? (
-        <p className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 mt-1">
+        <p className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mt-1">
           <Info className="w-3.5 h-3.5 shrink-0" />
           <span>{displayHelper}</span>
         </p>

@@ -101,13 +101,13 @@ export const CoachLeadForm: React.FC<CoachFormProps> = ({
   if (submitted && !isInline) {
     return (
       <div className="py-8 text-center space-y-4">
-        <div className="w-14 h-14 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-md">
+        <div className="w-14 h-14 rounded-full bg-[var(--green-600)]/10 text-[var(--green-600)] flex items-center justify-center mx-auto shadow-md">
           <CheckCircle2 className="w-8 h-8" />
         </div>
-        <h4 className="text-xl font-bold font-heading text-slate-900 dark:text-white">
+        <h4 className="text-xl font-bold font-heading text-[var(--navy-900)]">
           Coach Assigned Successfully
         </h4>
-        <p className="text-xs text-slate-500 max-w-sm mx-auto">
+        <p className="text-xs text-[var(--text-muted)] max-w-sm mx-auto">
           Thank you! An OAL Business Coach specializing in your industry will review your requirements and reach out via phone.
         </p>
         <Button variant="outline" size="sm" onClick={() => setSubmitted(false)}>
@@ -178,12 +178,12 @@ export const CoachLeadForm: React.FC<CoachFormProps> = ({
           pill
           isLoading={isSubmitting}
           rightIcon={<ArrowRight className="w-4 h-4" />}
-          className="w-full text-sm font-bold shadow-lg shadow-blue-500/25"
+          className="w-full text-sm font-bold shadow-md shadow-[var(--blue-600)]/10"
         >
           Connect with a Business Coach
         </Button>
-        <p className="text-[11px] text-center text-slate-400 mt-2 flex items-center justify-center gap-1">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+        <p className="text-[11px] text-center text-[var(--text-muted)] mt-2 flex items-center justify-center gap-1">
+          <ShieldCheck className="w-3.5 h-3.5 text-[var(--green-600)]" />
           <span>Fiduciary Standard • 100% Confidential Discovery</span>
         </p>
       </div>
@@ -211,7 +211,7 @@ export const CoachRequestModal: React.FC<CoachRequestModalProps> = ({
       title={
         <div className="flex items-center gap-2">
           <span>Speak with a Business Coach</span>
-          <span className="px-2 py-0.5 rounded-full text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-bold">
+          <span className="px-2 py-0.5 rounded-full text-[10px] bg-[var(--green-600)]/10 text-[var(--green-600)] font-bold">
             Complimentary 1-on-1
           </span>
         </div>

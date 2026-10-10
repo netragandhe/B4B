@@ -15,14 +15,14 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
           'rounded-[12px] border transition-all duration-200 overflow-hidden',
           // Variants
           variant === 'default' &&
-            'bg-white dark:bg-[#0D1E36] border-slate-200 dark:border-[#1E3A5F] shadow-sm',
+            'bg-[var(--surface)] border-[var(--border)] shadow-sm',
           variant === 'glass' &&
             'glass-panel shadow-sm',
           variant === 'bento' &&
-            'bg-white/90 dark:bg-[#0D1E36]/90 border-slate-200/80 dark:border-[#1E3A5F]/80 backdrop-blur-md shadow-md',
+            'bg-[var(--surface)] border-[var(--border)] backdrop-blur-md shadow-md',
           variant === 'gradient' &&
-            'bg-gradient-to-br from-white to-slate-50 dark:from-[#0D1E36] dark:to-[#0A1628] border-slate-200 dark:border-[#1E3A5F]',
-          hover && 'hover:shadow-lg hover:-translate-y-1 hover:border-blue-300 dark:hover:border-blue-500/50 cursor-pointer',
+            'bg-[var(--surface)] border-[var(--border)]',
+          hover && 'hover:shadow-md hover:-translate-y-1 hover:border-[var(--blue-600)] cursor-pointer',
           className
         )}
         {...props}
@@ -45,7 +45,7 @@ export const CardTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttribut
   ({ className, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn('text-lg font-bold font-heading tracking-tight text-slate-900 dark:text-slate-100', className)}
+      className={cn('text-lg font-bold font-heading tracking-tight text-[var(--text)]', className)}
       {...props}
     />
   )
@@ -56,7 +56,7 @@ export const CardDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <p ref={ref} className={cn('text-xs text-slate-500 dark:text-slate-400', className)} {...props} />
+  <p ref={ref} className={cn('text-xs text-[var(--text-muted)]', className)} {...props} />
 ))
 CardDescription.displayName = 'CardDescription'
 
@@ -71,7 +71,7 @@ export const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('p-5 pt-3 border-t border-slate-100 dark:border-[#1E3A5F]/60 flex items-center', className)}
+      className={cn('p-5 pt-3 border-t border-[var(--border)] flex items-center', className)}
       {...props}
     />
   )

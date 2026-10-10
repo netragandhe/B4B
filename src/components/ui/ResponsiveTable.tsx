@@ -66,8 +66,8 @@ export function ResponsiveTable<T extends Record<string, any>>({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-1">
           {title && (
             <div>
-              <h3 className="text-base font-extrabold font-heading text-slate-900 dark:text-white">{title}</h3>
-              {subtitle && <p className="text-xs text-slate-500 mt-0.5">{subtitle}</p>}
+              <h3 className="text-base font-extrabold font-heading text-[var(--text)]">{title}</h3>
+              {subtitle && <p className="text-xs text-[var(--text-muted)] mt-0.5">{subtitle}</p>}
             </div>
           )}
 
@@ -89,10 +89,10 @@ export function ResponsiveTable<T extends Record<string, any>>({
       )}
 
       {/* DESKTOP TABLE VIEW (MD AND UP) */}
-      <div className="hidden md:block overflow-x-auto rounded-2xl border border-slate-200 dark:border-[#1E3A5F] bg-white dark:bg-[#0D1E36] shadow-sm">
+      <div className="hidden md:block overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
         <table className="w-full text-left text-xs border-collapse">
           <thead>
-            <tr className="bg-slate-50 dark:bg-[#12294A] border-b border-slate-200 dark:border-[#1E3A5F] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider text-[11px]">
+            <tr className="bg-[var(--bg)] border-b border-[var(--border)] text-[var(--text-muted)] font-bold uppercase tracking-wider text-[11px]">
               {columns.map((col, idx) => (
                 <th key={idx} className={`py-3.5 px-4 ${col.className || ''}`}>
                   {col.header}
@@ -101,18 +101,18 @@ export function ResponsiveTable<T extends Record<string, any>>({
               {actions && <th className="py-3.5 px-4 text-right">Actions</th>}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 dark:divide-[#1E3A5F]">
+          <tbody className="divide-y divide-[var(--border)]">
             {paginatedData.length > 0 ? (
               paginatedData.map((item, rowIdx) => (
                 <tr
                   key={keyExtractor(item)}
                   onClick={() => onRowClick && onRowClick(item)}
-                  className={`hover:bg-slate-50/80 dark:hover:bg-[#12294A]/60 transition-colors ${
+                  className={`hover:bg-[var(--bg)] transition-colors ${
                     onRowClick ? 'cursor-pointer' : ''
                   }`}
                 >
                   {columns.map((col, colIdx) => (
-                    <td key={colIdx} className={`py-3.5 px-4 text-slate-800 dark:text-slate-200 ${col.className || ''}`}>
+                    <td key={colIdx} className={`py-3.5 px-4 text-[var(--text)] ${col.className || ''}`}>
                       {col.render
                         ? col.render(item, rowIdx)
                         : col.accessorKey
@@ -129,7 +129,7 @@ export function ResponsiveTable<T extends Record<string, any>>({
               ))
             ) : (
               <tr>
-                <td colSpan={columns.length + (actions ? 1 : 0)} className="py-12 text-center text-slate-400">
+                <td colSpan={columns.length + (actions ? 1 : 0)} className="py-12 text-center text-[var(--text-muted)]">
                   {emptyState || 'No records found matching query.'}
                 </td>
               </tr>
@@ -146,14 +146,14 @@ export function ResponsiveTable<T extends Record<string, any>>({
               key={keyExtractor(item)}
               variant="default"
               onClick={() => onRowClick && onRowClick(item)}
-              className={`p-4 space-y-3 border border-slate-200 dark:border-[#1E3A5F] transition-all ${
+              className={`p-4 space-y-3 border border-[var(--border)] transition-all ${
                 onRowClick ? 'active:scale-[0.99] cursor-pointer' : ''
               }`}
             >
               {/* Card Header: Primary column */}
-              <div className="flex items-start justify-between gap-3 border-b border-slate-100 dark:border-[#1E3A5F] pb-3">
+              <div className="flex items-start justify-between gap-3 border-b border-[var(--border)] pb-3">
                 <div className="min-w-0 flex-1">
-                  <div className="font-bold text-sm text-slate-900 dark:text-white truncate">
+                  <div className="font-bold text-sm text-[var(--text)] truncate">
                     {primaryCol.render ? primaryCol.render(item, rowIdx) : String(item[primaryCol.accessorKey || ''] || '')}
                   </div>
                 </div>
@@ -166,10 +166,10 @@ export function ResponsiveTable<T extends Record<string, any>>({
                   .filter((c) => !c.isPrimary)
                   .map((col, idx) => (
                     <div key={idx} className="space-y-0.5">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                      <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider block">
                         {col.header}
                       </span>
-                      <div className="text-slate-800 dark:text-slate-200 font-medium truncate">
+                      <div className="text-[var(--text)] font-medium truncate">
                         {col.render ? col.render(item, rowIdx) : String(item[col.accessorKey || ''] || '-')}
                       </div>
                     </div>
@@ -178,7 +178,7 @@ export function ResponsiveTable<T extends Record<string, any>>({
             </Card>
           ))
         ) : (
-          <Card variant="default" className="p-8 text-center text-slate-400 text-xs border border-slate-200 dark:border-[#1E3A5F]">
+          <Card variant="default" className="p-8 text-center text-[var(--text-muted)] text-xs border border-[var(--border)]">
             {emptyState || 'No records found matching query.'}
           </Card>
         )}
@@ -186,9 +186,9 @@ export function ResponsiveTable<T extends Record<string, any>>({
 
       {/* COMPACT PAGINATION FOOTER */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between pt-2 px-1 text-xs text-slate-500">
+        <div className="flex items-center justify-between pt-2 px-1 text-xs text-[var(--text-muted)]">
           <span>
-            Page <strong className="text-slate-900 dark:text-white">{currentPage}</strong> of {totalPages}
+            Page <strong className="text-[var(--text)]">{currentPage}</strong> of {totalPages}
           </span>
           <div className="flex items-center gap-2">
             <Button

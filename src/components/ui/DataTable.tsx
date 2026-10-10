@@ -128,7 +128,7 @@ export function DataTable<T extends Record<string, any>>({
 
         {filterOptions && (
           <div className="flex items-center gap-2 w-full sm:w-auto self-end sm:self-center">
-            <Filter className="w-4 h-4 text-slate-400" />
+            <Filter className="w-4 h-4 text-[var(--text-muted)]" />
             <div className="w-44">
               <Select
                 value={activeFilter}
@@ -147,29 +147,29 @@ export function DataTable<T extends Record<string, any>>({
       </div>
 
       {/* Table Surface */}
-      <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#1E3A5F] bg-white dark:bg-[#0D1E36] shadow-sm">
+      <div className="overflow-x-auto rounded-xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-slate-200 dark:border-[#1E3A5F] bg-slate-50/70 dark:bg-[#12294A]/50">
+            <tr className="border-b border-[var(--border)] bg-[var(--sky-50)]/70">
               {columns.map((col) => (
                 <th
                   key={col.key}
                   style={{ width: col.width }}
                   onClick={() => col.sortable && handleSort(col.key)}
                   className={cn(
-                    'p-3.5 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider select-none',
-                    col.sortable && 'cursor-pointer hover:text-blue-600 dark:hover:text-blue-400'
+                    'p-3.5 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider select-none',
+                    col.sortable && 'cursor-pointer hover:text-[var(--blue-600)]'
                   )}
                 >
                   <div className="flex items-center gap-1.5">
                     <span>{col.header}</span>
                     {col.sortable && (
-                      <span className="text-slate-400">
+                      <span className="text-[var(--text-muted)]">
                         {sortKey === col.key ? (
                           sortOrder === 'asc' ? (
-                            <ChevronUp className="w-3.5 h-3.5 text-blue-600" />
+                            <ChevronUp className="w-3.5 h-3.5 text-[var(--blue-600)]" />
                           ) : (
-                            <ChevronDown className="w-3.5 h-3.5 text-blue-600" />
+                            <ChevronDown className="w-3.5 h-3.5 text-[var(--blue-600)]" />
                           )
                         ) : (
                           <ChevronsUpDown className="w-3.5 h-3.5 opacity-60" />
@@ -181,19 +181,19 @@ export function DataTable<T extends Record<string, any>>({
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 dark:divide-[#1E3A5F]/60 text-sm">
+          <tbody className="divide-y divide-[var(--border)] text-sm">
             {paginatedData.length > 0 ? (
               paginatedData.map((item, rowIdx) => (
                 <tr
                   key={item.id || rowIdx}
                   onClick={() => onRowClick?.(item)}
                   className={cn(
-                    'transition-colors hover:bg-slate-50/70 dark:hover:bg-[#12294A]/40',
+                    'transition-colors hover:bg-[var(--sky-50)]/70',
                     onRowClick && 'cursor-pointer'
                   )}
                 >
                   {columns.map((col) => (
-                    <td key={col.key} className="p-3.5 text-slate-800 dark:text-slate-200 font-medium">
+                    <td key={col.key} className="p-3.5 text-[var(--text)] font-medium">
                       {col.render ? col.render(item) : String(item[col.key] ?? '—')}
                     </td>
                   ))}
@@ -203,7 +203,7 @@ export function DataTable<T extends Record<string, any>>({
               <tr>
                 <td
                   colSpan={columns.length}
-                  className="p-8 text-center text-sm text-slate-400 dark:text-slate-500"
+                  className="p-8 text-center text-sm text-[var(--text-muted)]"
                 >
                   No matching records found.
                 </td>
@@ -214,18 +214,18 @@ export function DataTable<T extends Record<string, any>>({
       </div>
 
       {/* Pagination Footer */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400 px-1">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[var(--text-muted)] px-1">
         <div>
           Showing{' '}
-          <span className="font-semibold text-slate-800 dark:text-slate-200">
+          <span className="font-semibold text-[var(--text)]">
             {sortedData.length === 0 ? 0 : (currentPage - 1) * pageSize + 1}
           </span>{' '}
           to{' '}
-          <span className="font-semibold text-slate-800 dark:text-slate-200">
+          <span className="font-semibold text-[var(--text)]">
             {Math.min(currentPage * pageSize, sortedData.length)}
           </span>{' '}
           of{' '}
-          <span className="font-semibold text-slate-800 dark:text-slate-200">
+          <span className="font-semibold text-[var(--text)]">
             {sortedData.length}
           </span>{' '}
           entries
@@ -242,7 +242,7 @@ export function DataTable<T extends Record<string, any>>({
             Prev
           </Button>
 
-          <span className="px-2 py-1 font-semibold text-slate-800 dark:text-slate-200">
+          <span className="px-2 py-1 font-semibold text-[var(--text)]">
             {currentPage} / {totalPages}
           </span>
 

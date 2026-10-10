@@ -4,24 +4,26 @@ import { Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none active:scale-[0.98]',
+  'inline-flex items-center justify-center font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:bg-[var(--border)] disabled:text-[var(--text-muted)] disabled:border-transparent disabled:opacity-60 disabled:pointer-events-none select-none active:scale-[0.98]',
   {
     variants: {
       variant: {
         primary:
-          'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/35 focus-visible:ring-blue-500 border border-transparent',
+          'bg-[var(--blue-600)] hover:brightness-90 text-white shadow-md focus-visible:ring-[var(--blue-600)] border border-transparent',
         accent:
-          'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-md shadow-emerald-500/25 hover:shadow-lg hover:shadow-emerald-500/35 focus-visible:ring-emerald-500 border border-transparent',
+          'bg-[var(--gold-500)] text-[var(--navy-900)] hover:opacity-95 font-semibold shadow-md focus-visible:ring-[var(--gold-500)] border border-transparent',
         outline:
-          'border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 focus-visible:ring-blue-500 backdrop-blur-sm',
+          'bg-[var(--surface)] text-[var(--blue-600)] border border-[var(--blue-600)] hover:bg-[var(--sky-50)] focus-visible:ring-[var(--blue-600)]',
         secondary:
-          'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-slate-100 focus-visible:ring-slate-400',
+          'bg-[var(--surface)] text-[var(--blue-600)] border border-[var(--blue-600)] hover:bg-[var(--sky-50)] focus-visible:ring-[var(--blue-600)]',
         ghost:
-          'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 focus-visible:ring-slate-400',
+          'hover:bg-[var(--sky-50)] text-[var(--text)] focus-visible:ring-[var(--blue-600)]',
         danger:
           'bg-red-500 hover:bg-red-600 text-white shadow-md shadow-red-500/20 focus-visible:ring-red-500 border border-transparent',
         gold:
-          'bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold shadow-md shadow-amber-500/20 focus-visible:ring-amber-500 border border-transparent',
+          'bg-[var(--gold-500)] text-[var(--navy-900)] hover:opacity-95 font-semibold shadow-md focus-visible:ring-[var(--gold-500)] border border-transparent',
+        darkSection:
+          'bg-[var(--gold-500)] text-[var(--navy-900)] hover:opacity-95 font-semibold shadow-md focus-visible:ring-[var(--gold-500)] border border-transparent',
       },
       size: {
         sm: 'h-9 sm:h-8 px-3 text-xs gap-1.5 rounded-lg',

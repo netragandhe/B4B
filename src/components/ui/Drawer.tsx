@@ -52,7 +52,7 @@ export const Drawer: React.FC<DrawerProps> = ({
     <div className="fixed inset-0 z-50 overflow-hidden">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity animate-fadeIn"
+        className="fixed inset-0 bg-[var(--navy-950)]/60 backdrop-blur-xs transition-opacity animate-fadeIn"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -67,26 +67,26 @@ export const Drawer: React.FC<DrawerProps> = ({
           role="dialog"
           aria-modal="true"
           className={cn(
-            'w-screen max-w-full bg-white dark:bg-[#0D1E36] border-l border-slate-200 dark:border-[#1E3A5F] shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out',
+            'w-screen max-w-full bg-[var(--surface)] border-l border-[var(--border)] shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out',
             sizeClasses[size],
             className
           )}
         >
           {/* Header */}
-          <div className="p-5 border-b border-slate-100 dark:border-[#1E3A5F]/70 flex items-start justify-between">
+          <div className="p-5 border-b border-[var(--border)] flex items-start justify-between">
             <div>
               {title && (
-                <h3 className="text-lg font-bold font-heading text-slate-900 dark:text-slate-100">
+                <h3 className="text-lg font-bold font-heading text-[var(--text)]">
                   {title}
                 </h3>
               )}
               {description && (
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{description}</p>
+                <p className="text-xs text-[var(--text-muted)] mt-1">{description}</p>
               )}
             </div>
             <button
               onClick={onClose}
-              className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--sky-50)] transition-colors"
               aria-label="Close drawer"
             >
               <X className="w-5 h-5" />
@@ -98,7 +98,7 @@ export const Drawer: React.FC<DrawerProps> = ({
 
           {/* Footer */}
           {footer && (
-            <div className="p-4 bg-slate-50 dark:bg-[#0A1628]/60 border-t border-slate-100 dark:border-[#1E3A5F]/70 flex items-center justify-end gap-3">
+            <div className="p-4 bg-[var(--bg)] border-t border-[var(--border)] flex items-center justify-end gap-3">
               {footer}
             </div>
           )}

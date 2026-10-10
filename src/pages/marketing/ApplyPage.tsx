@@ -132,10 +132,10 @@ export const ApplyPage: React.FC = () => {
         <Badge variant="primary" size="md">
           Institutional Intake
         </Badge>
-        <h1 className="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white">
+        <h1 className="text-3xl sm:text-4xl font-extrabold font-heading text-[var(--text)]">
           Apply for Pre-Approved Business Capital
         </h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+        <p className="text-sm text-[var(--text-muted)]">
           Takes under 4 minutes. Soft check only with 0 credit impact. Instant term sheet generation.
         </p>
       </div>
@@ -144,18 +144,18 @@ export const ApplyPage: React.FC = () => {
       <Stepper steps={STEPS} currentStep={currentStep} onStepClick={(idx) => setCurrentStep(idx)} />
 
       {/* Main Application Card Form */}
-      <Card variant="bento" className="p-6 sm:p-10 border-slate-200 dark:border-[#1E3A5F] shadow-xl">
+      <Card variant="bento" className="p-6 sm:p-10 border-[var(--border)] shadow-xl">
         {!isSubmitted ? (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             {/* STEP 1: Entity & Founder */}
             {currentStep === 0 && (
               <div className="space-y-6 animate-fadeIn">
-                <div className="border-b border-slate-100 dark:border-[#1E3A5F] pb-4">
-                  <h3 className="text-lg font-bold font-heading text-slate-900 dark:text-white flex items-center gap-2">
-                    <Building2 className="w-5 h-5 text-blue-600" />
+                <div className="border-b border-[var(--border)] pb-4">
+                  <h3 className="text-lg font-bold font-heading text-[var(--text)] flex items-center gap-2">
+                    <Building2 className="w-5 h-5 text-[var(--blue-600)]" />
                     <span>Company & Founder Information</span>
                   </h3>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-[var(--text-muted)]">
                     Enter the legal entity as registered on your corporate state filings.
                   </p>
                 </div>
@@ -203,12 +203,12 @@ export const ApplyPage: React.FC = () => {
             {/* STEP 2: Financial Health & Facility */}
             {currentStep === 1 && (
               <div className="space-y-6 animate-fadeIn">
-                <div className="border-b border-slate-100 dark:border-[#1E3A5F] pb-4">
-                  <h3 className="text-lg font-bold font-heading text-slate-900 dark:text-white flex items-center gap-2">
-                    <DollarSign className="w-5 h-5 text-emerald-500" />
+                <div className="border-b border-[var(--border)] pb-4">
+                  <h3 className="text-lg font-bold font-heading text-[var(--text)] flex items-center gap-2">
+                    <DollarSign className="w-5 h-5 text-[var(--green-600)]" />
                     <span>Financial Metrics & Capital Requirement</span>
                   </h3>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-[var(--text-muted)]">
                     We use these figures to match with optimal private debt syndicates.
                   </p>
                 </div>
@@ -281,12 +281,12 @@ export const ApplyPage: React.FC = () => {
             {/* STEP 3: Verification & File Upload */}
             {currentStep === 2 && (
               <div className="space-y-6 animate-fadeIn">
-                <div className="border-b border-slate-100 dark:border-[#1E3A5F] pb-4">
-                  <h3 className="text-lg font-bold font-heading text-slate-900 dark:text-white flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-blue-600" />
+                <div className="border-b border-[var(--border)] pb-4">
+                  <h3 className="text-lg font-bold font-heading text-[var(--text)] flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-[var(--blue-600)]" />
                     <span>Document Upload & Fiduciary Consent</span>
                   </h3>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-[var(--text-muted)]">
                     Upload your last 3 bank statements or corporate tax return to accelerate approval.
                   </p>
                 </div>
@@ -296,7 +296,7 @@ export const ApplyPage: React.FC = () => {
                   label="Upload Bank Statements or P&L"
                 />
 
-                <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#12294A]/60 border border-slate-200/60 dark:border-[#1E3A5F] space-y-4">
+                <div className="p-4 rounded-xl bg-[var(--bg)] border border-[var(--border)] space-y-4">
                   <Controller
                     name="consentToSoftCredit"
                     control={control}
@@ -306,7 +306,7 @@ export const ApplyPage: React.FC = () => {
                         onChange={(e) => field.onChange(e.target.checked)}
                         error={errors.consentToSoftCredit?.message}
                         label="Authorize Soft Pre-Qualification Check"
-                        description="I authorize OAL Network to verify corporate records and perform a soft inquiry. This does NOT affect personal or business credit scores."
+                        description="I authorize B4B America to verify corporate records and perform a soft inquiry. This does NOT affect personal or business credit scores."
                       />
                     )}
                   />
@@ -328,7 +328,7 @@ export const ApplyPage: React.FC = () => {
             )}
 
             {/* Form Controls / Buttons */}
-            <div className="pt-6 border-t border-slate-100 dark:border-[#1E3A5F] flex items-center justify-between">
+            <div className="pt-6 border-t border-[var(--border)] flex items-center justify-between">
               {currentStep > 0 ? (
                 <Button
                   type="button"
@@ -355,12 +355,12 @@ export const ApplyPage: React.FC = () => {
               ) : (
                 <Button
                   type="submit"
-                  variant="accent"
+                  variant="primary"
                   size="lg"
                   pill
                   isLoading={isSubmitting}
                   rightIcon={<CheckCircle2 className="w-5 h-5" />}
-                  className="shadow-lg shadow-emerald-500/25"
+                  className="shadow-lg shadow-[var(--blue-600)]/25"
                 >
                   Submit Pre-Qualification
                 </Button>
@@ -370,34 +370,34 @@ export const ApplyPage: React.FC = () => {
         ) : (
           /* Submission Success State */
           <div className="text-center py-8 space-y-6 animate-scaleUp">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-md">
+            <div className="w-16 h-16 rounded-full bg-[var(--green-600)]/15 text-[var(--green-600)] flex items-center justify-center mx-auto shadow-md">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
             <div>
-              <Badge variant="emerald" size="md">
+              <Badge variant="success" size="md">
                 Application Pre-Approved
               </Badge>
-              <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 dark:text-white mt-2">
+              <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-[var(--text)] mt-2">
                 Preliminary Facility Approved: $850,000
               </h2>
-              <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto mt-2">
+              <p className="text-sm text-[var(--text-muted)] max-w-md mx-auto mt-2">
                 Your application has been received and verified against our syndication algorithms. We have initialized your private client terminal.
               </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#12294A] max-w-sm mx-auto text-left text-xs space-y-2 border border-slate-200 dark:border-[#1E3A5F]">
+            <div className="p-4 rounded-xl bg-[var(--bg)] max-w-sm mx-auto text-left text-xs space-y-2 border border-[var(--border)]">
               <div className="flex justify-between">
-                <span className="text-slate-500">Applicant:</span>
-                <span className="font-bold text-slate-800 dark:text-slate-200">Marcus Vance</span>
+                <span className="text-[var(--text-muted)]">Applicant:</span>
+                <span className="font-bold text-[var(--text)]">Marcus Vance</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Company:</span>
-                <span className="font-bold text-slate-800 dark:text-slate-200">Apex Freight & Logistics LLC</span>
+                <span className="text-[var(--text-muted)]">Company:</span>
+                <span className="font-bold text-[var(--text)]">Apex Freight & Logistics LLC</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Initial Facility:</span>
-                <span className="font-bold text-emerald-600 dark:text-emerald-400">$850,000 Available</span>
+                <span className="text-[var(--text-muted)]">Initial Facility:</span>
+                <span className="font-bold text-[var(--green-600)]">$850,000 Available</span>
               </div>
             </div>
 
@@ -408,7 +408,7 @@ export const ApplyPage: React.FC = () => {
                 pill
                 onClick={() => navigate('/portal/dashboard')}
                 rightIcon={<ArrowRight className="w-4 h-4" />}
-                className="shadow-lg shadow-blue-500/25 text-base"
+                className="shadow-lg shadow-[var(--blue-600)]/25 text-base"
               >
                 Access Your Client Terminal
               </Button>

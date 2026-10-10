@@ -39,7 +39,7 @@ export const Avatar: React.FC<AvatarProps> = ({
     <div className={cn('relative inline-block select-none', className)} {...props}>
       <div
         className={cn(
-          'rounded-full overflow-hidden flex items-center justify-center font-bold tracking-tight border border-slate-200 dark:border-slate-700 bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-xs',
+          'rounded-full overflow-hidden flex items-center justify-center font-bold tracking-tight border border-[var(--border)] bg-gradient-to-br from-[var(--blue-600)] to-[var(--navy-800)] text-white shadow-xs',
           sizeMap[size]
         )}
       >
@@ -58,11 +58,11 @@ export const Avatar: React.FC<AvatarProps> = ({
       {status && (
         <span
           className={cn(
-            'absolute bottom-0 right-0 block rounded-full ring-2 ring-white dark:ring-[#0D1E36]',
+            'absolute bottom-0 right-0 block rounded-full ring-2 ring-[var(--surface)]',
             size === 'xs' || size === 'sm' ? 'w-2 h-2' : 'w-3 h-3',
-            status === 'online' && 'bg-emerald-500',
-            status === 'offline' && 'bg-slate-400',
-            status === 'busy' && 'bg-amber-500'
+            status === 'online' && 'bg-[var(--green-600)]',
+            status === 'offline' && 'bg-[var(--text-muted)]',
+            status === 'busy' && 'bg-[var(--gold-500)]'
           )}
         />
       )}

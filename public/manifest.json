@@ -15,8 +15,8 @@
     }
   ],
   "start_url": "/portal/dashboard",
-  "background_color": "#072B6E",
-  "theme_color": "#0A3D9C",
+  "background_color": "#0B1F3A",
+  "theme_color": "#1D4ED8",
   "display": "standalone",
   "orientation": "any",
   "description": "Connecting small businesses with institutional capital, revenue-based financing, strategic advisory, B2B sales reps, and corporate job opportunities."
