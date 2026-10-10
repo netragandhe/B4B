@@ -203,18 +203,15 @@ export const PermissionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       // Merged effective permission item
       const viewAllowed = override?.view !== undefined
         ? override.view
-        : basePermItem?.view ?? (menu?.isCore ? true : false)
-
-      // Core menu view fallback
-      const effectiveView = menu?.isCore ? true : viewAllowed
+        : basePermItem?.view === true
 
       // If checking view action
       if (action === 'view') {
-        return effectiveView
+        return viewAllowed
       }
 
       // All other actions require view to be true!
-      if (!effectiveView) {
+      if (!viewAllowed) {
         return false
       }
 
@@ -259,18 +256,7 @@ export const PermissionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       const rolePerms = permissions[roleToInspect] || {}
 
       return MENU_CATALOG.filter((menu) => {
-        // Core items always visible
-        if (menu.isCore) return true
-
-        // Rank constraint
-        if (roleToInspect === 'bizpro') {
-          const reqRank = menu.minRank || (menu.isLeaderOnly ? 4 : 1)
-          if (reqRank > 1 && userRank < reqRank) {
-            return false
-          }
-        }
-
-        // Admin lockout protection
+        // 1. Admin lockout protection: Admin always sees admin critical core menus
         if (roleToInspect === 'admin') {
           if (
             menu.id === 'admin-roles-permissions' ||
@@ -281,6 +267,16 @@ export const PermissionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           }
         }
 
+        // 2. Rank constraint for Biz Pro leader menus
+        if (roleToInspect === 'bizpro') {
+          const reqRank = menu.minRank || (menu.isLeaderOnly ? 4 : 1)
+          if (reqRank > 1 && userRank < reqRank) {
+            return false
+          }
+        }
+
+        // 3. Strict permission matrix check:
+        // Must be explicitly enabled for this role in the RBAC matrix!
         const perm = rolePerms[menu.id]
         return perm ? perm.view === true : false
       }).sort((a, b) => a.order - b.order)

@@ -17,10 +17,10 @@ import {
 } from '@/config/defaultPermissions'
 
 const STORAGE_KEYS = {
-  PERMISSIONS: 'b4b_rbac_permissions_v2',
-  ROLES: 'b4b_rbac_roles_v2',
-  AUDIT_LOG: 'b4b_rbac_audit_log_v2',
-  USER_OVERRIDES: 'b4b_rbac_user_overrides_v2',
+  PERMISSIONS: 'b4b_rbac_permissions_v3',
+  ROLES: 'b4b_rbac_roles_v3',
+  AUDIT_LOG: 'b4b_rbac_audit_log_v3',
+  USER_OVERRIDES: 'b4b_rbac_user_overrides_v3',
 }
 
 // Simulated mock delay
@@ -51,7 +51,7 @@ function getStoredPermissions(): SystemPermissionMatrix {
         Object.keys(parsed).forEach((roleId) => {
           MENU_CATALOG.forEach((menu) => {
             if (!parsed[roleId][menu.id]) {
-              parsed[roleId][menu.id] = createEmptyPermission()
+              parsed[roleId][menu.id] = DEFAULT_PERMISSIONS[roleId]?.[menu.id] ? JSON.parse(JSON.stringify(DEFAULT_PERMISSIONS[roleId][menu.id])) : createEmptyPermission()
               mutated = true
             }
           })
