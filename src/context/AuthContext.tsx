@@ -257,9 +257,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loginAsDemoRole = async (role: UserRole) => {
     const email = `${role.toLowerCase().replace(/\s+/g, '')}@demo.com`
-    const user = MOCK_USERS[email] || Object.values(MOCK_USERS).find((u) => u.role === role) || MOCK_USERS['client@demo.com']
-    const res = await authService.login(user.email, 'Demo@1234')
-    if (res.success && res.user && !res.requiresOtp) {
+    const user = MOCK_USERS[email] || Object.values(MOCK_USERS).find((u) => u.role === role) || MOCK_USERS['admin@demo.com']
+    const res = await authService.login(user.email, 'Demo@1234', true, true)
+    if (res.success && res.user) {
       setUser(res.user)
       setStatus('authenticated')
     }

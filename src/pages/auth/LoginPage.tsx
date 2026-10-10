@@ -18,6 +18,13 @@ import {
   AlertCircle,
   KeyRound,
   RefreshCw,
+  ShieldCheck,
+  Megaphone,
+  Building2,
+  Share2,
+  Briefcase,
+  UserCheck,
+  Users,
 } from 'lucide-react'
 import { BrandLogo } from '@/config/brand'
 import { Button } from '@/components/ui/Button'
@@ -109,8 +116,8 @@ export const LoginPage: React.FC = () => {
           description: `Logged in as ${getRoleLabel(role)} (${res.user?.name}).`,
           type: 'success',
         })
-        const targetPath = redirectUrl ? decodeURIComponent(redirectUrl) : getRolePath(role)
-        navigate(targetPath)
+        const targetPath = getRolePath(role)
+        navigate(targetPath, { replace: true })
       }
     } catch {
       toast({ title: 'Quick Login Error', type: 'error' })
@@ -218,102 +225,82 @@ export const LoginPage: React.FC = () => {
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-slate-50 text-slate-900">
       <SEOHead title="Portal Sign In | B4B Executive Platform" description="Sign in to your B4B client, B4B Coach, or corporate portal account." />
 
-      {/* LEFT SIDE PANEL: BRANDED GRADIENT & EXECUTIVE SHOWCASE */}
-      <div className="hidden lg:flex flex-col justify-between p-12 relative overflow-hidden bg-gradient-to-br from-[#051E4D] via-[#072B6E] to-[#0A3D9C] border-r border-slate-200 text-white">
-        {/* Ambient Glow Orbs */}
-        <div className="absolute top-[-50px] left-[-50px] w-96 h-96 bg-amber-400/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-[-50px] right-[-50px] w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
+      {/* LEFT SIDE PANEL: CLEAN, NATURAL CORPORATE BUSINESS VISUAL */}
+      <div className="hidden lg:flex flex-col justify-between p-12 lg:p-14 relative overflow-hidden bg-slate-900 text-white">
+        {/* High-Resolution Modern American Business & Financial District Architecture */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105 transition-transform duration-1000"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=85')`,
+          }}
+        />
+        {/* Clean Neutral Dark Glass Gradient Overlay (No heavy blue tint) */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/60 to-slate-900/40 backdrop-blur-[2px]" />
 
-        {/* PROMINENT UNIFORM LOGO HEADER */}
-        <div className="relative z-10 flex items-center gap-4">
-          <Link to="/" className="inline-block group hover:scale-105 transition-transform duration-300">
+        {/* 1. TOP HEADER: CLEAN LOGO BADGE */}
+        <div className="relative z-10 flex items-center justify-between">
+          <Link
+            to="/"
+            className="inline-flex items-center px-4 py-2 rounded-xl bg-white/95 backdrop-blur-md shadow-lg hover:bg-white transition-all duration-200"
+          >
             <BrandLogo size="md" />
           </Link>
-          <div>
-            <div className="text-xs font-black uppercase tracking-widest text-[#FFC800]">
-              Capital & Advisory Network
-            </div>
-            <div className="text-sm font-extrabold text-white">
-              B4B America Executive Portal
-            </div>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/70 border border-white/20 text-slate-200 text-xs font-semibold backdrop-blur-md shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Official Portal</span>
           </div>
         </div>
 
-        {/* CENTER EXECUTIVE FEATURE & TESTIMONIAL CARDS */}
-        <div className="relative z-10 max-w-lg space-y-6">
-          <div className="flex items-center gap-2">
-            <Badge variant="gold" size="md" className="shadow-md">
-              Verified Executive Gateway
-            </Badge>
-            <Badge variant="emerald" size="sm" dot>
-              System Online
-            </Badge>
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl font-black font-heading tracking-tight leading-tight text-white drop-shadow-sm">
-            Empowering Main Street Businesses Across America
-          </h2>
-
-          <p className="text-sm text-slate-200 leading-relaxed font-medium">
-            Institutional capital, revenue-based financing, 13-week CFO treasury modeling, and B2B executive sales networks.
-          </p>
-
-          {/* Floating Glass Testimonial Card */}
-          <div className="p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 space-y-3 shadow-xl">
-            <div className="flex items-center gap-1 text-amber-400">
-              {[...Array(5)].map((_, i) => (
-                <Sparkles key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-              ))}
-              <span className="text-xs font-bold text-white ml-2">5.0 Executive Verified</span>
+        {/* 2. CENTER: CLEAN & SPACIOUS BRAND CONTENT */}
+        <div className="relative z-10 max-w-lg space-y-6 my-auto">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-xs font-semibold text-amber-300 backdrop-blur-md">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>Capital • Treasury • Growth</span>
             </div>
 
-            <p className="text-xs text-slate-100 italic leading-relaxed">
-              "B4B Network transformed our capital stack. We secured $850k in working capital debt facilities within 10 days."
+            <h2 className="text-3xl sm:text-4xl font-extrabold font-heading tracking-tight leading-snug text-white drop-shadow-md">
+              Empowering Main Street Businesses Across America
+            </h2>
+
+            <p className="text-sm text-slate-200 leading-relaxed font-normal drop-shadow-sm">
+              Institutional capital facilities, revenue-based financing, 13-week CFO treasury modeling, and nationwide B2B executive sales networks.
             </p>
-
-            <div className="pt-2 flex items-center gap-3 border-t border-white/15">
-              <img
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
-                alt="Marcus Vance"
-                className="w-10 h-10 rounded-full object-cover border-2 border-[#FFC800] shadow-md"
-              />
-              <div>
-                <div className="text-xs font-extrabold text-white">Marcus Vance</div>
-                <div className="text-[11px] text-slate-300">CEO, Apex Freight & Logistics LLC</div>
-              </div>
-            </div>
           </div>
 
-          {/* Quick Metrics Strip */}
-          <div className="grid grid-cols-2 gap-3 pt-2">
-            <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-xs">
-              <div className="text-[10px] text-slate-400 uppercase font-bold">Network Volume</div>
-              <div className="text-base font-black text-emerald-400 mt-0.5">$14.8M+ Funded</div>
+          {/* Minimal Key Highlights Row */}
+          <div className="grid grid-cols-3 gap-3 pt-2">
+            <div className="p-3.5 rounded-xl bg-slate-900/60 backdrop-blur-md border border-white/15">
+              <div className="text-base font-black text-white">$14.8M+</div>
+              <div className="text-[11px] text-slate-300">Funded Facilities</div>
             </div>
-            <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-xs">
-              <div className="text-[10px] text-slate-400 uppercase font-bold">Active Sales Reps</div>
-              <div className="text-base font-black text-amber-400 mt-0.5">148 B4B Coaches</div>
+            <div className="p-3.5 rounded-xl bg-slate-900/60 backdrop-blur-md border border-white/15">
+              <div className="text-base font-black text-white">12 Districts</div>
+              <div className="text-[11px] text-slate-300">Federal Reserve</div>
+            </div>
+            <div className="p-3.5 rounded-xl bg-slate-900/60 backdrop-blur-md border border-white/15">
+              <div className="text-base font-black text-emerald-400">100% US</div>
+              <div className="text-[11px] text-slate-300">Coverage</div>
             </div>
           </div>
         </div>
 
-        {/* FOOTER DISCLOSURE */}
-        <div className="relative z-10 flex items-center justify-between text-xs text-slate-300 border-t border-white/10 pt-4">
+        {/* 3. FOOTER */}
+        <div className="relative z-10 flex items-center justify-between text-xs text-slate-300 border-t border-white/15 pt-4">
           <div className="flex items-center gap-2">
             <Shield className="w-4 h-4 text-emerald-400" />
-            <span>256-bit TLS Encrypted & SOC2 Compliant</span>
+            <span>256-bit TLS Encrypted • SOC2 Certified</span>
           </div>
           <span>© {new Date().getFullYear()} B4B America</span>
         </div>
       </div>
 
       {/* RIGHT SIDE PANEL: AUTH FORM & QUICK DEMO LOGIN (LIGHT CLEAN BACKGROUND) */}
-      <div className="flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-12 space-y-8 bg-white text-slate-900">
-        <div className="w-full max-w-md mx-auto space-y-6 text-left">
+      <div className="flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-10 space-y-6 bg-white text-slate-900">
+        <div className="w-full max-w-lg mx-auto space-y-6 text-left">
 
           {/* Top Header Row with Back to Website Button & Mobile Logo */}
-          <div className="flex items-center justify-between gap-4 pb-2">
+          <div className="flex items-center justify-between gap-4 pb-1">
             <Link
               to="/"
               className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 text-xs font-extrabold transition-all border border-slate-200 shadow-xs group"
@@ -343,30 +330,52 @@ export const LoginPage: React.FC = () => {
                   Sign in to Portal
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                  Enter your corporate credentials or click a quick demo role below.
+                  Enter your credentials or click any demo role below for 1-click access.
                 </p>
               </div>
 
-              {/* DEMO QUICK LOGIN BUTTONS ROW */}
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+              {/* DEMO QUICK LOGIN BUTTONS GRID - FULL ROLES FULLY VISIBLE */}
+              <div className="p-4 rounded-2xl bg-slate-50/90 border border-slate-200 space-y-3">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-slate-700 flex items-center gap-1.5">
+                  <span className="font-bold text-slate-800 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Demo Quick Role Login:
                   </span>
-                  <span className="text-[10px] text-slate-400">1-Click Preview</span>
+                  <span className="text-[10px] font-bold text-blue-700 bg-blue-100/80 px-2 py-0.5 rounded-full border border-blue-200">
+                    1-Click Instant Preview
+                  </span>
                 </div>
 
-                <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
-                  {(['Admin', 'Biz Pro', 'Client', 'Affiliate', 'Employer', 'Job Seeker'] as UserRole[]).map((r) => (
-                    <button
-                      key={r}
-                      type="button"
-                      onClick={() => handleDemoQuickLogin(r)}
-                      className="py-2 px-1.5 rounded-xl bg-white hover:bg-blue-50 border border-slate-200 text-[11px] font-bold text-slate-800 hover:text-[#0A3D9C] transition-all text-center truncate shadow-xs"
-                    >
-                      {getRoleLabel(r)}
-                    </button>
-                  ))}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                  {[
+                    { role: 'Admin' as UserRole, label: 'Super Admin', desc: 'Full System Overview', icon: ShieldCheck, color: 'text-purple-600 bg-purple-50 border-purple-200' },
+                    { role: 'Biz Pro' as UserRole, label: 'B4B Coach', desc: 'CRM & Scoreboard', icon: Megaphone, color: 'text-blue-600 bg-blue-50 border-blue-200' },
+                    { role: 'Client' as UserRole, label: 'SME Client', desc: 'Capital & eBOX', icon: Building2, color: 'text-emerald-600 bg-emerald-50 border-emerald-200' },
+                    { role: 'Affiliate' as UserRole, label: 'Affiliate Partner', desc: 'Referral Pipeline', icon: Share2, color: 'text-amber-600 bg-amber-50 border-amber-200' },
+                    { role: 'Employer' as UserRole, label: 'Employer Portal', desc: 'Job Postings & Hiring', icon: Briefcase, color: 'text-indigo-600 bg-indigo-50 border-indigo-200' },
+                    { role: 'Job Seeker' as UserRole, label: 'Job Seeker', desc: 'Applications & Resume', icon: UserCheck, color: 'text-teal-600 bg-teal-50 border-teal-200' },
+                  ].map((item) => {
+                    const Icon = item.icon
+                    return (
+                      <button
+                        key={item.role}
+                        type="button"
+                        onClick={() => handleDemoQuickLogin(item.role)}
+                        className="p-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 hover:border-blue-400 text-left transition-all duration-150 shadow-xs hover:shadow-md flex flex-col justify-between group cursor-pointer"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className={`p-1.5 rounded-lg border ${item.color} group-hover:scale-110 transition-transform shrink-0`}>
+                            <Icon className="w-3.5 h-3.5" />
+                          </span>
+                          <span className="text-xs font-extrabold text-slate-900 group-hover:text-blue-700 leading-tight">
+                            {item.label}
+                          </span>
+                        </div>
+                        <span className="text-[10px] text-slate-500 group-hover:text-slate-700 font-medium mt-1.5 pl-0.5">
+                          {item.desc}
+                        </span>
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
 

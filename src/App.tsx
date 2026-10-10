@@ -159,7 +159,8 @@ const DynamicDashboardRouter: React.FC = () => {
     return <AdminOverviewPage />
   }
   if (user?.role === 'Biz Pro') {
-    return <BizProDashboardPage />
+    // Client requirement: When B4B Coach enters the portal, Bulletin is the first thing they see
+    return <BizProBulletinPage />
   }
   if (user?.role === 'Employer') {
     return <EmployerDashboardPage />

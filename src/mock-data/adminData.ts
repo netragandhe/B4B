@@ -39,6 +39,8 @@ export interface RankRule {
   requiredTeamMembers: number
   teamOverridePercent: number
   directCommissionPercent: number
+  description?: string
+  termsOfPromotion?: string
 }
 
 export interface InventoryServiceProduct {

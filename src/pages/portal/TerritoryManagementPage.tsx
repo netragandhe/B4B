@@ -76,7 +76,9 @@ export const TerritoryManagementPage: React.FC = () => {
       const matchLeader = (d.assignedLeaderName || '').toLowerCase().includes(q)
       const matchStates = d.states.some((s) => s.toLowerCase().includes(q))
       const matchCode = d.code.toLowerCase().includes(q)
-      return matchName || matchHQ || matchLeader || matchStates || matchCode
+      const matchNickname = (d.nickname || '').toLowerCase().includes(q)
+      const matchNotes = (d.notes || '').toLowerCase().includes(q)
+      return matchName || matchHQ || matchLeader || matchStates || matchCode || matchNickname || matchNotes
     })
   }, [districts, searchQuery])
 
@@ -84,7 +86,7 @@ export const TerritoryManagementPage: React.FC = () => {
     setSelectedDistrictNumber(districtNum)
     const dist = districts.find((d) => d.number === districtNum)
     if (dist) {
-      setNotesText(`District ${dist.number} (${dist.name}) notes and allocation history.`)
+      setNotesText(dist.notes || `District ${dist.number} (${dist.name}) notes and allocation history.`)
     }
     setDrawerOpen(true)
   }
@@ -94,16 +96,23 @@ export const TerritoryManagementPage: React.FC = () => {
     const stateInfo = Object.values(STATE_TERRITORY_MAP).find((s) => s.code === stateCode)
     if (stateInfo) {
       setSelectedDistrictNumber(stateInfo.primaryDistrict)
+      const dist = districts.find((d) => d.number === stateInfo.primaryDistrict)
+      if (dist) {
+        setNotesText(dist.notes || `District ${dist.number} (${dist.name}) notes and allocation history.`)
+      }
     }
     setDrawerOpen(true)
   }
 
   const handleSaveNotes = () => {
-    toast({
-      title: 'Territory Notes Saved',
-      description: `Updated notes for District ${activeDistrict?.number || ''} (${activeDistrict?.name || ''}).`,
-      type: 'success',
-    })
+    if (activeDistrict) {
+      territoryService.updateDistrict(activeDistrict.id, { notes: notesText })
+      toast({
+        title: 'Territory Notes Saved',
+        description: `Updated notes for District ${activeDistrict.number} (${activeDistrict.name} - ${activeDistrict.nickname || ''}).`,
+        type: 'success',
+      })
+    }
   }
 
   const handleReassign = (e: React.FormEvent) => {
