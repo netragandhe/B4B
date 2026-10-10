@@ -919,13 +919,19 @@ export const AdminRolesPermissionsPage: React.FC = () => {
       {/* ========================================================================= */}
       {activeTab === 'matrix' && (
         <div className="space-y-6">
-          {/* 1. HORIZONTAL ROLE CARDS CAROUSEL */}
-          <div className="space-y-2">
+          {/* 1. TOP ROLE SELECTOR TABS */}
+          <div className="space-y-3">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <span className="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5 text-blue-500" />
-                <span>Select Target Role ({roles.length})</span>
-              </span>
+              <div>
+                <h2 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  <span>Role-based Menu Access Manager</span>
+                </h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Select a role below to see its active menus and toggle access ON or OFF.
+                </p>
+              </div>
+
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
@@ -933,7 +939,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
                   onClick={() => setAddRoleModalOpen(true)}
                   className="text-xs h-8"
                 >
-                  <Plus className="w-3.5 h-3.5 mr-1" /> Add Custom Role
+                  <Plus className="w-3.5 h-3.5 mr-1" /> Add Role
                 </Button>
                 <Button
                   variant="outline"
@@ -944,7 +950,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
                   }}
                   className="text-xs h-8"
                 >
-                  <Copy className="w-3.5 h-3.5 mr-1" /> Clone Role
+                  <Copy className="w-3.5 h-3.5 mr-1" /> Clone
                 </Button>
                 {!selectedRole.isSystem && (
                   <Button
@@ -959,8 +965,8 @@ export const AdminRolesPermissionsPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Role Cards Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {/* Big 6 Role Selection Buttons */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
               {roles.map((role) => {
                 const isSelected = selectedRoleId === role.id
                 const rolePerms = draftPermissions[role.id] || {}
@@ -972,30 +978,31 @@ export const AdminRolesPermissionsPage: React.FC = () => {
                     onClick={() => setSelectedRoleId(role.id)}
                     className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer relative flex flex-col justify-between ${
                       isSelected
-                        ? 'bg-blue-50/90 dark:bg-[#12294A] border-blue-500 shadow-md ring-2 ring-blue-500/20'
-                        : 'bg-white dark:bg-[#0D1E36] border-slate-200 dark:border-[#1E3A5F] hover:border-blue-300 dark:hover:border-slate-700'
+                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30 border-blue-600 ring-2 ring-blue-500/20'
+                        : 'bg-white dark:bg-[#0D1E36] border-slate-200 dark:border-[#1E3A5F] hover:border-blue-400 dark:hover:border-slate-600 text-slate-700 dark:text-slate-300'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="p-1.5 rounded-xl bg-blue-100 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400">
+                      <span className={`p-1.5 rounded-xl ${
+                        isSelected ? 'bg-white/20 text-white' : 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400'
+                      }`}>
                         <Shield className="w-4 h-4" />
                       </span>
-                      {role.isSystem ? (
-                        <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500">System</span>
-                      ) : (
-                        <span className="text-[10px] font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/50 px-1.5 py-0.2 rounded-full">Custom</span>
-                      )}
+                      <span className={`text-[10px] font-extrabold px-1.5 py-0.2 rounded-full ${
+                        isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'
+                      }`}>
+                        {role.userCount} users
+                      </span>
                     </div>
 
                     <div>
-                      <h4 className={`text-xs font-bold truncate ${isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-slate-900 dark:text-white'}`}>
+                      <h4 className={`text-xs font-black truncate ${isSelected ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
                         {role.name}
                       </h4>
-                      <div className="flex items-center gap-1 mt-1">
-                        <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
-                          {activeCount} active
+                      <div className="flex items-center gap-1.5 mt-1 text-[11px]">
+                        <span className={`font-extrabold ${isSelected ? 'text-emerald-200' : 'text-emerald-600 dark:text-emerald-400'}`}>
+                          {activeCount} Active
                         </span>
-                        <span className="text-[11px] text-slate-400">· {role.userCount} users</span>
                       </div>
                     </div>
                   </button>
@@ -1004,406 +1011,277 @@ export const AdminRolesPermissionsPage: React.FC = () => {
             </div>
           </div>
 
-          {/* 2. FILTER & TOOLBAR HEADER */}
-          <Card variant="default" className="p-4 bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] rounded-2xl shadow-sm">
-            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-              {/* Search & Category */}
-              <div className="flex items-center gap-3 flex-1">
-                <div className="relative flex-1 max-w-md">
-                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <Input
-                    placeholder={`Search menus in ${selectedRole.name}...`}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 h-9 text-xs"
-                  />
-                </div>
+          {/* 2. SELECTED ROLE HEADER & QUICK ACTIONS BANNER */}
+          {(() => {
+            // Get all role relevant menus
+            const roleRelevantMenus = MENU_CATALOG.filter((menu) => {
+              if (catalogScope === 'allCatalog') return true
+              return isMenuRelevantForRole(selectedRoleId, menu)
+            })
 
-                <select
-                  value={selectedModuleFilter}
-                  onChange={(e) => setSelectedModuleFilter(e.target.value)}
-                  className="h-9 px-3 text-xs rounded-xl border border-slate-200 dark:border-[#1E3A5F] bg-white dark:bg-[#12294A] text-slate-800 dark:text-slate-200 outline-none"
-                >
-                  <option value="all">All Modules</option>
-                  {MODULE_ORDER.map((mod: string) => (
-                    <option key={mod} value={mod}>
-                      {mod}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            const activeMenus = roleRelevantMenus.filter(
+              (m) => currentRoleDraftPerms[m.id]?.view || m.isCore
+            )
+            const disabledMenus = roleRelevantMenus.filter(
+              (m) => !(currentRoleDraftPerms[m.id]?.view || m.isCore)
+            )
 
-              {/* Status Filters & Mode Switcher */}
-              <div className="flex items-center gap-2 flex-wrap self-end md:self-auto">
-                {/* Catalog Scope: Role Dedicated vs All Global */}
-                <div className="flex items-center rounded-xl bg-slate-100 dark:bg-[#12294A] p-0.5 border border-slate-200 dark:border-slate-800">
-                  <button
-                    onClick={() => setCatalogScope('roleOnly')}
-                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors ${
-                      catalogScope === 'roleOnly'
-                        ? 'bg-blue-600 text-white shadow-xs'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
-                    }`}
-                  >
-                    {selectedRole.name} Tools Only
-                  </button>
-                  <button
-                    onClick={() => setCatalogScope('allCatalog')}
-                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors ${
-                      catalogScope === 'allCatalog'
-                        ? 'bg-blue-600 text-white shadow-xs'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
-                    }`}
-                  >
-                    All 60 Menus
-                  </button>
-                </div>
-
-                <div className="flex items-center rounded-xl bg-slate-100 dark:bg-[#12294A] p-0.5 border border-slate-200 dark:border-slate-800">
-                  {(['all', 'enabled', 'disabled'] as const).map((st) => (
-                    <button
-                      key={st}
-                      onClick={() => setFilterStatus(st)}
-                      className={`px-3 py-1 text-xs font-bold rounded-lg capitalize transition-colors ${
-                        filterStatus === st
-                          ? 'bg-white dark:bg-[#0D1E36] text-blue-600 dark:text-blue-400 shadow-xs'
-                          : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
-                      }`}
-                    >
-                      {st === 'all' ? 'All' : st === 'enabled' ? 'Active' : 'Hidden'}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="h-4 w-px bg-slate-200 dark:bg-slate-700 hidden sm:block" />
-
-                {/* Simple / Detailed View Mode Toggle */}
-                <div className="flex items-center rounded-xl bg-slate-100 dark:bg-[#12294A] p-0.5 border border-slate-200 dark:border-slate-800">
-                  <button
-                    onClick={() => setMatrixViewMode('simple')}
-                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 ${
-                      matrixViewMode === 'simple'
-                        ? 'bg-white dark:bg-[#0D1E36] text-blue-600 dark:text-blue-400 shadow-xs'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
-                    }`}
-                  >
-                    <Sliders className="w-3.5 h-3.5" />
-                    <span>Simple (Show/Hide)</span>
-                  </button>
-                  <button
-                    onClick={() => setMatrixViewMode('detailed')}
-                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 ${
-                      matrixViewMode === 'detailed'
-                        ? 'bg-white dark:bg-[#0D1E36] text-blue-600 dark:text-blue-400 shadow-xs'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
-                    }`}
-                  >
-                    <Layers className="w-3.5 h-3.5" />
-                    <span>Detailed CRUD</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          {/* 3. GROUPED MODULE CARDS */}
-          <div className="space-y-4">
-            {MODULE_ORDER.map((moduleName: string) => {
-              const groupMenus = filteredMenusByModule[moduleName] || []
-              if (groupMenus.length === 0) return null
-
-              const isCollapsed = Boolean(collapsedModules[moduleName])
-              const activeMenusInGroup = groupMenus.filter(
-                (m) => currentRoleDraftPerms[m.id]?.view || m.isCore
+            // Filter by search query if any
+            const filterList = (list: Menu[]) => {
+              if (!searchQuery) return list
+              const q = searchQuery.toLowerCase()
+              return list.filter(
+                (m) =>
+                  m.label.toLowerCase().includes(q) ||
+                  m.route.toLowerCase().includes(q) ||
+                  m.module.toLowerCase().includes(q)
               )
-              const allInGroupEnabled = groupMenus.every(
-                (m) => currentRoleDraftPerms[m.id]?.view || m.isCore
-              )
+            }
 
-              return (
-                <Card
-                  key={moduleName}
-                  variant="default"
-                  className="bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] rounded-2xl shadow-sm overflow-hidden p-0"
-                >
-                  {/* Category Header Bar */}
-                  <div className="px-5 py-3.5 bg-slate-50/80 dark:bg-[#12294A]/60 border-b border-slate-200 dark:border-[#1E3A5F] flex items-center justify-between">
-                    <div
-                      className="flex items-center gap-3 cursor-pointer select-none"
-                      onClick={() => toggleCollapseModule(moduleName)}
-                    >
-                      <span className="p-1 rounded-lg bg-slate-200/70 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-                        {isCollapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                      </span>
+            const visibleActiveMenus = filterList(activeMenus)
+            const visibleDisabledMenus = filterList(disabledMenus)
+
+            return (
+              <div className="space-y-6">
+                {/* Control Panel Card */}
+                <Card variant="default" className="p-4 bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] rounded-2xl shadow-sm">
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    {/* Left: Role identity and KPI */}
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-700 text-white flex items-center justify-center font-black text-lg shadow-md shrink-0">
+                        <Users className="w-6 h-6" />
+                      </div>
                       <div>
-                        <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 dark:text-white">
-                          {moduleName}
-                        </h3>
-                        <span className="text-[11px] text-slate-500 dark:text-slate-400">
-                          {activeMenusInGroup.length} of {groupMenus.length} menus enabled
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">
+                            Configuring: {selectedRole.name}
+                          </h3>
+                          <Badge variant="navy" size="sm" className="text-[10px]">
+                            {selectedRole.isSystem ? 'System Role' : 'Custom Role'}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center gap-2 mt-1 flex-wrap text-xs">
+                          <span className="inline-flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-400">
+                            <Check className="w-3.5 h-3.5" /> {activeMenus.length} Menus Enabled (Visible in Sidebar)
+                          </span>
+                          <span className="text-slate-300 dark:text-slate-700">|</span>
+                          <span className="inline-flex items-center gap-1 font-semibold text-slate-500 dark:text-slate-400">
+                            <X className="w-3.5 h-3.5" /> {disabledMenus.length} Menus Disabled (Hidden)
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right: Search & Quick Actions */}
+                    <div className="flex items-center gap-2.5 flex-wrap self-end lg:self-auto">
+                      <div className="relative w-48 sm:w-64">
+                        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                        <Input
+                          placeholder="Search menus..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="pl-9 h-8 text-xs rounded-xl"
+                        />
+                      </div>
+
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleToggleGroup(selectedRoleId, roleRelevantMenus, true)}
+                        className="text-xs h-8 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 font-bold"
+                      >
+                        <Check className="w-3.5 h-3.5 mr-1" /> Enable All
+                      </Button>
+
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleToggleGroup(selectedRoleId, roleRelevantMenus, false)}
+                        className="text-xs h-8 text-slate-600 hover:text-slate-900 font-bold"
+                      >
+                        <X className="w-3.5 h-3.5 mr-1" /> Disable All
+                      </Button>
+
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setResetRoleConfirmModalOpen(true)}
+                        className="text-xs h-8 text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/30"
+                        title="Restore this role to system defaults"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5 mr-1" /> Reset Default
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* 3. DIRECT TWO-SECTION MENU DISPLAY (ENABLED & DISABLED) */}
+                <div className="space-y-6">
+                  {/* SECTION A: ACTIVE / ENABLED IN SIDEBAR */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between px-1">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-100 dark:ring-emerald-950/50" />
+                        <h4 className="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-white">
+                          Active in Sidebar ({visibleActiveMenus.length})
+                        </h4>
+                        <span className="text-xs text-slate-400">
+                          — Users with this role see these menus in their portal sidebar
                         </span>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleToggleGroup(selectedRoleId, groupMenus)}
-                        className="text-xs h-7 text-blue-600 dark:text-blue-400 font-bold"
-                      >
-                        {allInGroupEnabled ? 'Hide All' : 'Show All in Sidebar'}
-                      </Button>
-                    </div>
-                  </div>
+                    {visibleActiveMenus.length === 0 ? (
+                      <div className="p-8 text-center rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#12294A]/20 text-xs text-slate-500">
+                        No active menus for this role. Turn ON any menu below to show it in the sidebar.
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {visibleActiveMenus.map((menu) => {
+                          const perm = currentRoleDraftPerms[menu.id] || { view: true }
+                          const lockInfo = isLockedItem(selectedRoleId, menu)
 
-                  {/* Menu Rows List */}
-                  {!isCollapsed && (
-                    <div className="divide-y divide-slate-100 dark:divide-slate-800/60">
-                      {groupMenus.map((menu) => {
-                        const perm = currentRoleDraftPerms[menu.id] || {
-                          view: false,
-                          create: false,
-                          edit: false,
-                          delete: false,
-                          approve: false,
-                          export: false,
-                          scope: 'own',
-                          minRank: menu.minRank || 1,
-                        }
-                        const lockInfo = isLockedItem(selectedRoleId, menu)
-                        const isViewOn = menu.isCore || perm.view
-                        const isMenuExpanded = Boolean(expandedMenuIds[menu.id])
-
-                        return (
-                          <div
-                            key={menu.id}
-                            className={`p-4 transition-colors ${
-                              !isViewOn
-                                ? 'bg-slate-50/30 dark:bg-slate-900/20 opacity-70'
-                                : 'hover:bg-slate-50/70 dark:hover:bg-[#12294A]/30'
-                            }`}
-                          >
-                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                              {/* Left: Icon, Title, Route */}
-                              <div className="flex items-center gap-3.5 min-w-[260px]">
-                                <div className={`p-2.5 rounded-xl shrink-0 ${
-                                  isViewOn
-                                    ? 'bg-blue-100 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400'
-                                    : 'bg-slate-100 dark:bg-slate-800 text-slate-400'
-                                }`}>
+                          return (
+                            <div
+                              key={menu.id}
+                              className="p-3.5 rounded-2xl bg-white dark:bg-[#0D1E36] border border-emerald-200 dark:border-emerald-900/60 shadow-xs hover:shadow-md transition-all flex items-center justify-between gap-3"
+                            >
+                              <div className="flex items-center gap-3 min-w-0">
+                                <div className="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 shrink-0">
                                   <MenuIcon name={menu.icon} className="w-5 h-5" />
                                 </div>
                                 <div className="min-w-0">
-                                  <div className="flex items-center gap-2 flex-wrap">
-                                    <span className="font-bold text-sm text-slate-900 dark:text-white">
+                                  <div className="flex items-center gap-1.5">
+                                    <h5 className="text-xs font-bold text-slate-900 dark:text-white truncate">
                                       {menu.label}
-                                    </span>
+                                    </h5>
                                     {menu.isCore && (
-                                      <Badge variant="gold" size="sm" className="text-[9px] px-1.5 py-0 font-bold">
+                                      <Badge variant="gold" size="sm" className="text-[9px] px-1 py-0">
                                         Core
                                       </Badge>
                                     )}
                                     {menu.isLeaderOnly && (
-                                      <Badge variant="amber" size="sm" className="text-[9px] px-1.5 py-0 font-bold">
-                                        Rank 4+ Leader
+                                      <Badge variant="amber" size="sm" className="text-[9px] px-1 py-0">
+                                        Rank 4+
                                       </Badge>
                                     )}
-                                    {lockInfo.locked && (
-                                      <span title={lockInfo.reason} className="cursor-help text-amber-500">
-                                        <Lock className="w-3.5 h-3.5 inline" />
-                                      </span>
-                                    )}
                                   </div>
-                                  <div className="flex items-center gap-2 mt-0.5">
-                                    <span className="text-[11px] font-mono text-slate-400 truncate">
-                                      {menu.route}
-                                    </span>
-                                    {menu.description && (
-                                      <span className="text-[11px] text-slate-400 truncate hidden lg:inline">
-                                        · {menu.description}
-                                      </span>
-                                    )}
-                                  </div>
+                                  <span className="text-[11px] font-mono text-slate-400 truncate block">
+                                    {menu.route}
+                                  </span>
                                 </div>
                               </div>
 
-                              {/* Right: Master Toggle & Action Pills */}
-                              <div className="flex items-center gap-4 self-end md:self-auto flex-wrap">
-                                {/* Sidebar Visibility Switch */}
-                                <div className="flex items-center gap-2.5 bg-slate-100/70 dark:bg-[#12294A]/70 px-3 py-1.5 rounded-xl border border-slate-200/80 dark:border-[#1E3A5F]">
-                                  <span className={`text-xs font-bold ${
-                                    isViewOn ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'
-                                  }`}>
-                                    {isViewOn ? 'Visible in Sidebar' : 'Hidden'}
-                                  </span>
-                                  {lockInfo.locked ? (
-                                    <div title={lockInfo.reason} className="cursor-not-allowed">
-                                      <Switch checked={true} onChange={() => {}} disabled={true} />
-                                    </div>
-                                  ) : (
-                                    <Switch
-                                      checked={Boolean(perm.view)}
-                                      onChange={() => handleToggleMenuShow(selectedRoleId, menu.id)}
-                                    />
-                                  )}
-                                </div>
-
-                                {/* Preset Quick Actions */}
-                                <div className="flex items-center gap-1">
-                                  <button
-                                    onClick={() => handleSetPreset(selectedRoleId, menu.id, 'full')}
-                                    className="px-2 py-1 text-[11px] font-bold rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-blue-950/40 hover:text-blue-600 text-slate-600 dark:text-slate-400 transition-colors"
-                                    title="Grant full CRUD and All scope"
-                                  >
-                                    Full Access
-                                  </button>
-                                  <button
-                                    onClick={() => handleSetPreset(selectedRoleId, menu.id, 'readonly')}
-                                    className="px-2 py-1 text-[11px] font-bold rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-[#12294A] text-slate-600 dark:text-slate-400 transition-colors"
-                                    title="Set View Only"
-                                  >
-                                    View Only
-                                  </button>
-                                </div>
-
-                                {/* Customize Button (in simple mode) */}
-                                {matrixViewMode === 'simple' && (
-                                  <button
-                                    onClick={() => toggleExpandMenu(menu.id)}
-                                    className="px-2 py-1 text-[11px] font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
-                                  >
-                                    <span>{isMenuExpanded ? 'Hide Details' : 'Configure CRUD'}</span>
-                                    {isMenuExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
-                                  </button>
+                              <div className="flex items-center gap-2 shrink-0">
+                                <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 hidden sm:inline">
+                                  Active
+                                </span>
+                                {lockInfo.locked ? (
+                                  <div title={lockInfo.reason} className="cursor-not-allowed">
+                                    <Switch checked={true} onChange={() => {}} disabled={true} />
+                                  </div>
+                                ) : (
+                                  <Switch
+                                    checked={true}
+                                    onChange={() => handleToggleMenuShow(selectedRoleId, menu.id)}
+                                  />
                                 )}
                               </div>
                             </div>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
 
-                            {/* Granular Actions Drawer (When in Detailed Mode or when expanded) */}
-                            {(matrixViewMode === 'detailed' || isMenuExpanded) && (
-                              <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 bg-slate-50/50 dark:bg-[#12294A]/30 p-3 rounded-xl">
-                                <div className="flex items-center gap-1.5 flex-wrap">
-                                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1">
-                                    Actions:
-                                  </span>
+                  {/* SECTION B: DISABLED / HIDDEN FROM SIDEBAR */}
+                  <div className="space-y-3 pt-2">
+                    <div className="flex items-center justify-between px-1">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2.5 h-2.5 rounded-full bg-slate-400" />
+                        <h4 className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                          Hidden from Sidebar ({visibleDisabledMenus.length})
+                        </h4>
+                        <span className="text-xs text-slate-400">
+                          — These tools are hidden from the user&apos;s sidebar
+                        </span>
+                      </div>
+                    </div>
 
-                                  {/* Create */}
-                                  <button
-                                    disabled={!isViewOn}
-                                    onClick={() => handleToggleAction(selectedRoleId, menu.id, 'create')}
-                                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                                      perm.create
-                                        ? 'bg-blue-600 text-white shadow-xs'
-                                        : 'bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-slate-900'
-                                    }`}
-                                  >
-                                    + Create
-                                  </button>
+                    {visibleDisabledMenus.length === 0 ? (
+                      <div className="p-6 text-center rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/30 dark:bg-[#12294A]/10 text-xs text-slate-400">
+                        All tools for this role are currently enabled.
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {visibleDisabledMenus.map((menu) => {
+                          const lockInfo = isLockedItem(selectedRoleId, menu)
 
-                                  {/* Edit */}
-                                  <button
-                                    disabled={!isViewOn}
-                                    onClick={() => handleToggleAction(selectedRoleId, menu.id, 'edit')}
-                                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                                      perm.edit
-                                        ? 'bg-blue-600 text-white shadow-xs'
-                                        : 'bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-slate-900'
-                                    }`}
-                                  >
-                                    ✎ Edit
-                                  </button>
-
-                                  {/* Delete */}
-                                  <button
-                                    disabled={!isViewOn}
-                                    onClick={() => handleToggleAction(selectedRoleId, menu.id, 'delete')}
-                                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                                      perm.delete
-                                        ? 'bg-rose-600 text-white shadow-xs'
-                                        : 'bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-rose-600'
-                                    }`}
-                                  >
-                                    🗑 Delete
-                                  </button>
-
-                                  {/* Approve */}
-                                  <button
-                                    disabled={!isViewOn}
-                                    onClick={() => handleToggleAction(selectedRoleId, menu.id, 'approve')}
-                                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                                      perm.approve
-                                        ? 'bg-amber-600 text-white shadow-xs'
-                                        : 'bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-amber-600'
-                                    }`}
-                                  >
-                                    ⭐ Approve
-                                  </button>
-
-                                  {/* Export */}
-                                  <button
-                                    disabled={!isViewOn}
-                                    onClick={() => handleToggleAction(selectedRoleId, menu.id, 'export')}
-                                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                                      perm.export
-                                        ? 'bg-purple-600 text-white shadow-xs'
-                                        : 'bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-purple-600'
-                                    }`}
-                                  >
-                                    ⤓ Export
-                                  </button>
+                          return (
+                            <div
+                              key={menu.id}
+                              className="p-3.5 rounded-2xl bg-slate-50/60 dark:bg-[#0A1628]/60 border border-slate-200/80 dark:border-[#1E3A5F]/60 opacity-75 hover:opacity-100 transition-all flex items-center justify-between gap-3"
+                            >
+                              <div className="flex items-center gap-3 min-w-0">
+                                <div className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 shrink-0">
+                                  <MenuIcon name={menu.icon} className="w-5 h-5" />
                                 </div>
-
-                                {/* Scope & Min Rank */}
-                                <div className="flex items-center gap-2">
-                                  <div className="flex items-center gap-1.5">
-                                    <span className="text-[11px] font-bold text-slate-400">Scope:</span>
-                                    <select
-                                      value={perm.scope || 'own'}
-                                      disabled={!isViewOn}
-                                      onChange={(e) =>
-                                        handleScopeChange(selectedRoleId, menu.id, e.target.value as ScopeType)
-                                      }
-                                      className="h-7 px-2 text-xs font-bold rounded-lg border border-slate-200 dark:border-[#1E3A5F] bg-white dark:bg-[#0D1E36] text-slate-800 dark:text-slate-200 outline-none"
-                                    >
-                                      <option value="all">All (Global)</option>
-                                      <option value="team">Team (Downline)</option>
-                                      <option value="own">Own (Self Only)</option>
-                                      <option value="none">None (Deny All)</option>
-                                    </select>
-                                  </div>
-
-                                  {selectedRoleId === 'bizpro' && (
-                                    <div className="flex items-center gap-1.5">
-                                      <span className="text-[11px] font-bold text-slate-400">Min Rank:</span>
-                                      <select
-                                        value={perm.minRank || menu.minRank || 1}
-                                        disabled={!isViewOn}
-                                        onChange={(e) =>
-                                          handleMinRankChange(selectedRoleId, menu.id, Number(e.target.value))
-                                        }
-                                        className="h-7 px-2 text-xs font-bold rounded-lg border border-slate-200 dark:border-[#1E3A5F] bg-white dark:bg-[#0D1E36] text-slate-800 dark:text-slate-200 outline-none"
-                                      >
-                                        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((rank) => (
-                                          <option key={rank} value={rank}>
-                                            Rank {rank} {rank >= 4 ? '(Leader)' : ''}
-                                          </option>
-                                        ))}
-                                      </select>
-                                    </div>
-                                  )}
+                                <div className="min-w-0">
+                                  <h5 className="text-xs font-bold text-slate-700 dark:text-slate-300 truncate">
+                                    {menu.label}
+                                  </h5>
+                                  <span className="text-[11px] font-mono text-slate-400 truncate block">
+                                    {menu.route}
+                                  </span>
                                 </div>
                               </div>
-                            )}
-                          </div>
-                        )
-                      })}
-                    </div>
-                  )}
-                </Card>
-              )
-            })}
-          </div>
+
+                              <div className="flex items-center gap-2 shrink-0">
+                                <span className="text-[11px] font-semibold text-slate-400 hidden sm:inline">
+                                  Hidden
+                                </span>
+                                {lockInfo.locked ? (
+                                  <div title={lockInfo.reason} className="cursor-not-allowed">
+                                    <Switch checked={false} onChange={() => {}} disabled={true} />
+                                  </div>
+                                ) : (
+                                  <Switch
+                                    checked={false}
+                                    onChange={() => handleToggleMenuShow(selectedRoleId, menu.id)}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Optional switch to browse all 60 global menus */}
+                <div className="pt-4 border-t border-slate-200 dark:border-[#1E3A5F] flex items-center justify-between">
+                  <span className="text-xs text-slate-500">
+                    {catalogScope === 'roleOnly'
+                      ? `Showing ${roleRelevantMenus.length} menus tailored for ${selectedRole.name}.`
+                      : `Showing all 60 system menus across all portals.`}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() =>
+                      setCatalogScope((prev) => (prev === 'roleOnly' ? 'allCatalog' : 'roleOnly'))
+                    }
+                    className="text-xs text-blue-600 dark:text-blue-400 font-bold"
+                  >
+                    {catalogScope === 'roleOnly'
+                      ? 'Browse & Enable Other Platform Menus (Advanced)'
+                      : `Back to ${selectedRole.name} Tools Only`}
+                  </Button>
+                </div>
+              </div>
+            )
+          })()}
 
           {/* 4. FLOATING SAVE BAR WHEN CHANGES ARE PENDING */}
           {pendingDiffs.length > 0 && (
