@@ -144,14 +144,41 @@ export const BizProLeadsPage: React.FC = () => {
         }
       />
 
+      {/* TOP COMPACT SUMMARY STRIP */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="p-3 rounded-xl bg-white dark:bg-[#0D1E36] border border-slate-200/80 dark:border-[#1E3A5F] shadow-xs">
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Total Pipeline Value</div>
+          <div className="text-lg font-black text-slate-900 dark:text-white">
+            {formatCurrency(leads.reduce((acc, curr) => acc + curr.dealValue, 0))}
+          </div>
+        </div>
+        <div className="p-3 rounded-xl bg-white dark:bg-[#0D1E36] border border-slate-200/80 dark:border-[#1E3A5F] shadow-xs">
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Active Leads</div>
+          <div className="text-lg font-black text-blue-600 dark:text-blue-400">{leads.length} Deals</div>
+        </div>
+        <div className="p-3 rounded-xl bg-white dark:bg-[#0D1E36] border border-slate-200/80 dark:border-[#1E3A5F] shadow-xs">
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Won Facilities</div>
+          <div className="text-lg font-black text-emerald-600 dark:text-emerald-400">
+            {formatCurrency(leads.filter((l) => l.stage === 'Won').reduce((acc, curr) => acc + curr.dealValue, 0))}
+          </div>
+        </div>
+        <div className="p-3 rounded-xl bg-white dark:bg-[#0D1E36] border border-slate-200/80 dark:border-[#1E3A5F] shadow-xs">
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">In Proposal / Review</div>
+          <div className="text-lg font-black text-amber-600 dark:text-amber-400">
+            {formatCurrency(leads.filter((l) => l.stage === 'Proposal').reduce((acc, curr) => acc + curr.dealValue, 0))}
+          </div>
+        </div>
+      </div>
+
       {/* FILTER & VIEW TOGGLE CONTROLS */}
-      <Card variant="default" className="p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <Card variant="default" className="p-3 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="flex-1 w-full sm:w-auto">
           <Input
-            placeholder="Search leads by name, company, email..."
-            leftIcon={<Search className="w-4 h-4" />}
+            placeholder="Search leads by company, contact name, email..."
+            leftIcon={<Search className="w-4 h-4 text-slate-400" />}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            className="h-9 text-xs"
           />
         </div>
 
@@ -163,102 +190,105 @@ export const BizProLeadsPage: React.FC = () => {
             ]}
             value={stageFilter}
             onChange={(e) => setStageFilter(e.target.value)}
-            className="text-xs h-9"
+            className="text-xs h-9 min-w-[150px]"
           />
 
           <div className="flex items-center p-1 rounded-xl border border-slate-200 dark:border-[#1E3A5F] bg-slate-50 dark:bg-[#12294A]">
             <button
               onClick={() => setViewMode('kanban')}
-              className={`p-1.5 rounded-lg transition-colors ${
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
                 viewMode === 'kanban'
                   ? 'bg-white dark:bg-[#0D1E36] text-blue-600 dark:text-blue-400 shadow-xs'
                   : 'text-slate-400 hover:text-slate-600'
               }`}
-              title="Kanban Board View"
+              title="Pipeline Grid View"
             >
-              <Grid className="w-4 h-4" />
+              <Grid className="w-3.5 h-3.5" />
+              <span>Board</span>
             </button>
             <button
               onClick={() => setViewMode('table')}
-              className={`p-1.5 rounded-lg transition-colors ${
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
                 viewMode === 'table'
                   ? 'bg-white dark:bg-[#0D1E36] text-blue-600 dark:text-blue-400 shadow-xs'
                   : 'text-slate-400 hover:text-slate-600'
               }`}
-              title="Table View"
+              title="Table List View"
             >
-              <List className="w-4 h-4" />
+              <List className="w-3.5 h-3.5" />
+              <span>List</span>
             </button>
           </div>
         </div>
       </Card>
 
-      {/* KANBAN BOARD VIEW */}
+      {/* COMPACT RESPONSIVE KANBAN BOARD VIEW (Fits in screen, minimal scroll) */}
       {viewMode === 'kanban' ? (
-        <div className="flex gap-4 overflow-x-auto pb-4 custom-scrollbar -mx-1 px-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2.5">
           {stages.map((stage) => {
             const stageLeads = filteredLeads.filter((l) => l.stage === stage)
             const stageTotal = stageLeads.reduce((acc, curr) => acc + curr.dealValue, 0)
 
             const stageColors: Record<string, { bg: string; text: string; dot: string; border: string }> = {
-              New: { bg: 'bg-sky-50 dark:bg-sky-950/30', text: 'text-sky-700 dark:text-sky-400', dot: 'bg-sky-500', border: 'border-sky-200 dark:border-sky-800' },
-              Contacted: { bg: 'bg-blue-50 dark:bg-blue-950/30', text: 'text-blue-700 dark:text-blue-400', dot: 'bg-blue-500', border: 'border-blue-200 dark:border-blue-800' },
-              Qualified: { bg: 'bg-violet-50 dark:bg-violet-950/30', text: 'text-violet-700 dark:text-violet-400', dot: 'bg-violet-500', border: 'border-violet-200 dark:border-violet-800' },
-              Proposal: { bg: 'bg-amber-50 dark:bg-amber-950/30', text: 'text-amber-700 dark:text-amber-400', dot: 'bg-amber-500', border: 'border-amber-200 dark:border-amber-800' },
-              Won: { bg: 'bg-emerald-50 dark:bg-emerald-950/30', text: 'text-emerald-700 dark:text-emerald-400', dot: 'bg-emerald-500', border: 'border-emerald-200 dark:border-emerald-800' },
-              Lost: { bg: 'bg-red-50 dark:bg-red-950/30', text: 'text-red-700 dark:text-red-400', dot: 'bg-red-500', border: 'border-red-200 dark:border-red-800' },
+              New: { bg: 'bg-sky-50/80 dark:bg-sky-950/20', text: 'text-sky-700 dark:text-sky-400', dot: 'bg-sky-500', border: 'border-sky-200 dark:border-sky-800' },
+              Contacted: { bg: 'bg-blue-50/80 dark:bg-blue-950/20', text: 'text-blue-700 dark:text-blue-400', dot: 'bg-blue-500', border: 'border-blue-200 dark:border-blue-800' },
+              Qualified: { bg: 'bg-violet-50/80 dark:bg-violet-950/20', text: 'text-violet-700 dark:text-violet-400', dot: 'bg-violet-500', border: 'border-violet-200 dark:border-violet-800' },
+              Proposal: { bg: 'bg-amber-50/80 dark:bg-amber-950/20', text: 'text-amber-700 dark:text-amber-400', dot: 'bg-amber-500', border: 'border-amber-200 dark:border-amber-800' },
+              Won: { bg: 'bg-emerald-50/80 dark:bg-emerald-950/20', text: 'text-emerald-700 dark:text-emerald-400', dot: 'bg-emerald-500', border: 'border-emerald-200 dark:border-emerald-800' },
+              Lost: { bg: 'bg-rose-50/80 dark:bg-rose-950/20', text: 'text-rose-700 dark:text-rose-400', dot: 'bg-rose-500', border: 'border-rose-200 dark:border-rose-800' },
             }
             const colors = stageColors[stage] || stageColors.New
 
             return (
               <div
                 key={stage}
-                className="flex-shrink-0 w-[260px] flex flex-col bg-slate-50/80 dark:bg-[#0D1E36]/80 rounded-2xl border border-slate-200/80 dark:border-[#1E3A5F]/80"
+                className="flex flex-col bg-slate-50/70 dark:bg-[#0D1E36]/60 rounded-xl border border-slate-200/80 dark:border-[#1E3A5F]/70 min-h-[360px]"
               >
-                {/* Stage Header */}
-                <div className={`p-3.5 rounded-t-2xl border-b ${colors.border} ${colors.bg}`}>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className={`w-2 h-2 rounded-full ${colors.dot}`} />
-                      <span className={`text-xs font-bold ${colors.text}`}>{stage}</span>
-                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${colors.bg} ${colors.text} border ${colors.border}`}>
+                {/* Compact Stage Header */}
+                <div className={`p-2.5 rounded-t-xl border-b ${colors.border} ${colors.bg}`}>
+                  <div className="flex items-center justify-between gap-1">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className={`w-2 h-2 rounded-full shrink-0 ${colors.dot}`} />
+                      <span className={`text-xs font-bold truncate ${colors.text}`}>{stage}</span>
+                      <span className={`text-[10px] font-extrabold px-1.5 py-0.2 rounded-full ${colors.bg} ${colors.text} border ${colors.border} shrink-0`}>
                         {stageLeads.length}
                       </span>
                     </div>
-                    <span className="text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400">
-                      {formatCurrency(stageTotal)}
-                    </span>
+                  </div>
+                  <div className="text-[11px] font-black text-emerald-600 dark:text-emerald-400 pt-0.5">
+                    {formatCurrency(stageTotal)}
                   </div>
                 </div>
 
-                {/* Stage Cards */}
-                <div className="flex-1 p-2.5 space-y-2.5 overflow-y-auto max-h-[calc(100vh-320px)] custom-scrollbar">
+                {/* Stage Compact Cards */}
+                <div className="flex-1 p-2 space-y-2 overflow-y-auto max-h-[480px] custom-scrollbar">
                   {stageLeads.length === 0 && (
-                    <div className="flex items-center justify-center h-24 text-[11px] text-slate-400 dark:text-slate-500 italic">
-                      No leads in this stage
+                    <div className="flex items-center justify-center h-20 text-[10px] text-slate-400 dark:text-slate-500 italic">
+                      Empty
                     </div>
                   )}
                   {stageLeads.map((lead) => (
                     <div
                       key={lead.id}
                       onClick={() => setSelectedLead(lead)}
-                      className="group bg-white dark:bg-[#12294A] rounded-xl border border-slate-200/80 dark:border-[#1E3A5F] p-3.5 cursor-pointer
-                        hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md hover:shadow-blue-500/5 transition-all duration-200 hover:-translate-y-0.5"
+                      className="group bg-white dark:bg-[#12294A] rounded-lg border border-slate-200 dark:border-[#1E3A5F] p-2.5 cursor-pointer
+                        hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-sm transition-all duration-150"
                     >
-                      <div className="flex items-start justify-between gap-2 mb-1.5">
-                        <h4 className="text-xs font-bold text-slate-900 dark:text-white leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      <div className="flex items-start justify-between gap-1 mb-1">
+                        <h4 className="text-[11px] font-bold text-slate-900 dark:text-white leading-tight truncate group-hover:text-blue-600 dark:group-hover:text-blue-400">
                           {lead.company}
                         </h4>
-                        <span className="text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400 whitespace-nowrap shrink-0">
-                          {formatCurrency(lead.dealValue)}
-                        </span>
                       </div>
 
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate mb-2.5">{lead.name}</p>
+                      <div className="text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400 mb-1">
+                        {formatCurrency(lead.dealValue)}
+                      </div>
 
-                      <div className="pt-2 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between text-[10px] text-slate-400 dark:text-slate-500">
-                        <span className="truncate max-w-[120px]">{lead.source}</span>
-                        <span className="shrink-0">{lead.lastActivity.split('-')[0]}</span>
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">{lead.name}</p>
+
+                      <div className="mt-1.5 pt-1.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[9px] text-slate-400">
+                        <span className="truncate max-w-[70px]">{lead.source}</span>
+                        <span className="shrink-0">{lead.lastActivity.split('-')[0].trim()}</span>
                       </div>
                     </div>
                   ))}
@@ -268,13 +298,13 @@ export const BizProLeadsPage: React.FC = () => {
           })}
         </div>
       ) : (
-        /* TABLE VIEW */
+        /* TABLE LIST VIEW */
         <Card variant="default" className="divide-y divide-slate-100 dark:divide-[#1E3A5F]">
           {filteredLeads.map((lead) => (
             <div
               key={lead.id}
               onClick={() => setSelectedLead(lead)}
-              className="p-4 hover:bg-slate-50/80 dark:hover:bg-[#12294A]/40 cursor-pointer flex items-center justify-between gap-4 text-xs transition-colors"
+              className="p-3.5 hover:bg-slate-50/80 dark:hover:bg-[#12294A]/40 cursor-pointer flex items-center justify-between gap-4 text-xs transition-colors"
             >
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
@@ -288,8 +318,8 @@ export const BizProLeadsPage: React.FC = () => {
                 </p>
               </div>
 
-              <div className="flex items-center gap-4 text-slate-400 shrink-0">
-                <span className="font-extrabold text-emerald-600 dark:text-emerald-400 text-sm">
+              <div className="flex items-center gap-3 text-slate-400 shrink-0">
+                <span className="font-extrabold text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm">
                   {formatCurrency(lead.dealValue)}
                 </span>
                 <Button size="sm" variant="ghost" className="h-7 text-xs">
