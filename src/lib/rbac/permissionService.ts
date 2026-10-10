@@ -51,7 +51,7 @@ function getStoredPermissions(): SystemPermissionMatrix {
         Object.keys(parsed).forEach((roleId) => {
           MENU_CATALOG.forEach((menu) => {
             if (!parsed[roleId][menu.id]) {
-              parsed[roleId][menu.id] = createEmptyPermission()
+              parsed[roleId][menu.id] = DEFAULT_PERMISSIONS[roleId]?.[menu.id] ? JSON.parse(JSON.stringify(DEFAULT_PERMISSIONS[roleId][menu.id])) : createEmptyPermission()
               mutated = true
             }
           })

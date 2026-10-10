@@ -136,8 +136,9 @@ function buildDefaultPermissions(): SystemPermissionMatrix {
   })
 
   // 3. BIZ PRO default menus
-  // Base 14 menus
+  // Base 15 menus
   const bizProBaseMenus = [
+    'bizpro-bulletin',
     'bizpro-dashboard',
     'bizpro-leads',
     'bizpro-clients',
