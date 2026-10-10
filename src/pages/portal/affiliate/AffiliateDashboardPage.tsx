@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
   Share2,
   MousePointerClick,
@@ -12,6 +11,9 @@ import {
   ArrowUpRight,
   Sparkles,
   Zap,
+  Send,
+  Download,
+  Building,
 } from 'lucide-react'
 import {
   ResponsiveContainer,
@@ -27,17 +29,35 @@ import { StatCard } from '@/components/ui/StatCard'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
+import { Modal } from '@/components/ui/Modal'
+import { Input } from '@/components/ui/Input'
+import { Select } from '@/components/ui/Select'
+import { FormField } from '@/components/ui/FormField'
 import { CountUp } from '@/components/ui/CountUp'
 import { useToast } from '@/components/ui/Toast'
 import { PartnerType, MOCK_TRACKING_LINKS } from '@/mock-data/affiliateData'
 import { formatCurrency } from '@/lib/utils'
 
 export const AffiliateDashboardPage: React.FC = () => {
-  const navigate = useNavigate()
   const { toast } = useToast()
 
   const [copied, setCopied] = useState(false)
   const [partnerType, setPartnerType] = useState<PartnerType>('Affiliate')
+
+  // In-Place Modals States
+  const [submitLeadOpen, setSubmitLeadOpen] = useState(false)
+  const [qrModalOpen, setQrModalOpen] = useState(false)
+
+  // Direct Lead Form State
+  const [leadForm, setLeadForm] = useState({
+    businessName: '',
+    contactName: '',
+    email: '',
+    phone: '',
+    estimatedVolume: '350000',
+    serviceNeeded: 'Revenue-Based Working Capital Line',
+    notes: '',
+  })
 
   const topLink = MOCK_TRACKING_LINKS[0]
 
@@ -59,6 +79,25 @@ export const AffiliateDashboardPage: React.FC = () => {
       type: 'success',
     })
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleSubmitLead = (e: React.FormEvent) => {
+    e.preventDefault()
+    setSubmitLeadOpen(false)
+    toast({
+      title: 'Direct Referral Submitted',
+      description: `${leadForm.contactName} (${leadForm.businessName}) has been routed to the senior B4B underwriting desk under your referral ID.`,
+      type: 'success',
+    })
+    setLeadForm({
+      businessName: '',
+      contactName: '',
+      email: '',
+      phone: '',
+      estimatedVolume: '350000',
+      serviceNeeded: 'Revenue-Based Working Capital Line',
+      notes: '',
+    })
   }
 
   // Adaptive content based on Partner Type
@@ -113,7 +152,7 @@ export const AffiliateDashboardPage: React.FC = () => {
             <Button
               variant="accent"
               size="sm"
-              onClick={() => navigate('/portal/affiliate/submit-lead')}
+              onClick={() => setSubmitLeadOpen(true)}
               leftIcon={<Share2 className="w-3.5 h-3.5" />}
             >
               Submit Direct Lead
@@ -142,22 +181,22 @@ export const AffiliateDashboardPage: React.FC = () => {
 
           <div className="flex items-center gap-2">
             <Button
-              size="sm"
               variant="outline"
-              onClick={handleCopyTopLink}
-              leftIcon={copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-              className="text-xs border-slate-700 text-white hover:bg-slate-800"
+              size="sm"
+              onClick={() => setQrModalOpen(true)}
+              leftIcon={<QrCode className="w-3.5 h-3.5 text-white" />}
+              className="bg-white/10 text-white border-white/20 hover:bg-white/20"
             >
-              {copied ? 'Copied!' : 'Copy Link'}
+              QR Code
             </Button>
             <Button
-              size="sm"
               variant="accent"
-              onClick={() => navigate('/portal/affiliate/links')}
-              rightIcon={<ArrowUpRight className="w-3.5 h-3.5" />}
-              className="text-xs"
+              size="sm"
+              onClick={handleCopyTopLink}
+              leftIcon={copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+              className="bg-blue-600 hover:bg-blue-500 text-white"
             >
-              All Unique Links
+              {copied ? 'Copied' : 'Copy Link'}
             </Button>
           </div>
         </div>
@@ -166,128 +205,227 @@ export const AffiliateDashboardPage: React.FC = () => {
       {/* 4 STAT CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Total Link Clicks"
-          value={<CountUp value={1420} />}
-          change={28.4}
+          title="Total Referral Clicks"
+          value={<CountUp value={5890} />}
+          change={18.2}
           changePeriod="vs last month"
           icon={<MousePointerClick className="w-5 h-5 text-blue-500" />}
           variant="royal"
-          caption="CTR average: 2.6%"
+          caption="Conversion rate: 4.8%"
         />
 
         <StatCard
-          title="Leads Submitted"
-          value="38 Leads"
+          title="Qualified Introductions"
+          value="42 Leads"
           change={14.0}
-          changePeriod="+8 new this month"
-          icon={<Users className="w-5 h-5 text-purple-500" />}
-          variant="default"
-          caption="Qualified referral pipeline"
-        />
-
-        <StatCard
-          title="Conversions (Funded)"
-          value="15 Deals"
-          change={20.0}
-          changePeriod="39.4% lead conversion"
-          icon={<TrendingUp className="w-5 h-5 text-emerald-500" />}
+          changePeriod="+6 new this cycle"
+          icon={<Users className="w-5 h-5 text-emerald-500" />}
           variant="emerald"
-          caption="Funded client facilities"
+          caption="18 in active underwriting"
         />
 
         <StatCard
-          title="Total Earnings"
-          value={<CountUp value={24500} prefix="$" />}
-          change={32.1}
-          changePeriod="Avg payout $1,633/deal"
-          icon={<DollarSign className="w-5 h-5 text-amber-500" />}
+          title="Funded Deal Volume"
+          value={<CountUp value={3850000} prefix="$" />}
+          change={28.5}
+          changePeriod="YTD funded client volume"
+          icon={<TrendingUp className="w-5 h-5 text-purple-500" />}
           variant="gold"
-          caption="Lifetime commission vault"
+          caption="12 closed transactions"
+        />
+
+        <StatCard
+          title="Total Commission Earned"
+          value={<CountUp value={48250} prefix="$" />}
+          change={22.4}
+          changePeriod="Disbursed on 1st & 15th"
+          icon={<DollarSign className="w-5 h-5 text-amber-500" />}
+          variant="default"
+          caption="Avg $3,800 payout per funded deal"
         />
       </div>
 
-      {/* PERFORMANCE CHART & TOP CONVERSIONS CARD */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Trailing Performance Area Chart */}
-        <Card variant="bento" className="lg:col-span-8 p-5 space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white">
-                Referral Clicks & Converted Volume Growth
-              </h3>
-              <p className="text-xs text-slate-500">Trailing 6-month audience traffic performance.</p>
-            </div>
-            <Badge variant="navy" size="sm">
-              6 Month Trailing
-            </Badge>
-          </div>
-
-          <div className="h-72 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="colorClicks" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#2563EB" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#2563EB" stopOpacity={0.0} />
-                  </linearGradient>
-                  <linearGradient id="colorVolume" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10B981" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#10B981" stopOpacity={0.0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
-                <XAxis dataKey="month" stroke="#94A3B8" fontSize={11} />
-                <YAxis stroke="#94A3B8" fontSize={11} />
-                <RechartsTooltip
-                  contentStyle={{
-                    backgroundColor: '#0D1E36',
-                    borderRadius: '10px',
-                    border: '1px solid #1E3A5F',
-                    color: '#fff',
-                    fontSize: '12px',
-                  }}
-                />
-                <Area type="monotone" dataKey="clicks" name="Link Clicks" stroke="#2563EB" strokeWidth={2} fill="url(#colorClicks)" />
-                <Area type="monotone" dataKey="volume" name="Funded Vol ($k)" stroke="#10B981" strokeWidth={2} fill="url(#colorVolume)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </Card>
-
-        {/* Quick Actions & Adaptive Partner Perks */}
-        <Card variant="default" className="lg:col-span-4 p-5 space-y-4 border border-slate-200 dark:border-slate-800">
-          <div className="flex items-center justify-between border-b pb-3 border-slate-100 dark:border-slate-800">
-            <h3 className="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
-              <Zap className="w-4 h-4 text-gold-500" />
-              <span>Partner Channel Perks</span>
+      {/* REFERRAL TRAFFIC AREA CHART */}
+      <Card variant="bento" className="p-5 space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white">
+              Referral Traffic & Funded Volume Growth ($k)
             </h3>
-            <Badge variant="gold" size="sm">
-              {partnerType}
-            </Badge>
+            <p className="text-xs text-slate-500">Trailing 6-month partner trajectory.</p>
+          </div>
+          <Badge variant="emerald" size="sm">
+            +$1.15M Oct Volume
+          </Badge>
+        </div>
+
+        <div className="h-72 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+              <defs>
+                <linearGradient id="colorVol" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
+              <XAxis dataKey="month" stroke="#94A3B8" fontSize={11} />
+              <YAxis stroke="#94A3B8" fontSize={11} tickFormatter={(val) => `$${val}k`} />
+              <RechartsTooltip
+                formatter={(val: any) => [`$${Number(val).toLocaleString()}k`, 'Funded Volume']}
+                contentStyle={{
+                  backgroundColor: '#0D1E36',
+                  borderRadius: '10px',
+                  border: '1px solid #1E3A5F',
+                  color: '#fff',
+                  fontSize: '12px',
+                }}
+              />
+              <Area
+                type="monotone"
+                dataKey="volume"
+                name="Volume"
+                stroke="#3B82F6"
+                strokeWidth={3}
+                fillOpacity={1}
+                fill="url(#colorVol)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </Card>
+
+      {/* ========================================================================= */}
+      {/* IN-PLACE MODAL 1: SUBMIT DIRECT LEAD */}
+      {/* ========================================================================= */}
+      <Modal
+        isOpen={submitLeadOpen}
+        onClose={() => setSubmitLeadOpen(false)}
+        title="Submit Direct Referral Lead"
+        description="Introduce a client directly to B4B senior commercial underwriting."
+        maxWidth="md"
+      >
+        <form onSubmit={handleSubmitLead} className="space-y-4 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <FormField label="Business Name" required>
+              <Input
+                placeholder="e.g. Metro Distribution LLC"
+                value={leadForm.businessName}
+                onChange={(e) => setLeadForm({ ...leadForm, businessName: e.target.value })}
+                required
+              />
+            </FormField>
+
+            <FormField label="Principal / Owner Name" required>
+              <Input
+                placeholder="e.g. Robert Smith"
+                value={leadForm.contactName}
+                onChange={(e) => setLeadForm({ ...leadForm, contactName: e.target.value })}
+                required
+              />
+            </FormField>
           </div>
 
-          <div className="space-y-3 text-xs">
-            <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl space-y-1">
-              <div className="font-bold text-slate-900 dark:text-white">Tier Commission Multiplier</div>
-              <div className="text-emerald-600 dark:text-emerald-400 font-bold">1.5% Base + Tier Multiplier</div>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <FormField label="Email Address" required>
+              <Input
+                type="email"
+                placeholder="rsmith@metrodist.com"
+                value={leadForm.email}
+                onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
+                required
+              />
+            </FormField>
 
-            <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl space-y-1">
-              <div className="font-bold text-slate-900 dark:text-white">Dedicated Partner Manager</div>
-              <div className="text-slate-600 dark:text-slate-400">Direct Slack & Phone Line for custom deals</div>
-            </div>
+            <FormField label="Direct Phone" required>
+              <Input
+                placeholder="+1 (555) 789-0123"
+                value={leadForm.phone}
+                onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })}
+                required
+              />
+            </FormField>
+          </div>
 
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navigate('/portal/affiliate/payouts')}
-              className="w-full text-xs"
-            >
-              View Commission Vault & Payouts
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <FormField label="Estimated Funding Volume ($)" required>
+              <Input
+                type="number"
+                value={leadForm.estimatedVolume}
+                onChange={(e) => setLeadForm({ ...leadForm, estimatedVolume: e.target.value })}
+                required
+              />
+            </FormField>
+
+            <FormField label="Solution In Demand">
+              <Select
+                value={leadForm.serviceNeeded}
+                onChange={(e) => setLeadForm({ ...leadForm, serviceNeeded: e.target.value })}
+                options={[
+                  { value: 'Revenue-Based Working Capital Line', label: 'Revenue-Based Working Capital Line' },
+                  { value: 'Commercial Equipment Financing', label: 'Commercial Equipment Financing' },
+                  { value: 'SBA 7(a) Guarantee Bridge', label: 'SBA 7(a) Guarantee Bridge' },
+                  { value: 'Fractional CFO Advisory Retainer', label: 'Fractional CFO Advisory Retainer' },
+                ]}
+              />
+            </FormField>
+          </div>
+
+          <FormField label="Introduction Notes">
+            <Input
+              placeholder="e.g. Spoke with CFO, looking for credit facility to purchase 3 new trucks..."
+              value={leadForm.notes}
+              onChange={(e) => setLeadForm({ ...leadForm, notes: e.target.value })}
+            />
+          </FormField>
+
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+            <Button variant="outline" size="sm" type="button" onClick={() => setSubmitLeadOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="accent" size="sm" type="submit" leftIcon={<Send className="w-3.5 h-3.5" />}>
+              Submit Referral
             </Button>
           </div>
-        </Card>
-      </div>
+        </form>
+      </Modal>
+
+      {/* ========================================================================= */}
+      {/* IN-PLACE MODAL 2: QR CODE */}
+      {/* ========================================================================= */}
+      <Modal
+        isOpen={qrModalOpen}
+        onClose={() => setQrModalOpen(false)}
+        title="High-Resolution QR Code"
+        description="Scan with mobile camera or download for digital cards, brochures, and presentations."
+        maxWidth="sm"
+      >
+        <div className="space-y-4 text-center">
+          <div className="p-6 rounded-2xl bg-white text-slate-900 inline-block shadow-lg mx-auto border-4 border-blue-600">
+            {/* SVG QR Code Simulation */}
+            <div className="w-48 h-48 bg-slate-950 p-2 rounded-lg flex items-center justify-center">
+              <QrCode className="w-40 h-40 text-white" />
+            </div>
+          </div>
+
+          <div className="text-xs text-slate-500 font-mono break-all px-4">
+            {topLink.url}
+          </div>
+
+          <Button
+            variant="accent"
+            size="sm"
+            onClick={() => {
+              setQrModalOpen(false)
+              toast({ title: 'QR Code Downloaded', description: 'Saved as B4B_Referral_QR.png', type: 'success' })
+            }}
+            leftIcon={<Download className="w-3.5 h-3.5" />}
+            className="w-full justify-center"
+          >
+            Download PNG (300 DPI)
+          </Button>
+        </div>
+      </Modal>
     </div>
   )
 }

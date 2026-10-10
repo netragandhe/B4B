@@ -45,6 +45,10 @@ export const BizProBulletinPage: React.FC = () => {
   const [activePostModal, setActivePostModal] = useState<BulletinPost | null>(null)
   const [openCommentsPostId, setOpenCommentsPostId] = useState<string | null>(null)
   const [newCommentText, setNewCommentText] = useState<string>('')
+  const [newPostModalOpen, setNewPostModalOpen] = useState(false)
+  const [newPostTitle, setNewPostTitle] = useState('')
+  const [newPostContent, setNewPostContent] = useState('')
+  const [newPostCategory, setNewPostCategory] = useState<BulletinPost['category']>('Company Announcement')
 
   const categories = [
     'All',
@@ -138,20 +142,12 @@ export const BizProBulletinPage: React.FC = () => {
         actions={
           <div className="flex items-center gap-2">
             <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navigate('/portal/bizpro/dashboard')}
-              leftIcon={<TrendingUp className="w-3.5 h-3.5 text-blue-500" />}
-            >
-              Sales Dashboard
-            </Button>
-            <Button
               variant="accent"
               size="sm"
-              onClick={() => navigate('/portal/bizpro/leads')}
-              leftIcon={<Target className="w-3.5 h-3.5" />}
+              onClick={() => setNewPostModalOpen(true)}
+              leftIcon={<Megaphone className="w-3.5 h-3.5" />}
             >
-              Leads CRM
+              Post to Network
             </Button>
           </div>
         }
@@ -621,6 +617,89 @@ export const BizProBulletinPage: React.FC = () => {
           </div>
         </Modal>
       )}
+
+      {/* IN-PLACE MODAL: CREATE BULLETIN POST */}
+      <Modal
+        isOpen={newPostModalOpen}
+        onClose={() => setNewPostModalOpen(false)}
+        title="Post to National B4B Bulletin"
+        description="Share a commercial win, strategy question, or announcement with the national network."
+        maxWidth="md"
+      >
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            if (!newPostTitle.trim() || !newPostContent.trim()) return
+            bulletinService.createPost({
+              title: newPostTitle.trim(),
+              summary: newPostContent.trim().slice(0, 150),
+              category: newPostCategory,
+              contentHtml: `<p>${newPostContent.trim()}</p>`,
+              authorName: user?.name || 'B4B Coach',
+              authorRole: user?.rankTitle || 'B4B Coach',
+              authorAvatar: user?.avatar,
+              pinned: false,
+            })
+            setNewPostModalOpen(false)
+            setNewPostTitle('')
+            setNewPostContent('')
+            toast({
+              title: 'Announcement Published',
+              description: 'Your post is now live on the National B4B Bulletin.',
+              type: 'success',
+            })
+          }}
+          className="space-y-4 text-xs text-left"
+        >
+          <div className="space-y-1">
+            <label className="font-bold text-slate-700 dark:text-slate-300">Announcement Title</label>
+            <input
+              type="text"
+              value={newPostTitle}
+              onChange={(e) => setNewPostTitle(e.target.value)}
+              placeholder="e.g. Q4 Midwest Transportation Facility Funded ($850k)"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+              required
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="font-bold text-slate-700 dark:text-slate-300">Category</label>
+            <select
+              value={newPostCategory}
+              onChange={(e) => setNewPostCategory(e.target.value as BulletinPost['category'])}
+              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+            >
+              <option value="Company Announcement">Company Announcement</option>
+              <option value="Commission Update">Commission Update</option>
+              <option value="Promotion">Promotion</option>
+              <option value="Training Event">Training Event</option>
+              <option value="System Alert">System Alert</option>
+            </select>
+          </div>
+
+          <div className="space-y-1">
+            <label className="font-bold text-slate-700 dark:text-slate-300">Message Content</label>
+            <textarea
+              value={newPostContent}
+              onChange={(e) => setNewPostContent(e.target.value)}
+              rows={4}
+              placeholder="Share the details, deal metrics, or key takeaways with the network..."
+              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+              required
+            />
+          </div>
+
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+            <Button variant="outline" size="sm" type="button" onClick={() => setNewPostModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="accent" size="sm" type="submit" leftIcon={<Send className="w-3.5 h-3.5" />}>
+              Publish Post
+            </Button>
+          </div>
+        </form>
+      </Modal>
     </div>
   )
 }

@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
   ShieldAlert,
   DollarSign,
@@ -22,6 +21,8 @@ import {
   UserCheck,
   Building2,
   Activity,
+  Send,
+  MapPin,
 } from 'lucide-react'
 import {
   ResponsiveContainer,
@@ -41,14 +42,20 @@ import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Avatar } from '@/components/ui/Avatar'
 import { CountUp } from '@/components/ui/CountUp'
+import { Modal } from '@/components/ui/Modal'
+import { Drawer } from '@/components/ui/Drawer'
+import { Input } from '@/components/ui/Input'
+import { Select } from '@/components/ui/Select'
+import { FormField } from '@/components/ui/FormField'
 import { useToast } from '@/components/ui/Toast'
 import { ADMIN_PENDING_APPROVALS, PendingApproval } from '@/mock-data/adminData'
 import { FED_REGIONS } from '@/mock-data/territoryScoreboardData'
 import { RANK_DISTRIBUTION_DATA, ADMIN_ACTIVITY_FEED } from '@/mock-data/adminFullData'
+import { BIZPRO_RANKS } from '@/mock-data/bizproData'
 import { exportToCsv, exportToPdf } from '@/lib/exportUtils'
+import { formatCurrency } from '@/lib/utils'
 
 export const AdminOverviewPage: React.FC = () => {
-  const navigate = useNavigate()
   const { toast } = useToast()
 
   const [approvals, setApprovals] = useState<PendingApproval[]>(ADMIN_PENDING_APPROVALS)
@@ -57,6 +64,20 @@ export const AdminOverviewPage: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 4
+
+  // In-Place Modals and Drawers States
+  const [inviteModalOpen, setInviteModalOpen] = useState(false)
+  const [rankRulesModalOpen, setRankRulesModalOpen] = useState(false)
+  const [territoryDrawerOpen, setTerritoryDrawerOpen] = useState(false)
+
+  // Invite Form State
+  const [inviteForm, setInviteForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    region: 'District 7 - Chicago',
+    initialRank: '1',
+  })
 
   // Regional revenue data
   const regionRevenueData = FED_REGIONS.map((r) => ({
@@ -80,6 +101,23 @@ export const AdminOverviewPage: React.FC = () => {
       title: 'Action Rejected',
       description: `${title} has been rejected from queue.`,
       type: 'info',
+    })
+  }
+
+  const handleSendInvite = (e: React.FormEvent) => {
+    e.preventDefault()
+    setInviteModalOpen(false)
+    toast({
+      title: 'Invitation Dispatched',
+      description: `Official onboarding invitation sent to ${inviteForm.email} for ${inviteForm.region}.`,
+      type: 'success',
+    })
+    setInviteForm({
+      name: '',
+      email: '',
+      phone: '',
+      region: 'District 7 - Chicago',
+      initialRank: '1',
     })
   }
 
@@ -139,11 +177,11 @@ export const AdminOverviewPage: React.FC = () => {
           </Badge>
         }
         actions={
-          <>
+          <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
-              onClick={() => navigate('/portal/admin/rank-rules')}
+              onClick={() => setRankRulesModalOpen(true)}
               leftIcon={<BarChart3 className="w-3.5 h-3.5" />}
             >
               Rank Rules Matrix
@@ -151,12 +189,12 @@ export const AdminOverviewPage: React.FC = () => {
             <Button
               variant="accent"
               size="sm"
-              onClick={() => navigate('/portal/admin/bizpro')}
+              onClick={() => setInviteModalOpen(true)}
               leftIcon={<Plus className="w-3.5 h-3.5" />}
             >
               Invite B4B Coach
             </Button>
-          </>
+          </div>
         }
       />
 
@@ -214,8 +252,8 @@ export const AdminOverviewPage: React.FC = () => {
               </h3>
               <p className="text-xs text-slate-500">Distribution across 12 Fed regions.</p>
             </div>
-            <Button variant="ghost" size="sm" onClick={() => navigate('/portal/territory')}>
-              Territory Map
+            <Button variant="ghost" size="sm" onClick={() => setTerritoryDrawerOpen(true)}>
+              View All Districts
             </Button>
           </div>
 
@@ -489,6 +527,171 @@ export const AdminOverviewPage: React.FC = () => {
           ))}
         </div>
       </Card>
+
+      {/* ========================================================================= */}
+      {/* IN-PLACE MODAL 1: INVITE B4B COACH */}
+      {/* ========================================================================= */}
+      <Modal
+        isOpen={inviteModalOpen}
+        onClose={() => setInviteModalOpen(false)}
+        title="Invite New B4B Coach to Platform"
+        description="Issue an onboarding invitation code and territory assignment to a new sales representative."
+        maxWidth="md"
+      >
+        <form onSubmit={handleSendInvite} className="space-y-4 text-xs">
+          <FormField label="Full Name" required>
+            <Input
+              placeholder="e.g. Jessica Williams"
+              value={inviteForm.name}
+              onChange={(e) => setInviteForm({ ...inviteForm, name: e.target.value })}
+              required
+            />
+          </FormField>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <FormField label="Corporate Email" required>
+              <Input
+                type="email"
+                placeholder="jessica@b4bfinancial.com"
+                value={inviteForm.email}
+                onChange={(e) => setInviteForm({ ...inviteForm, email: e.target.value })}
+                required
+              />
+            </FormField>
+
+            <FormField label="Mobile Phone">
+              <Input
+                placeholder="+1 (555) 234-5678"
+                value={inviteForm.phone}
+                onChange={(e) => setInviteForm({ ...inviteForm, phone: e.target.value })}
+              />
+            </FormField>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <FormField label="Federal Reserve District Assignment">
+              <Select
+                value={inviteForm.region}
+                onChange={(e) => setInviteForm({ ...inviteForm, region: e.target.value })}
+                options={FED_REGIONS.map((r) => ({ value: r.name, label: r.name }))}
+              />
+            </FormField>
+
+            <FormField label="Starting Rank Level">
+              <Select
+                value={inviteForm.initialRank}
+                onChange={(e) => setInviteForm({ ...inviteForm, initialRank: e.target.value })}
+                options={[
+                  { value: '1', label: 'Rank 1 - Associate Advisor' },
+                  { value: '2', label: 'Rank 2 - Senior Advisor' },
+                  { value: '3', label: 'Rank 3 - Managing Advisor' },
+                  { value: '4', label: 'Rank 4 - Regional Director' },
+                ]}
+              />
+            </FormField>
+          </div>
+
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+            <Button variant="outline" size="sm" type="button" onClick={() => setInviteModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="accent" size="sm" type="submit" leftIcon={<Send className="w-3.5 h-3.5" />}>
+              Send Invitation
+            </Button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* ========================================================================= */}
+      {/* IN-PLACE MODAL 2: RANK RULES MATRIX */}
+      {/* ========================================================================= */}
+      <Modal
+        isOpen={rankRulesModalOpen}
+        onClose={() => setRankRulesModalOpen(false)}
+        title="B4B Coach 9-Rank Compensation & Promotion Matrix"
+        description="Official client commission structure, monthly promotion rules, direct/group overrides, and perks."
+        maxWidth="xl"
+      >
+        <div className="space-y-4 max-h-[65vh] overflow-y-auto pr-1 text-xs">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {BIZPRO_RANKS.map((r) => (
+              <div
+                key={r.level}
+                className="p-3.5 rounded-xl border bg-slate-50 dark:bg-[#12294A] border-slate-200 dark:border-[#1E3A5F] space-y-2"
+              >
+                <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
+                  <Badge variant="navy" size="sm">
+                    Rank {r.level}
+                  </Badge>
+                  <span className="font-extrabold text-emerald-600 dark:text-emerald-400">
+                    {r.commissionTier}
+                  </span>
+                </div>
+
+                <h4 className="font-bold text-sm text-slate-900 dark:text-white">{r.title}</h4>
+                <p className="text-[11px] text-slate-500 font-medium">{r.promotionCriteria}</p>
+
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-1 text-[11px]">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Monthly Target:</span>
+                    <span className="font-bold text-slate-700 dark:text-slate-300">{r.monthlyCommissionRange}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Annual Potential:</span>
+                    <span className="font-bold text-slate-700 dark:text-slate-300">{r.yearlyIncomeRange}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Modal>
+
+      {/* ========================================================================= */}
+      {/* IN-PLACE DRAWER 1: 12 FED REGIONS BREAKDOWN */}
+      {/* ========================================================================= */}
+      <Drawer
+        isOpen={territoryDrawerOpen}
+        onClose={() => setTerritoryDrawerOpen(false)}
+        title="12 Federal Reserve Districts Volume"
+        size="lg"
+      >
+        <div className="space-y-3 text-xs text-left">
+          <p className="text-slate-500 text-xs">
+            Official district headquarters, assigned Vice Presidents, and funded volume for Q4.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[75vh] overflow-y-auto pr-1">
+            {FED_REGIONS.map((r) => (
+              <Card key={r.id} variant="bento" className="p-3.5 space-y-2 border border-slate-200 dark:border-[#1E3A5F]">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full" style={{ backgroundColor: r.color }} />
+                    <span className="font-bold text-slate-900 dark:text-white">{r.name}</span>
+                  </div>
+                  <span className="font-extrabold text-emerald-600 dark:text-emerald-400">
+                    {formatCurrency(r.volume)}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2 pt-1 border-t border-slate-100 dark:border-slate-800">
+                  <Avatar src={r.assignedVPAvatar} name={r.assignedVP} size="sm" />
+                  <div className="min-w-0">
+                    <p className="font-bold text-[11px] text-slate-900 dark:text-white truncate">VP: {r.assignedVP}</p>
+                    <p className="text-[10px] text-slate-400 truncate">HQ: {r.headOffice}</p>
+                  </div>
+                </div>
+
+                {r.branchCities.length > 0 && (
+                  <p className="text-[10px] text-slate-500">
+                    Branches: {r.branchCities.join(', ')}
+                  </p>
+                )}
+              </Card>
+            ))}
+          </div>
+        </div>
+      </Drawer>
     </div>
   )
 }
