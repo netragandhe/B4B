@@ -230,31 +230,31 @@ export const BizProCommissionsPage: React.FC = () => {
       </div>
 
       {/* PAYOUT HISTORY BAR CHART */}
-      <Card variant="bento" className="p-6">
-        <div className="flex items-center justify-between mb-4">
+      <Card variant="default" className="p-5 sm:p-6 bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
           <div>
-            <h3 className="text-base font-bold font-heading text-white">
+            <h3 className="text-base sm:text-lg font-bold font-heading text-slate-900 dark:text-white">
               Monthly Payout History (Direct vs Overrides)
             </h3>
-            <p className="text-xs text-slate-400">Trailing 6-month earnings breakdown.</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Trailing 6-month historical commission settlement performance.</p>
           </div>
-          <Badge variant="gold" size="sm">
+          <Badge variant="gold" size="md">
             Total Oct: $14,250
           </Badge>
         </div>
 
-        <div className="h-72 w-full">
+        <div className="h-64 sm:h-72 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={payoutHistory} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" opacity={0.15} stroke="#334155" />
-              <XAxis dataKey="month" stroke="#94A3B8" fontSize={11} />
-              <YAxis stroke="#94A3B8" fontSize={11} tickFormatter={(val) => `$${val / 1000}k`} />
+              <CartesianGrid strokeDasharray="3 3" opacity={0.15} stroke="#94A3B8" />
+              <XAxis dataKey="month" stroke="#64748B" fontSize={11} />
+              <YAxis stroke="#64748B" fontSize={11} tickFormatter={(val) => `$${val / 1000}k`} />
               <RechartsTooltip
                 formatter={(val: any) => [`$${Number(val).toLocaleString()}`, '']}
                 contentStyle={{
-                  backgroundColor: '#0D1E36',
+                  backgroundColor: '#0F172A',
                   borderRadius: '10px',
-                  border: '1px solid #1E3A5F',
+                  border: '1px solid #334155',
                   color: '#fff',
                   fontSize: '12px',
                 }}
@@ -267,41 +267,46 @@ export const BizProCommissionsPage: React.FC = () => {
       </Card>
 
       {/* COMMISSION LEDGER TABLE */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-bold font-heading text-white">
-          Detailed Commission Transaction Ledger
-        </h3>
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-base sm:text-lg font-bold font-heading text-slate-900 dark:text-white">
+            Detailed Commission Transaction Ledger
+          </h3>
+          <span className="text-xs text-slate-500 dark:text-slate-400">
+            {commissionLedger.length} Verified Transactions
+          </span>
+        </div>
 
-        <Card variant="default" className="divide-y divide-slate-800 overflow-hidden">
+        <Card variant="default" className="bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-900/80 text-slate-400 font-semibold border-b border-slate-800">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead className="bg-slate-50 dark:bg-slate-900/90 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-800 uppercase tracking-wider text-[11px]">
                 <tr>
                   <th className="py-3 px-4">Transaction ID</th>
-                  <th className="py-3 px-4">Date</th>
-                  <th className="py-3 px-4">Client Company</th>
-                  <th className="py-3 px-4">Solution Facility</th>
+                  <th className="py-3 px-4 min-w-[100px]">Date</th>
+                  <th className="py-3 px-4 min-w-[160px]">Client Company</th>
+                  <th className="py-3 px-4 min-w-[200px]">Solution Facility</th>
                   <th className="py-3 px-4">Deal Volume</th>
                   <th className="py-3 px-4">Rate</th>
                   <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4 text-right">Commission Earned</th>
+                  <th className="py-3 px-4 text-right min-w-[130px]">Commission Earned</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80 bg-white dark:bg-[#12294A]">
                 {commissionLedger.map((tx) => (
-                  <tr key={tx.id} className="hover:bg-slate-900/40 transition-colors">
-                    <td className="py-3.5 px-4 font-mono font-bold text-blue-400">{tx.id}</td>
-                    <td className="py-3.5 px-4 text-slate-300">{tx.date}</td>
-                    <td className="py-3.5 px-4 font-bold text-white">{tx.client}</td>
-                    <td className="py-3.5 px-4 text-slate-300">{tx.service}</td>
-                    <td className="py-3.5 px-4 font-bold text-white">{formatCurrency(tx.dealValue)}</td>
-                    <td className="py-3.5 px-4 text-blue-300 font-semibold">{tx.rate}</td>
+                  <tr key={tx.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+                    <td className="py-3.5 px-4 font-mono font-bold text-blue-600 dark:text-blue-400">{tx.id}</td>
+                    <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 whitespace-nowrap">{tx.date}</td>
+                    <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white">{tx.client}</td>
+                    <td className="py-3.5 px-4 text-slate-700 dark:text-slate-300 font-medium">{tx.service}</td>
+                    <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white whitespace-nowrap">{formatCurrency(tx.dealValue)}</td>
+                    <td className="py-3.5 px-4 text-blue-600 dark:text-blue-300 font-semibold">{tx.rate}</td>
                     <td className="py-3.5 px-4">
                       <Badge variant={tx.status === 'Paid' ? 'emerald' : 'amber'} size="sm">
                         {tx.status}
                       </Badge>
                     </td>
-                    <td className="py-3.5 px-4 text-right font-extrabold text-emerald-400 text-sm">
+                    <td className="py-3.5 px-4 text-right font-black text-emerald-600 dark:text-emerald-400 text-sm whitespace-nowrap">
                       {formatCurrency(tx.commissionAmount)}
                     </td>
                   </tr>
