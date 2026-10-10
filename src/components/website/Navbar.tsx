@@ -38,6 +38,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCoachModal }) => {
     { name: '16 Solutions', href: '/solutions', badge: '16' },
     { name: 'Advisory & CFO', href: '/advisory' },
     { name: 'B4BAPP Software', href: '/#software' },
+    { name: 'Job Finder', href: '/jobs', badge: 'Hiring' },
+    { name: 'Affiliates', href: '/affiliates' },
     { name: 'Apply For Capital', href: '/apply' },
     { name: 'Contact', href: '/contact' },
   ]
