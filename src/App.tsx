@@ -455,6 +455,28 @@ export default function App() {
                       }
                     />
 
+                    {/* Shared Messages / Communication Inbox */}
+                    <Route
+                      path="/portal/messages"
+                      element={
+                        <PortalLayout>
+                          <RoleGuard allowedRoles={['Client', 'Admin', 'Biz Pro', 'Employer', 'Affiliate', 'Job Seeker']}>
+                            <BizProCommunicationPage />
+                          </RoleGuard>
+                        </PortalLayout>
+                      }
+                    />
+                    <Route
+                      path="/portal/communication"
+                      element={
+                        <PortalLayout>
+                          <RoleGuard allowedRoles={['Client', 'Admin', 'Biz Pro', 'Employer', 'Affiliate', 'Job Seeker']}>
+                            <BizProCommunicationPage />
+                          </RoleGuard>
+                        </PortalLayout>
+                      }
+                    />
+
                     {/* Territory */}
                     <Route
                       path="/portal/territory"

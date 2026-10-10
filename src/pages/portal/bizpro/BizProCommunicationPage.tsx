@@ -125,8 +125,8 @@ export const BizProCommunicationPage: React.FC = () => {
                     onClick={() => setSelectedThreadId(th.id)}
                     className={`p-3 rounded-xl cursor-pointer transition-all border ${
                       isSelected
-                        ? 'bg-blue-50/90 dark:bg-[#12294A] border-blue-500 shadow-xs'
-                        : 'bg-white dark:bg-[#0D1E36] border-slate-200 dark:border-[#1E3A5F] hover:border-slate-300'
+                        ? 'bg-blue-50/90 dark:bg-blue-950/40 border-blue-500 dark:border-blue-500 shadow-xs ring-1 ring-blue-500/20'
+                        : 'bg-white dark:bg-[#0D1E36] border-slate-200 dark:border-[#1E3A5F] hover:border-slate-300 dark:hover:border-slate-600'
                     }`}
                   >
                     <div className="flex items-center justify-between text-xs mb-1">
@@ -134,10 +134,10 @@ export const BizProCommunicationPage: React.FC = () => {
                         <Avatar src={th.avatar} name={th.sender} size="xs" />
                         <span className="font-bold text-slate-900 dark:text-white truncate">{th.sender}</span>
                       </div>
-                      <span className="text-[10px] text-slate-400">{th.time}</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400">{th.time}</span>
                     </div>
                     <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">{th.subject}</p>
-                    <p className="text-[11px] text-slate-500 truncate mt-0.5">{th.preview}</p>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 truncate mt-0.5">{th.preview}</p>
                   </div>
                 )
               })}
@@ -145,31 +145,31 @@ export const BizProCommunicationPage: React.FC = () => {
         </Card>
 
         {/* RIGHT THREAD VIEW & REPLY BOX */}
-        <Card variant="bento" className="lg:col-span-7 p-5 flex flex-col justify-between min-h-[500px]">
+        <Card variant="bento" className="lg:col-span-7 p-5 flex flex-col justify-between min-h-[500px] bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F]">
           {activeThread ? (
             <div className="space-y-4 flex-1 flex flex-col justify-between">
               {/* Thread Header */}
-              <div className="pb-3 border-b border-slate-100 dark:border-[#1E3A5F] flex items-center justify-between">
+              <div className="pb-3 border-b border-slate-200 dark:border-[#1E3A5F] flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Avatar src={activeThread.avatar} name={activeThread.sender} size="md" />
                   <div>
                     <h3 className="text-sm font-bold text-slate-900 dark:text-white">{activeThread.sender}</h3>
-                    <p className="text-[11px] text-slate-500">{activeThread.company} • Via {activeThread.channel}</p>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400">{activeThread.company} • Via {activeThread.channel}</p>
                   </div>
                 </div>
-                <span className="text-xs text-slate-400">{activeThread.time}</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">{activeThread.time}</span>
               </div>
 
               {/* Message Content */}
               <div className="space-y-3 flex-1 overflow-y-auto">
-                <div className="p-4 rounded-2xl bg-slate-100/80 dark:bg-[#12294A] text-xs text-slate-800 dark:text-slate-200 space-y-2 max-w-lg">
-                  <p className="font-bold">{activeThread.subject}</p>
-                  <p className="leading-relaxed">{activeThread.preview}</p>
+                <div className="p-4 rounded-2xl bg-slate-100/90 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 text-xs text-slate-800 dark:text-slate-200 space-y-2 max-w-lg shadow-xs">
+                  <p className="font-bold text-slate-900 dark:text-white">{activeThread.subject}</p>
+                  <p className="leading-relaxed text-slate-700 dark:text-slate-300">{activeThread.preview}</p>
                 </div>
               </div>
 
               {/* Reply Form */}
-              <form onSubmit={handleSendReply} className="pt-3 border-t border-slate-100 dark:border-[#1E3A5F] space-y-3">
+              <form onSubmit={handleSendReply} className="pt-3 border-t border-slate-200 dark:border-[#1E3A5F] space-y-3">
                 <Textarea
                   placeholder={`Reply via ${activeThread.channel}...`}
                   value={replyText}
