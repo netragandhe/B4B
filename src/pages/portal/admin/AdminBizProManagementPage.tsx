@@ -161,7 +161,7 @@ export const AdminBizProManagementPage: React.FC = () => {
                   <Badge variant="gold" size="sm">
                     {rep.rank} (Rank {rep.rankLevel})
                   </Badge>
-                  <Badge variant={rep.status === 'Active' ? 'emerald' : 'amber'} size="sm">
+                  <Badge variant={rep.status === 'Active' ? 'emerald' : 'amber'} size="sm" dot>
                     {rep.status}
                   </Badge>
                 </div>

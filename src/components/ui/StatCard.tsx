@@ -12,6 +12,7 @@ export interface StatCardProps {
   variant?: 'default' | 'royal' | 'emerald' | 'gold'
   className?: string
   caption?: string
+  size?: 'default' | 'sm'
 }
 
 export const StatCard: React.FC<StatCardProps> = ({
@@ -23,6 +24,7 @@ export const StatCard: React.FC<StatCardProps> = ({
   variant = 'default',
   className,
   caption,
+  size = 'default',
 }) => {
   const isPositive = typeof change === 'number' && change > 0
   const isNegative = typeof change === 'number' && change < 0
@@ -30,9 +32,9 @@ export const StatCard: React.FC<StatCardProps> = ({
 
   const variantStyles = {
     default: 'hover:border-slate-300 dark:hover:border-slate-600',
-    royal: 'border-l-4 border-l-blue-600 dark:border-l-blue-500',
-    emerald: 'border-l-4 border-l-emerald-500',
-    gold: 'border-l-4 border-l-amber-500',
+    royal: 'border-l-[3px] border-l-blue-600 dark:border-l-blue-500',
+    emerald: 'border-l-[3px] border-l-emerald-500',
+    gold: 'border-l-[3px] border-l-amber-500',
   }
 
   const iconBgStyles = {
@@ -42,51 +44,78 @@ export const StatCard: React.FC<StatCardProps> = ({
     gold: 'bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400',
   }
 
+  const isSmall = size === 'sm'
+
   return (
     <Card
       variant="default"
       className={cn(
-        'p-5 flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md',
+        'flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md',
+        isSmall ? 'p-2.5 sm:p-3' : 'p-3 sm:p-3.5',
         variantStyles[variant],
         className
       )}
     >
-      <div className="flex items-center justify-between gap-3">
-        <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+      <div className="flex items-center justify-between gap-1.5">
+        <span
+          className={cn(
+            'font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate',
+            isSmall ? 'text-[9.5px]' : 'text-[10px] sm:text-[11px]'
+          )}
+        >
           {title}
         </span>
         {icon && (
-          <div className={cn('w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-xs', iconBgStyles[variant])}>
+          <div
+            className={cn(
+              'rounded-md flex items-center justify-center shrink-0 shadow-xs [&>svg]:w-3.5 [&>svg]:h-3.5',
+              isSmall ? 'w-6 h-6' : 'w-6.5 h-6.5 sm:w-7 sm:h-7',
+              iconBgStyles[variant]
+            )}
+          >
             {icon}
           </div>
         )}
       </div>
 
-      <div className="mt-3">
-        <div className="text-2xl sm:text-3xl font-extrabold font-heading tracking-tight text-slate-900 dark:text-slate-50">
+      <div className={cn(isSmall ? 'mt-1' : 'mt-1.5')}>
+        <div
+          className={cn(
+            'font-bold font-heading tracking-tight text-slate-900 dark:text-slate-50 truncate leading-tight',
+            isSmall ? 'text-base sm:text-lg' : 'text-lg sm:text-xl'
+          )}
+        >
           {value}
         </div>
 
         {caption && (
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{caption}</p>
+          <p
+            className={cn(
+              'text-slate-500 dark:text-slate-400 truncate',
+              isSmall ? 'text-[9.5px] mt-0.5' : 'text-[10.5px] mt-0.5'
+            )}
+          >
+            {caption}
+          </p>
         )}
 
         {typeof change === 'number' && (
-          <div className="flex items-center gap-1.5 mt-2.5 text-xs">
+          <div className={cn('flex items-center gap-1.5', isSmall ? 'mt-1 text-[10px]' : 'mt-1.5 text-[10.5px]')}>
             <span
               className={cn(
-                'inline-flex items-center px-1.5 py-0.5 rounded-full font-medium text-[11px]',
+                'inline-flex items-center px-1.5 py-0.5 rounded-full font-medium shrink-0',
+                isSmall ? 'text-[9.5px]' : 'text-[10px]',
                 isPositive && 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400',
                 isNegative && 'bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400',
                 isNeutral && 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
               )}
             >
-              {isPositive && <ArrowUpRight className="w-3 h-3 mr-0.5" />}
-              {isNegative && <ArrowDownRight className="w-3 h-3 mr-0.5" />}
-              {isNeutral && <Minus className="w-3 h-3 mr-0.5" />}
+              {isPositive && <ArrowUpRight className="w-2.5 h-2.5 mr-0.5" />}
+              {isNegative && <ArrowDownRight className="w-2.5 h-2.5 mr-0.5" />}
+              {isNeutral && <Minus className="w-2.5 h-2.5 mr-0.5" />}
               {isPositive ? `+${change}%` : `${change}%`}
             </span>
-            <span className="text-slate-400 dark:text-slate-500 text-[11px] truncate">
+            <span className={cn('text-slate-400 dark:text-slate-500 truncate', isSmall ? 'text-[9.5px]' : 'text-[10px]')}>
               {changePeriod}
             </span>
           </div>

@@ -199,43 +199,47 @@ export const AdminOverviewPage: React.FC = () => {
       />
 
       {/* 4 COMPANY-WIDE KPI STAT CARDS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <StatCard
+          size="sm"
           title="Total Network Volume"
           value={<CountUp value={14800000} prefix="$" />}
           change={24.5}
           changePeriod="vs last year"
-          icon={<DollarSign className="w-5 h-5" />}
+          icon={<DollarSign className="w-3.5 h-3.5" />}
           variant="royal"
           caption="12 Federal Reserve Districts"
         />
 
         <StatCard
+          size="sm"
           title="Active B4B Coaches"
           value="148 Reps"
           change={12.0}
           changePeriod="+6 new this month"
-          icon={<Users className="w-5 h-5" />}
+          icon={<Users className="w-3.5 h-3.5" />}
           variant="emerald"
           caption="National sales force active"
         />
 
         <StatCard
+          size="sm"
           title="New Signups (30d)"
           value="32 Accounts"
           change={18.4}
           changePeriod="24 B4B Coaches • 8 Employers"
-          icon={<UserCheck className="w-5 h-5 text-emerald-500" />}
+          icon={<UserCheck className="w-3.5 h-3.5 text-emerald-500" />}
           variant="gold"
           caption="Pending onboarding verification"
         />
 
         <StatCard
+          size="sm"
           title="Pending Approvals"
           value={`${approvals.length} Queue`}
           change={-4.0}
           changePeriod="Velocity: Fast"
-          icon={<Clock className="w-5 h-5 text-amber-500" />}
+          icon={<Clock className="w-3.5 h-3.5 text-amber-500" />}
           variant="default"
           caption="Requires Super Admin action"
         />
