@@ -244,7 +244,7 @@ export const LoginPage: React.FC = () => {
       <SEOHead title="Portal Sign In | B4B Executive Platform" description="Sign in to your B4B client, B4B Coach, or corporate portal account." />
 
       {/* LEFT SIDE PANEL: CLEAN, NATURAL CORPORATE BUSINESS VISUAL */}
-      <div className="hidden lg:flex flex-col justify-between p-12 lg:p-14 relative overflow-hidden bg-slate-900 text-white">
+      <div className="hidden lg:flex flex-col justify-between p-12 lg:p-14 relative overflow-hidden bg-[#06201A] text-white">
         {/* High-Resolution Modern American Business & Financial District Architecture */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105 transition-transform duration-1000"
@@ -252,19 +252,19 @@ export const LoginPage: React.FC = () => {
             backgroundImage: `url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=85')`,
           }}
         />
-        {/* Clean Neutral Dark Glass Gradient Overlay (No heavy blue tint) */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/60 to-slate-900/40 backdrop-blur-[2px]" />
+        {/* Clean Neutral Dark Glass Gradient Overlay (Emerald & Deep Forest tint matching landing page) */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#06201A]/95 via-[#06201A]/75 to-[#0B4A3A]/40 backdrop-blur-[1px]" />
 
         {/* 1. TOP HEADER: CLEAN LOGO BADGE */}
         <div className="relative z-10 flex items-center justify-between">
           <Link
             to="/"
-            className="inline-flex items-center px-4 py-2 rounded-xl bg-white/95 backdrop-blur-md shadow-lg hover:bg-white transition-all duration-200"
+            className="inline-flex items-center px-4 py-2 rounded-xl bg-[#EEF1EC] backdrop-blur-md shadow-lg border border-[#EEF1EC]/40 hover:scale-[1.02] transition-all"
           >
             <BrandLogo size="md" />
           </Link>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/70 border border-white/20 text-slate-200 text-xs font-semibold backdrop-blur-md shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0B4A3A]/80 border border-[#0E7A5A]/30 text-[#EEF1EC] text-xs font-semibold backdrop-blur-md shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-[#0E7A5A] animate-pulse" />
             <span>Official Portal</span>
           </div>
         </div>
@@ -272,8 +272,8 @@ export const LoginPage: React.FC = () => {
         {/* 2. CENTER: CLEAN & SPACIOUS BRAND CONTENT */}
         <div className="relative z-10 max-w-lg space-y-6 my-auto">
           <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-xs font-semibold text-amber-300 backdrop-blur-md">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0B4A3A]/80 border border-[#C8793A]/40 text-xs font-semibold text-[#C8793A] backdrop-blur-md">
+              <Sparkles className="w-3.5 h-3.5 text-[#C8793A]" />
               <span>Capital • Treasury • Growth</span>
             </div>
 
@@ -281,32 +281,32 @@ export const LoginPage: React.FC = () => {
               Empowering Main Street Businesses Across America
             </h2>
 
-            <p className="text-sm text-slate-200 leading-relaxed font-normal drop-shadow-sm">
+            <p className="text-sm text-[#B9CBC3] leading-relaxed font-normal">
               Institutional capital facilities, revenue-based financing, 13-week CFO treasury modeling, and nationwide B2B executive sales networks.
             </p>
           </div>
 
           {/* Minimal Key Highlights Row */}
           <div className="grid grid-cols-3 gap-3 pt-2">
-            <div className="p-3.5 rounded-xl bg-slate-900/60 backdrop-blur-md border border-white/15">
+            <div className="p-3.5 rounded-xl bg-[#0B4A3A]/40 backdrop-blur-md border border-[#0B4A3A]">
               <div className="text-base font-black text-white">$14.8M+</div>
-              <div className="text-[11px] text-slate-300">Funded Facilities</div>
+              <div className="text-[11px] text-[#B9CBC3]">Funded Facilities</div>
             </div>
-            <div className="p-3.5 rounded-xl bg-slate-900/60 backdrop-blur-md border border-white/15">
+            <div className="p-3.5 rounded-xl bg-[#0B4A3A]/40 backdrop-blur-md border border-[#0B4A3A]">
               <div className="text-base font-black text-white">12 Districts</div>
-              <div className="text-[11px] text-slate-300">Federal Reserve</div>
+              <div className="text-[11px] text-[#B9CBC3]">Federal Reserve</div>
             </div>
-            <div className="p-3.5 rounded-xl bg-slate-900/60 backdrop-blur-md border border-white/15">
-              <div className="text-base font-black text-emerald-400">100% US</div>
-              <div className="text-[11px] text-slate-300">Coverage</div>
+            <div className="p-3.5 rounded-xl bg-[#0B4A3A]/40 backdrop-blur-md border border-[#0B4A3A]">
+              <div className="text-base font-black text-[#0E7A5A]">100% US</div>
+              <div className="text-[11px] text-[#B9CBC3]">Coverage</div>
             </div>
           </div>
         </div>
 
         {/* 3. FOOTER */}
-        <div className="relative z-10 flex items-center justify-between text-xs text-slate-300 border-t border-white/15 pt-4">
+        <div className="relative z-10 flex items-center justify-between text-xs text-[#B9CBC3] border-t border-[#0B4A3A] pt-4">
           <div className="flex items-center gap-2">
-            <Shield className="w-4 h-4 text-emerald-400" />
+            <Shield className="w-4 h-4 text-[#0E7A5A]" />
             <span>256-bit TLS Encrypted • SOC2 Certified</span>
           </div>
           <span>© {new Date().getFullYear()} B4B America</span>
@@ -321,9 +321,9 @@ export const LoginPage: React.FC = () => {
           <div className="flex items-center justify-between gap-4 pb-1">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 text-xs font-extrabold transition-all border border-slate-200 shadow-xs group"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#EEF1EC] hover:bg-slate-200 text-[#06201A] text-xs font-extrabold transition-all border border-slate-300 shadow-xs group"
             >
-              <ArrowLeft className="w-4 h-4 text-slate-500 group-hover:-translate-x-0.5 transition-transform" />
+              <ArrowLeft className="w-4 h-4 text-[#0E7A5A] group-hover:-translate-x-0.5 transition-transform" />
               <span>Back to Website</span>
             </Link>
 
@@ -356,21 +356,21 @@ export const LoginPage: React.FC = () => {
               <div className="p-4 rounded-2xl bg-slate-50/90 border border-slate-200 space-y-3">
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-bold text-slate-800 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Demo Quick Role Login:
+                    <Sparkles className="w-3.5 h-3.5 text-[#C8793A]" /> Demo Quick Role Login:
                   </span>
-                  <span className="text-[10px] font-bold text-blue-700 bg-blue-100/80 px-2 py-0.5 rounded-full border border-blue-200">
+                  <span className="text-[10px] font-bold text-[#0E7A5A] bg-[#0E7A5A]/10 px-2 py-0.5 rounded-full border border-[#0E7A5A]/25">
                     1-Click Instant Preview
                   </span>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                   {[
-                    { role: 'Admin' as UserRole, label: 'Super Admin', desc: 'Full System Overview', icon: ShieldCheck, color: 'text-purple-600 bg-purple-50 border-purple-200' },
-                    { role: 'Biz Pro' as UserRole, label: 'B4B Coach', desc: 'CRM & Scoreboard', icon: Megaphone, color: 'text-blue-600 bg-blue-50 border-blue-200' },
-                    { role: 'Client' as UserRole, label: 'SME Client', desc: 'Capital & eBOX', icon: Building2, color: 'text-emerald-600 bg-emerald-50 border-emerald-200' },
-                    { role: 'Affiliate' as UserRole, label: 'Affiliate Partner', desc: 'Referral Pipeline', icon: Share2, color: 'text-amber-600 bg-amber-50 border-amber-200' },
-                    { role: 'Employer' as UserRole, label: 'Employer Portal', desc: 'Job Postings & Hiring', icon: Briefcase, color: 'text-indigo-600 bg-indigo-50 border-indigo-200' },
-                    { role: 'Job Seeker' as UserRole, label: 'Job Seeker', desc: 'Applications & Resume', icon: UserCheck, color: 'text-teal-600 bg-teal-50 border-teal-200' },
+                    { role: 'Admin' as UserRole, label: 'Super Admin', desc: 'Full System Overview', icon: ShieldCheck, color: 'text-[#0E7A5A] bg-[#0E7A5A]/10 border-[#0E7A5A]/30' },
+                    { role: 'Biz Pro' as UserRole, label: 'B4B Coach', desc: 'CRM & Scoreboard', icon: Megaphone, color: 'text-[#C8793A] bg-[#C8793A]/10 border-[#C8793A]/30' },
+                    { role: 'Client' as UserRole, label: 'SME Client', desc: 'Capital & eBOX', icon: Building2, color: 'text-[#0E7A5A] bg-[#0E7A5A]/10 border-[#0E7A5A]/30' },
+                    { role: 'Affiliate' as UserRole, label: 'Affiliate Partner', desc: 'Referral Pipeline', icon: Share2, color: 'text-[#C8793A] bg-[#C8793A]/10 border-[#C8793A]/30' },
+                    { role: 'Employer' as UserRole, label: 'Employer Portal', desc: 'Job Postings & Hiring', icon: Briefcase, color: 'text-[#0E7A5A] bg-[#0E7A5A]/10 border-[#0E7A5A]/30' },
+                    { role: 'Job Seeker' as UserRole, label: 'Job Seeker', desc: 'Applications & Resume', icon: UserCheck, color: 'text-[#0E7A5A] bg-[#0E7A5A]/10 border-[#0E7A5A]/30' },
                   ].map((item) => {
                     const Icon = item.icon
                     return (
@@ -378,13 +378,13 @@ export const LoginPage: React.FC = () => {
                         key={item.role}
                         type="button"
                         onClick={() => handleDemoQuickLogin(item.role)}
-                        className="p-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 hover:border-blue-400 text-left transition-all duration-150 shadow-xs hover:shadow-md flex flex-col justify-between group cursor-pointer"
+                        className="p-2.5 rounded-xl bg-white hover:bg-[#EEF1EC]/60 border border-slate-200 hover:border-[#0E7A5A] text-left transition-all duration-150 shadow-xs hover:shadow-md flex flex-col justify-between group cursor-pointer"
                       >
                         <div className="flex items-center gap-2">
                           <span className={`p-1.5 rounded-lg border ${item.color} group-hover:scale-110 transition-transform shrink-0`}>
                             <Icon className="w-3.5 h-3.5" />
                           </span>
-                          <span className="text-xs font-extrabold text-slate-900 group-hover:text-blue-700 leading-tight">
+                          <span className="text-xs font-extrabold text-slate-900 group-hover:text-[#0E7A5A] leading-tight">
                             {item.label}
                           </span>
                         </div>
@@ -413,7 +413,7 @@ export const LoginPage: React.FC = () => {
                     <Input
                       type="email"
                       placeholder="name@company.com"
-                      className="pl-9 text-xs border-slate-300 focus:border-[#0A3D9C]"
+                      className="pl-9 text-xs border-slate-300 focus:border-[#0E7A5A] focus:ring-1 focus:ring-[#0E7A5A]"
                       {...register('email')}
                     />
                   </div>
@@ -425,7 +425,7 @@ export const LoginPage: React.FC = () => {
                     <Input
                       type={showPassword ? 'text' : 'password'}
                       placeholder="••••••••"
-                      className="pl-9 pr-10 text-xs border-slate-300 focus:border-[#0A3D9C]"
+                      className="pl-9 pr-10 text-xs border-slate-300 focus:border-[#0E7A5A] focus:ring-1 focus:ring-[#0E7A5A]"
                       {...register('password')}
                     />
                     <button
@@ -443,12 +443,12 @@ export const LoginPage: React.FC = () => {
                     <input
                       type="checkbox"
                       {...register('rememberMe')}
-                      className="w-4 h-4 accent-[#0A3D9C] rounded"
+                      className="w-4 h-4 accent-[#0E7A5A] rounded"
                     />
                     <span>Remember me</span>
                   </label>
 
-                  <Link to="/portal/forgot-password" className="text-[#0A3D9C] hover:underline font-bold">
+                  <Link to="/portal/forgot-password" className="text-[#0E7A5A] hover:underline font-bold">
                     Forgot password?
                   </Link>
                 </div>
@@ -460,7 +460,7 @@ export const LoginPage: React.FC = () => {
                   pill
                   isLoading={isSubmitting}
                   rightIcon={<ArrowRight className="w-4 h-4" />}
-                  className="w-full font-bold bg-[#0A3D9C] hover:bg-[#072B6E] text-white shadow-lg mt-2"
+                  className="w-full font-bold bg-[#0E7A5A] hover:bg-[#0B4A3A] text-white shadow-lg shadow-[#0E7A5A]/25 mt-2"
                 >
                   Sign In to Dashboard
                 </Button>
@@ -468,7 +468,7 @@ export const LoginPage: React.FC = () => {
 
               <div className="text-center text-xs text-slate-500 pt-4 border-t border-slate-100">
                 Don't have an account yet?{' '}
-                <Link to="/portal/signup" className="text-[#0A3D9C] font-bold hover:underline">
+                <Link to="/portal/signup" className="text-[#0E7A5A] font-bold hover:underline">
                   Create New Account
                 </Link>
               </div>
@@ -483,7 +483,7 @@ export const LoginPage: React.FC = () => {
               onSubmit={handleOtpSubmit}
               className="space-y-6"
             >
-              <div className="p-3 rounded-full bg-blue-50 text-blue-600 w-fit">
+              <div className="p-3 rounded-full bg-[#0E7A5A]/10 text-[#0E7A5A] w-fit">
                 <KeyRound className="w-6 h-6" />
               </div>
 
@@ -514,7 +514,7 @@ export const LoginPage: React.FC = () => {
                     value={digit}
                     onChange={(e) => handleOtpChange(idx, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(idx, e)}
-                    className="w-12 h-14 rounded-xl bg-slate-50 border border-slate-300 focus:border-[#0A3D9C] text-center font-mono font-bold text-xl text-slate-900 focus:outline-none"
+                    className="w-12 h-14 rounded-xl bg-slate-50 border border-slate-300 focus:border-[#0E7A5A] text-center font-mono font-bold text-xl text-slate-900 focus:outline-none"
                   />
                 ))}
               </div>
@@ -529,7 +529,7 @@ export const LoginPage: React.FC = () => {
                     toast({ title: 'Verification Code Resent', description: 'Demo code: 123456', type: 'info' })
                   }}
                   className={`flex items-center gap-1 font-semibold ${
-                    isResendDisabled ? 'text-slate-400 cursor-not-allowed' : 'text-[#0A3D9C] hover:underline'
+                    isResendDisabled ? 'text-slate-400 cursor-not-allowed' : 'text-[#0E7A5A] hover:underline'
                   }`}
                 >
                   <RefreshCw className="w-3.5 h-3.5" /> Resend Code {resendTimer > 0 ? `(${resendTimer}s)` : ''}
@@ -549,7 +549,7 @@ export const LoginPage: React.FC = () => {
                 variant="accent"
                 size="md"
                 pill
-                className="w-full font-bold bg-emerald-600 hover:bg-emerald-700 text-white"
+                className="w-full font-bold bg-[#0E7A5A] hover:bg-[#0B4A3A] text-white"
               >
                 Verify & Continue
               </Button>

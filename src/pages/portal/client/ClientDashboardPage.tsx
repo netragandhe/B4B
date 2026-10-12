@@ -109,7 +109,7 @@ export const ClientDashboardPage: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={() => setUploadModalOpen(true)}
-              leftIcon={<Upload className="w-3.5 h-3.5 text-blue-500" />}
+              leftIcon={<Upload className="w-3.5 h-3.5 text-[#0E7A5A]" />}
             >
               Upload Document
             </Button>
@@ -130,20 +130,20 @@ export const ClientDashboardPage: React.FC = () => {
         <Card
           variant="bento"
           onClick={() => setServiceModalOpen(true)}
-          className="p-4 cursor-pointer hover:border-blue-500/50 transition-all flex items-center justify-between group"
+          className="p-4 cursor-pointer hover:border-[#0E7A5A]/50 transition-all flex items-center justify-between group"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-[#0E7A5A]/10 text-[#0E7A5A] flex items-center justify-center shrink-0">
               <Plus className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors">
+              <h4 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-[#0E7A5A] transition-colors">
                 Request a Service
               </h4>
               <p className="text-xs text-slate-500">Apply for 16 financial & advisory services</p>
             </div>
           </div>
-          <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
+          <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-[#0E7A5A] transition-colors" />
         </Card>
 
         <Card
@@ -217,16 +217,16 @@ export const ClientDashboardPage: React.FC = () => {
                   isCompleted
                     ? 'bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-300 dark:border-emerald-900'
                     : isCurrent
-                    ? 'bg-blue-50/80 dark:bg-blue-950/40 border-blue-500 shadow-xs'
-                    : 'bg-slate-50/50 dark:bg-[#12294A]/40 border-slate-200 dark:border-slate-800 opacity-60'
+                    ? 'bg-[#0E7A5A]/10 dark:bg-[#0B4A3A]/40 border-[#0E7A5A] shadow-xs'
+                    : 'bg-slate-50/50 dark:bg-[#0B2B22]/40 border-slate-200 dark:border-slate-800 opacity-60'
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-extrabold uppercase text-slate-400">Step {idx + 1}</span>
                   {isCompleted ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                    <CheckCircle2 className="w-4 h-4 text-[#0E7A5A]" />
                   ) : isCurrent ? (
-                    <Clock className="w-4 h-4 text-blue-500 animate-pulse" />
+                    <Clock className="w-4 h-4 text-[#0E7A5A] animate-pulse" />
                   ) : (
                     <span className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700" />
                   )}
@@ -262,11 +262,11 @@ export const ClientDashboardPage: React.FC = () => {
             {CLIENT_ACTIVE_ORDERS.map((order) => (
               <div
                 key={order.id}
-                className="p-4 rounded-xl border border-slate-200 dark:border-[#1E3A5F] bg-slate-50/50 dark:bg-[#12294A]/40 space-y-2"
+                className="p-4 rounded-xl border border-slate-200 dark:border-[#0B4A3A] bg-slate-50/50 dark:bg-[#0B2B22]/40 space-y-2"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Building2 className="w-4 h-4 text-blue-500" />
+                    <Building2 className="w-4 h-4 text-[#0E7A5A]" />
                     <span className="font-bold text-xs text-slate-900 dark:text-white">{order.serviceName}</span>
                   </div>
                   <Badge variant="emerald" size="sm">
@@ -296,7 +296,7 @@ export const ClientDashboardPage: React.FC = () => {
         </Card>
 
         {/* ASSIGNED COACH CARD */}
-        <Card variant="bento" className="lg:col-span-5 p-6 space-y-4 bg-gradient-to-br from-blue-50/30 to-purple-50/20 dark:from-blue-950/20 dark:to-[#0D1E36]">
+        <Card variant="bento" className="lg:col-span-5 p-6 space-y-4 bg-gradient-to-br from-emerald-50/30 to-amber-50/20 dark:from-[#0B4A3A]/20 dark:to-[#06201A]">
           <div className="flex items-center justify-between">
             <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white">
               Assigned B4B Coach & Desk
@@ -306,7 +306,7 @@ export const ClientDashboardPage: React.FC = () => {
             </Badge>
           </div>
 
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-white/70 dark:bg-[#12294A]/70 border border-slate-200 dark:border-slate-800">
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-white/70 dark:bg-[#0B2B22]/70 border border-slate-200 dark:border-slate-800">
             <Avatar
               src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80"
               name="Marcus Vance"
@@ -315,13 +315,13 @@ export const ClientDashboardPage: React.FC = () => {
             />
             <div className="min-w-0 flex-1">
               <h4 className="font-bold text-sm text-slate-900 dark:text-white">Marcus Vance</h4>
-              <p className="text-xs text-blue-600 dark:text-blue-400 font-semibold">Senior Commercial Advisor</p>
+              <p className="text-xs text-[#0E7A5A] dark:text-[#10B981] font-semibold">Senior Commercial Advisor</p>
               <p className="text-[10px] text-slate-500">District 8 - St. Louis / National Desk</p>
             </div>
           </div>
 
           <div className="space-y-2 text-xs">
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#12294A] border border-slate-200 dark:border-slate-800">
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#0B2B22] border border-slate-200 dark:border-slate-800">
               <span className="text-[10px] font-bold text-slate-400 uppercase">Latest Advisory Note</span>
               <p className="text-xs text-slate-700 dark:text-slate-300 mt-1 italic">
                 "{CLIENT_COACH_MESSAGES[0].text}"
@@ -374,8 +374,8 @@ export const ClientDashboardPage: React.FC = () => {
             />
           </FormField>
 
-          <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 text-[11px] text-slate-600 dark:text-slate-300 flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
+          <div className="p-3 rounded-xl bg-[#0E7A5A]/10 dark:bg-[#0B4A3A]/30 border border-[#0E7A5A]/30 dark:border-[#0B4A3A] text-[11px] text-slate-600 dark:text-slate-300 flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-[#0E7A5A] shrink-0" />
             <span>Files are encrypted end-to-end and directly accessible by your underwriting team.</span>
           </div>
 
@@ -506,8 +506,8 @@ export const ClientDashboardPage: React.FC = () => {
         size="md"
       >
         <div className="space-y-4 text-xs text-left">
-          <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900">
-            <span className="font-bold text-blue-700 dark:text-blue-300">Target Facility:</span>
+          <div className="p-3 rounded-xl bg-[#0E7A5A]/10 dark:bg-[#0B4A3A]/30 border border-[#0E7A5A]/30 dark:border-[#0B4A3A]">
+            <span className="font-bold text-[#0E7A5A] dark:text-[#10B981]">Target Facility:</span>
             <p className="text-xs font-bold text-slate-900 dark:text-white mt-0.5">
               {CLIENT_FUNDING_APP.facilityName} ({formatCurrency(CLIENT_FUNDING_APP.requestedAmount)})
             </p>
@@ -526,13 +526,13 @@ export const ClientDashboardPage: React.FC = () => {
             ].map((item, i) => (
               <div
                 key={i}
-                className="p-3 rounded-xl bg-slate-50 dark:bg-[#12294A] border border-slate-200 dark:border-slate-800 flex items-center justify-between"
+                className="p-3 rounded-xl bg-slate-50 dark:bg-[#0B2B22] border border-slate-200 dark:border-slate-800 flex items-center justify-between"
               >
                 <div className="flex items-center gap-2.5">
                   {item.done ? (
                     <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                   ) : item.current ? (
-                    <Clock className="w-4 h-4 text-blue-500 shrink-0 animate-pulse" />
+                    <Clock className="w-4 h-4 text-[#0E7A5A] shrink-0 animate-pulse" />
                   ) : (
                     <span className="w-4 h-4 rounded-full border border-slate-400 shrink-0" />
                   )}

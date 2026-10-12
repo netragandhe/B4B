@@ -200,10 +200,10 @@ export const AffiliateDashboardPage: React.FC = () => {
       </div>
 
       {/* TOP PERFORMING TRACKING LINK BANNER */}
-      <Card variant="bento" className="p-4 bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white border-0 shadow-xl space-y-3">
+      <Card variant="bento" className="p-4 bg-gradient-to-r from-[#06201A] via-[#0B2B22] to-[#06201A] text-white border border-[#0B4A3A] shadow-xl space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-[#0E7A5A]/20 text-[#0E7A5A] flex items-center justify-center shrink-0">
               <Share2 className="w-5 h-5" />
             </div>
             <div>
@@ -213,7 +213,7 @@ export const AffiliateDashboardPage: React.FC = () => {
                   Top Performing Link
                 </Badge>
               </div>
-              <div className="text-xs text-blue-300 font-mono mt-0.5">{topLink.url}</div>
+              <div className="text-xs text-emerald-300 font-mono mt-0.5">{topLink.url}</div>
             </div>
           </div>
 
@@ -301,8 +301,8 @@ export const AffiliateDashboardPage: React.FC = () => {
             <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorVol" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.0} />
+                  <stop offset="5%" stopColor="#0E7A5A" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="#0E7A5A" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
@@ -311,9 +311,9 @@ export const AffiliateDashboardPage: React.FC = () => {
               <RechartsTooltip
                 formatter={(val: any) => [`$${Number(val).toLocaleString()}k`, 'Funded Volume']}
                 contentStyle={{
-                  backgroundColor: '#0D1E36',
+                  backgroundColor: '#06201A',
                   borderRadius: '10px',
-                  border: '1px solid #1E3A5F',
+                  border: '1px solid #0B4A3A',
                   color: '#fff',
                   fontSize: '12px',
                 }}
@@ -322,7 +322,7 @@ export const AffiliateDashboardPage: React.FC = () => {
                 type="monotone"
                 dataKey="volume"
                 name="Volume"
-                stroke="#3B82F6"
+                stroke="#0E7A5A"
                 strokeWidth={3}
                 fillOpacity={1}
                 fill="url(#colorVol)"

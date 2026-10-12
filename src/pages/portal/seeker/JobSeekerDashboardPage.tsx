@@ -70,7 +70,7 @@ export const JobSeekerDashboardPage: React.FC = () => {
       <SEOHead title="Job Seeker Dashboard | B4B Portal" description="Explore corporate sales and executive openings, track active applications, and manage job alerts." />
 
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-6 sm:p-8 border border-slate-800 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#06201A] via-[#0B2B22] to-[#06201A] text-white p-6 sm:p-8 border border-[#0B4A3A] shadow-xl">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/30">
@@ -90,7 +90,7 @@ export const JobSeekerDashboardPage: React.FC = () => {
               size="md"
               pill
               onClick={() => navigate('/portal/seeker/profile')}
-              className="font-bold bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-900/30"
+              className="font-bold bg-[#0E7A5A] hover:bg-[#0B4A3A] text-white shadow-lg shadow-emerald-950/30"
             >
               <FileText className="w-4 h-4 mr-2" /> Update Resume
             </Button>
@@ -110,7 +110,7 @@ export const JobSeekerDashboardPage: React.FC = () => {
       {/* Search Bar Widget */}
       <Card variant="bento" className="p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-md">
         <h2 className="text-base font-bold font-heading text-slate-900 dark:text-white mb-3 flex items-center gap-2">
-          <Search className="w-4 h-4 text-blue-500" /> Search Open Jobs & Gigs
+          <Search className="w-4 h-4 text-[#0E7A5A]" /> Search Open Jobs & Gigs
         </h2>
         <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           <Input
@@ -158,7 +158,7 @@ export const JobSeekerDashboardPage: React.FC = () => {
             variant="accent"
             size="md"
             pill
-            className="w-full font-bold bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full font-bold bg-[#0E7A5A] hover:bg-[#0B4A3A] text-white"
           >
             SEARCH NOW <ArrowRight className="w-4 h-4 ml-1.5" />
           </Button>
@@ -172,7 +172,7 @@ export const JobSeekerDashboardPage: React.FC = () => {
             <div className="text-xs text-slate-500 font-semibold">Active Applications</div>
             <div className="text-2xl font-black text-slate-900 dark:text-white font-heading mt-0.5">3</div>
           </div>
-          <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">
+          <div className="p-3 rounded-xl bg-[#0E7A5A]/10 text-[#0E7A5A]">
             <Award className="w-5 h-5" />
           </div>
         </Card>

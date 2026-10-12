@@ -338,13 +338,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (target) {
       setUser(target)
       localStorage.setItem('b4b_auth_user', JSON.stringify(target))
+      if (!localStorage.getItem('b4b_auth_token')) {
+        localStorage.setItem('b4b_auth_token', `b4b_jwt_${target.id}_${Date.now()}`)
+      }
       setStatus('authenticated')
     }
   }
 
   const setBizProRank = (rank: number) => {
     if (user && user.role === 'Biz Pro') {
-      const updated = { ...user, rank, rankTitle: `Rank ${rank}` }
+      const updated = { ...user, rank, rankLevel: rank, rankTitle: RANK_TITLES[rank] || `Rank ${rank}` }
       setUser(updated)
       localStorage.setItem('b4b_auth_user', JSON.stringify(updated))
     }

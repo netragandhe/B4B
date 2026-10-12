@@ -266,14 +266,14 @@ export const AdminOverviewPage: React.FC = () => {
                 <RechartsTooltip
                   formatter={(val: any) => [`$${Number(val).toLocaleString()}k`, 'Funded Volume']}
                   contentStyle={{
-                    backgroundColor: '#0D1E36',
+                    backgroundColor: '#06201A',
                     borderRadius: '10px',
-                    border: '1px solid #1E3A5F',
+                    border: '1px solid #0B4A3A',
                     color: '#fff',
                     fontSize: '12px',
                   }}
                 />
-                <Bar dataKey="revenue" name="Volume" fill="#2563EB" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="revenue" name="Volume" fill="#0E7A5A" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -302,9 +302,9 @@ export const AdminOverviewPage: React.FC = () => {
                 <RechartsTooltip
                   formatter={(val: any, name: any, item: any) => [`${val} Reps`, item.payload.title]}
                   contentStyle={{
-                    backgroundColor: '#0D1E36',
+                    backgroundColor: '#06201A',
                     borderRadius: '10px',
-                    border: '1px solid #1E3A5F',
+                    border: '1px solid #0B4A3A',
                     color: '#fff',
                     fontSize: '12px',
                   }}
@@ -613,9 +613,9 @@ export const AdminOverviewPage: React.FC = () => {
         maxWidth="2xl"
       >
         <div className="space-y-4 text-xs text-left">
-          <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#1E3A5F] max-h-[55vh] overflow-y-auto custom-scrollbar">
+          <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#0B4A3A] max-h-[55vh] overflow-y-auto custom-scrollbar">
             <table className="w-full text-left border-collapse text-xs">
-              <thead className="sticky top-0 bg-slate-100 dark:bg-[#0D1E36] border-b border-slate-200 dark:border-[#1E3A5F] text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+              <thead className="sticky top-0 bg-slate-100 dark:bg-[#06201A] border-b border-slate-200 dark:border-[#0B4A3A] text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
                 <tr>
                   <th className="p-3 w-20">Rank</th>
                   <th className="p-3">Title & Level</th>
@@ -625,7 +625,7 @@ export const AdminOverviewPage: React.FC = () => {
                   <th className="p-3 text-right">Perks Count</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-[#1E3A5F] bg-white dark:bg-[#12294A]">
+              <tbody className="divide-y divide-slate-100 dark:divide-[#0B4A3A] bg-white dark:bg-[#0B2B22]">
                 {BIZPRO_RANKS.map((r) => (
                   <tr
                     key={r.level}
@@ -678,7 +678,7 @@ export const AdminOverviewPage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[75vh] overflow-y-auto pr-1">
             {FED_REGIONS.map((r) => (
-              <Card key={r.id} variant="bento" className="p-3.5 space-y-2 border border-slate-200 dark:border-[#1E3A5F]">
+              <Card key={r.id} variant="bento" className="p-3.5 space-y-2 border border-slate-200 dark:border-[#0B4A3A]">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full" style={{ backgroundColor: r.color }} />

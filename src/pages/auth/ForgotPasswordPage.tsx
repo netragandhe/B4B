@@ -66,7 +66,7 @@ export const ForgotPasswordPage: React.FC = () => {
                 </div>
               </FormField>
 
-              <Button type="submit" variant="accent" size="md" pill isLoading={isSubmitting} className="w-full font-bold bg-blue-600 hover:bg-blue-500 text-white">
+              <Button type="submit" variant="accent" size="md" pill isLoading={isSubmitting} className="w-full font-bold bg-[#0E7A5A] hover:bg-[#0B4A3A] text-white">
                 Send Reset Link
               </Button>
             </form>
@@ -87,7 +87,7 @@ export const ForgotPasswordPage: React.FC = () => {
               We dispatched reset instructions to <strong className="text-white">{sentEmail}</strong>.
             </p>
             <div className="pt-2">
-              <Link to="/portal/login" className="text-xs text-blue-400 font-bold hover:underline">
+              <Link to="/portal/login" className="text-xs text-[#0E7A5A] font-bold hover:underline">
                 Return to Sign In
               </Link>
             </div>
