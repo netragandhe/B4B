@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 export const badgeVariants = cva(
-  'inline-flex items-center font-medium rounded-full text-xs transition-colors px-2.5 py-0.5 select-none',
+  'inline-flex items-center justify-center font-semibold rounded-full transition-colors select-none whitespace-nowrap',
   {
     variants: {
       variant: {
@@ -12,13 +12,13 @@ export const badgeVariants = cva(
         primary:
           'bg-[var(--sky-50)] text-[var(--blue-600)] border border-[var(--border)]',
         emerald:
-          'bg-[var(--green-600)]/10 text-[var(--green-600)] border border-[var(--green-600)]/20',
+          'bg-[var(--green-600)]/12 text-[var(--green-600)] border border-[var(--green-600)]/25',
         success:
-          'bg-[var(--green-600)]/10 text-[var(--green-600)] border border-[var(--green-600)]/20',
+          'bg-[var(--green-600)]/12 text-[var(--green-600)] border border-[var(--green-600)]/25',
         gold:
-          'bg-[var(--gold-500)] text-[var(--navy-900)] border border-[var(--gold-500)]',
+          'bg-[var(--gold-500)]/15 text-[#8F4411] dark:text-[#F3A566] border border-[var(--gold-500)]/35',
         amber:
-          'bg-[var(--gold-500)] text-[var(--navy-900)] border border-[var(--gold-500)]',
+          'bg-[var(--gold-500)]/15 text-[#8F4411] dark:text-[#F3A566] border border-[var(--gold-500)]/35',
         danger:
           'bg-red-50 text-red-700 border border-red-200',
         navy:
@@ -29,9 +29,10 @@ export const badgeVariants = cva(
           'border border-[var(--border)] text-[var(--text-muted)]',
       },
       size: {
-        sm: 'text-[10px] px-2 py-0.2',
-        md: 'text-xs px-2.5 py-0.5',
-        lg: 'text-sm px-3 py-1',
+        xs: 'h-4.5 px-2 text-[10px] leading-none gap-1',
+        sm: 'h-5 px-2.5 text-[11px] leading-none gap-1.5',
+        md: 'h-6 px-3 text-xs leading-none gap-1.5',
+        lg: 'h-7 px-3.5 text-sm leading-none gap-2',
       },
     },
     defaultVariants: {
@@ -56,9 +57,16 @@ export const Badge: React.FC<BadgeProps> = ({
   ...props
 }) => {
   return (
-    <span className={cn(badgeVariants({ variant, size }), className)} {...props}>
+    <span
+      className={cn(
+        badgeVariants({ variant, size }),
+        dot && (size === 'sm' || !size) && 'w-[92px] justify-center text-center',
+        className
+      )}
+      {...props}
+    >
       {dot && (
-        <span className="w-1.5 h-1.5 rounded-full bg-current mr-1.5 inline-block shrink-0 animate-pulse" />
+        <span className="w-1.5 h-1.5 rounded-full bg-current shrink-0" />
       )}
       {children}
     </span>

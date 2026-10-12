@@ -613,29 +613,40 @@ export const HomePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Pricing Box in Copper Tabular Numbers + Actions */}
-              <div className="p-4 rounded-2xl bg-[#06201A] border border-[#0B4A3A] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <p className="text-xs text-[#B9CBC3] font-mono uppercase">Biz Pro Access Subscription</p>
-                  <p className="text-2xl font-extrabold text-[#C8793A] font-mono tabular-nums">
-                    {B4BAPP_SOFTWARE.pricing}
+              {/* Pricing Box with Clean Hierarchy & Actions */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#06201A] border border-[#0B4A3A] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <p className="text-[11px] font-semibold text-[#8FA89B] tracking-wider uppercase">
+                    Biz Pro Access Subscription
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl sm:text-3xl font-extrabold text-[#C8793A] font-heading tracking-tight">
+                      $25
+                    </span>
+                    <span className="text-xs sm:text-sm font-medium text-[#B9CBC3]">
+                      / month
+                    </span>
+                  </div>
+                  <p className="text-xs text-[#B9CBC3]/80 leading-relaxed">
+                    Entry subscription for Biz Pros, scales with ranking
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5 shrink-0">
                   <button
                     onClick={() => navigate('/portal/login')}
-                    className="btn-copper-dark"
+                    className="btn-copper-dark whitespace-nowrap !min-h-[42px] !h-auto !py-2.5 !px-4 text-xs sm:text-sm font-bold shadow-md"
                   >
                     Portal Login
                   </button>
                   <button
                     onClick={() => setCoachModalOpen(true)}
-                    className="btn-outline-dark"
+                    className="btn-outline-dark whitespace-nowrap !min-h-[42px] !h-auto !py-2.5 !px-4 text-xs sm:text-sm font-bold"
                   >
                     Request Demo
                   </button>
                 </div>
               </div>
+
             </div>
 
             {/* Right Column: Sleek Dark Cockpit Command Widget */}
@@ -738,8 +749,8 @@ export const HomePage: React.FC = () => {
                 </div>
 
                 {/* Career Progression Teaser */}
-                <div className="pt-2 border-t border-[#0B4A3A] flex items-center justify-between text-xs font-mono">
-                  <span className="text-[#B9CBC3]">Biz Pro Structure:</span>
+                <div className="pt-2 border-t border-[#0B4A3A] flex items-center justify-between text-xs">
+                  <span className="text-[#B9CBC3] font-medium">Biz Pro Structure:</span>
                   <span className="text-[#C8793A] font-bold">9-Tier Career Ranking System</span>
                 </div>
               </div>

@@ -207,7 +207,7 @@ function buildDefaultPermissions(): SystemPermissionMatrix {
   clientMenus.forEach((id) => {
     if (matrix.client[id]) {
       matrix.client[id] = createStandardPerm({
-        create: id === 'client-orders' || id === 'client-messages',
+        create: id === 'client-orders' || id === 'client-messages' || id === 'shared-ebox',
         edit: false,
         delete: false,
         export: id === 'client-invoices',

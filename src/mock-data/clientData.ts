@@ -112,15 +112,15 @@ export const CLIENT_FUNDING_APP: ClientFundingApplication = {
   id: 'app_b4b_884',
   facilityName: 'SBA 7(a) Commercial Expansion Line',
   requestedAmount: 750000,
-  currentStepIndex: 2,
+  currentStepIndex: 4,
   steps: [
     { label: 'Applied', date: 'Sep 20', completed: true },
     { label: 'Documents', date: 'Sep 25', completed: true },
-    { label: 'Review', date: 'Oct 02', completed: false },
-    { label: 'Approved', completed: false },
-    { label: 'Funded', completed: false },
+    { label: 'Review', date: 'Oct 02', completed: true },
+    { label: 'Approved', date: 'Oct 08', completed: true },
+    { label: 'Funded', date: 'Oct 14', completed: true },
   ],
-  underwriterNote: 'Risk grade A — Underwriter is analyzing Q3 P&L statements. Disbursement expected by Oct 14.',
+  underwriterNote: 'Risk grade A — Underwriter has completed full approval. All facility milestones are active and funded.',
 }
 
 export const CLIENT_INVOICES: ClientInvoice[] = [

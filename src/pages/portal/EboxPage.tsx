@@ -101,13 +101,56 @@ export const EboxPage: React.FC = () => {
     })
   }
 
+  const [selectedUploadFile, setSelectedUploadFile] = useState<File | null>(null)
+
+  const handleDownloadFile = (item: EboxItem) => {
+    const dummyContent = `B4B eBOX Encrypted Repository Document\n=========================================\nTitle: ${item.title}\nID: ${item.id}\nCategory: ${item.category}\nSecurity Level: ${item.securityLevel}\nStatus: ${item.status}\nLast Updated: ${item.updatedAt}\nUploaded By: ${item.uploadedBy}\n\nDescription:\n${item.description}\n\nTags:\n${item.tags.join(', ')}\n\n[CONFIDENTIAL & ENCRYPTED - B4B CLIENT REPOSITORY]`
+    const blob = new Blob([dummyContent], { type: 'text/plain;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = item.title.includes('.') ? item.title : `${item.title}.${item.fileType}`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+
+    toast({
+      title: 'File Downloaded',
+      description: `${item.title} has been downloaded securely.`,
+      type: 'success',
+    })
+  }
+
+  const handleShareLink = (item: EboxItem) => {
+    const shareUrl = `${window.location.origin}/portal/ebox?doc=${encodeURIComponent(item.id)}`
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl)
+      toast({
+        title: 'Shareable Link Copied!',
+        description: `Secure link for "${item.title}" copied to clipboard.`,
+        type: 'success',
+      })
+    } else {
+      toast({
+        title: 'Share Link Generated',
+        description: shareUrl,
+        type: 'info',
+      })
+    }
+  }
+
   const handleSimulatedUpload = () => {
+    const filename = selectedUploadFile ? selectedUploadFile.name : `Uploaded_Vault_Document_${Math.floor(Math.random() * 1000)}.pdf`
+    const ext = filename.split('.').pop()?.toLowerCase() || 'pdf'
+    const fileSize = selectedUploadFile ? `${(selectedUploadFile.size / (1024 * 1024)).toFixed(1)} MB` : '2.4 MB'
+
     const newItem: EboxItem = {
       id: `ebx_${Date.now()}`,
-      title: `Uploaded_Vault_Document_${Math.floor(Math.random() * 1000)}.pdf`,
+      title: filename,
       category: selectedCategory === 'all' ? 'capital-docs' : selectedCategory,
-      fileType: 'pdf',
-      size: '2.4 MB',
+      fileType: (ext === 'xlsx' || ext === 'csv' || ext === 'docx' ? ext : 'pdf') as any,
+      size: fileSize,
       updatedAt: new Date().toISOString().split('T')[0],
       uploadedBy: 'Current User',
       status: 'Verified',
@@ -117,6 +160,7 @@ export const EboxPage: React.FC = () => {
     }
     setItems((prev) => [newItem, ...prev])
     setUploadModalOpen(false)
+    setSelectedUploadFile(null)
     toast({
       title: 'Upload Successful',
       description: `${newItem.title} is now indexed in eBOX.`,
@@ -153,23 +197,34 @@ export const EboxPage: React.FC = () => {
           </Badge>
         }
         actions={
-          <Can menuId="shared-ebox" action="create" disableInstead={true} tooltip="Create permission required to upload documents to eBOX">
-            <Button
-              variant="accent"
-              size="md"
-              onClick={() => setUploadModalOpen(true)}
-              leftIcon={<Upload className="w-4 h-4" />}
-              className="shadow-sm font-bold"
-            >
-              Upload Document
-            </Button>
-          </Can>
+          <Button
+            variant="accent"
+            size="md"
+            onClick={() => setUploadModalOpen(true)}
+            leftIcon={<Upload className="w-4 h-4" />}
+            className="shadow-sm font-bold cursor-pointer"
+          >
+            Upload Document
+          </Button>
         }
       />
 
-      {/* TOP VAULT METRICS KPIs */}
+      {/* TOP VAULT METRICS KPIs - CLICKABLE FILTERS */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card variant="default" className="p-4 bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F]">
+        <button
+          type="button"
+          onClick={() => {
+            setSelectedCategory('all')
+            setStatusFilter('all')
+            setFileTypeFilter('all')
+            setSearchQuery('')
+          }}
+          className={`p-4 rounded-xl text-left transition-all border cursor-pointer ${
+            statusFilter === 'all' && selectedCategory === 'all'
+              ? 'bg-blue-50/70 dark:bg-blue-950/40 border-blue-400 shadow-sm'
+              : 'bg-white dark:bg-[#0D1E36] border-slate-200 dark:border-[#1E3A5F] hover:border-blue-300'
+          }`}
+        >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Indexed Files</p>
@@ -179,9 +234,17 @@ export const EboxPage: React.FC = () => {
               <FolderArchive className="w-5 h-5" />
             </div>
           </div>
-        </Card>
+        </button>
 
-        <Card variant="default" className="p-4 bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F]">
+        <button
+          type="button"
+          onClick={() => setStatusFilter(statusFilter === 'Verified' ? 'all' : 'Verified')}
+          className={`p-4 rounded-xl text-left transition-all border cursor-pointer ${
+            statusFilter === 'Verified'
+              ? 'bg-emerald-50/70 dark:bg-emerald-950/40 border-emerald-400 shadow-sm'
+              : 'bg-white dark:bg-[#0D1E36] border-slate-200 dark:border-[#1E3A5F] hover:border-emerald-300'
+          }`}
+        >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Verified & Audited</p>
@@ -191,9 +254,17 @@ export const EboxPage: React.FC = () => {
               <CheckCircle2 className="w-5 h-5" />
             </div>
           </div>
-        </Card>
+        </button>
 
-        <Card variant="default" className="p-4 bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F]">
+        <button
+          type="button"
+          onClick={() => setStatusFilter(statusFilter === 'Pending Review' ? 'all' : 'Pending Review')}
+          className={`p-4 rounded-xl text-left transition-all border cursor-pointer ${
+            statusFilter === 'Pending Review'
+              ? 'bg-amber-50/70 dark:bg-amber-950/40 border-amber-400 shadow-sm'
+              : 'bg-white dark:bg-[#0D1E36] border-slate-200 dark:border-[#1E3A5F] hover:border-amber-300'
+          }`}
+        >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Pending Review</p>
@@ -203,9 +274,13 @@ export const EboxPage: React.FC = () => {
               <Clock className="w-5 h-5" />
             </div>
           </div>
-        </Card>
+        </button>
 
-        <Card variant="default" className="p-4 bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F]">
+        <button
+          type="button"
+          onClick={() => toast({ title: 'Vault Capacity Status', description: '42.8 MB of 10 GB encrypted storage utilized.', type: 'info' })}
+          className="p-4 rounded-xl text-left transition-all bg-white dark:bg-[#0D1E36] border border-slate-200 dark:border-[#1E3A5F] hover:border-purple-300 cursor-pointer"
+        >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Vault Capacity</p>
@@ -215,7 +290,7 @@ export const EboxPage: React.FC = () => {
               <HardDrive className="w-5 h-5" />
             </div>
           </div>
-        </Card>
+        </button>
       </div>
 
       {/* CATEGORY FILTER CHIPS */}
@@ -376,21 +451,23 @@ export const EboxPage: React.FC = () => {
                   </span>
                   <div className="flex items-center gap-1">
                     <button
+                      type="button"
                       onClick={(e) => {
                         e.stopPropagation()
                         setSelectedItem(item)
                       }}
-                      className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-blue-600"
+                      className="p-1.5 rounded-lg hover:bg-blue-50 dark:hover:bg-slate-800 text-slate-500 hover:text-blue-600 transition-colors cursor-pointer"
                       title="Inspect Document"
                     >
                       <Eye className="w-3.5 h-3.5" />
                     </button>
                     <button
+                      type="button"
                       onClick={(e) => {
                         e.stopPropagation()
-                        toast({ title: 'Downloading file...', description: item.title, type: 'info' })
+                        handleDownloadFile(item)
                       }}
-                      className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-emerald-600"
+                      className="p-1.5 rounded-lg hover:bg-emerald-50 dark:hover:bg-slate-800 text-slate-500 hover:text-emerald-600 transition-colors cursor-pointer"
                       title="Download"
                     >
                       <Download className="w-3.5 h-3.5" />
@@ -464,25 +541,23 @@ export const EboxPage: React.FC = () => {
                     <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <Button
-                          size="sm"
+                          size="xs"
                           variant="ghost"
                           onClick={(e) => {
                             e.stopPropagation()
                             setSelectedItem(item)
                           }}
-                          className="h-7 px-2 text-[11px]"
                         >
                           View
                         </Button>
                         <Button
-                          size="sm"
+                          size="xs"
                           variant="outline"
                           onClick={(e) => {
                             e.stopPropagation()
-                            toast({ title: 'Downloading file...', description: item.title, type: 'info' })
+                            handleDownloadFile(item)
                           }}
-                          leftIcon={<Download className="w-3.5 h-3.5" />}
-                          className="h-7 px-2 text-[11px]"
+                          leftIcon={<Download className="w-3 h-3" />}
                         >
                           Download
                         </Button>
@@ -599,7 +674,7 @@ export const EboxPage: React.FC = () => {
               <Button
                 variant="accent"
                 size="md"
-                onClick={() => toast({ title: 'Downloading file...', description: selectedItem.title, type: 'success' })}
+                onClick={() => handleDownloadFile(selectedItem)}
                 leftIcon={<Download className="w-4 h-4" />}
                 className="w-full justify-center"
               >
@@ -610,7 +685,7 @@ export const EboxPage: React.FC = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => toast({ title: 'Shareable Link Copied', description: 'Link copied to clipboard.', type: 'info' })}
+                  onClick={() => handleShareLink(selectedItem)}
                   leftIcon={<Share2 className="w-3.5 h-3.5" />}
                   className="flex-1 justify-center text-xs"
                 >
@@ -643,6 +718,9 @@ export const EboxPage: React.FC = () => {
           <FileUpload
             label="Drag & drop document or spreadsheet"
             hint="Supported: PDF, XLSX, DOCX, CSV up to 50MB"
+            onFilesSelected={(files) => {
+              if (files.length > 0) setSelectedUploadFile(files[0])
+            }}
           />
 
           <div className="pt-2 flex items-center justify-end gap-3">

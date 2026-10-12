@@ -163,7 +163,7 @@ export const AdminOverviewPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-8 text-left">
+    <div className="space-y-6 sm:space-y-8 text-left">
       <PageHeader
         title="Super Admin Command Center"
         description="Company-wide KPI oversight, regional revenue breakdown, B4B Coach & Employer approval flow, and 9-rank distribution analytics."
@@ -177,10 +177,10 @@ export const AdminOverviewPage: React.FC = () => {
           </Badge>
         }
         actions={
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Button
               variant="outline"
-              size="sm"
+              size="xs"
               onClick={() => setRankRulesModalOpen(true)}
               leftIcon={<BarChart3 className="w-3.5 h-3.5" />}
             >
@@ -188,7 +188,7 @@ export const AdminOverviewPage: React.FC = () => {
             </Button>
             <Button
               variant="accent"
-              size="sm"
+              size="xs"
               onClick={() => setInviteModalOpen(true)}
               leftIcon={<Plus className="w-3.5 h-3.5" />}
             >
@@ -244,20 +244,20 @@ export const AdminOverviewPage: React.FC = () => {
       {/* CHARTS SECTION: REVENUE BY REGION & RANK DISTRIBUTION */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Chart 1: Revenue by Fed Region */}
-        <Card variant="bento" className="lg:col-span-7 p-5 space-y-4">
-          <div className="flex items-center justify-between">
+        <Card variant="bento" className="lg:col-span-7 p-4 sm:p-5 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white">
+              <h3 className="text-sm sm:text-base font-bold font-heading text-slate-900 dark:text-white">
                 Revenue by Federal Reserve District ($k)
               </h3>
               <p className="text-xs text-slate-500">Distribution across 12 Fed regions.</p>
             </div>
-            <Button variant="ghost" size="sm" onClick={() => setTerritoryDrawerOpen(true)}>
+            <Button variant="ghost" size="xs" onClick={() => setTerritoryDrawerOpen(true)} className="self-start sm:self-auto">
               View All Districts
             </Button>
           </div>
 
-          <div className="h-72 w-full">
+          <div className="h-64 sm:h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={regionRevenueData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
@@ -280,20 +280,20 @@ export const AdminOverviewPage: React.FC = () => {
         </Card>
 
         {/* Chart 2: 9-Rank Distribution */}
-        <Card variant="bento" className="lg:col-span-5 p-5 space-y-4">
+        <Card variant="bento" className="lg:col-span-5 p-4 sm:p-5 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white">
+              <h3 className="text-sm sm:text-base font-bold font-heading text-slate-900 dark:text-white">
                 B4B Coach 9-Rank Force Distribution
               </h3>
               <p className="text-xs text-slate-500">Number of active reps per rank level.</p>
             </div>
-            <Badge variant="emerald" size="sm">
+            <Badge variant="emerald" size="sm" className="shrink-0">
               9 Ranks Active
             </Badge>
           </div>
 
-          <div className="h-72 w-full">
+          <div className="h-64 sm:h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={RANK_DISTRIBUTION_DATA} layout="vertical" margin={{ top: 5, right: 15, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
@@ -317,30 +317,30 @@ export const AdminOverviewPage: React.FC = () => {
       </div>
 
       {/* PENDING APPROVALS FLOW TABLE (B4B COACHES & EMPLOYERS) */}
-      <Card variant="default" className="p-5 border border-slate-200 dark:border-slate-800 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <Card variant="default" className="p-4 sm:p-5 border border-slate-200 dark:border-slate-800 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
           <div>
-            <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white flex items-center gap-2">
-              <Zap className="w-4 h-4 text-amber-500" />
+            <h3 className="text-sm sm:text-base font-bold font-heading text-slate-900 dark:text-white flex items-center gap-2">
+              <Zap className="w-4 h-4 text-amber-500 shrink-0" />
               <span>Approval Flow: New B4B Coaches, Employers & Risk Queue</span>
             </h3>
-            <p className="text-xs text-slate-500">Authorize candidate onboarding, rank advancements, and high-value underwriting draws.</p>
+            <p className="text-xs text-slate-500 mt-0.5">Authorize candidate onboarding, rank advancements, and high-value underwriting draws.</p>
           </div>
 
           {/* Export Actions */}
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={handleExportCsv} leftIcon={<FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />}>
+          <div className="flex items-center gap-2 self-start sm:self-auto">
+            <Button variant="outline" size="xs" onClick={handleExportCsv} leftIcon={<FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />}>
               CSV
             </Button>
-            <Button variant="outline" size="sm" onClick={handleExportPdf} leftIcon={<Printer className="w-3.5 h-3.5 text-blue-600" />}>
+            <Button variant="outline" size="xs" onClick={handleExportPdf} leftIcon={<Printer className="w-3.5 h-3.5 text-blue-600" />}>
               PDF Report
             </Button>
           </div>
         </div>
 
         {/* Filters Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
-          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
             {/* Search Input */}
             <div className="relative w-full sm:w-64">
               <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
@@ -354,7 +354,7 @@ export const AdminOverviewPage: React.FC = () => {
             </div>
 
             {/* Type Filter Buttons */}
-            <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+            <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg overflow-x-auto max-w-full no-scrollbar whitespace-nowrap">
               {(['All', 'B4B Coach', 'Employer', 'Draw/Underwriting'] as const).map((t) => (
                 <button
                   key={t}
@@ -362,7 +362,7 @@ export const AdminOverviewPage: React.FC = () => {
                     setTypeFilter(t)
                     setCurrentPage(1)
                   }}
-                  className={`px-2.5 py-1 text-[11px] font-bold rounded-md transition-colors ${
+                  className={`px-2.5 py-1 text-[11px] font-bold rounded-md transition-colors shrink-0 ${
                     typeFilter === t
                       ? 'bg-blue-600 text-white shadow-sm'
                       : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -374,10 +374,10 @@ export const AdminOverviewPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-slate-500">
+          <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto text-xs text-slate-500">
             <button
               onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-              className="flex items-center gap-1 px-2 py-1 rounded border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
             >
               <ArrowUpDown className="w-3 h-3" />
               <span>Date ({sortOrder.toUpperCase()})</span>
@@ -388,24 +388,107 @@ export const AdminOverviewPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Approval Queue Data Table */}
-        <div className="overflow-x-auto border rounded-xl border-slate-200 dark:border-slate-800">
-          <table className="w-full text-left text-xs border-collapse">
+        {/* Mobile View: Cards (<640px) */}
+        <div className="block sm:hidden space-y-3">
+          {paginatedApprovals.length > 0 ? (
+            paginatedApprovals.map((app) => (
+              <div
+                key={app.id}
+                className="p-3.5 bg-slate-50/70 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-3"
+              >
+                {/* Top Badge & Status */}
+                <div className="flex items-center justify-between gap-2">
+                  <Badge
+                    variant={
+                      app.type === 'Rank Promotion'
+                        ? 'gold'
+                        : app.type === 'New B4B Coach Onboarding'
+                        ? 'emerald'
+                        : app.type === 'High-Value Draw'
+                        ? 'navy'
+                        : 'primary'
+                    }
+                    size="sm"
+                  >
+                    {app.type}
+                  </Badge>
+                  <Badge variant="amber" size="sm" dot>
+                    {app.status}
+                  </Badge>
+                </div>
+
+                {/* Title & Details */}
+                <div>
+                  <h4 className="font-bold text-xs text-slate-900 dark:text-white leading-snug">
+                    {app.title}
+                  </h4>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                    {app.subtitle}
+                  </p>
+                </div>
+
+                {/* Amount & Date meta info */}
+                <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-200/60 dark:border-slate-800/60">
+                  <div>
+                    <span className="text-slate-400 text-[11px]">Amount: </span>
+                    <span className="font-bold text-slate-800 dark:text-slate-200">
+                      {app.amount || 'N/A'}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 text-[11px]">Date: </span>
+                    <span className="font-medium text-slate-600 dark:text-slate-400">{app.date}</span>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  <Button
+                    size="xs"
+                    variant="outline"
+                    onClick={() => handleReject(app.id, app.title)}
+                    leftIcon={<XCircle className="w-3.5 h-3.5 text-rose-500" />}
+                    className="w-full text-xs border-rose-200 text-rose-600 hover:bg-rose-50 dark:border-rose-900/50 dark:hover:bg-rose-950/30 justify-center"
+                  >
+                    Reject
+                  </Button>
+                  <Button
+                    size="xs"
+                    variant="accent"
+                    onClick={() => handleApprove(app.id, app.title)}
+                    leftIcon={<CheckCircle2 className="w-3.5 h-3.5" />}
+                    className="w-full text-xs justify-center"
+                  >
+                    Approve
+                  </Button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="py-8 text-center text-xs text-slate-500 bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-800">
+              No pending approval items matched your filter criteria.
+            </div>
+          )}
+        </div>
+
+        {/* Desktop View: Data Table (>=640px) */}
+        <div className="hidden sm:block overflow-x-auto border rounded-xl border-slate-200 dark:border-slate-800">
+          <table className="w-full min-w-[680px] text-left text-xs border-collapse">
             <thead>
               <tr className="bg-slate-50 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold">
-                <th className="py-3 px-4">Request Type</th>
+                <th className="py-3 px-4 whitespace-nowrap">Request Type</th>
                 <th className="py-3 px-4">Title & Details</th>
-                <th className="py-3 px-4">Amount</th>
-                <th className="py-3 px-4">Date</th>
-                <th className="py-3 px-4">Status</th>
-                <th className="py-3 px-4 text-right">Actions</th>
+                <th className="py-3 px-4 whitespace-nowrap">Amount</th>
+                <th className="py-3 px-4 whitespace-nowrap">Date</th>
+                <th className="py-3 px-4 whitespace-nowrap">Status</th>
+                <th className="py-3 px-4 text-right whitespace-nowrap">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {paginatedApprovals.length > 0 ? (
                 paginatedApprovals.map((app) => (
                   <tr key={app.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3 px-4">
+                    <td className="py-3 px-4 whitespace-nowrap">
                       <Badge
                         variant={
                           app.type === 'Rank Promotion'
@@ -425,28 +508,28 @@ export const AdminOverviewPage: React.FC = () => {
                       <div className="font-bold text-slate-900 dark:text-white">{app.title}</div>
                       <div className="text-[11px] text-slate-500">{app.subtitle}</div>
                     </td>
-                    <td className="py-3 px-4 font-bold text-slate-800 dark:text-slate-200">
+                    <td className="py-3 px-4 font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap">
                       {app.amount || 'N/A'}
                     </td>
-                    <td className="py-3 px-4 text-slate-500">{app.date}</td>
-                    <td className="py-3 px-4">
+                    <td className="py-3 px-4 text-slate-500 whitespace-nowrap">{app.date}</td>
+                    <td className="py-3 px-4 whitespace-nowrap">
                       <Badge variant="amber" size="sm" dot>
                         {app.status}
                       </Badge>
                     </td>
-                    <td className="py-3 px-4 text-right">
+                    <td className="py-3 px-4 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-2">
                         <Button
-                          size="sm"
+                          size="xs"
                           variant="outline"
                           onClick={() => handleReject(app.id, app.title)}
                           leftIcon={<XCircle className="w-3.5 h-3.5 text-rose-500" />}
-                          className="text-xs border-rose-200 text-rose-600 hover:bg-rose-50"
+                          className="text-xs border-rose-200 text-rose-600 hover:bg-rose-50 dark:border-rose-900/50 dark:hover:bg-rose-950/30"
                         >
                           Reject
                         </Button>
                         <Button
-                          size="sm"
+                          size="xs"
                           variant="accent"
                           onClick={() => handleApprove(app.id, app.title)}
                           leftIcon={<CheckCircle2 className="w-3.5 h-3.5" />}
@@ -470,14 +553,14 @@ export const AdminOverviewPage: React.FC = () => {
         </div>
 
         {/* Pagination Controls */}
-        <div className="flex items-center justify-between pt-2">
-          <div className="text-xs text-slate-500">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+          <div className="text-xs text-slate-500 order-2 sm:order-1">
             Page {currentPage} of {totalPages} ({filteredApprovals.length} total approvals)
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5 order-1 sm:order-2 w-full sm:w-auto justify-between sm:justify-end">
             <Button
               variant="outline"
-              size="sm"
+              size="xs"
               disabled={currentPage === 1}
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               leftIcon={<ChevronLeft className="w-3.5 h-3.5" />}
@@ -486,7 +569,7 @@ export const AdminOverviewPage: React.FC = () => {
             </Button>
             <Button
               variant="outline"
-              size="sm"
+              size="xs"
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               rightIcon={<ChevronRight className="w-3.5 h-3.5" />}
@@ -498,31 +581,31 @@ export const AdminOverviewPage: React.FC = () => {
       </Card>
 
       {/* RECENT ADMIN AUDIT & SYSTEM ACTIVITY FEED */}
-      <Card variant="bento" className="p-5 space-y-4">
+      <Card variant="bento" className="p-4 sm:p-5 space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Activity className="w-4 h-4 text-emerald-500" />
-            <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white">
+            <Activity className="w-4 h-4 text-emerald-500 shrink-0" />
+            <h3 className="text-sm sm:text-base font-bold font-heading text-slate-900 dark:text-white">
               Recent Admin Audit & System Feed
             </h3>
           </div>
-          <Badge variant="navy" size="sm">
+          <Badge variant="navy" size="sm" className="shrink-0">
             Live Audit Log
           </Badge>
         </div>
 
         <div className="divide-y divide-slate-100 dark:divide-slate-800">
           {ADMIN_ACTIVITY_FEED.map((act) => (
-            <div key={act.id} className="py-3 flex items-start justify-between gap-3 text-xs">
-              <div className="flex items-start gap-3">
+            <div key={act.id} className="py-3 flex items-start justify-between gap-2.5 sm:gap-3 text-xs">
+              <div className="flex items-start gap-2.5 sm:gap-3 min-w-0">
                 <Avatar src={act.avatar} name={act.user} size="sm" />
-                <div>
+                <div className="min-w-0 leading-relaxed">
                   <span className="font-bold text-slate-900 dark:text-white">{act.user} </span>
                   <span className="text-slate-600 dark:text-slate-400">{act.action} </span>
                   <span className="font-bold text-blue-600 dark:text-blue-400">{act.target}</span>
                 </div>
               </div>
-              <span className="text-slate-400 shrink-0 text-[11px]">{act.timestamp}</span>
+              <span className="text-slate-400 shrink-0 text-[11px] whitespace-nowrap">{act.timestamp}</span>
             </div>
           ))}
         </div>
@@ -614,7 +697,7 @@ export const AdminOverviewPage: React.FC = () => {
       >
         <div className="space-y-4 text-xs text-left">
           <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#0B4A3A] max-h-[55vh] overflow-y-auto custom-scrollbar">
-            <table className="w-full text-left border-collapse text-xs">
+            <table className="w-full min-w-[620px] text-left border-collapse text-xs">
               <thead className="sticky top-0 bg-slate-100 dark:bg-[#06201A] border-b border-slate-200 dark:border-[#0B4A3A] text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
                 <tr>
                   <th className="p-3 w-20">Rank</th>
