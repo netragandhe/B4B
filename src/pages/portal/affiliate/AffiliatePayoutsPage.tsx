@@ -109,8 +109,8 @@ export const AffiliatePayoutsPage: React.FC = () => {
             <Button
               size="sm"
               onClick={() => setIsModalOpen(true)}
-              leftIcon={<ArrowDownRight className="w-4 h-4 text-[#06201A]" />}
-              className="bg-[#C8793A] hover:bg-[#b56b30] text-[#06201A] font-extrabold shadow-md border border-[#96521E]/30 px-4 py-2 cursor-pointer !opacity-100 transition-all hover:scale-[1.02]"
+              leftIcon={<ArrowDownRight className="w-4 h-4 text-[#07142B]" />}
+              className="bg-[#FFC911] hover:bg-amber-400 text-[#07142B] font-extrabold shadow-md border border-amber-500/30 px-4 py-2 cursor-pointer !opacity-100 transition-all hover:scale-[1.02]"
             >
               Request Payout
             </Button>

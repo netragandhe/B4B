@@ -235,8 +235,8 @@ export const PortalDashboardPage: React.FC = () => {
                 step.status === 'completed'
                   ? 'bg-emerald-50/70 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800/80 text-emerald-900 dark:text-emerald-300'
                   : step.status === 'active'
-                  ? 'bg-[#0E7A5A]/10 dark:bg-[#0B4A3A]/40 border-[#0E7A5A] text-[#06201A] dark:text-[#E6F0EC] ring-2 ring-[#0E7A5A]/30'
-                  : 'bg-slate-50 dark:bg-[#0B4A3A]/20 border-slate-200 dark:border-slate-800 text-slate-400'
+                  ? 'bg-blue-50/80 dark:bg-[#162E5A]/50 border-[#013CA0] text-[#07142B] dark:text-white ring-2 ring-[#013CA0]/30 font-semibold'
+                  : 'bg-slate-50 dark:bg-[#162E5A]/20 border-slate-200 dark:border-slate-800 text-slate-400'
               }`}
             >
               <div className="flex items-center justify-between text-[10px] font-extrabold uppercase mb-1">
@@ -244,7 +244,7 @@ export const PortalDashboardPage: React.FC = () => {
                 {step.status === 'completed' ? (
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                 ) : step.status === 'active' ? (
-                  <span className="w-2 h-2 rounded-full bg-[#0E7A5A] animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-[#FFC911] animate-pulse" />
                 ) : null}
               </div>
               <h4 className="text-xs font-bold truncate">{step.label}</h4>
@@ -286,8 +286,8 @@ export const PortalDashboardPage: React.FC = () => {
                   <div
                     className={`h-full rounded-full transition-all duration-500 ${
                       service.progress === 100
-                        ? 'bg-emerald-500'
-                        : 'bg-gradient-to-r from-[#0E7A5A] to-[#0B4A3A]'
+                        ? 'bg-[#013CA0]'
+                        : 'bg-gradient-to-r from-[#013CA0] to-[#FFC911]'
                     }`}
                     style={{ width: `${service.progress}%` }}
                   />
@@ -305,7 +305,7 @@ export const PortalDashboardPage: React.FC = () => {
             </h3>
             <Link
               to="/portal/advisory"
-              className="text-xs font-semibold text-[#0E7A5A] dark:text-[#C8793A] hover:underline flex items-center gap-1"
+              className="text-xs font-semibold text-[#013CA0] dark:text-[#FFC911] hover:underline flex items-center gap-1"
             >
               <span>View Advisory Desk</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -314,7 +314,7 @@ export const PortalDashboardPage: React.FC = () => {
 
           <div className="grid grid-cols-1 gap-4">
             {/* UPCOMING COACH CALL CARD */}
-            <Card variant="default" className="p-4 bg-gradient-to-br from-emerald-50/60 to-slate-50 dark:from-[#0B4A3A]/40 dark:to-[#06201A] border border-slate-200 dark:border-[#0B4A3A]">
+            <Card variant="default" className="p-4 bg-gradient-to-br from-blue-50/60 to-slate-50 dark:from-[#162E5A]/40 dark:to-[#07142B] border border-slate-200 dark:border-[#1E3A6E]">
               <div className="flex items-start gap-3">
                 <Avatar
                   src={CONSULTATION_SESSIONS[0].advisorAvatar}
@@ -335,14 +335,14 @@ export const PortalDashboardPage: React.FC = () => {
                     Topic: {CONSULTATION_SESSIONS[0].topic}
                   </p>
 
-                  <div className="mt-3 pt-2.5 border-t border-emerald-200/50 dark:border-[#0B4A3A] flex items-center justify-between">
+                  <div className="mt-3 pt-2.5 border-t border-blue-100 dark:border-[#1E3A6E] flex items-center justify-between">
                     <span className="text-[11px] text-slate-500">Zoom Room Ready</span>
                     <Button
                       size="sm"
                       variant="accent"
                       onClick={() => toast({ title: 'Video Conference Initialized', description: 'Joining Zoom Advisory Room.', type: 'info' })}
                       leftIcon={<Video className="w-3.5 h-3.5" />}
-                      className="h-7 text-xs bg-[#C8793A] text-[#06201A] hover:opacity-95"
+                      className="h-7 text-xs bg-[#FFC911] hover:bg-amber-400 text-[#07142B] font-bold cursor-pointer"
                     >
                       Join Advisory Call
                     </Button>
@@ -353,16 +353,16 @@ export const PortalDashboardPage: React.FC = () => {
 
             {/* RECENT MESSAGE CHAT SNIPPET */}
             <Card variant="bento" className="p-4 space-y-3">
-              <div className="flex items-center justify-between text-xs font-bold text-slate-900 dark:text-white pb-2 border-b border-slate-100 dark:border-[#0B4A3A]">
+              <div className="flex items-center justify-between text-xs font-bold text-slate-900 dark:text-white pb-2 border-b border-slate-100 dark:border-[#1E3A6E]">
                 <span className="flex items-center gap-1.5">
-                  <MessageSquare className="w-4 h-4 text-[#0E7A5A]" />
+                  <MessageSquare className="w-4 h-4 text-[#013CA0] dark:text-[#FFC911]" />
                   <span>Recent Advisory Chat</span>
                 </span>
                 <span className="text-[10px] text-slate-400">25 mins ago</span>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#0B4A3A]/30 text-xs space-y-1">
-                <span className="font-bold text-[#0E7A5A] dark:text-[#C8793A]">David Ross (Fractional CFO):</span>
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#162E5A]/30 text-xs space-y-1">
+                <span className="font-bold text-[#013CA0] dark:text-[#FFC911]">David Ross (Fractional CFO):</span>
                 <p className="text-slate-600 dark:text-slate-300">
                   "Marcus, I uploaded the revised 13-week cash model into eBOX. We're on track for the Q4 expansion draw."
                 </p>
@@ -399,17 +399,17 @@ export const PortalDashboardPage: React.FC = () => {
                 <RechartsTooltip
                   formatter={(value: any) => [`$${Number(value).toLocaleString()}`, '']}
                   contentStyle={{
-                    backgroundColor: '#06201A',
+                    backgroundColor: '#07142B',
                     borderRadius: '10px',
-                    border: '1px solid #0B4A3A',
+                    border: '1px solid #1E3A6E',
                     color: '#fff',
                     fontSize: '12px',
                   }}
                 />
                 <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-                <Bar dataKey="revenue" name="Gross Revenue" fill="#0E7A5A" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="revenue" name="Gross Revenue" fill="#013CA0" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="expenses" name="Operating Expenses" fill="#64748B" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="netProfit" name="Net Cash Margin" fill="#10B981" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="netProfit" name="Net Cash Margin" fill="#FFC911" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -424,7 +424,7 @@ export const PortalDashboardPage: React.FC = () => {
               </h3>
               <p className="text-xs text-slate-500">Rolling weekly net liquidity position.</p>
             </div>
-            <span className="text-xs font-bold text-[#0E7A5A] dark:text-[#C8793A]">
+            <span className="text-xs font-bold text-[#013CA0] dark:text-[#FFC911]">
               CFO Verified
             </span>
           </div>
@@ -434,12 +434,12 @@ export const PortalDashboardPage: React.FC = () => {
               <AreaChart data={CASH_FLOW_FORECAST} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorInflow" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10B981" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#10B981" stopOpacity={0.0} />
+                    <stop offset="5%" stopColor="#013CA0" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#013CA0" stopOpacity={0.0} />
                   </linearGradient>
                   <linearGradient id="colorOutflow" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#C8793A" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#C8793A" stopOpacity={0.0} />
+                    <stop offset="5%" stopColor="#FFC911" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#FFC911" stopOpacity={0.0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
@@ -448,9 +448,9 @@ export const PortalDashboardPage: React.FC = () => {
                 <RechartsTooltip
                   formatter={(value: any) => [`$${Number(value).toLocaleString()}`, '']}
                   contentStyle={{
-                    backgroundColor: '#06201A',
+                    backgroundColor: '#07142B',
                     borderRadius: '10px',
-                    border: '1px solid #0B4A3A',
+                    border: '1px solid #1E3A6E',
                     color: '#fff',
                     fontSize: '12px',
                   }}

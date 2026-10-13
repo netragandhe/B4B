@@ -89,13 +89,13 @@ export const Forbidden403Page: React.FC<Forbidden403Props> = ({
       />
 
       <div className="max-w-xl w-full text-center space-y-6 animate-scaleUp">
-        <div className="p-4 rounded-3xl bg-amber-100 dark:bg-amber-950/60 text-[#C8793A] w-fit mx-auto shadow-xl ring-8 ring-amber-50 dark:ring-amber-950/20">
+        <div className="p-4 rounded-3xl bg-[#FFC911]/15 text-[#FFC911] w-fit mx-auto shadow-xl ring-8 ring-[#FFC911]/10">
           <ShieldAlert className="w-14 h-14" />
         </div>
 
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950/80 text-[#C8793A] text-xs font-extrabold uppercase tracking-wider">
-            <KeyRound className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFC911]/15 text-[#07142B] dark:text-[#FFC911] text-xs font-extrabold uppercase tracking-wider border border-[#FFC911]/30">
+            <KeyRound className="w-3.5 h-3.5 text-[#FFC911]" />
             <span>Role Switch Required</span>
           </div>
 
@@ -103,19 +103,19 @@ export const Forbidden403Page: React.FC<Forbidden403Props> = ({
             Dashboard Role Mismatch
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-md mx-auto">
-            You are logged in as <strong className="text-slate-900 dark:text-white font-bold">{user?.role || 'Guest'}</strong>, but this page requires <strong className="text-[#0E7A5A] font-bold">{targetRole}</strong> role permissions.
+            You are logged in as <strong className="text-slate-900 dark:text-white font-bold">{user?.role || 'Guest'}</strong>, but this page requires <strong className="text-[#013CA0] dark:text-[#FFC911] font-bold">{targetRole}</strong> role permissions.
           </p>
         </div>
 
         {/* 1-Click Instant Role Switch CTA Button */}
-        <div className="p-4 rounded-2xl bg-[#0E7A5A]/10 dark:bg-[#0B4A3A]/30 border border-[#0E7A5A]/30 dark:border-[#0B4A3A] space-y-3">
-          <div className="text-xs font-bold text-[#0E7A5A] dark:text-[#10B981]">
+        <div className="p-4 rounded-2xl bg-blue-50/80 dark:bg-[#162E5A]/40 border border-blue-200 dark:border-[#1E3A6E] space-y-3">
+          <div className="text-xs font-bold text-[#013CA0] dark:text-[#FFC911]">
             Switch role to access this dashboard directly:
           </div>
           <Button
             size="md"
             onClick={() => handleSwitchAndOpen(targetRole)}
-            className="w-full justify-center font-bold bg-[#0E7A5A] hover:bg-[#0B4A3A] text-white shadow-lg shadow-emerald-950/30 cursor-pointer text-xs sm:text-sm py-2.5"
+            className="w-full justify-center font-bold bg-[#013CA0] hover:bg-[#07142B] text-white shadow-lg shadow-blue-950/30 cursor-pointer text-xs sm:text-sm py-2.5 border border-[#FFC911]/40"
           >
             Switch to {targetRole} & Continue
           </Button>
@@ -123,32 +123,32 @@ export const Forbidden403Page: React.FC<Forbidden403Props> = ({
 
         <Card
           variant="default"
-          className="p-5 bg-white dark:bg-[#06201A] border border-slate-200 dark:border-[#0B4A3A] text-xs text-slate-600 dark:text-slate-300 space-y-3 text-left shadow-sm rounded-2xl"
+          className="p-5 bg-white dark:bg-[#0D2147] border border-slate-200 dark:border-[#1E3A6E] text-xs text-slate-600 dark:text-slate-300 space-y-3 text-left shadow-sm rounded-2xl"
         >
-          <div className="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-[#0B4A3A]">
+          <div className="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-[#1E3A6E]">
             <span className="font-semibold text-slate-400">Authenticated User</span>
             <span className="font-bold text-slate-900 dark:text-white truncate max-w-[200px]">
               {user?.name || 'Anonymous Session'}
             </span>
           </div>
 
-          <div className="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-[#0B4A3A]">
+          <div className="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-[#1E3A6E]">
             <span className="font-semibold text-slate-400">Current Role</span>
             <Badge variant="navy" size="sm">
               {user?.role || 'Guest'}
             </Badge>
           </div>
 
-          <div className="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-[#0B4A3A]">
+          <div className="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-[#1E3A6E]">
             <span className="font-semibold text-slate-400">Attempted Route</span>
-            <span className="font-mono text-[11px] text-[#0E7A5A] dark:text-[#10B981] bg-[#0E7A5A]/10 dark:bg-[#0B4A3A]/60 px-2 py-0.5 rounded truncate max-w-[220px]">
+            <span className="font-mono text-[11px] text-[#013CA0] dark:text-[#FFC911] bg-blue-100/70 dark:bg-[#162E5A] px-2 py-0.5 rounded truncate max-w-[220px]">
               {location.pathname}
             </span>
           </div>
 
           <div className="flex items-center justify-between pt-1">
             <span className="font-semibold text-slate-400">Required Role</span>
-            <span className="font-mono text-[#0E7A5A] dark:text-[#10B981] font-bold">
+            <span className="font-mono text-[#013CA0] dark:text-[#FFC911] font-bold">
               {targetRole}
             </span>
           </div>
@@ -171,8 +171,8 @@ export const Forbidden403Page: React.FC<Forbidden403Props> = ({
                 }}
                 className={`p-2.5 rounded-xl border text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
                   user?.role === item.role
-                    ? 'bg-[#0E7A5A] text-white border-[#0E7A5A]'
-                    : 'bg-slate-50 dark:bg-[#0B2B22] border-slate-200 dark:border-[#0B4A3A] text-slate-700 dark:text-slate-300 hover:border-[#0E7A5A]'
+                    ? 'bg-[#013CA0] text-white border-[#013CA0] font-bold border-l-4 border-l-[#FFC911]'
+                    : 'bg-slate-50 dark:bg-[#162E5A]/40 border-slate-200 dark:border-[#1E3A6E] text-slate-700 dark:text-slate-300 hover:border-[#013CA0]'
                 }`}
               >
                 <span>{item.icon}</span>
@@ -183,14 +183,14 @@ export const Forbidden403Page: React.FC<Forbidden403Props> = ({
         </div>
 
         <div className="flex items-center justify-center gap-3 pt-2">
-          <Button variant="outline" size="sm" onClick={() => navigate(-1)} className="font-semibold">
+          <Button variant="outline" size="sm" onClick={() => navigate(-1)} className="font-semibold cursor-pointer">
             <ArrowLeft className="w-4 h-4 mr-1.5" /> Go Back
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => navigate(getDashboardPath())}
-            className="font-bold border-slate-300 dark:border-[#0B4A3A] text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#0B4A3A]"
+            className="font-bold border-slate-300 dark:border-[#1E3A6E] text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#162E5A] cursor-pointer"
           >
             <LayoutDashboard className="w-4 h-4 mr-1.5" /> Return to My Dashboard
           </Button>

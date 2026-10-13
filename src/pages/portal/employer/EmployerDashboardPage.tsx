@@ -137,12 +137,12 @@ export const EmployerDashboardPage: React.FC = () => {
               <AreaChart data={performanceData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0E7A5A" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#0E7A5A" stopOpacity={0.0} />
+                    <stop offset="5%" stopColor="#013CA0" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#013CA0" stopOpacity={0.0} />
                   </linearGradient>
                   <linearGradient id="colorApps" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#C8793A" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#C8793A" stopOpacity={0.0} />
+                    <stop offset="5%" stopColor="#FFC911" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#FFC911" stopOpacity={0.0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
@@ -150,15 +150,15 @@ export const EmployerDashboardPage: React.FC = () => {
                 <YAxis stroke="#94A3B8" fontSize={11} />
                 <RechartsTooltip
                   contentStyle={{
-                    backgroundColor: '#06201A',
+                    backgroundColor: '#07142B',
                     borderRadius: '10px',
-                    border: '1px solid #0B4A3A',
+                    border: '1px solid #1E3A6E',
                     color: '#fff',
                     fontSize: '12px',
                   }}
                 />
-                <Area type="monotone" dataKey="views" name="Job Views" stroke="#0E7A5A" strokeWidth={2} fill="url(#colorViews)" />
-                <Area type="monotone" dataKey="applications" name="Applications" stroke="#C8793A" strokeWidth={2} fill="url(#colorApps)" />
+                <Area type="monotone" dataKey="views" name="Job Views" stroke="#013CA0" strokeWidth={2} fill="url(#colorViews)" />
+                <Area type="monotone" dataKey="applications" name="Applications" stroke="#FFC911" strokeWidth={2} fill="url(#colorApps)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>

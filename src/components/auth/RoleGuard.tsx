@@ -91,7 +91,7 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({
   if (neededRole) {
     return (
       <div className="min-h-[50vh] flex flex-col items-center justify-center space-y-3 p-8 text-center animate-fadeIn">
-        <div className="w-9 h-9 border-3 border-[#0E7A5A] border-t-transparent rounded-full animate-spin" />
+        <div className="w-9 h-9 border-3 border-[#013CA0] border-t-[#FFC911] rounded-full animate-spin" />
         <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
           Switching workspace to {neededRole}...
         </span>

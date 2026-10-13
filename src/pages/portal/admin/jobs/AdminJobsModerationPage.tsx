@@ -235,7 +235,7 @@ export const AdminJobsModerationPage: React.FC = () => {
             <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">
               Total Listings
             </p>
-            <p className="text-2xl font-extrabold text-[#06201A] font-mono">
+            <p className="text-2xl font-extrabold text-[#07142B] font-mono">
               {jobs.length}
             </p>
           </div>
@@ -254,16 +254,16 @@ export const AdminJobsModerationPage: React.FC = () => {
           <Clock className="w-8 h-8 text-amber-400" />
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-[#0E7A5A]/30 shadow-xs flex items-center justify-between bg-[#0E7A5A]/5">
+        <div className="bg-white p-4 rounded-xl border border-[#013CA0]/30 shadow-xs flex items-center justify-between bg-blue-50/40">
           <div>
-            <p className="text-xs text-[#0E7A5A] font-bold uppercase tracking-wider">
+            <p className="text-xs text-[#013CA0] font-bold uppercase tracking-wider">
               Approved (Live)
             </p>
-            <p className="text-2xl font-extrabold text-[#0E7A5A] font-mono">
+            <p className="text-2xl font-extrabold text-[#013CA0] font-mono">
               {approvedCount}
             </p>
           </div>
-          <CheckCircle2 className="w-8 h-8 text-[#0E7A5A]/40" />
+          <CheckCircle2 className="w-8 h-8 text-[#013CA0]/40" />
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-red-200 shadow-xs flex items-center justify-between bg-red-50/30">
@@ -295,7 +295,7 @@ export const AdminJobsModerationPage: React.FC = () => {
                 onClick={() => setStatusFilter(tab.id as any)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                   statusFilter === tab.id
-                    ? 'bg-[#0E7A5A] text-white shadow-xs'
+                    ? 'bg-[#013CA0] text-white shadow-xs'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                 }`}
               >
@@ -312,7 +312,7 @@ export const AdminJobsModerationPage: React.FC = () => {
               placeholder="Search title, company, city..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#0E7A5A] text-slate-800"
+              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#013CA0] text-slate-800"
             />
           </div>
         </div>
@@ -346,7 +346,7 @@ export const AdminJobsModerationPage: React.FC = () => {
                     <span
                       className={`text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded-full border ${
                         job.status === 'approved'
-                          ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                          ? 'bg-blue-50 text-[#013CA0] border-blue-200'
                           : job.status === 'pending'
                           ? 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
                           : 'bg-red-50 text-red-800 border-red-300'
@@ -376,7 +376,7 @@ export const AdminJobsModerationPage: React.FC = () => {
                     </span>
                   </div>
 
-                  <h3 className="text-base font-bold font-heading text-[#06201A]">
+                  <h3 className="text-base font-bold font-heading text-[#07142B]">
                     {job.title}
                   </h3>
 
@@ -393,8 +393,8 @@ export const AdminJobsModerationPage: React.FC = () => {
                       </span>
                     </span>
 
-                    <span className="flex items-center gap-1 font-mono text-[#C8793A] font-bold">
-                      <DollarSign className="w-3.5 h-3.5 text-[#C8793A]" />
+                    <span className="flex items-center gap-1 font-mono text-[#013CA0] font-bold">
+                      <DollarSign className="w-3.5 h-3.5 text-[#013CA0]" />
                       <span>{job.salary}</span>
                     </span>
 
@@ -423,7 +423,7 @@ export const AdminJobsModerationPage: React.FC = () => {
                     <button
                       onClick={() => handleApprove(job)}
                       disabled={isProcessing}
-                      className="px-3.5 py-1.5 rounded-lg bg-[#0E7A5A] hover:bg-[#0B4A3A] text-white text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer shadow-xs"
+                      className="px-3.5 py-1.5 rounded-lg bg-[#013CA0] hover:bg-[#07142B] text-white text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer shadow-xs"
                       title="Approve and publish to public search"
                     >
                       <CheckCircle2 className="w-3.5 h-3.5" />

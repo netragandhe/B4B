@@ -149,8 +149,8 @@ export const AffiliateSubmitLeadPage: React.FC = () => {
             <Button
               type="submit"
               size="md"
-              className="w-full bg-[#C8793A] hover:bg-[#b56b30] text-[#06201A] font-extrabold shadow-md border border-[#96521E]/30 cursor-pointer !opacity-100 py-3 rounded-xl transition-all hover:scale-[1.01]"
-              leftIcon={<Send className="w-4 h-4 text-[#06201A]" />}
+              className="w-full bg-[#013CA0] hover:bg-[#07142B] text-white font-extrabold shadow-md border border-[#FFC911]/40 cursor-pointer !opacity-100 py-3 rounded-xl transition-all hover:scale-[1.01]"
+              leftIcon={<Send className="w-4 h-4 text-[#FFC911]" />}
             >
               Submit Lead for Qualification
             </Button>
