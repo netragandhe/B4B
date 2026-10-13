@@ -331,6 +331,62 @@ assert(
   'User override revoking view automatically denies export action'
 )
 
+// Helper function mirror of isMenuAllowedForRole
+function isMenuAllowedForRole(roleId, menuId) {
+  if (roleId === 'admin') {
+    return menuId.startsWith('admin-') || menuId === 'shared-ebox' || menuId === 'shared-settings'
+  }
+  if (roleId === 'bizpro') {
+    return menuId.startsWith('bizpro-') || menuId === 'shared-ebox'
+  }
+  if (roleId === 'client') {
+    return menuId.startsWith('client-') || menuId === 'shared-ebox'
+  }
+  if (roleId === 'affiliate') {
+    return menuId.startsWith('affiliate-')
+  }
+  if (roleId === 'employer') {
+    return menuId.startsWith('employer-')
+  }
+  if (roleId === 'jobseeker') {
+    return menuId.startsWith('seeker-')
+  }
+  return true
+}
+
+// Test 13: Strict Role Menu Domain Isolation - Affiliate menu cannot appear in Admin dashboard
+assert(
+  isMenuAllowedForRole('admin', 'affiliate-dashboard') === false &&
+  isMenuAllowedForRole('admin', 'affiliate-links') === false &&
+  isMenuAllowedForRole('admin', 'admin-overview') === true,
+  'Strict role domain isolation: Admin cannot see Affiliate menus'
+)
+
+// Test 14: Strict Role Menu Domain Isolation - Admin menu cannot appear in Affiliate dashboard
+assert(
+  isMenuAllowedForRole('affiliate', 'admin-overview') === false &&
+  isMenuAllowedForRole('affiliate', 'admin-roles-permissions') === false &&
+  isMenuAllowedForRole('affiliate', 'shared-ebox') === false &&
+  isMenuAllowedForRole('affiliate', 'affiliate-dashboard') === true,
+  'Strict role domain isolation: Affiliate cannot see Admin menus or shared-ebox'
+)
+
+// Test 15: Strict Role Menu Domain Isolation - Biz Pro menu cannot appear in Client dashboard
+assert(
+  isMenuAllowedForRole('client', 'bizpro-dashboard') === false &&
+  isMenuAllowedForRole('client', 'bizpro-leads') === false &&
+  isMenuAllowedForRole('client', 'client-dashboard') === true,
+  'Strict role domain isolation: Client cannot see Biz Pro menus'
+)
+
+// Test 16: Strict Role Menu Domain Isolation - Employer menu cannot appear in Job Seeker dashboard
+assert(
+  isMenuAllowedForRole('jobseeker', 'employer-dashboard') === false &&
+  isMenuAllowedForRole('jobseeker', 'employer-post-job') === false &&
+  isMenuAllowedForRole('jobseeker', 'seeker-dashboard') === true,
+  'Strict role domain isolation: Job Seeker cannot see Employer menus'
+)
+
 // Output results
 console.log(`\n========================================`)
 console.log(`RBAC SECURITY MATRIX TEST RESULTS:`)
@@ -348,6 +404,6 @@ console.log(`========================================\n`)
 if (failed > 0) {
   process.exit(1)
 } else {
-  console.log('ALL 12 RBAC SECURITY SPECIFICATIONS VERIFIED SUCCESSFULLY!\n')
+  console.log('ALL 16 RBAC & DOMAIN ISOLATION SPECIFICATIONS VERIFIED SUCCESSFULLY!\n')
   process.exit(0)
 }

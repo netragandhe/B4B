@@ -88,14 +88,14 @@ export const JobPostPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#EEF1EC] text-[#14231E] font-body transition-colors">
+    <div className="min-h-screen bg-[#E9EDF4] text-[#14233B] font-body transition-colors">
       <SEOHead
         title="Post a Job | B4B America Job Finder"
         description="Post a verified small business job listing. Reach talented professionals across 12 federal reserve territory divisions."
       />
 
-      {/* Header Banner: Forest Black */}
-      <section className="bg-[#06201A] text-white pt-10 pb-16 px-4 border-b border-[#0B4A3A]">
+      {/* Header Banner: Midnight Navy */}
+      <section className="bg-[#07142B] text-white pt-10 pb-16 px-4 border-b border-[#0D2147]">
         <div className="max-w-5xl mx-auto space-y-4">
           <Breadcrumb
             items={[
@@ -106,13 +106,13 @@ export const JobPostPage: React.FC = () => {
           />
 
           <div className="space-y-2">
-            <span className="text-xs font-mono uppercase font-bold tracking-wider text-[#C8793A]">
+            <span className="text-xs font-mono uppercase font-bold tracking-wider text-[#F8C61A]">
               Employer & Recruiter Portal
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-heading text-white tracking-tight">
               Post a Job on B4B America
             </h1>
-            <p className="text-sm sm:text-base text-[#B9CBC3] max-w-2xl font-body">
+            <p className="text-sm sm:text-base text-[#B8C4D9] max-w-2xl font-body">
               Client Rule: All user-submitted listings go through our Admin Moderation queue for review and approval before appearing in public searches.
             </p>
           </div>
@@ -122,17 +122,17 @@ export const JobPostPage: React.FC = () => {
       {/* Form Content */}
       <main className="max-w-4xl mx-auto px-4 -mt-8 pb-20">
         {submittedJob ? (
-          <div className="bg-white rounded-2xl p-8 sm:p-12 shadow-xl border border-[#0B4A3A]/20 text-center space-y-6">
-            <div className="w-16 h-16 rounded-full bg-[#0E7A5A]/10 text-[#0E7A5A] flex items-center justify-center mx-auto border border-[#0E7A5A]/30">
-              <CheckCircle2 className="w-10 h-10 text-[#0E7A5A]" />
+          <div className="bg-white rounded-2xl p-8 sm:p-12 shadow-xl border border-slate-200 text-center space-y-6">
+            <div className="w-16 h-16 rounded-full bg-[#0C43A3]/10 text-[#0C43A3] flex items-center justify-center mx-auto border border-[#0C43A3]/30">
+              <CheckCircle2 className="w-10 h-10 text-[#0C43A3]" />
             </div>
 
             <div className="space-y-2 max-w-lg mx-auto">
-              <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-[#06201A]">
+              <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-[#07142B]">
                 Listing Submitted Successfully!
               </h2>
-              <p className="text-[#14231E]/80 text-sm leading-relaxed">
-                Your post for <strong className="text-[#06201A]">"{submittedJob.title}"</strong> has been queued with status <span className="px-2 py-0.5 rounded-md font-mono text-xs font-bold bg-[#C8793A]/20 text-[#06201A] border border-[#C8793A]/40">PENDING APPROVAL</span>.
+              <p className="text-[#14233B]/80 text-sm leading-relaxed">
+                Your post for <strong className="text-[#07142B]">"{submittedJob.title}"</strong> has been queued with status <span className="px-2 py-0.5 rounded-md font-mono text-xs font-bold bg-[#0C43A3]/10 text-[#0C43A3] border border-[#0C43A3]/30">PENDING APPROVAL</span>.
               </p>
               <p className="text-xs text-slate-500 pt-2">
                 An administrator will review your submission in the portal moderation queue. Once approved, it will be instantly searchable across all 12 territory divisions.
@@ -155,7 +155,7 @@ export const JobPostPage: React.FC = () => {
                     contactEmail: '',
                   })
                 }}
-                className="btn-emerald-light"
+                className="btn-blue-light"
               >
                 <span>Post Another Job</span>
                 <ArrowRight className="w-4 h-4 text-white" />
@@ -167,7 +167,7 @@ export const JobPostPage: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl p-6 sm:p-10 shadow-xl border border-[#0B4A3A]/20 space-y-8">
+          <div className="bg-white rounded-2xl p-6 sm:p-10 shadow-xl border border-slate-200 space-y-8">
             {errorMessage && (
               <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 flex items-center gap-3 text-sm">
                 <ShieldAlert className="w-5 h-5 text-red-600 shrink-0" />
@@ -211,7 +211,7 @@ export const JobPostPage: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField label="Category" required helperText="Select closest industry sector">
                   <select
-                    className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0E7A5A]"
+                    className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0C43A3]"
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                     required
@@ -226,7 +226,7 @@ export const JobPostPage: React.FC = () => {
 
                 <FormField label="Job Type" required helperText="Employment arrangement">
                   <select
-                    className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0E7A5A]"
+                    className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0C43A3]"
                     value={formData.jobType}
                     onChange={(e) =>
                       setFormData({
@@ -333,7 +333,7 @@ export const JobPostPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn-emerald-light w-full sm:w-auto"
+                  className="btn-blue-light w-full sm:w-auto"
                 >
                   <span>{isSubmitting ? 'Submitting...' : 'Submit Job for Approval'}</span>
                   <ArrowRight className="w-4 h-4 text-white" />

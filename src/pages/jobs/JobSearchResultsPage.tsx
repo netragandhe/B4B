@@ -155,14 +155,14 @@ export const JobSearchResultsPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#EEF1EC] text-[#14231E] font-body transition-colors">
+    <div className="min-h-screen bg-[#E9EDF4] text-[#14233B] font-body transition-colors">
       <SEOHead
         title="Search Jobs | B4B America Talent Exchange"
         description="Filter and search verified small business jobs, sales opportunities, and executive positions across 12 federal reserve territory divisions."
       />
 
-      {/* Header Search Band: Forest Black */}
-      <section className="bg-[#06201A] text-white pt-8 pb-12 px-4 border-b border-[#0B4A3A]">
+      {/* Header Search Band: Midnight Navy */}
+      <section className="bg-[#07142B] text-white pt-8 pb-12 px-4 border-b border-[#0D2147]">
         <div className="max-w-7xl mx-auto space-y-6">
           <Breadcrumb
             items={[
@@ -174,7 +174,7 @@ export const JobSearchResultsPage: React.FC = () => {
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div className="space-y-1">
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#C8793A]">
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#F8C61A]">
                 Public Career Database
               </span>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-heading text-white tracking-tight">
@@ -182,8 +182,8 @@ export const JobSearchResultsPage: React.FC = () => {
               </h1>
             </div>
 
-            <Link to="/jobs/post" className="btn-copper-dark inline-flex self-start md:self-auto text-xs py-2.5">
-              <PlusCircle className="w-4 h-4 text-[#06201A]" />
+            <Link to="/jobs/post" className="btn-gold-dark inline-flex self-start md:self-auto text-xs py-2.5">
+              <PlusCircle className="w-4 h-4 text-[#07142B]" />
               <span>Post a Job Listing</span>
             </Link>
           </div>
@@ -191,7 +191,7 @@ export const JobSearchResultsPage: React.FC = () => {
           {/* Search Bar Inputs */}
           <form
             onSubmit={handleSearchSubmit}
-            className="bg-white p-3 rounded-2xl shadow-xl border border-[#0B4A3A] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center text-slate-800"
+            className="bg-white p-3 rounded-2xl shadow-xl border border-[#0D2147] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center text-slate-800"
           >
             <div className="lg:col-span-3 relative">
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
@@ -200,7 +200,7 @@ export const JobSearchResultsPage: React.FC = () => {
                 placeholder="Keyword, job title, company"
                 value={keywordInput}
                 onChange={(e) => setKeywordInput(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0E7A5A] text-slate-900"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0C43A3] text-slate-900"
               />
             </div>
 
@@ -208,7 +208,7 @@ export const JobSearchResultsPage: React.FC = () => {
               <select
                 value={categoryInput}
                 onChange={(e) => setCategoryInput(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0E7A5A] text-slate-900 bg-white"
+                className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0C43A3] text-slate-900 bg-white"
               >
                 <option value="">All Categories</option>
                 {JOB_CATEGORIES_CLIENT.map((cat) => (
@@ -226,7 +226,7 @@ export const JobSearchResultsPage: React.FC = () => {
                 maxLength={2}
                 value={stateInput}
                 onChange={(e) => setStateInput(e.target.value.toUpperCase())}
-                className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium uppercase focus:outline-none focus:ring-2 focus:ring-[#0E7A5A] text-slate-900"
+                className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium uppercase focus:outline-none focus:ring-2 focus:ring-[#0C43A3] text-slate-900"
               />
             </div>
 
@@ -236,14 +236,14 @@ export const JobSearchResultsPage: React.FC = () => {
                 placeholder="City (e.g. Austin)"
                 value={cityInput}
                 onChange={(e) => setCityInput(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0E7A5A] text-slate-900"
+                className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0C43A3] text-slate-900"
               />
             </div>
 
             <div className="lg:col-span-2">
               <button
                 type="submit"
-                className="w-full py-2.5 px-4 rounded-xl bg-[#0E7A5A] hover:bg-[#0B4A3A] text-white font-extrabold text-sm transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-xl bg-[#0C43A3] hover:bg-[#09327A] text-white font-extrabold text-sm transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Search className="w-4 h-4 text-white" />
                 <span>SEARCH</span>
@@ -262,7 +262,7 @@ export const JobSearchResultsPage: React.FC = () => {
               onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
               className="px-4 py-2 rounded-xl bg-white border border-slate-200 text-sm font-bold flex items-center gap-2 text-slate-800"
             >
-              <SlidersHorizontal className="w-4 h-4 text-[#0E7A5A]" />
+              <SlidersHorizontal className="w-4 h-4 text-[#0C43A3]" />
               <span>{mobileFilterOpen ? 'Hide Filters' : 'Show Filters'}</span>
             </button>
 
@@ -280,7 +280,7 @@ export const JobSearchResultsPage: React.FC = () => {
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-[#0E7A5A]" />
+                  <Filter className="w-4 h-4 text-[#0C43A3]" />
                   <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800 font-heading">
                     Filters
                   </h2>
@@ -288,7 +288,7 @@ export const JobSearchResultsPage: React.FC = () => {
 
                 <button
                   onClick={handleResetFilters}
-                  className="text-xs text-slate-500 hover:text-[#C8793A] font-semibold flex items-center gap-1 cursor-pointer"
+                  className="text-xs text-slate-500 hover:text-[#0C43A3] font-semibold flex items-center gap-1 cursor-pointer"
                 >
                   <RotateCcw className="w-3 h-3" />
                   <span>Reset</span>
@@ -317,7 +317,7 @@ export const JobSearchResultsPage: React.FC = () => {
                         type="checkbox"
                         checked={selectedTypes.includes(type)}
                         onChange={() => toggleJobType(type)}
-                        className="rounded text-[#0E7A5A] focus:ring-[#0E7A5A] h-4 w-4"
+                        className="rounded text-[#0C43A3] focus:ring-[#0C43A3] h-4 w-4"
                       />
                       <span>{type}</span>
                     </label>
@@ -351,7 +351,7 @@ export const JobSearchResultsPage: React.FC = () => {
                           setMinSalaryFilter(bracket.val)
                           setCurrentPage(1)
                         }}
-                        className="text-[#0E7A5A] focus:ring-[#0E7A5A] h-4 w-4"
+                        className="text-[#0C43A3] focus:ring-[#0C43A3] h-4 w-4"
                       />
                       <span>{bracket.label}</span>
                     </label>
@@ -367,7 +367,7 @@ export const JobSearchResultsPage: React.FC = () => {
             <div className="bg-white rounded-xl px-5 py-3 shadow-xs border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <span className="text-xs font-mono font-bold text-slate-700">
                 Showing{' '}
-                <strong className="text-[#06201A]">
+                <strong className="text-[#07142B]">
                   {jobs.length} of {totalJobs}
                 </strong>{' '}
                 approved positions
@@ -381,7 +381,7 @@ export const JobSearchResultsPage: React.FC = () => {
                     setSortBy(e.target.value as any)
                     setCurrentPage(1)
                   }}
-                  className="rounded-lg border border-slate-300 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#0E7A5A]"
+                  className="rounded-lg border border-slate-300 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#0C43A3]"
                 >
                   <option value="newest">Newest Listed</option>
                   <option value="salary_high">Salary (Highest First)</option>
@@ -412,7 +412,7 @@ export const JobSearchResultsPage: React.FC = () => {
                 <p className="text-xs text-slate-500">
                   An error occurred while querying the jobs database.
                 </p>
-                <button onClick={handleResetFilters} className="btn-emerald-light inline-flex text-xs">
+                <button onClick={handleResetFilters} className="btn-blue-light inline-flex text-xs">
                   <span>Reset Search</span>
                 </button>
               </div>
@@ -420,7 +420,7 @@ export const JobSearchResultsPage: React.FC = () => {
               <div className="bg-white rounded-2xl p-12 text-center space-y-5 border border-slate-200 shadow-sm">
                 <Briefcase className="w-12 h-12 text-slate-300 mx-auto" />
                 <div className="space-y-1">
-                  <h3 className="text-lg font-bold text-[#06201A] font-heading">
+                  <h3 className="text-lg font-bold text-[#07142B] font-heading">
                     No matching roles found
                   </h3>
                   <p className="text-xs text-slate-500 max-w-md mx-auto">
@@ -433,7 +433,7 @@ export const JobSearchResultsPage: React.FC = () => {
                     <span>Clear All Filters</span>
                   </button>
 
-                  <Link to="/jobs/post" className="btn-emerald-light text-xs inline-flex">
+                  <Link to="/jobs/post" className="btn-blue-light text-xs inline-flex">
                     <span>Post a New Job</span>
                   </Link>
                 </div>
@@ -444,11 +444,11 @@ export const JobSearchResultsPage: React.FC = () => {
                   <div
                     key={job.id}
                     onClick={() => navigate(`/jobs/${job.id}`)}
-                    className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md border border-slate-200 hover:border-[#0E7A5A] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-6 cursor-pointer group"
+                    className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md border border-slate-200 hover:border-[#0C43A3] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-6 cursor-pointer group"
                   >
                     <div className="space-y-2.5 max-w-2xl">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-[#0E7A5A]/10 text-[#0E7A5A] border border-[#0E7A5A]/30">
+                        <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-[#0C43A3]/10 text-[#0C43A3] border border-[#0C43A3]/30">
                           {job.category}
                         </span>
 
@@ -463,7 +463,7 @@ export const JobSearchResultsPage: React.FC = () => {
                         )}
                       </div>
 
-                      <h3 className="text-lg font-bold font-heading text-[#06201A] group-hover:text-[#0E7A5A] transition-colors leading-snug">
+                      <h3 className="text-lg font-bold font-heading text-[#07142B] group-hover:text-[#0C43A3] transition-colors leading-snug">
                         {job.title}
                       </h3>
 
@@ -480,8 +480,8 @@ export const JobSearchResultsPage: React.FC = () => {
                           </span>
                         </span>
 
-                        <span className="flex items-center gap-1 font-mono text-[#C8793A] font-bold">
-                          <DollarSign className="w-3.5 h-3.5 text-[#C8793A]" />
+                        <span className="flex items-center gap-1 font-mono text-[#0C43A3] font-bold">
+                          <DollarSign className="w-3.5 h-3.5 text-[#0C43A3]" />
                           <span>{job.salary}</span>
                         </span>
                       </div>
@@ -492,7 +492,7 @@ export const JobSearchResultsPage: React.FC = () => {
                     </div>
 
                     <div className="shrink-0 flex sm:flex-col items-center sm:items-end justify-between gap-3 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100">
-                      <button className="btn-emerald-light text-xs py-2 px-4 group-hover:bg-[#0B4A3A]">
+                      <button className="btn-blue-light text-xs py-2 px-4 group-hover:bg-[#09327A]">
                         <span>View Details</span>
                         <ArrowRight className="w-3.5 h-3.5 text-white transition-transform group-hover:translate-x-1" />
                       </button>

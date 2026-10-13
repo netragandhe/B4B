@@ -21,33 +21,24 @@ import {
   ArrowRight,
   PhoneCall,
   CheckCircle2,
-  Sparkles,
-  MapPin,
-  TrendingUp,
-  Cpu,
-  Award,
-  Layers,
-  ChevronRight,
   Building2,
-  Clock,
   Compass,
-  Users,
   Check,
   Activity,
   BarChart3,
   Play,
-  Star,
-  Zap,
-  Sliders,
-  DollarSign,
-  ArrowUpRight,
+  Cpu,
+  Layers,
+  ChevronRight,
+  TrendingUp,
+  UtensilsCrossed,
+  Sparkles,
+  HardHat,
 } from 'lucide-react'
 import '@/components/website/corporateTheme.css'
 import { Navbar } from '@/components/website/Navbar'
 import { Footer } from '@/components/website/Footer'
-import { UsaMapMotif } from '@/components/website/UsaMapMotif'
 import { SearchModal } from '@/components/website/SearchModal'
-import { PhotoBackground } from '@/components/website/PhotoBackground'
 import { CoachRequestModal, CoachLeadForm } from '@/components/forms/CoachRequestModal'
 import { SEOHead } from '@/components/seo/SEOHead'
 import {
@@ -56,9 +47,38 @@ import {
   B4BAPP_SOFTWARE,
   TERRITORY_DIVISIONS,
   INDUSTRIES_SERVED,
-  VERIFIED_STATS,
-  SolutionItem,
 } from '@/content/clientContent'
+import b4bappPreviewImg from '@/content/images/b4bapp-preview.webp'
+import heroBgImg from '@/content/images/hero-bg.webp'
+import industryTruckImg from '@/content/images/industry-truck.webp'
+import { SOLUTION_IMAGES } from '@/content/solutionImages'
+
+const FEATURED_INDUSTRIES = [
+  {
+    id: 'ind-truck',
+    name: 'Freight Trucking & Transportation',
+    image: industryTruckImg,
+    icon: null,
+  },
+  {
+    id: 'ind-restaurant',
+    name: 'Restaurants, Snack Bars, Sports Bars & Lounges',
+    image: null,
+    icon: UtensilsCrossed,
+  },
+  {
+    id: 'ind-salon',
+    name: 'Beauty Salons',
+    image: null,
+    icon: Sparkles,
+  },
+  {
+    id: 'ind-construction',
+    name: 'Construction & Residential Remodelers',
+    image: null,
+    icon: HardHat,
+  },
+]
 
 const iconMap: Record<string, React.ElementType> = {
   CreditCard,
@@ -78,37 +98,6 @@ const iconMap: Record<string, React.ElementType> = {
   BookOpen,
   Globe,
 }
-
-// Client-grounded case studies & testimonials strictly adhering to verified service offerings
-const VERIFIED_CASE_STUDIES = [
-  {
-    quote:
-      'B4B America gave us the exact blueprint to build corporate credit and upgrade our POS terminals. We expanded to 2 new retail stores without taking predatory high-interest debt.',
-    author: 'Mark S.',
-    role: 'Managing Partner',
-    company: 'Precision Trade & Distribution',
-    location: 'Chicago, IL (Division 7)',
-    rating: 5,
-  },
-  {
-    quote:
-      'The B4BAPP CRM and ERP suite streamlined our entire purchase order workflow. Having 1-on-1 guidance from our Division coach gave our leadership complete peace of mind.',
-    author: 'Elena R.',
-    role: 'Operations Director',
-    company: 'Summit Logistics & Fleet',
-    location: 'Dallas, TX (Division 11)',
-    rating: 5,
-  },
-  {
-    quote:
-      'From merchant processing rates to non-dilutive credit lines, having all 16 solutions under one roof is a total game changer for independent commercial operators.',
-    author: 'David K.',
-    role: 'Founder & CEO',
-    company: 'Apex Industrial Services',
-    location: 'Atlanta, GA (Division 6)',
-    rating: 5,
-  },
-]
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate()
@@ -130,7 +119,7 @@ export const HomePage: React.FC = () => {
     TERRITORY_DIVISIONS[0]
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#14231E] transition-colors duration-200 overflow-x-hidden">
+    <div className="min-h-screen bg-[#E9EDF4] text-[#14233B] transition-colors duration-200 overflow-x-hidden font-body">
       {/* Dynamic CSS override for legacy layout headers/footers */}
       <style>{`
         body > #root > .min-h-screen > header.sticky,
@@ -145,262 +134,270 @@ export const HomePage: React.FC = () => {
         description="The Connection for Small Business Solutions. 16 vital solutions for American small businesses: business credit repair, funding lines, merchant payments, custom software, and 1-on-1 coaching across 12 territory divisions."
       />
 
-      {/* Clean Corporate Light Navbar matching the executive platform mockup */}
-      <Navbar variant="light" onOpenCoachModal={() => setCoachModalOpen(true)} />
+      {/* Corporate Navbar: Midnight Navy with White Logo Badge */}
+      <Navbar variant="dark" onOpenCoachModal={() => setCoachModalOpen(true)} />
 
       {/* =========================================================================
-          SECTION 1. HERO: Crisp Technical Light Grid + Executive Cockpit Widget
+          SECTION 1. HERO (DARK BAND: Midnight Navy #07142B)
           ========================================================================= */}
-      <section className="relative pt-10 pb-20 md:pt-16 md:pb-28 bg-[#F8FAFC] border-b border-slate-200/80 overflow-hidden">
+      <section className="relative py-20 bg-[#07142B] text-white border-b border-[#0D2147] overflow-hidden">
+        {/* Background Photo Layer (Eager loaded, object-cover, 70% dark navy overlay) */}
+        <div className="absolute inset-0 pointer-events-none z-0">
+          <img
+            src={heroBgImg}
+            alt="B4B America commercial business commerce operations"
+            loading="eager"
+            decoding="sync"
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-[#07142B] opacity-70" />
+        </div>
+
         {/* Subtle geometric technical dot pattern background */}
         <div
-          className="absolute inset-0 pointer-events-none opacity-40"
+          className="absolute inset-0 pointer-events-none opacity-20 z-[1]"
           style={{
-            backgroundImage: 'radial-gradient(rgba(14, 122, 90, 0.12) 1px, transparent 1px)',
+            backgroundImage: 'radial-gradient(rgba(12, 67, 163, 0.4) 1px, transparent 1px)',
             backgroundSize: '24px 24px',
           }}
         />
 
-        {/* Ambient subtle glow in top corner */}
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-emerald-100/60 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-1/2 -right-32 w-96 h-96 bg-[#C8793A]/10 rounded-full blur-3xl pointer-events-none" />
+        {/* Ambient subtle glows */}
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#0C43A3]/25 rounded-full blur-3xl pointer-events-none z-[1]" />
+        <div className="absolute top-1/2 -right-32 w-96 h-96 bg-[#F8C61A]/10 rounded-full blur-3xl pointer-events-none z-[1]" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             
-            {/* Left Column: Asymmetric, Confident Corporate Typography */}
+            {/* Left Column: Asymmetric Corporate Typography */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: 'easeOut' }}
               className="lg:col-span-7 space-y-6 text-left"
             >
-              {/* Top Pill Badge matching Mockup */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/90 shadow-xs">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#0E7A5A] animate-pulse" />
-                <span className="text-xs font-bold uppercase tracking-wider text-[#0E7A5A] font-mono">
-                  MANUFACTURING & SMALL BUSINESS OPERATING SYSTEM
+              {/* Top Pill Badge */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0D2147] border border-[#0D2147] shadow-xs">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#F8C61A] animate-pulse" />
+                <span className="text-xs font-bold uppercase tracking-wider text-[#F8C61A] font-mono">
+                  NATIONAL SMALL BUSINESS OPERATING NETWORK
                 </span>
               </div>
 
-              {/* Tagline as Main Headline (Sora, Bold, Clean MNC Grade) */}
+              {/* Tagline as Main Headline (Sora, Bold, Million Dollar Tech Grade) */}
               <div className="space-y-3">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-heading text-[#06201A] leading-[1.08] tracking-tight">
+                <h1 className="text-[28px] lg:text-[36px] font-extrabold font-heading text-white leading-tight tracking-tight">
                   {BRAND_IDENTITY.tagline.split('Small Business')[0]}
-                  <span className="text-[#0E7A5A]">
+                  <span className="text-[#F8C61A]">
                     Small Business
                   </span>{' '}
                   Solutions.
                 </h1>
 
-                <p className="text-lg sm:text-xl font-bold text-[#0E7A5A] font-heading">
+                <p className="text-lg sm:text-xl font-bold text-[#B8C4D9] font-heading">
                   {BRAND_IDENTITY.subTagline}
                 </p>
               </div>
 
               {/* Client Mission Statement Excerpt */}
-              <p className="text-base sm:text-lg text-[#14231E]/80 max-w-2xl leading-relaxed font-normal">
+              <p className="text-base sm:text-lg text-[#B8C4D9] max-w-2xl leading-relaxed font-normal">
                 {BRAND_IDENTITY.mission}
               </p>
 
-              {/* TWO MANDATORY CTAs */}
+              {/* TWO MANDATORY CTAs: Gold on Dark + Outline Secondary */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-                {/* CTA 1: "Speak with a Business Coach" (Emerald Fill, White Text, Phone + Arrow Icon) */}
+                {/* CTA 1: Gold fill + Midnight Navy text on dark */}
                 <button
                   onClick={() => setCoachModalOpen(true)}
-                  className="btn-emerald-light group !h-[50px] !px-6 text-base shadow-md hover:shadow-lg"
+                  className="btn-gold-dark group"
                 >
-                  <PhoneCall className="w-4 h-4 text-white shrink-0" />
+                  <PhoneCall className="w-4 h-4 text-[#07142B] shrink-0" />
                   <span>Speak with a Business Coach</span>
-                  <ArrowRight className="w-4 h-4 text-white transition-transform group-hover:translate-x-1 shrink-0" />
+                  <ArrowRight className="w-4 h-4 text-[#07142B] transition-transform group-hover:translate-x-1 shrink-0" />
                 </button>
 
-                {/* CTA 2: "Explore 16 Solutions" (Crisp Clean Outline Button) */}
+                {/* CTA 2: Outline secondary on dark */}
                 <button
                   onClick={() => {
                     const el = document.getElementById('solutions-showcase')
                     el?.scrollIntoView({ behavior: 'smooth' })
                   }}
-                  className="h-[50px] px-6 rounded-xl font-bold text-sm bg-white text-[#14231E] border border-slate-300 hover:border-[#0E7A5A] hover:bg-slate-50 transition-all shadow-xs flex items-center justify-center gap-2 group cursor-pointer"
+                  className="btn-outline-dark group"
                 >
-                  <Layers className="w-4 h-4 text-[#0E7A5A] shrink-0" />
+                  <Layers className="w-4 h-4 text-[#F8C61A] shrink-0" />
                   <span>Explore 16 Solutions</span>
-                  <ArrowRight className="w-4 h-4 text-[#14231E]/60 transition-transform group-hover:translate-x-1 shrink-0" />
+                  <ArrowRight className="w-4 h-4 text-white/70 transition-transform group-hover:translate-x-1 shrink-0" />
                 </button>
               </div>
 
-              {/* Fact Indicators (3 Core Metrics Matching Mockup Bottom Row) */}
-              <div className="pt-6 border-t border-slate-200/90 grid grid-cols-3 gap-6 max-w-xl text-left font-mono">
+              {/* Fact Indicators with Big Gold Numbers */}
+              <div className="pt-6 border-t border-[#0D2147] grid grid-cols-3 gap-6 max-w-xl text-left font-mono">
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-1.5">
-                    <p className="text-3xl font-extrabold text-[#06201A] tabular-nums">16</p>
-                    <span className="w-2 h-2 rounded-full bg-[#0E7A5A]" />
+                    <p className="text-3xl font-extrabold text-[#F8C61A] tabular-nums">16</p>
+                    <span className="w-2 h-2 rounded-full bg-[#0C43A3]" />
                   </div>
-                  <p className="text-xs font-bold text-[#14231E]/80 uppercase tracking-wider">Core Solutions</p>
-                  <p className="text-[11px] text-slate-500 font-sans">Payments to software</p>
+                  <p className="text-xs font-bold text-[#B8C4D9] uppercase tracking-wider">Core Solutions</p>
+                  <p className="text-[11px] text-[#B8C4D9]/70 font-sans">Payments to software</p>
                 </div>
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-1.5">
-                    <p className="text-3xl font-extrabold text-[#06201A] tabular-nums">12</p>
-                    <span className="w-2 h-2 rounded-full bg-[#C8793A]" />
+                    <p className="text-3xl font-extrabold text-[#F8C61A] tabular-nums">12</p>
+                    <span className="w-2 h-2 rounded-full bg-[#F8C61A]" />
                   </div>
-                  <p className="text-xs font-bold text-[#14231E]/80 uppercase tracking-wider">Fed Divisions</p>
-                  <p className="text-[11px] text-slate-500 font-sans">Coast-to-coast coverage</p>
+                  <p className="text-xs font-bold text-[#B8C4D9] uppercase tracking-wider">Fed Divisions</p>
+                  <p className="text-[11px] text-[#B8C4D9]/70 font-sans">Coast-to-coast coverage</p>
                 </div>
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-1.5">
-                    <p className="text-3xl font-extrabold text-[#06201A] tabular-nums">32+</p>
-                    <span className="w-2 h-2 rounded-full bg-[#0E7A5A]" />
+                    <p className="text-3xl font-extrabold text-[#F8C61A] tabular-nums">32</p>
+                    <span className="w-2 h-2 rounded-full bg-[#0C43A3]" />
                   </div>
-                  <p className="text-xs font-bold text-[#14231E]/80 uppercase tracking-wider">Trade Sectors</p>
-                  <p className="text-[11px] text-slate-500 font-sans">Precision trades & retail</p>
+                  <p className="text-xs font-bold text-[#B8C4D9] uppercase tracking-wider">Trade Sectors</p>
+                  <p className="text-[11px] text-[#B8C4D9]/70 font-sans">Trades & commerce</p>
                 </div>
               </div>
             </motion.div>
 
-            {/* Right Column: High-Fidelity Executive Cockpit Dashboard Mockup Widget */}
+            {/* Right Column: High-Fidelity Executive Cockpit Widget (Deep Navy #0D2147) */}
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="lg:col-span-5"
+              className="lg:col-span-5 shrink-0"
             >
-              <div className="relative bg-[#06201A] text-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-[#0B4A3A] overflow-hidden">
+              <div className="relative bg-[#0D2147] text-white rounded-2xl p-6 shadow-2xl border border-white/15 overflow-hidden shrink-0 w-full">
                 {/* Background ambient lighting */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#0B4A3A]/40 rounded-full blur-2xl pointer-events-none" />
-                <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-[#C8793A]/10 rounded-full blur-xl pointer-events-none" />
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#0C43A3]/20 rounded-full blur-2xl pointer-events-none" />
 
                 <div className="relative z-10 space-y-5">
                   {/* Card Header Bar */}
-                  <div className="flex items-center justify-between border-b border-[#0B4A3A] pb-3.5">
+                  <div className="flex items-center justify-between border-b border-[#07142B] pb-3.5">
                     <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#0E7A5A] animate-ping" />
-                      <span className="text-xs font-bold uppercase tracking-wider text-[#C8793A] font-mono">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#F8C61A] animate-ping" />
+                      <span className="font-mono text-[12px] font-bold uppercase tracking-wider text-[#F8C61A]">
                         B4B Executive Cockpit
                       </span>
                     </div>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#0B4A3A] text-[#B9CBC3] border border-[#0B4A3A]">
-                      LIVE TELEMETRY
+                    <span className="font-mono text-[12px] px-2.5 py-0.5 rounded-full bg-[#07142B] text-[#B8C4D9] border border-white/10">
+                      12 DIVISIONS TELEMETRY
                     </span>
                   </div>
 
-                  {/* 3 Top KPIs Row (Matching 97.4%, $1.4M in Mockup) */}
+                  {/* 3 Top KPIs Row with Big Gold Numbers */}
                   <div className="grid grid-cols-3 gap-2.5">
-                    <div className="p-3 rounded-xl bg-[#0B4A3A]/40 border border-[#0B4A3A] space-y-1">
+                    <div className="p-3 rounded-xl bg-[#07142B] border border-[#07142B] space-y-1">
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono text-[#B9CBC3]">Readiness</span>
-                        <span className="text-[9px] font-bold font-mono px-1 rounded bg-[#0E7A5A] text-white">
-                          +4.2%
+                        <span className="font-mono text-[12px] text-[#B8C4D9]">Readiness</span>
+                        <span className="font-mono text-[12px] font-bold px-1.5 py-0.5 rounded bg-[#0C43A3] text-white">
+                          Verified
                         </span>
                       </div>
-                      <p className="text-xl sm:text-2xl font-black font-mono text-white tabular-nums">97.4%</p>
-                      <p className="text-[10px] text-[#B9CBC3] truncate">System Health</p>
+                      <p className="text-xl sm:text-2xl font-black font-mono text-white tabular-nums">100%</p>
+                      <p className="text-[14px] text-[#B8C4D9] truncate">Full Network</p>
                     </div>
 
-                    <div className="p-3 rounded-xl bg-[#0B4A3A]/40 border border-[#0B4A3A] space-y-1">
+                    <div className="p-3 rounded-xl bg-[#07142B] border border-[#07142B] space-y-1">
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono text-[#B9CBC3]">Pipeline</span>
-                        <span className="text-[9px] font-bold font-mono px-1 rounded bg-[#C8793A] text-[#06201A]">
+                        <span className="font-mono text-[12px] text-[#B8C4D9]">Solutions</span>
+                        <span className="font-mono text-[12px] font-bold px-1.5 py-0.5 rounded bg-[#F8C61A] text-[#07142B]">
                           Active
                         </span>
                       </div>
-                      <p className="text-xl sm:text-2xl font-black font-mono text-[#C8793A] tabular-nums">$1.4M</p>
-                      <p className="text-[10px] text-[#B9CBC3] truncate">Capital Flow</p>
+                      <p className="text-xl sm:text-2xl font-black font-mono text-[#F8C61A] tabular-nums">16</p>
+                      <p className="text-[14px] text-[#B8C4D9] truncate">Full Suite</p>
                     </div>
 
-                    <div className="p-3 rounded-xl bg-[#0B4A3A]/40 border border-[#0B4A3A] space-y-1">
+                    <div className="p-3 rounded-xl bg-[#07142B] border border-[#07142B] space-y-1">
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono text-[#B9CBC3]">Response</span>
-                        <span className="text-[9px] font-bold font-mono px-1 rounded bg-emerald-900 text-emerald-300">
+                        <span className="font-mono text-[12px] text-[#B8C4D9]">Support</span>
+                        <span className="font-mono text-[12px] font-bold px-1.5 py-0.5 rounded bg-[#0C43A3] text-white">
                           1-on-1
                         </span>
                       </div>
-                      <p className="text-xl sm:text-2xl font-black font-mono text-white tabular-nums">18 min</p>
-                      <p className="text-[10px] text-[#B9CBC3] truncate">Coach Support</p>
+                      <p className="text-xl sm:text-2xl font-black font-mono text-white tabular-nums">Dedicated</p>
+                      <p className="text-[14px] text-[#B8C4D9] truncate">Coach Support</p>
                     </div>
                   </div>
 
-                  {/* Dynamic Glowing Waveform / Sparkline SVG Chart */}
-                  <div className="p-3.5 rounded-2xl bg-[#06201A]/90 border border-[#0B4A3A] space-y-2">
-                    <div className="flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-1.5 font-mono text-[#B9CBC3] text-[11px]">
-                        <Activity className="w-3.5 h-3.5 text-[#0E7A5A]" />
-                        <span>Production & Revenue Trajectory</span>
+                  {/* Dynamic Spline Chart with Logo Blue & Gold Points */}
+                  <div className="p-3.5 rounded-xl bg-[#07142B] border border-[#07142B] space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 font-mono text-[12px] text-[#B8C4D9]">
+                        <Activity className="w-3.5 h-3.5 text-[#0C43A3]" />
+                        <span>Business Growth Framework</span>
                       </div>
-                      <span className="text-[10px] font-mono text-[#C8793A]">Optimal Curve</span>
+                      <span className="font-mono text-[12px] text-[#F8C61A]">5 Foundations</span>
                     </div>
 
                     {/* SVG Spline with Gradient */}
                     <div className="h-20 w-full relative">
                       <svg className="w-full h-full overflow-visible" viewBox="0 0 320 80" preserveAspectRatio="none">
                         <defs>
-                          <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#0E7A5A" stopOpacity="0.45" />
-                            <stop offset="100%" stopColor="#0E7A5A" stopOpacity="0.0" />
+                          <linearGradient id="chartNavyGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#0C43A3" stopOpacity="0.5" />
+                            <stop offset="100%" stopColor="#0C43A3" stopOpacity="0.0" />
                           </linearGradient>
                         </defs>
-                        {/* Subtle Horizontal Grid lines */}
-                        <line x1="0" y1="20" x2="320" y2="20" stroke="#0B4A3A" strokeWidth="0.8" strokeDasharray="3 3" />
-                        <line x1="0" y1="50" x2="320" y2="50" stroke="#0B4A3A" strokeWidth="0.8" strokeDasharray="3 3" />
-                        {/* Area fill */}
+                        <line x1="0" y1="20" x2="320" y2="20" stroke="#0D2147" strokeWidth="0.8" strokeDasharray="3 3" />
+                        <line x1="0" y1="50" x2="320" y2="50" stroke="#0D2147" strokeWidth="0.8" strokeDasharray="3 3" />
                         <path
                           d="M0,65 Q40,55 80,48 T160,32 T240,18 T320,8 L320,80 L0,80 Z"
-                          fill="url(#chartGradient)"
+                          fill="url(#chartNavyGradient)"
                         />
-                        {/* Line Stroke */}
                         <path
                           d="M0,65 Q40,55 80,48 T160,32 T240,18 T320,8"
                           fill="none"
-                          stroke="#0E7A5A"
+                          stroke="#0C43A3"
                           strokeWidth="2.5"
                           strokeLinecap="round"
                         />
-                        {/* Accent data points */}
-                        <circle cx="80" cy="48" r="3.5" fill="#C8793A" />
-                        <circle cx="160" cy="32" r="3.5" fill="#C8793A" />
-                        <circle cx="240" cy="18" r="3.5" fill="#C8793A" />
-                        <circle cx="320" cy="8" r="4.5" fill="#0E7A5A" className="animate-pulse" />
+                        <circle cx="80" cy="48" r="3.5" fill="#F8C61A" />
+                        <circle cx="160" cy="32" r="3.5" fill="#F8C61A" />
+                        <circle cx="240" cy="18" r="3.5" fill="#F8C61A" />
+                        <circle cx="320" cy="8" r="4.5" fill="#F8C61A" className="animate-pulse" />
                       </svg>
                     </div>
 
-                    <div className="flex items-center justify-between text-[10px] font-mono text-[#B9CBC3] pt-1">
-                      <span>Q1 Baseline</span>
-                      <span>Q2 Expansion</span>
-                      <span>Q3 Scale</span>
-                      <span className="text-white font-bold">Q4 Institutional</span>
+                    <div className="flex items-center justify-between font-mono text-[12px] text-[#B8C4D9] pt-1">
+                      <span>1. Identity</span>
+                      <span>2. Funding</span>
+                      <span>3. Planning</span>
+                      <span>4. Marketing</span>
+                      <span className="text-white font-bold">5. Systems</span>
                     </div>
                   </div>
 
                   {/* Active Selected Territory Division Display */}
-                  <div className="p-3.5 rounded-2xl bg-[#0B4A3A]/40 border border-[#0B4A3A] space-y-1.5">
+                  <div className="p-3.5 rounded-xl bg-[#07142B] border border-[#07142B] space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-[#C8793A] font-mono">
+                      <span className="font-mono text-[14px] font-bold text-[#F8C61A]">
                         Division #{selectedTerritory.regionNumber}: {selectedTerritory.name}
                       </span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#06201A] text-[#B9CBC3] border border-[#0B4A3A] font-mono">
+                      <span className="font-mono text-[12px] px-2 py-0.5 rounded-full bg-[#0D2147] text-[#B8C4D9] border border-white/10">
                         HQ: {selectedTerritory.headOffice}
                       </span>
                     </div>
-                    <p className="text-[11px] text-[#B9CBC3] leading-relaxed">
+                    <p className="text-[14px] text-[#B8C4D9] leading-relaxed">
                       <strong className="text-white">States Covered:</strong> {selectedTerritory.coverage}
                     </p>
                   </div>
 
                   {/* Quick Division Selector Pills */}
                   <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-[11px] font-mono text-[#B9CBC3]">
+                    <div className="flex items-center justify-between font-mono text-[12px] text-[#B8C4D9]">
                       <span className="uppercase tracking-wider">Federal Reserve Division Switcher:</span>
-                      <span className="text-[#C8793A]">Div {selectedTerritory.regionNumber} of 12</span>
+                      <span className="text-[#F8C61A]">Div {selectedTerritory.regionNumber} of 12</span>
                     </div>
                     <div className="grid grid-cols-4 sm:grid-cols-6 gap-1.5">
                       {TERRITORY_DIVISIONS.map((terr) => (
                         <button
                           key={terr.id}
                           onClick={() => setSelectedTerritoryId(terr.id)}
-                          className={`px-1.5 py-1 rounded-lg text-[11px] font-medium font-mono transition-all truncate text-center ${
+                          className={`px-1.5 py-1 rounded-lg font-mono text-[12px] font-medium transition-all truncate text-center cursor-pointer min-h-[32px] ${
                             selectedTerritoryId === terr.id
-                              ? 'bg-[#C8793A] text-[#06201A] font-extrabold shadow-sm'
-                              : 'bg-[#0B4A3A]/50 text-[#B9CBC3] hover:bg-[#0B4A3A] border border-[#0B4A3A]'
+                              ? 'bg-[#F8C61A] text-[#07142B] font-extrabold shadow-sm'
+                              : 'bg-[#07142B] text-[#B8C4D9] hover:bg-[#07142B]/80 border border-white/10'
                           }`}
                         >
                           Div {terr.regionNumber}
@@ -410,11 +407,11 @@ export const HomePage: React.FC = () => {
                   </div>
 
                   {/* Territory Action Footer */}
-                  <div className="pt-2 border-t border-[#0B4A3A] flex items-center justify-between text-xs">
-                    <span className="text-[#B9CBC3] text-[11px]">Regional assistance ready:</span>
+                  <div className="pt-2 border-t border-[#07142B] flex items-center justify-between">
+                    <span className="text-[14px] text-[#B8C4D9]">Regional assistance ready:</span>
                     <button
                       onClick={() => setCoachModalOpen(true)}
-                      className="text-[#C8793A] hover:underline font-bold inline-flex items-center gap-1 cursor-pointer font-mono text-xs"
+                      className="font-mono text-[14px] font-bold text-[#F8C61A] hover:underline inline-flex items-center gap-1 cursor-pointer"
                     >
                       <span>Connect with Div #{selectedTerritory.regionNumber} Coach</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -429,24 +426,24 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 2. 16 SOLUTIONS: "16 Solutions. One Platform." (Matching Mockup)
+          SECTION 2. 16 SOLUTIONS (STONE BAND: Cool Stone #E9EDF4)
           ========================================================================= */}
-      <section id="solutions-showcase" className="py-20 md:py-28 bg-[#EEF1EC] relative border-b border-slate-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="solutions-showcase" className="py-20 bg-[#E9EDF4] text-[#14233B] relative border-b border-[#14233B]/10">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Centered Section Header Matching Mockup */}
+          {/* Centered Section Header */}
           <div className="text-center max-w-3xl mx-auto space-y-4 mb-12">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 shadow-xs text-xs font-bold text-[#0E7A5A] font-mono">
-              <Layers className="w-3.5 h-3.5 text-[#0E7A5A]" />
-              <span>OUR COMPLETE PLATFORM</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#14233B]/15 shadow-xs text-xs font-bold text-[#0C43A3] font-mono">
+              <Layers className="w-3.5 h-3.5 text-[#0C43A3]" />
+              <span>THE B4B BUSINESS SOLUTIONS NETWORK</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-heading text-[#06201A] tracking-tight">
-              16 Solutions. One Platform.
+            <h2 className="text-[28px] lg:text-[36px] font-extrabold font-heading text-[#14233B] tracking-tight leading-tight">
+              16 Solutions Every Small Business Needs to Thrive
             </h2>
 
-            <p className="text-base sm:text-lg text-[#14231E]/75 leading-relaxed">
-              A unified operating system for American small businesses and growing enterprises — fully integrated, enterprise-grade, and built to scale.
+            <p className="text-base sm:text-lg text-[#14233B]/75 leading-relaxed">
+              We design ideas and turn prospects into clients. We offer solutions for you to build business credit, accept payments and secure business funding.
             </p>
 
             {/* Category Filter Tabs */}
@@ -455,10 +452,10 @@ export const HomePage: React.FC = () => {
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer font-mono ${
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer font-mono min-h-[44px] ${
                     activeCategory === cat
-                      ? 'bg-[#0E7A5A] text-white shadow-sm'
-                      : 'bg-white text-[#14231E] border border-slate-200 hover:bg-[#EEF1EC]'
+                      ? 'bg-[#0C43A3] text-white shadow-sm'
+                      : 'bg-white text-[#14233B] border border-[#14233B]/15 hover:border-[#0C43A3]'
                   }`}
                 >
                   {cat}
@@ -467,8 +464,8 @@ export const HomePage: React.FC = () => {
             </div>
           </div>
 
-          {/* 16 Solutions Grid: 4x4 White Cards matching Mockup */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* 16 Solutions Grid: 3 columns desktop, 2 tablet, 1 mobile, 24px gaps */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
             {filteredSolutions.map((solution, idx) => {
               const IconComponent = iconMap[solution.iconName] || Layers
 
@@ -478,56 +475,71 @@ export const HomePage: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: (idx % 4) * 0.06 }}
-                  className="relative group bg-white border border-slate-200/90 rounded-2xl p-6 flex flex-col justify-between hover:border-[#0E7A5A] hover:-translate-y-1 hover:shadow-xl transition-all shadow-xs"
+                  transition={{ duration: 0.35, delay: (idx % 3) * 0.05 }}
+                  className="solution-card group"
                 >
-                  <div className="space-y-4">
-                    {/* Header: Icon container on left, Number badge on right */}
-                    <div className="flex items-start justify-between">
-                      <div className="w-11 h-11 rounded-xl bg-emerald-50 text-[#0E7A5A] border border-emerald-100 flex items-center justify-center group-hover:bg-[#0E7A5A] group-hover:text-white transition-colors">
-                        <IconComponent className="w-5 h-5" />
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[11px] font-black font-mono px-2 py-0.5 rounded bg-[#EEF1EC] text-[#06201A]">
-                          #{solution.number}
-                        </span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-mono">
-                          {solution.category}
-                        </span>
-                      </div>
+                  {/* Visual Photo Header with Image Zoom, Badges & Floating Icon */}
+                  <div className="relative w-full h-44 sm:h-48 overflow-hidden bg-slate-100">
+                    <img
+                      src={SOLUTION_IMAGES[solution.id]}
+                      alt={`${solution.title} - B4B America commercial business solution`}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-500 ease-out"
+                    />
+                    {/* Multi-layer Gradient for Contrast */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#07142B]/65 via-[#07142B]/15 to-transparent pointer-events-none" />
+
+                    {/* Top Row: Category Pill & Solution Number */}
+                    <div className="absolute top-3 inset-x-3 flex items-center justify-between pointer-events-none">
+                      <span className="text-[11px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md text-[#07142B] border border-white/60 shadow-xs">
+                        {solution.category}
+                      </span>
+                      <span className="text-[11px] font-mono font-black text-[#F8C61A] bg-[#07142B]/85 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15 shadow-xs">
+                        #{solution.number}
+                      </span>
                     </div>
 
-                    {/* Title */}
-                    <h3 className="text-lg font-extrabold text-[#06201A] group-hover:text-[#0E7A5A] transition-colors leading-snug font-heading">
-                      {solution.title}
-                    </h3>
-
-                    {/* Short Description */}
-                    <p className="text-xs text-[#14231E]/75 leading-relaxed">
-                      {solution.shortDesc}
-                    </p>
+                    {/* Bottom Row: Icon Box floating on bottom-right */}
+                    <div className="absolute bottom-3 right-3 w-10 h-10 rounded-xl bg-white/95 backdrop-blur-md text-[#0C43A3] shadow-md border border-white/80 flex items-center justify-center group-hover:bg-[#0C43A3] group-hover:text-white transition-colors duration-300 pointer-events-none">
+                      <IconComponent className="w-5 h-5 stroke-[2.2]" />
+                    </div>
                   </div>
 
-                  {/* MANDATORY ACTIONS PER CLIENT RULES (BOTH BUTTONS ON EVERY CARD): */}
-                  <div className="pt-6 mt-6 border-t border-slate-100 space-y-2.5">
-                    {/* Primary Button On Light: Emerald Fill, White Text, 48px Height, Arrow Right */}
-                    <button
-                      onClick={() => setCoachModalOpen(true)}
-                      className="btn-emerald-light w-full group/btn !h-[44px] !text-xs font-bold"
-                    >
-                      <PhoneCall className="w-3.5 h-3.5 text-white shrink-0" />
-                      <span className="truncate">{solution.ctaText}</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-white transition-transform group-hover/btn:translate-x-1 shrink-0" />
-                    </button>
+                  {/* Card Content & Action Buttons */}
+                  <div className="solution-card-body">
+                    <div className="space-y-2.5">
+                      {/* Title: 20px, semibold, navy text with hover color transition */}
+                      <h3 className="solution-card-title group-hover:text-[#0C43A3] transition-colors">
+                        {solution.title}
+                      </h3>
 
-                    {/* Secondary Button On Light: Outline Link */}
-                    <Link
-                      to={`/solutions#${solution.slug}`}
-                      className="w-full h-[40px] rounded-xl border border-slate-200 text-slate-700 hover:text-[#0E7A5A] hover:border-[#0E7A5A] hover:bg-slate-50 text-xs font-bold font-mono transition-all flex items-center justify-center gap-1 group/link"
-                    >
-                      <span>Click Here</span>
-                      <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-1" />
-                    </Link>
+                      {/* Description: minimum 15px, line-height 1.6, text color #14233B at ~80%, max 3 lines */}
+                      <p className="solution-card-desc">
+                        {solution.shortDesc}
+                      </p>
+                    </div>
+
+                    {/* Buttons Pinned to the Bottom of the Card */}
+                    <div className="pt-5 mt-5 border-t border-slate-100 flex flex-col gap-2.5">
+                      {/* Primary Button: Full-width, Logo Blue background, white text, 14px */}
+                      <button
+                        onClick={() => setCoachModalOpen(true)}
+                        className="solution-btn-primary group/btn"
+                      >
+                        <PhoneCall className="w-4 h-4 text-white shrink-0" />
+                        <span>{solution.ctaText}</span>
+                      </button>
+
+                      {/* Secondary Button: "Click Here" text link with arrow */}
+                      <Link
+                        to={`/solutions#${solution.slug}`}
+                        className="solution-link-secondary group/link"
+                      >
+                        <span>Click Here</span>
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
+                      </Link>
+                    </div>
                   </div>
                 </motion.div>
               )
@@ -538,9 +550,9 @@ export const HomePage: React.FC = () => {
           <div className="text-center pt-10">
             <Link
               to="/solutions"
-              className="inline-flex items-center gap-2 text-sm font-bold text-[#0E7A5A] hover:underline font-mono"
+              className="inline-flex items-center gap-2 text-sm font-bold text-[#0C43A3] hover:underline font-mono min-h-[44px]"
             >
-              <span>Explore full documentation for all 16 solutions</span>
+              <span>Explore full details for all 16 solutions</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -548,83 +560,116 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 3. CRM & ERP SPOTLIGHT: "Enterprise CRM & ERP Designed For Small Business Pros"
+          SECTION 3. CRM & ERP SPOTLIGHT: B4BAPP (3D TECH VISUAL BACKGROUND)
           ========================================================================= */}
-      <section id="software" className="py-20 md:py-28 bg-[#06201A] text-white border-b border-[#0B4A3A] relative overflow-hidden">
-        {/* Ambient lighting */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#0B4A3A]/40 rounded-full blur-3xl pointer-events-none" />
+      <section id="software" className="py-20 text-white border-b border-[#0D2147] relative overflow-hidden">
+        {/* Background Visual Layer showcasing the user-selected 3D technology graphic */}
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+          <img
+            src={b4bappPreviewImg}
+            alt="B4BAPP Enterprise CRM and ERP 3D technology dashboard visual"
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover object-center scale-105"
+          />
+          {/* Balanced translucent overlay: reveals the 3D graphic vibrantly while ensuring clean contrast */}
+          <div className="absolute inset-0 bg-[#07142B]/35" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#07142B]/80 via-[#07142B]/45 to-[#07142B]/25" />
+        </div>
+
+        {/* Ambient lighting accent */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#0C43A3]/20 rounded-full blur-3xl pointer-events-none z-[1]" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             
-            {/* Left Column: Software Overview & Features */}
+            {/* Left Column: Text Content & Features */}
             <div className="lg:col-span-6 space-y-6 text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0B4A3A]/70 border border-[#0B4A3A]">
-                <Cpu className="w-3.5 h-3.5 text-[#C8793A]" />
-                <span className="text-xs font-bold uppercase tracking-wider text-[#C8793A] font-mono">
+              {/* Gold small label badge */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#07142B]/90 backdrop-blur-md border border-white/20">
+                <Cpu className="w-3.5 h-3.5 text-[#F8C61A]" />
+                <span className="text-[12px] font-bold uppercase tracking-wider text-[#F8C61A] font-mono">
                   {B4BAPP_SOFTWARE.name} • {B4BAPP_SOFTWARE.category}
                 </span>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-heading text-white tracking-tight leading-tight">
+              {/* White Heading */}
+              <h2 className="text-[28px] lg:text-[36px] font-extrabold font-heading text-white tracking-tight leading-tight">
                 Enterprise CRM & ERP Designed For Small Business Pros
               </h2>
 
-              <p className="text-base text-[#B9CBC3] leading-relaxed">
+              {/* Body text in #DCE4F0, crisp legibility */}
+              <p className="text-[16px] text-[#DCE4F0] leading-relaxed">
                 {B4BAPP_SOFTWARE.description}
               </p>
 
-              {/* 3 Core Capability Highlights with Icons */}
-              <div className="space-y-3 pt-2">
-                <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-[#0B4A3A]/30 border border-[#0B4A3A]">
-                  <div className="w-8 h-8 rounded-lg bg-[#0E7A5A] text-white flex items-center justify-center shrink-0">
-                    <Check className="w-4 h-4" />
+              {/* 3 Core Capability Highlights - Polished Box Cards */}
+              <div className="space-y-3.5 pt-2">
+                <div className="flex items-start gap-4 p-4.5 rounded-xl bg-[#07142B]/90 backdrop-blur-md border border-white/20 shadow-lg hover:border-[#0C43A3] transition-all">
+                  <div className="w-11 h-11 rounded-xl bg-[#0C43A3] text-white flex items-center justify-center shrink-0 shadow-md">
+                    <Check className="w-5 h-5 stroke-[2.5]" />
                   </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-white">Automated Job Costing & Invoicing</h4>
-                    <p className="text-xs text-[#B9CBC3]">
+                  <div className="space-y-1">
+                    <h4 className="text-[17px] font-bold text-white font-heading">
+                      Automated Job Costing & Invoicing
+                    </h4>
+                    <p className="text-[15px] text-[#DCE4F0] leading-relaxed">
                       Instant PO management, inventory descriptions for up to 100 service products, and procurement tracking.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-[#0B4A3A]/30 border border-[#0B4A3A]">
-                  <div className="w-8 h-8 rounded-lg bg-[#C8793A] text-[#06201A] flex items-center justify-center shrink-0 font-bold">
-                    <Activity className="w-4 h-4" />
+                <div className="flex items-start gap-4 p-4.5 rounded-xl bg-[#07142B]/90 backdrop-blur-md border border-white/20 shadow-lg hover:border-[#F8C61A]/60 transition-all">
+                  <div className="w-11 h-11 rounded-xl bg-[#F8C61A] text-[#07142B] flex items-center justify-center shrink-0 font-bold shadow-md">
+                    <Activity className="w-5 h-5 stroke-[2.5]" />
                   </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-white">Pipeline & Real-Time Deal Tracking</h4>
-                    <p className="text-xs text-[#B9CBC3]">
-                      White-label CRM lead intake, automated communication feeds, and conversion rate analytics for Biz Pros.
+                  <div className="space-y-1">
+                    <h4 className="text-[17px] font-bold text-white font-heading">
+                      Pipeline & Deal Tracking
+                    </h4>
+                    <p className="text-[15px] text-[#DCE4F0] leading-relaxed">
+                      White-label CRM lead intake, automated communication feeds, and conversion analytics for Biz Pros.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-[#0B4A3A]/30 border border-[#0B4A3A]">
-                  <div className="w-8 h-8 rounded-lg bg-[#0E7A5A] text-white flex items-center justify-center shrink-0">
-                    <TrendingUp className="w-4 h-4" />
+                <div className="flex items-start gap-4 p-4.5 rounded-xl bg-[#07142B]/90 backdrop-blur-md border border-white/20 shadow-lg hover:border-[#0C43A3] transition-all">
+                  <div className="w-11 h-11 rounded-xl bg-[#0C43A3] text-white flex items-center justify-center shrink-0 shadow-md">
+                    <TrendingUp className="w-5 h-5 stroke-[2.5]" />
                   </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-white">Bulletin Sales Scoreboard & Career Ladder</h4>
-                    <p className="text-xs text-[#B9CBC3]">
+                  <div className="space-y-1">
+                    <h4 className="text-[17px] font-bold text-white font-heading">
+                      Bulletin Sales Scoreboard & Career Ladder
+                    </h4>
+                    <p className="text-[15px] text-[#DCE4F0] leading-relaxed">
                       Real-time category leaderboards and 9-tier Biz Pro career progression from Account Executive to Senior National VP.
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Pricing Box in Copper Tabular Numbers + Actions */}
-              <div className="p-4 rounded-2xl bg-[#06201A] border border-[#0B4A3A] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <p className="text-xs text-[#B9CBC3] font-mono uppercase">Biz Pro Access Subscription</p>
-                  <p className="text-2xl font-extrabold text-[#C8793A] font-mono tabular-nums">
-                    {B4BAPP_SOFTWARE.pricing}
+              {/* Pricing Box with Gold label, Gold $25 and high-contrast typography */}
+              <div className="p-6 rounded-2xl bg-[#07142B]/95 backdrop-blur-md border border-white/20 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+                <div className="space-y-1">
+                  <p className="text-[12px] font-bold text-[#F8C61A] tracking-wider uppercase font-mono">
+                    Biz Pro Access Subscription
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl sm:text-4xl font-extrabold text-[#F8C61A] font-heading tracking-tight">
+                      $25
+                    </span>
+                    <span className="text-[15px] font-medium text-[#DCE4F0]">
+                      / month
+                    </span>
+                  </div>
+                  <p className="text-[14px] text-[#DCE4F0] leading-relaxed">
+                    Entry subscription for Biz Pros, scales with ranking
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 shrink-0">
                   <button
                     onClick={() => navigate('/portal/login')}
-                    className="btn-copper-dark"
+                    className="btn-gold-dark"
                   >
                     Portal Login
                   </button>
@@ -638,109 +683,63 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Column: Sleek Dark Cockpit Command Widget */}
+            {/* Right Column: Clean card (Deep Navy, 16px radius, white 20% border) holding existing content */}
             <div className="lg:col-span-6 space-y-6">
-              <div className="p-6 sm:p-8 rounded-3xl bg-[#06201A] border border-[#0B4A3A] space-y-5 text-left shadow-2xl relative">
-                <div className="flex items-center justify-between border-b border-[#0B4A3A] pb-4">
-                  <div className="flex items-center gap-2">
-                    <BarChart3 className="w-5 h-5 text-[#C8793A]" />
-                    <h3 className="text-base font-extrabold text-white font-heading">
-                      Biz Pro Command Center
+              <div className="rounded-2xl bg-[#07142B]/90 backdrop-blur-md border border-white/20 p-6 sm:p-8 space-y-6 text-left shadow-2xl relative">
+                {/* Header */}
+                <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                  <div className="flex items-center gap-2.5">
+                    <Compass className="w-5 h-5 text-[#F8C61A]" />
+                    <h3 className="text-[18px] sm:text-[20px] font-extrabold text-white font-heading">
+                      Corporate Philosophy & 5 Foundations
                     </h3>
                   </div>
-                  <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#0B4A3A] text-[#B9CBC3] font-mono">
-                    Live Pipeline
+                  <span className="text-[12px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#0D2147] text-[#F8C61A] border border-white/15">
+                    B4B MANTRA
                   </span>
                 </div>
 
-                {/* Metric Chips */}
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="p-3 rounded-xl bg-[#0B4A3A]/40 border border-[#0B4A3A]">
-                    <p className="text-[10px] text-[#B9CBC3] font-mono">Active Deals</p>
-                    <p className="text-lg font-black font-mono text-[#C8793A]">$41,270</p>
-                    <p className="text-[9px] text-emerald-400 font-mono">+18% this month</p>
-                  </div>
-                  <div className="p-3 rounded-xl bg-[#0B4A3A]/40 border border-[#0B4A3A]">
-                    <p className="text-[10px] text-[#B9CBC3] font-mono">Win Rate</p>
-                    <p className="text-lg font-black font-mono text-white">74.2%</p>
-                    <p className="text-[9px] text-[#B9CBC3] font-mono">Verified deals</p>
-                  </div>
-                  <div className="p-3 rounded-xl bg-[#0B4A3A]/40 border border-[#0B4A3A]">
-                    <p className="text-[10px] text-[#B9CBC3] font-mono">Active Accounts</p>
-                    <p className="text-lg font-black font-mono text-white">128</p>
-                    <p className="text-[9px] text-[#B9CBC3] font-mono">12 Divisions</p>
-                  </div>
+                {/* Quote in #DCE4F0 with Gold Mantra */}
+                <p className="text-[15px] sm:text-[16px] text-[#DCE4F0] leading-relaxed">
+                  "{BRAND_IDENTITY.vision}." The B4B America Mantra:{' '}
+                  <strong className="text-[#F8C61A] font-mono font-bold block sm:inline mt-1 sm:mt-0">
+                    {BRAND_IDENTITY.mantra}
+                  </strong>
+                </p>
+
+                {/* 5 Mantra Step Boxes with Clean Typography & Clear Spacing */}
+                <div className="space-y-3">
+                  {BRAND_IDENTITY.mantraSteps.map((step) => (
+                    <div
+                      key={step.step}
+                      className="p-3.5 sm:p-4 rounded-xl bg-[#0D2147]/90 border border-white/15 flex items-center justify-between gap-4 hover:border-[#F8C61A]/50 hover:bg-[#0D2147] transition-all group shadow-sm"
+                    >
+                      <div className="flex items-start gap-3.5">
+                        <span className="w-8 h-8 rounded-lg bg-[#F8C61A]/15 border border-[#F8C61A]/30 flex items-center justify-center text-sm font-black font-mono text-[#F8C61A] shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                          {step.step}
+                        </span>
+                        <div className="space-y-0.5">
+                          <p className="text-[15px] font-bold text-white font-heading">
+                            {step.title}
+                          </p>
+                          <p className="text-[13px] sm:text-[14px] text-[#DCE4F0] leading-snug">
+                            {step.desc}
+                          </p>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-[#F8C61A] shrink-0 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  ))}
                 </div>
 
-                {/* Pipeline Conversion Bar */}
-                <div className="p-3.5 rounded-xl bg-[#0B4A3A]/25 border border-[#0B4A3A] space-y-2">
-                  <div className="flex items-center justify-between text-[11px] font-mono text-[#B9CBC3]">
-                    <span>Pipeline Distribution</span>
-                    <span className="text-white">Total: 48 Leads</span>
-                  </div>
-                  <div className="h-2.5 w-full bg-[#06201A] rounded-full overflow-hidden flex">
-                    <div style={{ width: '42%' }} className="bg-[#0E7A5A]" title="Qualified (42%)" />
-                    <div style={{ width: '35%' }} className="bg-[#C8793A]" title="In Negotiation (35%)" />
-                    <div style={{ width: '23%' }} className="bg-emerald-400" title="Closed Won (23%)" />
-                  </div>
-                  <div className="flex items-center justify-between text-[10px] font-mono text-[#B9CBC3] pt-1">
-                    <span className="flex items-center gap-1">
-                      <span className="w-2 h-2 rounded-full bg-[#0E7A5A]" /> Qualified (42%)
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <span className="w-2 h-2 rounded-full bg-[#C8793A]" /> In Review (35%)
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400" /> Closed Won (23%)
-                    </span>
-                  </div>
-                </div>
-
-                {/* Real-time Activity Feed */}
-                <div className="space-y-2 pt-1">
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-[#B9CBC3] font-mono">
-                    Recent Verified Transactions
-                  </p>
-                  <div className="space-y-2">
-                    <div className="p-2.5 rounded-xl bg-[#0B4A3A]/40 border border-[#0B4A3A] flex items-center justify-between text-xs">
-                      <div>
-                        <p className="font-bold text-white">Apex Industrial Equipment Lease</p>
-                        <p className="text-[10px] text-[#B9CBC3]">Division #6 • Atlanta, GA</p>
-                      </div>
-                      <div className="text-right">
-                        <span className="font-mono font-bold text-[#C8793A]">$65,000</span>
-                        <p className="text-[9px] text-emerald-400 font-mono">Approved</p>
-                      </div>
-                    </div>
-
-                    <div className="p-2.5 rounded-xl bg-[#0B4A3A]/40 border border-[#0B4A3A] flex items-center justify-between text-xs">
-                      <div>
-                        <p className="font-bold text-white">Summit Logistics Working Capital Line</p>
-                        <p className="text-[10px] text-[#B9CBC3]">Division #11 • Dallas, TX</p>
-                      </div>
-                      <div className="text-right">
-                        <span className="font-mono font-bold text-[#C8793A]">$120,000</span>
-                        <p className="text-[9px] text-amber-300 font-mono">Under Review</p>
-                      </div>
-                    </div>
-
-                    <div className="p-2.5 rounded-xl bg-[#0B4A3A]/40 border border-[#0B4A3A] flex items-center justify-between text-xs">
-                      <div>
-                        <p className="font-bold text-white">Metro Supermarket Smart POS Setup</p>
-                        <p className="text-[10px] text-[#B9CBC3]">Division #2 • New York, NY</p>
-                      </div>
-                      <div className="text-right">
-                        <span className="font-mono font-bold text-[#C8793A]">$15,000</span>
-                        <p className="text-[9px] text-emerald-400 font-mono">Deployed</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Career Progression Teaser */}
-                <div className="pt-2 border-t border-[#0B4A3A] flex items-center justify-between text-xs font-mono">
-                  <span className="text-[#B9CBC3]">Biz Pro Structure:</span>
-                  <span className="text-[#C8793A] font-bold">9-Tier Career Ranking System</span>
+                {/* Footer with Gold label */}
+                <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                  <span className="text-[14px] sm:text-[15px] text-[#DCE4F0]">
+                    Biz Pro Career Framework:
+                  </span>
+                  <span className="text-[#F8C61A] font-bold font-mono text-[13px] sm:text-[14px]">
+                    9-Tier Ranking Ladder
+                  </span>
                 </div>
               </div>
             </div>
@@ -750,97 +749,134 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 4. INDUSTRIES WE SERVE: (Matching Mockup)
+          SECTION 4. INDUSTRIES WE SERVE (STONE BAND: Cool Stone #E9EDF4)
           ========================================================================= */}
-      <section className="py-20 md:py-28 bg-[#EEF1EC] border-b border-slate-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <section className="py-20 bg-[#E9EDF4] text-[#14233B] border-b border-[#14233B]/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-3 text-left max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-bold text-[#0E7A5A] font-mono">
-                <Building2 className="w-3.5 h-3.5 text-[#0E7A5A]" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#14233B]/15 text-xs font-bold text-[#0C43A3] font-mono">
+                <Building2 className="w-3.5 h-3.5 text-[#0C43A3]" />
                 <span>SECTOR SPECIALIZATION</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-heading text-[#06201A] tracking-tight">
+              <h2 className="text-[28px] lg:text-[36px] font-extrabold font-heading text-[#14233B] tracking-tight leading-tight">
                 Industries We Serve
               </h2>
-              <p className="text-base text-[#14231E]/75">
+              <p className="text-base text-[#14233B]/75">
                 Tailored solutions for 32 key business trades operating in towns and cities across America.
               </p>
             </div>
 
             <div className="text-left md:text-right">
-              <span className="text-xs font-bold text-[#0E7A5A] font-mono">
+              <span className="text-xs font-bold text-[#0C43A3] font-mono">
                 Click any trade to speak with a specialized coach
               </span>
             </div>
           </div>
 
-          {/* 32 Trades Grid in White Cards on Soft Stone */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-            {INDUSTRIES_SERVED.map((industry) => (
-              <button
-                key={industry}
-                onClick={() => {
-                  setActiveIndustryFilter(industry)
-                  setCoachModalOpen(true)
-                }}
-                className="p-3.5 rounded-xl bg-white border border-slate-200 text-left hover:border-[#0E7A5A] hover:-translate-y-0.5 hover:shadow-md transition-all group cursor-pointer shadow-xs"
-              >
-                <p className="text-xs font-bold text-[#06201A] group-hover:text-[#0E7A5A] transition-colors line-clamp-2 font-heading">
-                  {industry}
-                </p>
-                <div className="flex items-center gap-1 mt-2 text-[10px] text-slate-500 group-hover:text-[#0E7A5A] font-mono font-semibold">
-                  <span>Match Coach</span>
-                  <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+          {/* Industries We Serve: 4 Photo Tiles Grid (4 cols desktop, 2 tablet, 1 mobile) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {FEATURED_INDUSTRIES.map((ind) => {
+              const IconComp = ind.icon
+              return (
+                <div
+                  key={ind.id}
+                  onClick={() => {
+                    setActiveIndustryFilter(ind.name)
+                    setCoachModalOpen(true)
+                  }}
+                  className="industry-photo-tile group"
+                >
+                  {/* Photo or Deep Navy Fallback */}
+                  {ind.image ? (
+                    <img
+                      src={ind.image}
+                      alt={ind.name}
+                      loading="lazy"
+                      className="tile-img"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-[#0D2147] flex items-center justify-center p-6 relative">
+                      {IconComp && (
+                        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#F8C61A] group-hover:scale-110 transition-transform duration-300">
+                          <IconComp className="w-8 h-8 stroke-[1.75]" />
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Navy Gradient Overlay (~65% from bottom) */}
+                  <div className="tile-overlay" />
+
+                  {/* Industry Title: White, 18px semibold, bottom-left with hover gold underline */}
+                  <div className="tile-title">
+                    <span className="tile-title-underline">
+                      {ind.name}
+                    </span>
+                  </div>
                 </div>
-              </button>
-            ))}
+              )
+            })}
+          </div>
+
+          {/* Quick link to explore all 32 commercial trade sectors */}
+          <div className="pt-2 text-center">
+            <button
+              onClick={() => {
+                setActiveIndustryFilter('')
+                setCoachModalOpen(true)
+              }}
+              className="inline-flex items-center gap-2 text-sm font-bold text-[#0C43A3] hover:underline font-mono min-h-[44px] cursor-pointer"
+            >
+              <span>Explore tailored solutions for all 32 commercial trade sectors</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          SECTION 5. INTERACTIVE PLATFORM DEMO: "See B4B America in Action" (Matching Mockup)
+          SECTION 5. ADVISORY INTAKE & DEMO DESK (DARK BAND: Midnight Navy #07142B)
           ========================================================================= */}
-      <section className="py-20 md:py-28 bg-[#06201A] text-white border-b border-[#0B4A3A] relative overflow-hidden">
+      <section className="py-20 bg-[#07142B] text-white border-b border-[#0D2147] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="bg-gradient-to-r from-[#06201A] via-[#0B4A3A]/90 to-[#06201A] rounded-3xl border border-[#0B4A3A] shadow-2xl p-8 sm:p-12 overflow-hidden relative">
+          <div className="bg-[#0D2147] rounded-3xl border border-[#0D2147] shadow-2xl p-8 sm:p-12 overflow-hidden relative">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
               
               {/* Left Column: Platform Demo Pitch & Visuals */}
               <div className="lg:col-span-5 space-y-6 text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0B4A3A] text-xs font-bold text-[#C8793A] font-mono">
-                  <Play className="w-3.5 h-3.5 text-[#C8793A] fill-current" />
-                  <span>ON-DEMAND PLATFORM DEMO</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#07142B] text-xs font-bold text-[#F8C61A] font-mono">
+                  <Play className="w-3.5 h-3.5 text-[#F8C61A] fill-current" />
+                  <span>ON-DEMAND ADVISORY DESK</span>
                 </div>
 
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-heading text-white tracking-tight">
-                  See B4B America in Action
+                <h2 className="text-[28px] lg:text-[36px] font-extrabold font-heading text-white tracking-tight leading-tight">
+                  Speak with a Business Coach
                 </h2>
 
-                <p className="text-sm sm:text-base text-[#B9CBC3] leading-relaxed">
-                  Book a personalized consultation or live walkthrough with an executive business coach. 
-                  Learn how to optimize working capital, POS rates, and software workflow without high-pressure sales tactics.
+                <p className="text-sm sm:text-base text-[#B8C4D9] leading-relaxed">
+                  Book a consultation or live system walkthrough with an executive business coach. 
+                  Learn how to optimize working capital, POS rates, and software workflow across all 16 solutions.
                 </p>
 
                 <div className="space-y-3 pt-2 text-xs text-white font-medium">
                   <div className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#C8793A] shrink-0" />
-                    <span>30-minute free diagnostic review</span>
+                    <CheckCircle2 className="w-4 h-4 text-[#F8C61A] shrink-0" />
+                    <span>Dedicated 1-on-1 business coach review</span>
                   </div>
                   <div className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#C8793A] shrink-0" />
-                    <span>Custom blueprint tailored to your trade sector</span>
+                    <CheckCircle2 className="w-4 h-4 text-[#F8C61A] shrink-0" />
+                    <span>Custom solutions blueprint tailored to your trade sector</span>
                   </div>
                   <div className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#C8793A] shrink-0" />
-                    <span>Non-dilutive capital guidance across 12 Federal Divisions</span>
+                    <CheckCircle2 className="w-4 h-4 text-[#F8C61A] shrink-0" />
+                    <span>Capital guidance across 12 Federal Reserve Divisions</span>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-[#0B4A3A] flex items-center gap-4 text-xs font-mono text-[#B9CBC3]">
+                <div className="pt-4 border-t border-[#07142B] flex items-center gap-4 text-xs font-mono text-[#B8C4D9]">
                   <div>
                     <p className="font-bold text-white">Direct Advisory Desk:</p>
                     <p>+1 (888) 540-B4BA</p>
@@ -852,19 +888,19 @@ export const HomePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Right Column: Embedded Pre-qualification Form matching Mockup */}
-              <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xl text-[#14231E]">
+              {/* Right Column: Embedded Consultation Intake Form (White Form Card) */}
+              <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xl text-[#14233B]">
                 <div className="space-y-2 mb-6 text-left border-b border-slate-100 pb-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-extrabold font-heading text-[#06201A]">
+                    <h3 className="text-xl font-extrabold font-heading text-[#14233B]">
                       Schedule Executive Consultation
                     </h3>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-[#0E7A5A] font-bold border border-emerald-200">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-[#0C43A3] font-bold border border-blue-200">
                       ⚡ 60-Second Setup
                     </span>
                   </div>
-                  <p className="text-xs text-slate-600">
-                    Connect directly with a dedicated coach within 1 business hour. Zero upfront fees.
+                  <p className="text-xs text-[#14233B]/70">
+                    Connect directly with a dedicated coach within 1 business hour.
                   </p>
                 </div>
 
@@ -883,110 +919,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 6. TESTIMONIALS: "Real Businesses. Real Results." (Matching Mockup)
-          ========================================================================= */}
-      <section className="py-20 md:py-28 bg-[#F8FAFC] border-b border-slate-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          
-          {/* Header */}
-          <div className="text-center max-w-3xl mx-auto space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-xs font-bold text-[#0E7A5A] border border-emerald-200 font-mono">
-              <Star className="w-3.5 h-3.5 text-[#C8793A] fill-current" />
-              <span>VERIFIED CASE STUDIES</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-heading text-[#06201A] tracking-tight">
-              Real Businesses. Real Results.
-            </h2>
-            <p className="text-base text-slate-600">
-              How businesses nationwide streamline operations, secure non-dilutive capital, and scale with B4B America.
-            </p>
-          </div>
-
-          {/* 3 Testimonials Cards Grid matching Mockup */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {VERIFIED_CASE_STUDIES.map((item, idx) => (
-              <div
-                key={idx}
-                className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 shadow-xs hover:shadow-lg hover:border-[#0E7A5A] transition-all flex flex-col justify-between space-y-6"
-              >
-                <div className="space-y-4">
-                  {/* Star Rating */}
-                  <div className="flex items-center gap-1 text-[#C8793A]">
-                    {[...Array(item.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-current" />
-                    ))}
-                  </div>
-
-                  {/* Quote */}
-                  <p className="text-sm text-[#14231E]/80 leading-relaxed italic">
-                    "{item.quote}"
-                  </p>
-                </div>
-
-                {/* Author Profile */}
-                <div className="pt-4 border-t border-slate-100 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-emerald-100 text-[#0E7A5A] font-bold font-mono text-sm flex items-center justify-center shrink-0">
-                    {item.author.charAt(0)}
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-[#06201A] font-heading">{item.author}</h4>
-                    <p className="text-xs text-slate-500">{item.role} • {item.company}</p>
-                    <p className="text-[10px] text-[#0E7A5A] font-mono">{item.location}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 7. CORPORATE PHILOSOPHY & MANTRA (Preserving Client Vision)
-          ========================================================================= */}
-      <section className="py-20 md:py-24 bg-[#0B4A3A] text-white border-b border-[#06201A]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          {/* Vision Header */}
-          <div className="max-w-3xl mx-auto text-center space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#06201A] text-xs font-bold text-[#C8793A] border border-[#0B4A3A] font-mono">
-              <Compass className="w-3.5 h-3.5" />
-              <span>CORPORATE PHILOSOPHY</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-heading text-white tracking-tight">
-              "{BRAND_IDENTITY.vision}"
-            </h2>
-            <p className="text-sm sm:text-base text-[#B9CBC3] max-w-2xl mx-auto">
-              The B4B America Mantra:{' '}
-              <span className="text-[#C8793A] font-bold font-mono">
-                {BRAND_IDENTITY.mantra}
-              </span>
-            </p>
-          </div>
-
-          {/* 5 Mantra Steps */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {BRAND_IDENTITY.mantraSteps.map((step) => (
-              <div
-                key={step.step}
-                className="p-5 rounded-2xl bg-[#06201A]/80 border border-[#0B4A3A] space-y-2 text-left hover:border-[#C8793A] transition-all group"
-              >
-                <span className="text-2xl font-black font-mono text-[#C8793A] group-hover:scale-105 transition-transform inline-block">
-                  {step.step}
-                </span>
-                <h4 className="text-sm font-extrabold text-white font-heading">
-                  {step.title}
-                </h4>
-                <p className="text-xs text-[#B9CBC3] leading-relaxed">
-                  {step.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 8. FOOTER: Forest Black (#06201A)
+          SECTION 6. FOOTER (MIDNIGHT BAND: Midnight Navy #07142B)
           ========================================================================= */}
       <Footer />
 

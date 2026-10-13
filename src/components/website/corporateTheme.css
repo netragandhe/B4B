@@ -1,45 +1,55 @@
 /* ==========================================================================
-   B4B AMERICA — MNC-LEVEL CORPORATE DESIGN SYSTEM (GREEN & COPPER PALETTE)
-   Strict Token Definitions (No Blue, No Yellow, No Pure White Pages)
+   B4B AMERICA — MILLION DOLLAR TECHNOLOGY DESIGN SYSTEM
+   B4B Logo Color Palette: Logo Blue (#0C43A3), Logo Gold (#F8C61A),
+   Midnight Navy (#07142B), Deep Navy (#0D2147), Cool Stone (#E9EDF4),
+   White (#FFFFFF), Text Light (#14233B), Text Dark (#B8C4D9).
+   Strict Rule: No other hues. No pure-white pages/sections.
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Public+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap');
 
 :root {
-  /* Core Corporate Color System */
-  --color-forest: #06201A;         /* Hero, nav, dark sections, footer */
-  --color-deep-emerald: #0B4A3A;   /* Cards on dark, gradients, section band */
-  --color-emerald: #0E7A5A;        /* Primary buttons & links on light sections */
-  --color-copper: #C8793A;         /* Primary buttons on dark, key numbers, accents */
-  --color-stone: #EEF1EC;          /* Light section background (no pure white pages) */
-  --color-card-white: #FFFFFF;     /* Cards and forms only */
-  
-  /* Text Contrast System */
-  --color-text-light: #14231E;     /* Text on light / stone backgrounds */
-  --color-text-dark: #B9CBC3;      /* Text on dark backgrounds */
-  --color-text-on-copper: #06201A; /* Text on copper buttons (ALWAYS #06201A) */
-  
+  /* Core Brand Color Tokens */
+  --color-logo-blue: #0C43A3;      /* Primary buttons & links on light sections */
+  --color-logo-gold: #F8C61A;      /* Primary buttons on dark, big numbers, key accents */
+  --color-midnight: #07142B;       /* Hero, nav, dark sections, footer, text on gold */
+  --color-deep-navy: #0D2147;      /* Dark cards, card borders on dark, accents */
+  --color-stone: #E9EDF4;          /* Light section background (no pure white pages) */
+  --color-card-white: #FFFFFF;     /* Cards, forms, logo badge on dark only */
+
+  /* Text Contrast Tokens */
+  --color-text-light: #14233B;     /* Text on light / stone backgrounds */
+  --color-text-dark: #B8C4D9;      /* Text on dark backgrounds */
+  --color-text-on-gold: #07142B;   /* Text on gold buttons & badges (ALWAYS Navy #07142B) */
+
   /* Typography Variables */
   --font-heading: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
 
-  /* Global Token Aliases (Completely replaces legacy navy/blue/gold tokens) */
-  --navy-950: #06201A;
-  --navy-900: #06201A;
-  --navy-800: #0B4A3A;
-  --blue-600: #0E7A5A;
-  --blue-700: #0B4A3A;
-  --blue-500: #0E7A5A;
-  --blue-400: #0E7A5A;
-  --gold-500: #C8793A;
-  --gold-400: #C8793A;
-  --sky-50: #EEF1EC;
-  --bg: #EEF1EC;
-  --surface: #FFFFFF;
-  --text: #14231E;
-  --text-muted: rgba(20, 35, 30, 0.72);
-  --border: rgba(20, 35, 30, 0.12);
+  /* Global Aliases to seamlessly overwrite legacy green/copper/navy tokens */
+  --navy-950: var(--color-midnight);
+  --navy-900: var(--color-midnight);
+  --navy-800: var(--color-deep-navy);
+  --blue-600: var(--color-logo-blue);
+  --blue-700: #0A3785;
+  --blue-500: var(--color-logo-blue);
+  --blue-400: #1B58C9;
+  --gold-500: var(--color-logo-gold);
+  --gold-400: var(--color-logo-gold);
+  --sky-50: var(--color-stone);
+  --bg: var(--color-stone);
+  --surface: var(--color-card-white);
+  --text: var(--color-text-light);
+  --text-muted: rgba(20, 35, 59, 0.72);
+  --border: rgba(20, 35, 59, 0.14);
+
+  /* Legacy compatibility bridges */
+  --color-forest: var(--color-midnight);
+  --color-deep-emerald: var(--color-deep-navy);
+  --color-emerald: var(--color-logo-blue);
+  --color-copper: var(--color-logo-gold);
+  --color-text-on-copper: var(--color-text-on-gold);
 }
 
 /* Typography Assignments */
@@ -51,7 +61,6 @@ body {
 
 .font-body {
   font-family: var(--font-body);
-  background: transparent !important;
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading {
@@ -64,9 +73,9 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   font-feature-settings: 'tnum' on, 'zero' on;
 }
 
-/* Section Rhythm Full-Width Classes */
+/* Section Rhythm Full-Width Bands */
 .section-hero {
-  background-color: var(--color-forest);
+  background-color: var(--color-midnight);
   color: #FFFFFF;
 }
 
@@ -76,12 +85,12 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 }
 
 .section-crm {
-  background-color: var(--color-forest);
+  background-color: var(--color-midnight);
   color: #FFFFFF;
 }
 
 .section-philosophy {
-  background-color: var(--color-deep-emerald);
+  background-color: var(--color-deep-navy);
   color: #FFFFFF;
 }
 
@@ -91,23 +100,24 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 }
 
 .section-contact {
-  background: linear-gradient(135deg, var(--color-emerald) 0%, var(--color-forest) 100%);
+  background: linear-gradient(135deg, var(--color-deep-navy) 0%, var(--color-midnight) 100%);
   color: #FFFFFF;
 }
 
 .section-footer {
-  background-color: var(--color-forest);
+  background-color: var(--color-midnight);
   color: var(--color-text-dark);
 }
 
 /* Corporate Button Styles Site-Wide */
-/* 1. Primary Button On Dark: Copper fill, Forest Black text */
+/* 1. Primary Button On Dark: Gold fill (#F8C61A) + Midnight Navy text (#07142B) */
+.btn-gold-dark,
 .btn-copper-dark {
   min-height: 48px;
   height: 48px;
   border-radius: 12px;
-  background-color: var(--color-copper);
-  color: var(--color-forest) !important;
+  background-color: var(--color-logo-gold);
+  color: var(--color-midnight) !important;
   font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.875rem;
@@ -116,30 +126,35 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border: 1px solid rgba(200, 121, 58, 0.4);
+  border: 1px solid rgba(248, 198, 26, 0.4);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(200, 121, 58, 0.25);
+  box-shadow: 0 4px 14px rgba(248, 198, 26, 0.25);
   cursor: pointer;
+  text-decoration: none;
 }
+.btn-gold-dark:hover,
 .btn-copper-dark:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(200, 121, 58, 0.35);
+  box-shadow: 0 6px 20px rgba(248, 198, 26, 0.38);
   filter: brightness(1.05);
 }
+.btn-gold-dark:active,
 .btn-copper-dark:active {
   transform: translateY(0);
 }
+.btn-gold-dark:focus-visible,
 .btn-copper-dark:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(200, 121, 58, 0.5);
+  box-shadow: 0 0 0 3px rgba(248, 198, 26, 0.5);
 }
 
-/* 2. Primary Button On Light: Emerald fill, White text */
+/* 2. Primary Button On Light: Logo Blue fill (#0C43A3) + White text (#FFFFFF) */
+.btn-blue-light,
 .btn-emerald-light {
   min-height: 48px;
   height: 48px;
   border-radius: 12px;
-  background-color: var(--color-emerald);
+  background-color: var(--color-logo-blue);
   color: #FFFFFF !important;
   font-family: var(--font-body);
   font-weight: 700;
@@ -149,32 +164,36 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border: 1px solid rgba(14, 122, 90, 0.4);
+  border: 1px solid rgba(12, 67, 163, 0.4);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(14, 122, 90, 0.25);
+  box-shadow: 0 4px 14px rgba(12, 67, 163, 0.25);
   cursor: pointer;
+  text-decoration: none;
 }
+.btn-blue-light:hover,
 .btn-emerald-light:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(14, 122, 90, 0.35);
+  box-shadow: 0 6px 20px rgba(12, 67, 163, 0.38);
   filter: brightness(1.05);
 }
+.btn-blue-light:active,
 .btn-emerald-light:active {
   transform: translateY(0);
 }
+.btn-blue-light:focus-visible,
 .btn-emerald-light:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(14, 122, 90, 0.5);
+  box-shadow: 0 0 0 3px rgba(12, 67, 163, 0.5);
 }
 
-/* 3. Secondary Outlined Button (1.5px outline, no fill) */
+/* 3. Secondary Outlined Button On Dark */
 .btn-outline-dark {
   min-height: 48px;
   height: 48px;
   border-radius: 12px;
   background-color: transparent;
   color: #FFFFFF;
-  border: 1.5px solid rgba(238, 241, 236, 0.35);
+  border: 1.5px solid rgba(233, 237, 244, 0.35);
   font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.875rem;
@@ -185,25 +204,27 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   gap: 0.5rem;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
+  text-decoration: none;
 }
 .btn-outline-dark:hover {
-  background-color: rgba(238, 241, 236, 0.08);
-  border-color: var(--color-copper);
-  color: var(--color-copper);
+  background-color: rgba(233, 237, 244, 0.08);
+  border-color: var(--color-logo-gold);
+  color: var(--color-logo-gold);
   transform: translateY(-2px);
 }
 .btn-outline-dark:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(200, 121, 58, 0.5);
+  box-shadow: 0 0 0 3px rgba(248, 198, 26, 0.5);
 }
 
+/* 4. Secondary Outlined Button On Light */
 .btn-outline-light {
   min-height: 48px;
   height: 48px;
   border-radius: 12px;
   background-color: transparent;
-  color: var(--color-emerald);
-  border: 1.5px solid var(--color-emerald);
+  color: var(--color-logo-blue);
+  border: 1.5px solid var(--color-logo-blue);
   font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.875rem;
@@ -214,20 +235,248 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   gap: 0.5rem;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
+  text-decoration: none;
 }
 .btn-outline-light:hover {
-  background-color: rgba(14, 122, 90, 0.08);
+  background-color: rgba(12, 67, 163, 0.08);
   transform: translateY(-2px);
 }
 .btn-outline-light:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(14, 122, 90, 0.4);
+  box-shadow: 0 0 0 3px rgba(12, 67, 163, 0.4);
 }
 
-/* Angled & USA-Map-Inspired Section Dividers */
+/* Card Styles */
+.card-white {
+  background-color: var(--color-card-white);
+  border: 1px solid rgba(20, 35, 59, 0.12);
+  border-radius: 16px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-white:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-logo-blue);
+  box-shadow: 0 12px 30px -10px rgba(12, 67, 163, 0.15);
+}
+
+/* 16 Solution Cards Design Specification */
+.solution-card {
+  background-color: var(--color-card-white);
+  border-radius: 18px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(20, 35, 59, 0.12);
+  box-shadow: 0 4px 20px -2px rgba(7, 20, 43, 0.06);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  position: relative;
+}
+.solution-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(12, 67, 163, 0.28);
+  box-shadow: 0 20px 38px -4px rgba(7, 20, 43, 0.12), 0 0 0 1px rgba(248, 198, 26, 0.35);
+}
+
+.solution-card-body {
+  padding: 22px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.solution-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: rgba(248, 198, 26, 0.15);
+  color: var(--color-logo-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.solution-card-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-text-light);
+}
+
+.solution-card-desc {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(20, 35, 59, 0.8);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.solution-btn-primary {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background-color: var(--color-logo-blue);
+  color: #FFFFFF !important;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(12, 67, 163, 0.2);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.25;
+}
+.solution-btn-primary:hover {
+  background-color: #0A3785;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(12, 67, 163, 0.3);
+}
+
+.solution-link-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-logo-blue);
+  text-decoration: none;
+  align-self: flex-start;
+  padding: 4px 0;
+  transition: all 0.2s ease;
+}
+.solution-link-secondary:hover {
+  text-decoration: underline;
+  color: #0A3785;
+}
+.solution-link-secondary:hover svg {
+  transform: translateX(4px);
+}
+
+.card-dark {
+  background-color: var(--color-deep-navy);
+  border: 1px solid rgba(13, 33, 71, 0.8);
+  border-radius: 16px;
+  color: var(--color-text-dark);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-dark:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-logo-gold);
+}
+
+/* Color Utility Classes */
+.bg-midnight { background-color: var(--color-midnight); }
+.bg-deep-navy { background-color: var(--color-deep-navy); }
+.bg-stone { background-color: var(--color-stone); }
+.bg-card-white { background-color: var(--color-card-white); }
+.bg-logo-blue { background-color: var(--color-logo-blue); }
+.bg-logo-gold { background-color: var(--color-logo-gold); }
+
+.text-midnight { color: var(--color-midnight); }
+.text-light { color: var(--color-text-light); }
+.text-dark { color: var(--color-text-dark); }
+.text-logo-blue { color: var(--color-logo-blue); }
+.text-logo-gold { color: var(--color-logo-gold); }
+
+.border-midnight { border-color: var(--color-midnight); }
+.border-deep-navy { border-color: var(--color-deep-navy); }
+.border-stone { border-color: var(--color-stone); }
+.border-logo-blue { border-color: var(--color-logo-blue); }
+.border-logo-gold { border-color: var(--color-logo-gold); }
+
+/* Angled Section Dividers */
 .divider-angled-dark {
-  clip-path: polygon(0 0, 100% 3vw, 100% 100%, 0 100%);
+  position: relative;
+  clip-path: polygon(0 0, 100% 2.5vw, 100% 100%, 0 100%);
 }
 .divider-angled-light {
-  clip-path: polygon(0 3vw, 100% 0, 100% 100%, 0 100%);
+  position: relative;
+  clip-path: polygon(0 2.5vw, 100% 0, 100% 100%, 0 100%);
 }
+.divider-angled-bottom {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2.5vw), 0 100%);
+}
+
+/* Industries We Serve Photo Tiles */
+.industry-photo-tile {
+  position: relative;
+  border-radius: 16px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: var(--color-deep-navy);
+  border: 1px solid rgba(13, 33, 71, 0.4);
+  box-shadow: 0 4px 16px rgba(7, 20, 43, 0.08);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.industry-photo-tile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(7, 20, 43, 0.16);
+}
+
+.industry-photo-tile .tile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.industry-photo-tile:hover .tile-img {
+  transform: scale(1.05);
+}
+
+.industry-photo-tile .tile-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(7, 20, 43, 0.92) 0%, rgba(7, 20, 43, 0.65) 50%, rgba(7, 20, 43, 0.1) 100%);
+  pointer-events: none;
+}
+
+.industry-photo-tile .tile-title {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
+  z-index: 10;
+}
+
+.industry-photo-tile .tile-title-underline {
+  position: relative;
+  display: inline;
+  background-image: linear-gradient(var(--color-logo-gold), var(--color-logo-gold));
+  background-position: bottom left;
+  background-size: 0% 2px;
+  background-repeat: no-repeat;
+  transition: background-size 0.3s ease;
+  padding-bottom: 2px;
+}
+
+.industry-photo-tile:hover .tile-title-underline {
+  background-size: 100% 2px;
+}
+

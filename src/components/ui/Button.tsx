@@ -26,10 +26,11 @@ export const buttonVariants = cva(
           'bg-[var(--gold-500)] text-[var(--navy-900)] hover:opacity-95 font-semibold shadow-md focus-visible:ring-[var(--gold-500)] border border-transparent',
       },
       size: {
-        sm: 'h-9 sm:h-8 px-3 text-xs gap-1.5 rounded-lg',
-        md: 'h-11 min-h-[44px] px-4 text-sm gap-2 rounded-xl',
+        xs: 'h-7 px-2.5 text-[11px] gap-1 rounded-md font-medium',
+        sm: 'h-8 px-3 text-xs gap-1.5 rounded-lg',
+        md: 'h-10 min-h-[40px] px-4 text-sm gap-2 rounded-xl',
         lg: 'h-12 min-h-[48px] px-6 text-base gap-2.5 rounded-xl',
-        icon: 'h-11 w-11 min-h-[44px] min-w-[44px] p-0 rounded-xl',
+        icon: 'h-9 w-9 min-h-[36px] min-w-[36px] p-0 rounded-lg',
       },
       pill: {
         true: 'rounded-full',

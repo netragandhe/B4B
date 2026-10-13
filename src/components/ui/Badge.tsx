@@ -66,7 +66,7 @@ export const Badge: React.FC<BadgeProps> = ({
   return (
     <span className={cn(badgeVariants({ variant, size, pill }), className)} {...props}>
       {dot && (
-        <span className="w-1.5 h-1.5 rounded-full bg-current mr-1.5 inline-block shrink-0 animate-pulse" />
+        <span className="w-1.5 h-1.5 rounded-full bg-current shrink-0" />
       )}
       {children}
     </span>

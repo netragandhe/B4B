@@ -70,7 +70,7 @@ export const JobDetailPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#EEF1EC] text-[#14231E] py-16 px-4">
+      <div className="min-h-screen bg-[#E9EDF4] text-[#14233B] py-16 px-4">
         <div className="max-w-4xl mx-auto space-y-6">
           <div className="h-6 w-36 bg-slate-200 rounded animate-pulse" />
           <div className="h-64 bg-white rounded-2xl animate-pulse p-8 border border-slate-200 space-y-4">
@@ -85,7 +85,7 @@ export const JobDetailPage: React.FC = () => {
 
   if (!job) {
     return (
-      <div className="min-h-screen bg-[#EEF1EC] text-[#14231E] py-20 px-4">
+      <div className="min-h-screen bg-[#E9EDF4] text-[#14233B] py-20 px-4">
         <SEOHead
           title="Job Not Found | B4B America"
           description="The requested job listing could not be found or has been removed."
@@ -93,14 +93,14 @@ export const JobDetailPage: React.FC = () => {
         <div className="max-w-md mx-auto bg-white rounded-2xl p-10 text-center shadow-lg border border-slate-200 space-y-5">
           <ShieldAlert className="w-12 h-12 text-slate-400 mx-auto" />
           <div className="space-y-1">
-            <h1 className="text-2xl font-extrabold font-heading text-[#06201A]">
+            <h1 className="text-2xl font-extrabold font-heading text-[#07142B]">
               Job Listing Not Found
             </h1>
             <p className="text-xs text-slate-600">
               The position you are looking for may have expired or been removed by an administrator.
             </p>
           </div>
-          <Link to="/jobs" className="btn-emerald-light inline-flex text-xs">
+          <Link to="/jobs" className="btn-blue-light inline-flex text-xs">
             <span>Browse Active Jobs</span>
           </Link>
         </div>
@@ -109,14 +109,14 @@ export const JobDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#EEF1EC] text-[#14231E] font-body transition-colors">
+    <div className="min-h-screen bg-[#E9EDF4] text-[#14233B] font-body transition-colors">
       <SEOHead
         title={`${job.title} at ${job.company} | B4B America Jobs`}
         description={`${job.title} located in ${job.city}, ${job.state}. Compensation: ${job.salary}. Category: ${job.category}.`}
       />
 
-      {/* Header Banner: Forest Black */}
-      <section className="bg-[#06201A] text-white pt-8 pb-16 px-4 border-b border-[#0B4A3A]">
+      {/* Header Banner: Midnight Navy */}
+      <section className="bg-[#07142B] text-white pt-8 pb-16 px-4 border-b border-[#0D2147]">
         <div className="max-w-5xl mx-auto space-y-5">
           <Breadcrumb
             items={[
@@ -129,11 +129,11 @@ export const JobDetailPage: React.FC = () => {
 
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-bold font-mono px-2.5 py-0.5 rounded-full bg-[#0E7A5A]/20 text-[#0E7A5A] border border-[#0E7A5A]/40">
+              <span className="text-[11px] font-bold font-mono px-2.5 py-0.5 rounded-full bg-[#0C43A3]/20 text-[#0C43A3] border border-[#0C43A3]/40">
                 {job.category}
               </span>
 
-              <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-[#0B4A3A] text-white">
+              <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-[#0D2147] text-white">
                 {job.jobType}
               </span>
 
@@ -148,21 +148,21 @@ export const JobDetailPage: React.FC = () => {
               {job.title}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-4 text-xs text-[#B9CBC3]">
+            <div className="flex flex-wrap items-center gap-4 text-xs text-[#B8C4D9]">
               <span className="flex items-center gap-1.5 font-semibold text-white">
-                <Building2 className="w-4 h-4 text-[#C8793A]" />
+                <Building2 className="w-4 h-4 text-[#F8C61A]" />
                 <span>{job.company}</span>
               </span>
 
               <span className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-[#C8793A]" />
+                <MapPin className="w-4 h-4 text-[#F8C61A]" />
                 <span>
                   {job.city}, {job.state}
                 </span>
               </span>
 
-              <span className="flex items-center gap-1.5 font-mono text-[#C8793A] font-bold">
-                <DollarSign className="w-4 h-4 text-[#C8793A]" />
+              <span className="flex items-center gap-1.5 font-mono text-[#F8C61A] font-bold">
+                <DollarSign className="w-4 h-4 text-[#F8C61A]" />
                 <span>{job.salary}</span>
               </span>
 
@@ -180,7 +180,7 @@ export const JobDetailPage: React.FC = () => {
           {/* LEFT: JOB DESCRIPTION & REQUIREMENTS */}
           <div className="lg:col-span-8 bg-white rounded-2xl p-6 sm:p-10 shadow-xl border border-slate-200 space-y-8">
             <div className="space-y-4">
-              <h2 className="text-lg font-bold font-heading text-[#06201A] border-b border-slate-100 pb-3">
+              <h2 className="text-lg font-bold font-heading text-[#07142B] border-b border-slate-100 pb-3">
                 Role Overview
               </h2>
               <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
@@ -190,13 +190,13 @@ export const JobDetailPage: React.FC = () => {
 
             {job.requirements && job.requirements.length > 0 && (
               <div className="space-y-4 border-t border-slate-100 pt-6">
-                <h3 className="text-base font-bold font-heading text-[#06201A]">
+                <h3 className="text-base font-bold font-heading text-[#07142B]">
                   Candidate Requirements
                 </h3>
                 <ul className="space-y-2.5">
                   {job.requirements.map((req, i) => (
                     <li key={i} className="flex items-start gap-2.5 text-xs text-slate-700">
-                      <CheckCircle2 className="w-4 h-4 text-[#0E7A5A] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-[#0C43A3] shrink-0 mt-0.5" />
                       <span>{req}</span>
                     </li>
                   ))}
@@ -215,7 +215,7 @@ export const JobDetailPage: React.FC = () => {
 
               <button
                 onClick={handleShare}
-                className="font-semibold text-[#0E7A5A] hover:underline flex items-center gap-1.5 cursor-pointer"
+                className="font-semibold text-[#0C43A3] hover:underline flex items-center gap-1.5 cursor-pointer"
               >
                 <Share2 className="w-4 h-4" />
                 <span>{copied ? 'Link Copied!' : 'Share Position'}</span>
@@ -227,10 +227,10 @@ export const JobDetailPage: React.FC = () => {
           <div className="lg:col-span-4 space-y-6">
             <div className="bg-white rounded-2xl p-6 shadow-xl border border-slate-200 space-y-6">
               <div className="space-y-1 border-b border-slate-100 pb-4">
-                <span className="text-[11px] font-mono uppercase font-bold text-[#C8793A]">
+                <span className="text-[11px] font-mono uppercase font-bold text-[#0C43A3]">
                   Direct Contact
                 </span>
-                <h3 className="text-base font-bold font-heading text-[#06201A]">
+                <h3 className="text-base font-bold font-heading text-[#07142B]">
                   Contact Employer
                 </h3>
                 <p className="text-xs text-slate-500">
@@ -239,13 +239,13 @@ export const JobDetailPage: React.FC = () => {
               </div>
 
               <div className="space-y-3">
-                <div className="p-3.5 rounded-xl bg-[#EEF1EC] text-slate-800 space-y-1">
+                <div className="p-3.5 rounded-xl bg-[#E9EDF4] text-slate-800 space-y-1">
                   <span className="text-[11px] font-mono text-slate-500 uppercase">
                     Hiring Contact Email
                   </span>
                   <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-[#0E7A5A] shrink-0" />
-                    <span className="text-xs font-bold font-mono text-[#06201A] truncate">
+                    <Mail className="w-4 h-4 text-[#0C43A3] shrink-0" />
+                    <span className="text-xs font-bold font-mono text-[#07142B] truncate">
                       {job.contactEmail}
                     </span>
                   </div>
@@ -255,7 +255,7 @@ export const JobDetailPage: React.FC = () => {
                   href={`mailto:${job.contactEmail}?subject=Application for ${encodeURIComponent(
                     job.title
                   )} via B4B America`}
-                  className="btn-emerald-light w-full justify-center text-xs py-3"
+                  className="btn-blue-light w-full justify-center text-xs py-3"
                 >
                   <Mail className="w-4 h-4 text-white" />
                   <span>Email Hiring Team</span>
@@ -264,22 +264,22 @@ export const JobDetailPage: React.FC = () => {
 
               <div className="border-t border-slate-100 pt-4 text-[11px] text-slate-400 space-y-1">
                 <p>Listing ID: <span className="font-mono">{job.id}</span></p>
-                <p>Status: <span className="font-mono text-[#0E7A5A] font-bold uppercase">{job.status}</span></p>
+                <p>Status: <span className="font-mono text-[#0C43A3] font-bold uppercase">{job.status}</span></p>
               </div>
             </div>
 
             {/* Quick Link to Post a Job */}
-            <div className="bg-[#06201A] text-white rounded-2xl p-6 border border-[#0B4A3A] space-y-3">
-              <span className="text-[10px] font-mono uppercase font-bold text-[#C8793A]">
+            <div className="bg-[#07142B] text-white rounded-2xl p-6 border border-[#0D2147] space-y-3">
+              <span className="text-[10px] font-mono uppercase font-bold text-[#F8C61A]">
                 Employers
               </span>
               <h4 className="text-sm font-bold font-heading text-white">
                 Looking to hire for your team?
               </h4>
-              <p className="text-xs text-[#B9CBC3]">
+              <p className="text-xs text-[#B8C4D9]">
                 Post a new role in minutes. Listings reach verified professionals across 12 federal reserve districts.
               </p>
-              <Link to="/jobs/post" className="btn-copper-dark w-full justify-center text-xs py-2.5">
+              <Link to="/jobs/post" className="btn-gold-dark w-full justify-center text-xs py-2.5">
                 <span>Post a Job Listing</span>
               </Link>
             </div>

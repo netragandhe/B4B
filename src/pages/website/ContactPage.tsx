@@ -8,13 +8,9 @@ import {
   Mail,
   MapPin,
   Clock,
-  Sparkles,
   ArrowRight,
-  ShieldCheck,
-  Building,
   PhoneCall,
   ChevronRight,
-  CheckCircle2,
 } from 'lucide-react'
 import '@/components/website/corporateTheme.css'
 import { FormField } from '@/components/ui/FormField'
@@ -27,7 +23,7 @@ import { useToast } from '@/components/ui/Toast'
 import { CoachRequestModal } from '@/components/forms/CoachRequestModal'
 import { PhotoBackground } from '@/components/website/PhotoBackground'
 import { UsaMapMotif } from '@/components/website/UsaMapMotif'
-import { BRAND_IDENTITY, TERRITORY_DIVISIONS } from '@/content/clientContent'
+import { TERRITORY_DIVISIONS } from '@/content/clientContent'
 
 const contactSchema = z.object({
   fullName: z.string().min(2, 'Full name is required'),
@@ -66,7 +62,7 @@ export const ContactPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#EEF1EC] text-[#14231E] transition-colors duration-200 font-body">
+    <div className="min-h-screen bg-[#E9EDF4] text-[#14233B] transition-colors duration-200 font-body">
       <SEOHead
         title="Contact Business Advisory Desk | B4B America"
         description="Connect with B4B America. Reach our capital desk, speak with a certified business coach, or schedule an operational systems review."
@@ -81,11 +77,11 @@ export const ContactPage: React.FC = () => {
           slot="contact"
           alt="Business coach meeting an entrepreneur"
           overlayOpacity={0.72}
-          className="rounded-3xl p-8 sm:p-12 text-white border border-[#0B4A3A] shadow-xl"
+          className="rounded-3xl p-8 sm:p-12 text-white border border-[#0D2147] shadow-xl"
         >
           <div className="space-y-4 max-w-3xl relative z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0B4A3A] text-xs font-bold text-[#C8793A] font-mono">
-              <Clock className="w-3.5 h-3.5 text-[#C8793A]" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0D2147] text-xs font-bold text-[#F8C61A] font-mono">
+              <Clock className="w-3.5 h-3.5 text-[#F8C61A]" />
               <span>National Response Desk • 1 Business Hour Callback</span>
             </div>
 
@@ -93,18 +89,18 @@ export const ContactPage: React.FC = () => {
               Connect with Our Small Business Advisory Desk
             </h1>
 
-            <p className="text-[#B9CBC3] text-sm sm:text-base leading-relaxed font-body">
+            <p className="text-[#B8C4D9] text-sm sm:text-base leading-relaxed font-body">
               Have questions about securing business funding, building business credit, implementing POS systems, or scheduling a 1-on-1 coaching session? Our national network across 12 territory divisions is ready to assist.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <button
                 onClick={() => setCoachModalOpen(true)}
-                className="btn-copper-dark group"
+                className="btn-gold-dark group"
               >
-                <PhoneCall className="w-4 h-4 text-[#06201A]" />
+                <PhoneCall className="w-4 h-4 text-[#07142B]" />
                 <span>Speak with a Business Coach</span>
-                <ArrowRight className="w-4 h-4 text-[#06201A] transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 text-[#07142B] transition-transform group-hover:translate-x-1" />
               </button>
               <Link
                 to="/solutions"
@@ -116,15 +112,15 @@ export const ContactPage: React.FC = () => {
           </div>
         </PhotoBackground>
 
-        {/* Contact Grid: White Form on Left, Forest Black Office Card on Right */}
+        {/* Contact Grid: White Form on Left, Midnight Navy Office Card on Right */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          {/* Form Column in Clean White Card */}
-          <div className="lg:col-span-7 p-6 sm:p-10 rounded-3xl bg-white border border-[#14231E]/10 shadow-xl space-y-6">
+          {/* Form Column in Clean White Card on Cool Stone */}
+          <div className="lg:col-span-7 p-6 sm:p-10 rounded-3xl bg-white border border-[#14233B]/10 shadow-xl space-y-6">
             <div className="space-y-1">
-              <h3 className="text-xl font-extrabold text-[#14231E] font-heading">
+              <h3 className="text-xl font-extrabold text-[#14233B] font-heading">
                 Send an Advisory Message
               </h3>
-              <p className="text-xs text-[#14231E]/70 font-body">
+              <p className="text-xs text-[#14233B]/70 font-body">
                 Direct routing to your regional territory coach.
               </p>
             </div>
@@ -182,30 +178,30 @@ export const ContactPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn-emerald-light w-full"
+                className="btn-blue-light w-full"
               >
                 Submit Message to Advisory Desk
               </button>
             </form>
           </div>
 
-          {/* Direct Office & Hub Details in Forest Black Card */}
+          {/* Direct Office & Hub Details in Midnight Navy Card */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="p-6 sm:p-8 rounded-3xl bg-[#06201A] text-white border border-[#0B4A3A] shadow-xl space-y-6 relative overflow-hidden">
+            <div className="p-6 sm:p-8 rounded-3xl bg-[#07142B] text-white border border-[#0D2147] shadow-xl space-y-6 relative overflow-hidden">
               <div className="absolute right-0 bottom-0 w-48 h-48 pointer-events-none opacity-10">
-                <UsaMapMotif className="w-full h-full text-[#C8793A]" opacity={0.3} />
+                <UsaMapMotif className="w-full h-full text-[#F8C61A]" opacity={0.3} />
               </div>
 
               <div className="space-y-1">
-                <span className="text-[10px] uppercase font-bold text-[#C8793A] tracking-wider font-mono">
+                <span className="text-[10px] uppercase font-bold text-[#F8C61A] tracking-wider font-mono">
                   Corporate Headquarters
                 </span>
                 <h3 className="text-xl font-extrabold text-white font-heading">B4B America National Desk</h3>
               </div>
 
-              <div className="space-y-4 text-xs text-[#B9CBC3] font-body">
+              <div className="space-y-4 text-xs text-[#B8C4D9] font-body">
                 <div className="flex items-start gap-3">
-                  <MapPin className="w-4 h-4 text-[#C8793A] shrink-0 mt-0.5" />
+                  <MapPin className="w-4 h-4 text-[#F8C61A] shrink-0 mt-0.5" />
                   <div>
                     <strong className="text-white">New York Headquarters</strong>
                     <p>Financial District, New York, NY</p>
@@ -213,7 +209,7 @@ export const ContactPage: React.FC = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Phone className="w-4 h-4 text-[#C8793A] shrink-0 mt-0.5" />
+                  <Phone className="w-4 h-4 text-[#F8C61A] shrink-0 mt-0.5" />
                   <div>
                     <strong className="text-white">Toll-Free Phone</strong>
                     <p>+1 (888) 540-B4BA</p>
@@ -221,7 +217,7 @@ export const ContactPage: React.FC = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Mail className="w-4 h-4 text-[#C8793A] shrink-0 mt-0.5" />
+                  <Mail className="w-4 h-4 text-[#F8C61A] shrink-0 mt-0.5" />
                   <div>
                     <strong className="text-white">Advisory Desk Email</strong>
                     <p>advisory@b4bamerica.com</p>
@@ -229,28 +225,28 @@ export const ContactPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-[#0B4A3A] space-y-2 text-xs">
-                <div className="flex items-center gap-2 text-[#C8793A] font-semibold font-mono">
-                  <span className="w-2 h-2 rounded-full bg-[#C8793A] animate-pulse" />
+              <div className="pt-4 border-t border-[#0D2147] space-y-2 text-xs">
+                <div className="flex items-center gap-2 text-[#F8C61A] font-semibold font-mono">
+                  <span className="w-2 h-2 rounded-full bg-[#F8C61A] animate-pulse" />
                   <span>National Coverage: 12 Territory Divisions</span>
                 </div>
-                <p className="text-[#B9CBC3] text-[11px] font-body">
+                <p className="text-[#B8C4D9] text-[11px] font-body">
                   Boston, New York, Philadelphia, Cleveland, Richmond, Atlanta, Chicago, St. Louis, Minneapolis, Kansas City, Dallas, San Francisco.
                 </p>
               </div>
             </div>
 
-            {/* Quick Diagnostic Card in White */}
-            <div className="p-6 rounded-2xl bg-white border border-[#14231E]/10 space-y-3 shadow-xs">
-              <h4 className="text-sm font-extrabold text-[#14231E] font-heading">
+            {/* Quick Diagnostic Card in White on Cool Stone */}
+            <div className="p-6 rounded-2xl bg-white border border-[#14233B]/10 space-y-3 shadow-xs hover:border-[#0C43A3] transition-all">
+              <h4 className="text-sm font-extrabold text-[#14233B] font-heading">
                 Prefer an Immediate Diagnostic Review?
               </h4>
-              <p className="text-xs text-[#14231E]/70 font-body">
-                Our certified business coaches conduct 30-minute free evaluations for qualified small business owners.
+              <p className="text-xs text-[#14233B]/70 font-body">
+                Our certified business coaches conduct 30-minute evaluations for qualified small business owners.
               </p>
               <button
                 onClick={() => setCoachModalOpen(true)}
-                className="btn-emerald-light w-full"
+                className="btn-blue-light w-full"
               >
                 Speak with a Business Coach
               </button>

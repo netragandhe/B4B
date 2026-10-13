@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
 import {
   Search,
   X,
@@ -131,24 +130,24 @@ export const SearchModal: React.FC<SearchModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl bg-[#EEF1EC] text-[#14231E] border border-[#0B4A3A] rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
+        className="relative w-full max-w-2xl bg-[#E9EDF4] text-[#14233B] border border-[#0D2147] rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input Bar */}
-        <div className="flex items-center px-4 py-3.5 border-b border-[#14231E]/15 gap-3 bg-white">
-          <Search className="w-5 h-5 text-[#0E7A5A] shrink-0" />
+        <div className="flex items-center px-4 py-3.5 border-b border-[#14233B]/15 gap-3 bg-white">
+          <Search className="w-5 h-5 text-[#0C43A3] shrink-0" />
           <input
             ref={inputRef}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search 16 solutions, B4BAPP tools, territories, industries..."
-            className="w-full bg-transparent text-sm sm:text-base text-[#14231E] placeholder-[#14231E]/50 focus:outline-none font-body"
+            className="w-full bg-transparent text-sm sm:text-base text-[#14233B] placeholder-[#14233B]/50 focus:outline-none font-body"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="p-1 text-[#14231E]/50 hover:text-[#14231E] rounded-md"
+              className="p-1 text-[#14233B]/50 hover:text-[#14233B] rounded-md min-w-[32px] min-h-[32px] flex items-center justify-center cursor-pointer"
               aria-label="Clear search input"
             >
               <X className="w-4 h-4" />
@@ -156,7 +155,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
           )}
           <button
             onClick={onClose}
-            className="text-xs px-2 py-1 rounded bg-[#EEF1EC] text-[#06201A] border border-[#14231E]/20 font-mono shrink-0"
+            className="text-xs px-2.5 py-1.5 rounded bg-[#E9EDF4] text-[#07142B] border border-[#14233B]/20 font-mono shrink-0 cursor-pointer min-h-[32px]"
           >
             ESC
           </button>
@@ -166,7 +165,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
         {query.length === 0 ? (
           <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-[#14231E]/70 mb-3 font-mono">
+              <p className="text-xs font-bold uppercase tracking-wider text-[#14233B]/70 mb-3 font-mono">
                 Quick Recommendations
               </p>
               <div className="flex flex-wrap gap-2">
@@ -182,7 +181,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                   <button
                     key={tag}
                     onClick={() => setQuery(tag)}
-                    className="px-3 py-1.5 rounded-full text-xs font-medium bg-white text-[#14231E] border border-[#14231E]/15 hover:border-[#0E7A5A] hover:text-[#0E7A5A] transition-colors"
+                    className="px-3 py-1.5 rounded-full text-xs font-medium bg-white text-[#14233B] border border-[#14233B]/15 hover:border-[#0C43A3] hover:text-[#0C43A3] transition-colors cursor-pointer min-h-[36px]"
                   >
                     {tag}
                   </button>
@@ -190,8 +189,8 @@ export const SearchModal: React.FC<SearchModalProps> = ({
               </div>
             </div>
 
-            <div className="pt-2 border-t border-[#14231E]/15">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#14231E]/70 mb-3 font-mono">
+            <div className="pt-2 border-t border-[#14233B]/15">
+              <p className="text-xs font-bold uppercase tracking-wider text-[#14233B]/70 mb-3 font-mono">
                 Popular Categories
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -204,12 +203,12 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                   <button
                     key={cat.label}
                     onClick={() => setQuery(cat.label.split(' ')[0])}
-                    className="p-3 text-left rounded-xl bg-white border border-[#14231E]/15 hover:border-[#C8793A] transition-all group"
+                    className="p-3 text-left rounded-xl bg-white border border-[#14233B]/15 hover:border-[#0C43A3] transition-all group cursor-pointer"
                   >
-                    <p className="text-xs font-bold text-[#14231E] group-hover:text-[#0E7A5A]">
+                    <p className="text-xs font-bold text-[#14233B] group-hover:text-[#0C43A3]">
                       {cat.label}
                     </p>
-                    <p className="text-[11px] text-[#14231E]/60">{cat.count}</p>
+                    <p className="text-[11px] text-[#14233B]/60">{cat.count}</p>
                   </button>
                 ))}
               </div>
@@ -217,10 +216,10 @@ export const SearchModal: React.FC<SearchModalProps> = ({
           </div>
         ) : !hasResults ? (
           <div className="p-8 text-center space-y-2">
-            <p className="text-sm font-semibold text-[#14231E]">
+            <p className="text-sm font-semibold text-[#14233B]">
               No matching client resources found for "{query}"
             </p>
-            <p className="text-xs text-[#14231E]/70">
+            <p className="text-xs text-[#14233B]/70">
               Try searching for "Loans", "Credit", "B4BAPP", "Payments", or an industry name.
             </p>
           </div>
@@ -229,9 +228,9 @@ export const SearchModal: React.FC<SearchModalProps> = ({
             {/* Matched 16 Solutions */}
             {matchedSolutions.length > 0 && (
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#14231E]/70 px-2 mb-2 flex items-center justify-between font-mono">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-[#14233B]/70 px-2 mb-2 flex items-center justify-between font-mono">
                   <span>Solutions ({matchedSolutions.length})</span>
-                  <span className="text-[10px] text-[#0E7A5A]">Official 16</span>
+                  <span className="text-[10px] text-[#0C43A3] font-bold">Official 16</span>
                 </p>
                 <div className="space-y-1">
                   {matchedSolutions.map((sol) => {
@@ -243,28 +242,28 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                           onSelectSolution?.(sol)
                           onClose()
                         }}
-                        className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-white transition-colors cursor-pointer group border border-transparent hover:border-[#14231E]/15"
+                        className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-white transition-colors cursor-pointer group border border-transparent hover:border-[#0C43A3]"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-[#0E7A5A]/10 text-[#0E7A5A] flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[#0E7A5A] group-hover:text-white transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-[#0C43A3]/10 text-[#0C43A3] flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[#0C43A3] group-hover:text-white transition-colors">
                           <IconComp className="w-4 h-4" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-[#06201A] bg-[#C8793A] px-1.5 py-0.5 rounded text-[10px] font-mono">
+                            <span className="text-xs font-bold text-[#07142B] bg-[#F8C61A] px-1.5 py-0.5 rounded text-[10px] font-mono">
                               #{sol.number}
                             </span>
-                            <span className="text-sm font-bold text-[#14231E] truncate font-heading">
+                            <span className="text-sm font-bold text-[#14233B] truncate font-heading">
                               {sol.title}
                             </span>
-                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#EEF1EC] text-[#0E7A5A] border border-[#14231E]/15 font-medium">
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#E9EDF4] text-[#0C43A3] border border-[#14233B]/15 font-medium">
                               {sol.category}
                             </span>
                           </div>
-                          <p className="text-xs text-[#14231E]/70 line-clamp-1 mt-0.5">
+                          <p className="text-xs text-[#14233B]/70 line-clamp-1 mt-0.5">
                             {sol.shortDesc}
                           </p>
                         </div>
-                        <ArrowRight className="w-4 h-4 text-[#14231E]/40 group-hover:text-[#0E7A5A] group-hover:translate-x-0.5 transition-all shrink-0 mt-1.5" />
+                        <ArrowRight className="w-4 h-4 text-[#14233B]/40 group-hover:text-[#0C43A3] group-hover:translate-x-0.5 transition-all shrink-0 mt-1.5" />
                       </div>
                     )
                   })}
@@ -274,21 +273,21 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
             {/* Matched B4BAPP Software Features */}
             {matchedSoftwareFeatures.length > 0 && (
-              <div className="pt-2 border-t border-[#14231E]/15">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#14231E]/70 px-2 mb-2 flex items-center gap-1.5 font-mono">
-                  <Cpu className="w-3.5 h-3.5 text-[#C8793A]" />
+              <div className="pt-2 border-t border-[#14233B]/15">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-[#14233B]/70 px-2 mb-2 flex items-center gap-1.5 font-mono">
+                  <Cpu className="w-3.5 h-3.5 text-[#0C43A3]" />
                   <span>B4BAPP Software Features ({matchedSoftwareFeatures.length})</span>
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                   {matchedSoftwareFeatures.map((feat, i) => (
                     <div
                       key={i}
-                      className="p-2 rounded-lg bg-white border border-[#14231E]/15 flex items-center justify-between text-xs"
+                      className="p-2 rounded-lg bg-white border border-[#14233B]/15 flex items-center justify-between text-xs"
                     >
-                      <span className="font-medium text-[#14231E] truncate">
+                      <span className="font-medium text-[#14233B] truncate">
                         {feat.feature}
                       </span>
-                      <span className="text-[10px] text-[#14231E]/60 shrink-0 ml-2">
+                      <span className="text-[10px] text-[#14233B]/60 shrink-0 ml-2">
                         {feat.type}
                       </span>
                     </div>
@@ -299,22 +298,22 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
             {/* Matched Territory Divisions */}
             {matchedTerritories.length > 0 && (
-              <div className="pt-2 border-t border-[#14231E]/15">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#14231E]/70 px-2 mb-2 flex items-center gap-1.5 font-mono">
-                  <MapPin className="w-3.5 h-3.5 text-[#0E7A5A]" />
+              <div className="pt-2 border-t border-[#14233B]/15">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-[#14233B]/70 px-2 mb-2 flex items-center gap-1.5 font-mono">
+                  <MapPin className="w-3.5 h-3.5 text-[#0C43A3]" />
                   <span>Territory Divisions ({matchedTerritories.length})</span>
                 </p>
                 <div className="space-y-1">
                   {matchedTerritories.map((terr) => (
                     <div
                       key={terr.id}
-                      className="p-2 rounded-lg bg-white border border-[#14231E]/15 flex items-center justify-between text-xs"
+                      className="p-2 rounded-lg bg-white border border-[#14233B]/15 flex items-center justify-between text-xs"
                     >
                       <div>
-                        <span className="font-bold text-[#14231E]">
+                        <span className="font-bold text-[#14233B]">
                           Division #{terr.regionNumber}: {terr.name}
                         </span>
-                        <p className="text-[11px] text-[#14231E]/70">
+                        <p className="text-[11px] text-[#14233B]/70">
                           HQ: {terr.headOffice} • Coverage: {terr.coverage}
                         </p>
                       </div>
@@ -326,15 +325,15 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
             {/* Matched Industries */}
             {matchedIndustries.length > 0 && (
-              <div className="pt-2 border-t border-[#14231E]/15">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#14231E]/70 px-2 mb-2 font-mono">
+              <div className="pt-2 border-t border-[#14233B]/15">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-[#14233B]/70 px-2 mb-2 font-mono">
                   Trades & Industries Served ({matchedIndustries.length})
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {matchedIndustries.map((ind) => (
                     <span
                       key={ind}
-                      className="px-2.5 py-1 rounded-md text-xs bg-white text-[#14231E] border border-[#14231E]/15"
+                      className="px-2.5 py-1 rounded-md text-xs bg-white text-[#14233B] border border-[#14233B]/15"
                     >
                       {ind}
                     </span>
@@ -346,7 +345,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
         )}
 
         {/* Modal Footer */}
-        <div className="px-4 py-2.5 bg-white border-t border-[#14231E]/15 flex items-center justify-between text-[11px] text-[#14231E]/70 font-mono">
+        <div className="px-4 py-2.5 bg-white border-t border-[#14233B]/15 flex items-center justify-between text-[11px] text-[#14233B]/70 font-mono">
           <span>Search B4B America Directory</span>
           <span>Press ESC to close</span>
         </div>

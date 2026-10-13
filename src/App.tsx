@@ -156,25 +156,21 @@ const queryClient = new QueryClient({
 const DynamicDashboardRouter: React.FC = () => {
   const { user } = useAuth()
   if (user?.role === 'Admin') {
-    return <AdminOverviewPage />
+    return <Navigate to="/portal/admin/dashboard" replace />
   }
   if (user?.role === 'Biz Pro') {
-    // Client requirement: When B4B Coach enters the portal, Bulletin is the first thing they see
-    return <BizProBulletinPage />
+    return <Navigate to="/portal/bizpro/bulletin" replace />
   }
   if (user?.role === 'Employer') {
-    return <EmployerDashboardPage />
+    return <Navigate to="/portal/employer/dashboard" replace />
   }
   if (user?.role === 'Job Seeker') {
-    return <JobSeekerApplicationsPage />
-  }
-  if (user?.role === 'Client') {
-    return <ClientDashboardPage />
+    return <Navigate to="/portal/seeker/dashboard" replace />
   }
   if (user?.role === 'Affiliate') {
-    return <AffiliateDashboardPage />
+    return <Navigate to="/portal/affiliate/dashboard" replace />
   }
-  return <PortalDashboardPage />
+  return <Navigate to="/portal/client/dashboard" replace />
 }
 
 export default function App() {

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   Menu,
@@ -6,7 +6,6 @@ import {
   Sun,
   Moon,
   ExternalLink,
-  PlusCircle,
   Bell,
   Search,
   ChevronLeft,
@@ -18,23 +17,23 @@ import {
   Shield,
   CheckCircle2,
   FolderArchive,
-  RefreshCw,
-  Sparkles,
   Command,
   Globe,
 } from 'lucide-react'
-import { BrandLogo, brandConfig } from '@/config/brand'
+import { BrandLogo } from '@/config/brand'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Avatar } from '@/components/ui/Avatar'
 import { Modal } from '@/components/ui/Modal'
 import { Input } from '@/components/ui/Input'
-import { useAuth, UserRole, DEMO_PROFILES } from '@/hooks/useAuth'
+import { useAuth, UserRole } from '@/hooks/useAuth'
+import { DEMO_PROFILES } from '@/mock-data/users'
 import { usePermission } from '@/hooks/usePermission'
+import { normalizeRoleId } from '@/lib/rbac/permissionService'
+import { RoleId, Menu as MenuItemCatalog } from '@/lib/rbac/types'
 import { MenuIcon } from '@/components/navigation/MenuIcon'
 import { useTheme } from '@/hooks/useTheme'
 import { useToast } from '@/components/ui/Toast'
-import { MENU_CONFIG, MenuItem } from '@/config/menus'
 import { LogoutConfirmModal } from '@/components/auth/LogoutConfirmModal'
 import { IdleTimeoutModal } from '@/components/auth/IdleTimeoutModal'
 
@@ -48,7 +47,7 @@ const roleOptionsList: { role: UserRole; label: string; icon: string }[] = [
 ]
 
 export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, logout, switchRole, setLogoutModalOpen } = useAuth()
+  const { user, switchRole, setLogoutModalOpen } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const location = useLocation()
   const navigate = useNavigate()
@@ -118,10 +117,77 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  const { getMenusForRole, activeRoleId, roles } = usePermission()
-  const allowedMenus = getMenusForRole()
+  const { getMenusForRole } = usePermission()
 
-  const currentRole: string = user?.role || 'Client'
+  // Derive target role directly from current route and authenticated user
+  const currentRoleId = useMemo<RoleId>(() => {
+    const path = location.pathname
+    if (path.startsWith('/portal/admin')) return 'admin'
+    if (path.startsWith('/portal/bizpro')) return 'bizpro'
+    if (path.startsWith('/portal/affiliate')) return 'affiliate'
+    if (path.startsWith('/portal/employer')) return 'employer'
+    if (path.startsWith('/portal/seeker')) return 'jobseeker'
+    if (path.startsWith('/portal/client')) return 'client'
+    return normalizeRoleId(user?.role)
+  }, [location.pathname, user?.role])
+
+  const allowedMenus = useMemo<MenuItemCatalog[]>(() => {
+    return getMenusForRole(currentRoleId)
+  }, [getMenusForRole, currentRoleId])
+
+  const roleDisplayInfo = useMemo(() => {
+    switch (currentRoleId) {
+      case 'admin':
+        return {
+          title: 'Super Admin',
+          badge: 'Super Admin',
+          badgeVariant: 'purple' as const,
+          menuHeader: 'Super Admin Menu',
+          user: user?.role === 'Admin' ? user : DEMO_PROFILES.Admin,
+        }
+      case 'bizpro':
+        return {
+          title: 'B4B Coach',
+          badge: 'B4B Coach',
+          badgeVariant: 'amber' as const,
+          menuHeader: 'B4B Coach Menu',
+          user: user?.role === 'Biz Pro' ? user : DEMO_PROFILES['Biz Pro'],
+        }
+      case 'affiliate':
+        return {
+          title: 'Affiliate Partner',
+          badge: 'Affiliate Partner',
+          badgeVariant: 'emerald' as const,
+          menuHeader: 'Affiliate Partner Menu',
+          user: user?.role === 'Affiliate' ? user : DEMO_PROFILES.Affiliate,
+        }
+      case 'employer':
+        return {
+          title: 'Employer Portal',
+          badge: 'Employer Portal',
+          badgeVariant: 'primary' as const,
+          menuHeader: 'Employer Portal Menu',
+          user: user?.role === 'Employer' ? user : DEMO_PROFILES.Employer,
+        }
+      case 'jobseeker':
+        return {
+          title: 'Job Seeker',
+          badge: 'Job Seeker',
+          badgeVariant: 'primary' as const,
+          menuHeader: 'Job Seeker Menu',
+          user: user?.role === 'Job Seeker' ? user : DEMO_PROFILES['Job Seeker'],
+        }
+      case 'client':
+      default:
+        return {
+          title: 'SME Client',
+          badge: 'SME Client',
+          badgeVariant: 'navy' as const,
+          menuHeader: 'SME Client Menu',
+          user: user?.role === 'Client' ? user : DEMO_PROFILES.Client,
+        }
+    }
+  }, [currentRoleId, user])
 
   const isActive = (href: string) => {
     const cleanHref = href.split('?')[0].replace(/\/$/, '')
@@ -136,7 +202,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
       case 'Biz Pro':
         return '/portal/bizpro/bulletin'
       case 'Client':
-        return '/portal/dashboard'
+        return '/portal/client/dashboard'
       case 'Affiliate':
         return '/portal/affiliate/dashboard'
       case 'Employer':
@@ -229,17 +295,23 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
         {!isCollapsed && (
           <div className="mx-3 my-2 p-2.5 rounded-xl bg-slate-100/70 dark:bg-[#0B4A3A]/30 border border-slate-200/80 dark:border-[#0B4A3A] flex items-center justify-between gap-2.5">
             <div className="flex items-center gap-2.5 min-w-0">
-              <Avatar src={user?.avatarUrl} name={user?.name || 'Marcus Vance'} size="sm" status="online" className="w-8 h-8 shrink-0" />
+              <Avatar
+                src={roleDisplayInfo.user?.avatarUrl || roleDisplayInfo.user?.avatar}
+                name={roleDisplayInfo.user?.name || roleDisplayInfo.title}
+                size="sm"
+                status="online"
+                className="w-8 h-8 shrink-0"
+              />
               <div className="min-w-0 flex-1">
                 <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate leading-tight">
-                  {user?.company || user?.name || 'Apex Freight LLC'}
+                  {roleDisplayInfo.user?.company || roleDisplayInfo.user?.name || roleDisplayInfo.title}
                 </h4>
                 <div className="flex items-center gap-1 mt-0.5">
-                  <Badge variant="navy" size="sm" className="text-[9px] px-1.5 py-0 font-bold">
-                    {user?.role}
+                  <Badge variant={roleDisplayInfo.badgeVariant} size="sm" className="text-[9px] px-1.5 py-0 font-bold">
+                    {roleDisplayInfo.badge}
                   </Badge>
                   <span className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
-                    {user?.title || 'Account'}
+                    {roleDisplayInfo.user?.title || roleDisplayInfo.title}
                   </span>
                 </div>
               </div>
@@ -250,9 +322,12 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
         {/* Dynamic Role Navigation Links */}
         <nav className="flex-1 px-3 py-3 space-y-1 overflow-y-auto custom-scrollbar">
           {!isCollapsed && (
-            <div className="px-2 mb-2">
+            <div className="px-2 mb-2 flex items-center justify-between">
               <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                Menu
+                {roleDisplayInfo.menuHeader}
+              </span>
+              <span className="text-[10px] font-bold text-[#0E7A5A] dark:text-[#10B981] bg-[#0E7A5A]/10 dark:bg-[#0B4A3A] px-1.5 py-0.2 rounded-full">
+                {allowedMenus.length}
               </span>
             </div>
           )}
@@ -386,7 +461,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
                 title="Switch Portal Role Workspace"
               >
                 <Shield className="w-3.5 h-3.5 text-[#0E7A5A] dark:text-[#C8793A]" />
-                <span className="hidden sm:inline font-bold">{user?.role}</span>
+                <span className="hidden sm:inline font-bold">{roleDisplayInfo.badge}</span>
                 <ChevronDown className={`w-3 h-3 transition-transform ${roleDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
@@ -703,9 +778,9 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
               {/* Mobile Role Switcher Info */}
               <div className="mt-4 p-3 rounded-xl bg-[#EEF1EC] dark:bg-[#0B4A3A]/40 border border-[#0E7A5A]/20 dark:border-[#0B4A3A] text-xs">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                  Role: {user?.role}
+                  Role: {roleDisplayInfo.badge}
                 </span>
-                <p className="font-bold text-slate-900 dark:text-white truncate">{user?.name}</p>
+                <p className="font-bold text-slate-900 dark:text-white truncate">{roleDisplayInfo.user?.name}</p>
               </div>
 
               <div className="mt-4 space-y-1.5 max-h-[60vh] overflow-y-auto custom-scrollbar">

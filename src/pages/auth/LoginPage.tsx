@@ -85,6 +85,8 @@ export const LoginPage: React.FC = () => {
     return () => clearInterval(timer)
   }, [step, resendTimer])
 
+  const [selectedRole, setSelectedRole] = useState<UserRole>('Client')
+
   const {
     register,
     handleSubmit,
@@ -101,6 +103,7 @@ export const LoginPage: React.FC = () => {
 
   const handleDemoQuickLogin = async (role: UserRole) => {
     setFormError(null)
+    setSelectedRole(role)
     const email = `${role.toLowerCase().replace(/\s+/g, '')}@demo.com`
     setValue('email', email)
     setValue('password', 'Demo@1234')
@@ -134,28 +137,25 @@ export const LoginPage: React.FC = () => {
       case 'Employer':
         return '/portal/employer/dashboard'
       case 'Job Seeker':
-        return '/portal/seeker/applications'
+        return '/portal/seeker/dashboard'
       default:
-        return '/portal/dashboard'
+        return '/portal/client/dashboard'
     }
   }
 
   const resolveSafeTargetPath = (role: UserRole, rawRedirect: string | null) => {
     if (!rawRedirect) return getRolePath(role)
     const decoded = decodeURIComponent(rawRedirect)
-    if (decoded.startsWith('/portal/admin') && role !== 'Admin') {
+    if (decoded === '/portal/dashboard' || decoded === '/portal' || decoded === '/portal/') {
       return getRolePath(role)
     }
-    if (decoded.startsWith('/portal/bizpro') && role !== 'Biz Pro' && role !== 'Admin') {
-      return getRolePath(role)
-    }
-    if (decoded.startsWith('/portal/employer') && role !== 'Employer' && role !== 'Admin') {
-      return getRolePath(role)
-    }
-    if (decoded.startsWith('/portal/seeker') && role !== 'Job Seeker' && role !== 'Admin') {
-      return getRolePath(role)
-    }
-    return decoded
+    if (role === 'Admin' && decoded.startsWith('/portal/admin')) return decoded
+    if (role === 'Biz Pro' && decoded.startsWith('/portal/bizpro')) return decoded
+    if (role === 'Client' && decoded.startsWith('/portal/client')) return decoded
+    if (role === 'Affiliate' && decoded.startsWith('/portal/affiliate')) return decoded
+    if (role === 'Employer' && decoded.startsWith('/portal/employer')) return decoded
+    if (role === 'Job Seeker' && decoded.startsWith('/portal/seeker')) return decoded
+    return getRolePath(role)
   }
 
   const onSubmit = async (data: LoginFormData) => {
@@ -410,7 +410,11 @@ export const LoginPage: React.FC = () => {
                       key={item.role}
                       type="button"
                       onClick={() => handleDemoQuickLogin(item.role)}
-                      className="py-1 px-1.5 rounded-lg bg-white/80 hover:bg-white text-[#0B2545] hover:text-black font-extrabold text-[11px] shadow-2xs hover:shadow-xs transition-all border border-black/5 truncate cursor-pointer text-center"
+                      className={`py-1 px-1.5 rounded-lg font-extrabold text-[11px] shadow-2xs hover:shadow-xs transition-all border border-black/5 truncate cursor-pointer text-center ${
+                        selectedRole === item.role
+                          ? 'bg-white text-black ring-2 ring-[#013CA0] shadow-sm font-black'
+                          : 'bg-white/80 hover:bg-white text-[#0B2545] hover:text-black'
+                      }`}
                     >
                       {item.label}
                     </button>

@@ -48,7 +48,7 @@ import { useToast } from '@/components/ui/Toast'
 import { useAuth } from '@/hooks/useAuth'
 import { usePermission } from '@/hooks/usePermission'
 import { permissionService } from '@/lib/rbac/permissionService'
-import { MENU_CATALOG, MENU_MAP, MODULE_ORDER } from '@/config/menuCatalog'
+import { MENU_CATALOG, MENU_MAP, MODULE_ORDER, isMenuAllowedForRole } from '@/config/menuCatalog'
 import { MenuIcon } from '@/components/navigation/MenuIcon'
 import {
   Role,
@@ -189,69 +189,85 @@ export const AdminRolesPermissionsPage: React.FC = () => {
     return diffs
   }, [permissions, draftPermissions, roles])
 
-  // Safety rule check for locks
+  // Safety rule check for locks: Only protect Super Admin from lockout on critical administrative interfaces
   const isLockedItem = (roleId: RoleId, menu: Menu): { locked: boolean; reason: string } => {
     if (roleId === 'admin') {
       if (
         menu.id === 'admin-roles-permissions' ||
-        menu.id === 'admin-overview' ||
-        menu.id === 'shared-settings'
+        menu.id === 'admin-overview'
       ) {
         return {
           locked: true,
-          reason: 'Critical Security Control: Admin cannot be locked out of essential administrative interfaces.',
+          reason: 'Critical Security Control: Super Admin cannot be locked out of essential administrative interfaces.',
         }
-      }
-    }
-    if (menu.isCore) {
-      return {
-        locked: true,
-        reason: 'Core Platform Feature: Fundamental portal navigation item cannot be disabled for any role.',
       }
     }
     return { locked: false, reason: '' }
   }
 
-  // Mutation Handlers on Draft Permissions
-  const handleToggleMenuShow = (roleId: RoleId, menuId: string) => {
+  // Mutation Handlers on Permissions (Instant Reactive & Auto-Saved)
+  const handleToggleMenuShow = async (roleId: RoleId, menuId: string) => {
     const menu = MENU_MAP[menuId]
     if (!menu) return
     const lockInfo = isLockedItem(roleId, menu)
-    if (lockInfo.locked) return
+    if (lockInfo.locked) {
+      toast({
+        title: 'Action Locked',
+        description: lockInfo.reason,
+        type: 'warning',
+      })
+      return
+    }
 
-    setDraftPermissions((prev) => {
-      const copy = JSON.parse(JSON.stringify(prev))
-      if (!copy[roleId]) copy[roleId] = {}
-      const current = copy[roleId][menuId] || {
-        view: false,
-        create: false,
-        edit: false,
-        delete: false,
-        approve: false,
-        export: false,
-        scope: 'own',
-      }
+    const currentRolePerms = draftPermissions[roleId] || permissions[roleId] || {}
+    const current = currentRolePerms[menuId] || {
+      view: false,
+      create: false,
+      edit: false,
+      delete: false,
+      approve: false,
+      export: false,
+      scope: 'own',
+    }
 
-      const nextView = !current.view
-      current.view = nextView
+    const nextView = !current.view
+    const updatedItem: PermissionItem = {
+      ...current,
+      view: nextView,
+      scope: nextView ? (current.scope === 'none' ? 'own' : current.scope) : 'none',
+      create: nextView ? current.create : false,
+      edit: nextView ? current.edit : false,
+      delete: nextView ? current.delete : false,
+      approve: nextView ? current.approve : false,
+      export: nextView ? current.export : false,
+    }
 
-      // Action dependency: turning view OFF turns everything else off
-      if (!nextView) {
-        current.create = false
-        current.edit = false
-        current.delete = false
-        current.approve = false
-        current.export = false
-        current.scope = 'none'
-      } else {
-        if (current.scope === 'none') {
-          current.scope = 'own'
-        }
-      }
+    // 1. Reactive state update for immediate UI response
+    setDraftPermissions((prev) => ({
+      ...prev,
+      [roleId]: {
+        ...(prev[roleId] || {}),
+        [menuId]: updatedItem,
+      },
+    }))
 
-      copy[roleId][menuId] = current
-      return copy
-    })
+    // 2. Persist immediately to permissionService & storage
+    try {
+      const actor = user?.name || 'Super Admin'
+      await permissionService.updatePermission(roleId, menuId, { view: nextView }, actor)
+      await refreshPermissions(true)
+      toast({
+        title: nextView ? 'Menu Activated' : 'Menu Hidden',
+        description: `"${menu.label}" is now ${nextView ? 'visible in' : 'hidden from'} the ${selectedRole.name} portal sidebar.`,
+        type: 'success',
+      })
+    } catch (err: any) {
+      toast({
+        title: 'Update Failed',
+        description: err.message || 'Could not update menu permission.',
+        type: 'error',
+      })
+    }
   }
 
   const handleToggleAction = (roleId: RoleId, menuId: string, action: PermissionAction) => {
@@ -333,46 +349,61 @@ export const AdminRolesPermissionsPage: React.FC = () => {
     })
   }
 
-  const handleToggleGroup = (roleId: RoleId, groupMenus: Menu[], forceState?: boolean) => {
-    setDraftPermissions((prev) => {
-      const copy = JSON.parse(JSON.stringify(prev))
-      if (!copy[roleId]) copy[roleId] = {}
+  const handleToggleGroup = async (roleId: RoleId, groupMenus: Menu[], forceState?: boolean) => {
+    const currentRolePerms = draftPermissions[roleId] || permissions[roleId] || {}
+    const allEnabled = groupMenus.every((m) => currentRolePerms[m.id]?.view)
+    const targetState = forceState !== undefined ? forceState : !allEnabled
+    const patches: Record<string, Partial<PermissionItem>> = {}
+    const updatedDraft = { ...currentRolePerms }
 
-      const allEnabled = groupMenus.every((m) => copy[roleId][m.id]?.view)
-      const targetState = forceState !== undefined ? forceState : !allEnabled
+    groupMenus.forEach((menu) => {
+      const lockInfo = isLockedItem(roleId, menu)
+      if (lockInfo.locked) return
 
-      groupMenus.forEach((menu) => {
-        const lockInfo = isLockedItem(roleId, menu)
-        if (lockInfo.locked) return
+      const current = updatedDraft[menu.id] || {
+        view: false,
+        create: false,
+        edit: false,
+        delete: false,
+        approve: false,
+        export: false,
+        scope: 'own',
+      }
 
-        const current = copy[roleId][menu.id] || {
-          view: false,
-          create: false,
-          edit: false,
-          delete: false,
-          approve: false,
-          export: false,
-          scope: 'own',
-        }
-
-        current.view = targetState
-        if (!targetState) {
-          current.create = false
-          current.edit = false
-          current.delete = false
-          current.approve = false
-          current.export = false
-          current.scope = 'none'
-        } else {
-          if (current.scope === 'none') {
-            current.scope = 'own'
-          }
-        }
-        copy[roleId][menu.id] = current
-      })
-
-      return copy
+      updatedDraft[menu.id] = {
+        ...current,
+        view: targetState,
+        scope: targetState ? (current.scope === 'none' ? 'own' : current.scope) : 'none',
+        create: targetState ? current.create : false,
+        edit: targetState ? current.edit : false,
+        delete: targetState ? current.delete : false,
+        approve: targetState ? current.approve : false,
+        export: targetState ? current.export : false,
+      }
+      patches[menu.id] = { view: targetState }
     })
+
+    setDraftPermissions((prev) => ({
+      ...prev,
+      [roleId]: updatedDraft,
+    }))
+
+    try {
+      const actor = user?.name || 'Super Admin'
+      await permissionService.bulkUpdate(roleId, patches, actor)
+      await refreshPermissions(true)
+      toast({
+        title: targetState ? 'All Menus Enabled' : 'All Menus Disabled',
+        description: `Successfully ${targetState ? 'enabled' : 'disabled'} menus for ${selectedRole.name}.`,
+        type: 'success',
+      })
+    } catch (err: any) {
+      toast({
+        title: 'Action Failed',
+        description: err.message || 'Could not update menus.',
+        type: 'error',
+      })
+    }
   }
 
   const handleSetPreset = (roleId: RoleId, menuId: string, preset: 'full' | 'readonly' | 'hidden') => {
@@ -432,36 +463,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
   }
 
   const isMenuRelevantForRole = (rId: RoleId, menu: Menu): boolean => {
-    if (currentRoleDraftPerms[menu.id]?.view) return true
-
-    if (rId === 'admin') {
-      return (
-        menu.id.startsWith('admin-') ||
-        menu.group.includes('Admin') ||
-        menu.group.includes('Management') ||
-        menu.group.includes('Compensation') ||
-        menu.group.includes('System') ||
-        menu.group.includes('Catalog') ||
-        menu.group.includes('Reports') ||
-        menu.module === 'Shared'
-      )
-    }
-    if (rId === 'bizpro') {
-      return menu.id.startsWith('bizpro-') || menu.group.includes('Biz Pro') || menu.module === 'Shared'
-    }
-    if (rId === 'client') {
-      return menu.id.startsWith('client-') || menu.group.includes('Client') || menu.id === 'shared-ebox' || menu.id === 'shared-profile' || menu.id === 'shared-settings'
-    }
-    if (rId === 'affiliate') {
-      return menu.id.startsWith('affiliate-') || menu.group.includes('Affiliate') || menu.id === 'shared-ebox' || menu.id === 'shared-profile' || menu.id === 'shared-settings'
-    }
-    if (rId === 'employer') {
-      return menu.id.startsWith('employer-') || menu.group.includes('Employer') || menu.id === 'shared-ebox' || menu.id === 'shared-profile' || menu.id === 'shared-settings'
-    }
-    if (rId === 'jobseeker') {
-      return menu.id.startsWith('seeker-') || menu.group.includes('Job Seeker') || menu.id === 'shared-messages' || menu.id === 'shared-profile' || menu.id === 'shared-settings'
-    }
-    return true
+    return isMenuAllowedForRole(rId, menu.id)
   }
 
   // Filtered menus for Matrix Tab
@@ -472,11 +474,9 @@ export const AdminRolesPermissionsPage: React.FC = () => {
     })
 
     MENU_CATALOG.forEach((menu) => {
-      // 0. Role-specific catalog scoping (when in roleOnly mode)
-      if (catalogScope === 'roleOnly') {
-        if (!isMenuRelevantForRole(selectedRoleId, menu)) {
-          return
-        }
+      // 0. Strict role-specific domain isolation: menus from other roles never leak in
+      if (!isMenuRelevantForRole(selectedRoleId, menu)) {
+        return
       }
 
       // 1. Search Query
@@ -492,7 +492,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
 
       // 2. Filter Status (enabled / disabled)
       const perm = currentRoleDraftPerms[menu.id]
-      const isEnabled = perm?.view || menu.isCore
+      const isEnabled = Boolean(perm?.view) || (selectedRoleId === 'admin' && (menu.id === 'admin-roles-permissions' || menu.id === 'admin-overview'))
       if (filterStatus === 'enabled' && !isEnabled) return
       if (filterStatus === 'disabled' && isEnabled) return
 
@@ -506,7 +506,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
     })
 
     return modulesMap
-  }, [catalogScope, selectedRoleId, searchQuery, filterStatus, selectedModuleFilter, currentRoleDraftPerms])
+  }, [selectedRoleId, searchQuery, filterStatus, selectedModuleFilter, currentRoleDraftPerms])
 
   // Save changes handler
   const handleConfirmSave = async () => {
@@ -812,7 +812,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
   const previewRoleMenus = useMemo(() => {
     const rolePerms = currentRoleDraftPerms
     return MENU_CATALOG.filter((menu) => {
-      if (menu.isCore) return true
+      if (!isMenuRelevantForRole(selectedRoleId, menu)) return false
       if (selectedRoleId === 'admin' && (menu.id === 'admin-roles-permissions' || menu.id === 'admin-overview' || menu.id === 'shared-settings')) {
         return true
       }
@@ -984,8 +984,9 @@ export const AdminRolesPermissionsPage: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               {roles.map((role) => {
                 const isSelected = selectedRoleId === role.id
-                const rolePerms = draftPermissions[role.id] || {}
-                const activeCount = Object.values(rolePerms).filter((p) => p.view).length
+                const roleMenus = MENU_CATALOG.filter((m) => isMenuRelevantForRole(role.id, m))
+                const rolePerms = draftPermissions[role.id] || permissions[role.id] || {}
+                const activeCount = roleMenus.filter((m) => Boolean(rolePerms[m.id]?.view)).length
 
                 return (
                   <button
@@ -1050,17 +1051,16 @@ export const AdminRolesPermissionsPage: React.FC = () => {
 
           {/* 2. SELECTED ROLE HEADER & QUICK ACTIONS BANNER */}
           {(() => {
-            // Get all role relevant menus
-            const roleRelevantMenus = MENU_CATALOG.filter((menu) => {
-              if (catalogScope === 'allCatalog') return true
-              return isMenuRelevantForRole(selectedRoleId, menu)
-            })
+            // Get all role relevant menus (Strictly isolated to this role's domain)
+            const roleRelevantMenus = MENU_CATALOG.filter((menu) =>
+              isMenuRelevantForRole(selectedRoleId, menu)
+            )
 
             const activeMenus = roleRelevantMenus.filter(
-              (m) => currentRoleDraftPerms[m.id]?.view || m.isCore
+              (m) => Boolean(currentRoleDraftPerms[m.id]?.view)
             )
             const disabledMenus = roleRelevantMenus.filter(
-              (m) => !(currentRoleDraftPerms[m.id]?.view || m.isCore)
+              (m) => !currentRoleDraftPerms[m.id]?.view
             )
 
             // Filter by search query if any
@@ -1188,7 +1188,10 @@ export const AdminRolesPermissionsPage: React.FC = () => {
                           return (
                             <div
                               key={menu.id}
-                              className="p-3.5 rounded-2xl bg-white dark:bg-[#0D1E36] border border-emerald-200 dark:border-emerald-900/60 shadow-xs hover:shadow-md transition-all flex items-center justify-between gap-3"
+                              onClick={() => !lockInfo.locked && handleToggleMenuShow(selectedRoleId, menu.id)}
+                              className={`p-3.5 rounded-2xl bg-white dark:bg-[#0D1E36] border border-emerald-200 dark:border-emerald-900/60 shadow-xs hover:shadow-md transition-all flex items-center justify-between gap-3 ${
+                                lockInfo.locked ? 'cursor-not-allowed opacity-90' : 'cursor-pointer hover:border-emerald-400 dark:hover:border-emerald-600'
+                              }`}
                             >
                               <div className="flex items-center gap-3 min-w-0">
                                 <div className="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 shrink-0">
@@ -1216,7 +1219,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
                                 </div>
                               </div>
 
-                              <div className="flex items-center gap-2 shrink-0">
+                              <div className="flex items-center gap-2 shrink-0" onClick={(e) => e.stopPropagation()}>
                                 <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 hidden sm:inline">
                                   Active
                                 </span>
@@ -1226,7 +1229,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
                                   </div>
                                 ) : (
                                   <Switch
-                                    checked={true}
+                                    checked={Boolean(currentRoleDraftPerms[menu.id]?.view)}
                                     onChange={() => handleToggleMenuShow(selectedRoleId, menu.id)}
                                   />
                                 )}
@@ -1264,7 +1267,10 @@ export const AdminRolesPermissionsPage: React.FC = () => {
                           return (
                             <div
                               key={menu.id}
-                              className="p-3.5 rounded-2xl bg-slate-50/60 dark:bg-[#0A1628]/60 border border-slate-200/80 dark:border-[#1E3A5F]/60 opacity-75 hover:opacity-100 transition-all flex items-center justify-between gap-3"
+                              onClick={() => !lockInfo.locked && handleToggleMenuShow(selectedRoleId, menu.id)}
+                              className={`p-3.5 rounded-2xl bg-slate-50/60 dark:bg-[#0A1628]/60 border border-slate-200/80 dark:border-[#1E3A5F]/60 opacity-80 hover:opacity-100 transition-all flex items-center justify-between gap-3 ${
+                                lockInfo.locked ? 'cursor-not-allowed' : 'cursor-pointer hover:border-slate-300 dark:hover:border-slate-700'
+                              }`}
                             >
                               <div className="flex items-center gap-3 min-w-0">
                                 <div className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 shrink-0">
@@ -1280,7 +1286,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
                                 </div>
                               </div>
 
-                              <div className="flex items-center gap-2 shrink-0">
+                              <div className="flex items-center gap-2 shrink-0" onClick={(e) => e.stopPropagation()}>
                                 <span className="text-[11px] font-semibold text-slate-400 hidden sm:inline">
                                   Hidden
                                 </span>
@@ -1290,7 +1296,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
                                   </div>
                                 ) : (
                                   <Switch
-                                    checked={false}
+                                    checked={Boolean(currentRoleDraftPerms[menu.id]?.view)}
                                     onChange={() => handleToggleMenuShow(selectedRoleId, menu.id)}
                                   />
                                 )}
@@ -1303,25 +1309,15 @@ export const AdminRolesPermissionsPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Optional switch to browse all 60 global menus */}
+                {/* Isolated Role Domain Indicator */}
                 <div className="pt-4 border-t border-slate-200 dark:border-[#1E3A5F] flex items-center justify-between">
                   <span className="text-xs text-slate-500">
-                    {catalogScope === 'roleOnly'
-                      ? `Showing ${roleRelevantMenus.length} menus tailored for ${selectedRole.name}.`
-                      : `Showing all 60 system menus across all portals.`}
+                    Showing {roleRelevantMenus.length} dedicated menus strictly isolated to {selectedRole.name}.
                   </span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() =>
-                      setCatalogScope((prev) => (prev === 'roleOnly' ? 'allCatalog' : 'roleOnly'))
-                    }
-                    className="text-xs text-blue-600 dark:text-blue-400 font-bold"
-                  >
-                    {catalogScope === 'roleOnly'
-                      ? 'Browse & Enable Other Platform Menus (Advanced)'
-                      : `Back to ${selectedRole.name} Tools Only`}
-                  </Button>
+                  <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 rounded-md border border-emerald-200 dark:border-emerald-900/60 flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                    Isolated Role Boundary
+                  </span>
                 </div>
               </div>
             )
@@ -1424,12 +1420,17 @@ export const AdminRolesPermissionsPage: React.FC = () => {
                     {roles.map((role) => {
                       const rolePerms = draftPermissions[role.id] || {}
                       const perm = rolePerms[menu.id]
-                      const isViewOn = menu.isCore || perm?.view
+                      const isRelevant = isMenuRelevantForRole(role.id, menu)
+                      const isViewOn = isRelevant && Boolean(perm?.view)
                       const lockInfo = isLockedItem(role.id, menu)
 
                       return (
                         <td key={role.id} className="py-2.5 px-3 text-center">
-                          {lockInfo.locked ? (
+                          {!isRelevant ? (
+                            <span className="text-slate-300 dark:text-slate-700 text-xs font-mono select-none" title="Not applicable to this role">
+                              —
+                            </span>
+                          ) : lockInfo.locked ? (
                             <div title={lockInfo.reason} className="inline-flex items-center justify-center cursor-not-allowed">
                               <Lock className="w-3.5 h-3.5 text-amber-500" />
                             </div>

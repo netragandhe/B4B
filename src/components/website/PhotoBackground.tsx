@@ -31,25 +31,26 @@ export const PhotoBackground: React.FC<PhotoBackgroundProps> = ({
   const [imageError, setImageError] = useState(false)
   const imageSrc = src || SLOT_PATHS[slot]
 
-  const defaultGradient =
+  // Million-Dollar Navy Gradient Fallback architecture when photograph is pending client upload
+  const defaultNavyGradient =
     slot === 'contact'
-      ? 'linear-gradient(135deg, #0E7A5A 0%, #06201A 100%)'
+      ? 'linear-gradient(135deg, #0D2147 0%, #07142B 100%)'
       : slot === 'philosophy'
-      ? 'linear-gradient(135deg, #0B4A3A 0%, #06201A 100%)'
-      : 'linear-gradient(135deg, #06201A 0%, #0B4A3A 60%, #06201A 100%)'
+      ? 'linear-gradient(135deg, #07142B 0%, #0D2147 100%)'
+      : 'linear-gradient(135deg, #07142B 0%, #0D2147 60%, #07142B 100%)'
 
   return (
-    <div className={`relative overflow-hidden bg-[#06201A] ${className}`}>
-      {/* 1. Base Dark Green Gradient (always present under image and overlay) */}
+    <div className={`relative overflow-hidden bg-[#07142B] ${className}`}>
+      {/* 1. Base Navy Gradient Architecture (present under image and overlay) */}
       <div
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
-          background: defaultGradient,
+          background: defaultNavyGradient,
           zIndex: 1,
         }}
       />
 
-      {/* 2. Background Image Layer (Real photo only, never AI-generated) */}
+      {/* 2. Background Image Layer (Real photo only, never AI-generated, supplied by client in src/content/images/) */}
       {!imageError && imageSrc && (
         <img
           src={imageSrc}
@@ -62,11 +63,11 @@ export const PhotoBackground: React.FC<PhotoBackgroundProps> = ({
         />
       )}
 
-      {/* 3. Forest Black (#06201A) 60-75% Overlay Layer ensuring WCAG AA Contrast */}
+      {/* 3. Midnight Navy (#07142B) 60-75% Overlay Layer ensuring WCAG AA Contrast */}
       <div
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
-          backgroundColor: '#06201A',
+          backgroundColor: '#07142B',
           opacity: overlayOpacity,
           zIndex: 3,
         }}
@@ -79,4 +80,3 @@ export const PhotoBackground: React.FC<PhotoBackgroundProps> = ({
     </div>
   )
 }
-

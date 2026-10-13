@@ -91,28 +91,26 @@ export const ClientPaymentsInvoicesPage: React.FC = () => {
                   <td className="py-3 px-4 text-slate-500">{inv.dueDate}</td>
                   <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">{formatCurrency(inv.amount)}</td>
                   <td className="py-3 px-4">
-                    <Badge variant={inv.status === 'Paid' ? 'emerald' : inv.status === 'Unpaid' ? 'gold' : 'danger'} size="sm" dot>
+                    <Badge variant={inv.status === 'Paid' ? 'emerald' : inv.status === 'Unpaid' ? 'amber' : 'danger'} size="sm" dot>
                       {inv.status}
                     </Badge>
                   </td>
                   <td className="py-3 px-4 text-right">
                     {inv.status === 'Unpaid' ? (
                       <Button
-                        size="sm"
+                        size="xs"
                         variant="accent"
                         onClick={() => handlePayNow(inv)}
-                        leftIcon={<CreditCard className="w-3.5 h-3.5" />}
-                        className="text-xs"
+                        leftIcon={<CreditCard className="w-3 h-3" />}
                       >
                         Pay Now
                       </Button>
                     ) : (
                       <Button
-                        size="sm"
+                        size="xs"
                         variant="outline"
                         onClick={() => toast({ title: 'Receipt Downloaded', description: `Receipt for ${inv.invoiceNumber} saved.`, type: 'info' })}
-                        leftIcon={<Download className="w-3.5 h-3.5" />}
-                        className="text-xs"
+                        leftIcon={<Download className="w-3 h-3" />}
                       >
                         Receipt
                       </Button>
