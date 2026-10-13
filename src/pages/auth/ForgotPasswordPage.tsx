@@ -66,7 +66,7 @@ export const ForgotPasswordPage: React.FC = () => {
                 </div>
               </FormField>
 
-              <Button type="submit" variant="accent" size="md" pill isLoading={isSubmitting} className="w-full font-bold bg-[#0E7A5A] hover:bg-[#0B4A3A] text-white">
+              <Button type="submit" variant="accent" size="md" pill isLoading={isSubmitting} className="w-full font-bold bg-[#1D4ED8] hover:bg-[#1E40AF] text-white shadow-lg shadow-[#1D4ED8]/25">
                 Send Reset Link
               </Button>
             </form>
@@ -79,7 +79,7 @@ export const ForgotPasswordPage: React.FC = () => {
           </div>
         ) : (
           <div className="p-8 rounded-2xl bg-slate-800 border border-slate-700 text-center space-y-4">
-            <div className="p-3 rounded-full bg-emerald-500/20 text-emerald-400 w-fit mx-auto">
+            <div className="p-3 rounded-full bg-blue-500/20 text-blue-400 w-fit mx-auto">
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <h2 className="text-xl font-bold text-white">Check Your Inbox</h2>
@@ -87,7 +87,7 @@ export const ForgotPasswordPage: React.FC = () => {
               We dispatched reset instructions to <strong className="text-white">{sentEmail}</strong>.
             </p>
             <div className="pt-2">
-              <Link to="/portal/login" className="text-xs text-[#0E7A5A] font-bold hover:underline">
+              <Link to="/portal/login" className="text-xs text-[#1D4ED8] hover:text-[#0D3B8E] font-bold hover:underline">
                 Return to Sign In
               </Link>
             </div>

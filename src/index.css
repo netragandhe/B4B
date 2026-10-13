@@ -16,6 +16,11 @@
     --text-muted: #5B6B60;
     --border: #E2E8E4;
 
+    /* Official B4B Brand Color Tokens */
+    --brand-blue: #0A3D9C;
+    --brand-blue-dark: #072B6E;
+    --brand-yellow: #FFC800;
+
     /* Semantic Aliases */
     --background: var(--bg);
     --foreground: var(--text);
@@ -110,6 +115,9 @@
   --color-text: var(--text);
   --color-text-muted: var(--text-muted);
   --color-border: var(--border);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-dark: var(--brand-blue-dark);
+  --color-brand-yellow: var(--brand-yellow);
 }
 
 /* Glassmorphism & utility styles */
