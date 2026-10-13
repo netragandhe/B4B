@@ -51,6 +51,9 @@ import {
 import b4bappPreviewImg from '@/content/images/b4bapp-preview.webp'
 import heroBgImg from '@/content/images/hero-bg.webp'
 import industryTruckImg from '@/content/images/industry-truck.webp'
+import solutionsBackdropImg from '@/content/images/solutions-backdrop.jpg'
+import industriesBackdropImg from '@/content/images/industries-backdrop.jpg'
+import advisoryBackdropImg from '@/content/images/advisory-backdrop.jpg'
 import { SOLUTION_IMAGES } from '@/content/solutionImages'
 
 const FEATURED_INDUSTRIES = [
@@ -138,9 +141,9 @@ export const HomePage: React.FC = () => {
       <Navbar variant="dark" onOpenCoachModal={() => setCoachModalOpen(true)} />
 
       {/* =========================================================================
-          SECTION 1. HERO (MATCHING SECTION 3 LUMINOUS BLUE PALETTE)
+          SECTION 1. HERO (SEAMLESS CONTINUOUS LUMINOUS BLUE CANVAS)
           ========================================================================= */}
-      <section className="relative py-20 text-white border-b border-sky-300/25 overflow-hidden">
+      <section className="relative py-20 text-white overflow-hidden">
         {/* Background Photo Layer with luminous blue overlay matching Section 3 */}
         <div className="absolute inset-0 pointer-events-none z-0">
           <img
@@ -150,12 +153,14 @@ export const HomePage: React.FC = () => {
             decoding="sync"
             className="w-full h-full object-cover object-center scale-105"
           />
-          {/* Exact matching luminous blue overlays as Section 3 */}
+          {/* Exact matching luminous blue overlays */}
           <div className="absolute inset-0 bg-[#0A2A5E]/30" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
+          {/* Seamless bottom fade blending into Section 2 without harsh borders */}
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#0A2552]/80" />
         </div>
 
-        {/* Ambient lighting accent matching Section 3 */}
+        {/* Ambient lighting accent */}
         <div className="absolute -top-32 -left-32 w-96 h-96 bg-sky-500/25 rounded-full blur-3xl pointer-events-none z-[1]" />
         <div className="absolute top-1/2 -right-32 w-96 h-96 bg-sky-400/20 rounded-full blur-3xl pointer-events-none z-[1]" />
 
@@ -466,24 +471,27 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 2. 16 SOLUTIONS (EXACT MATCH TO SECTION 3 BACKGROUND & ATMOSPHERE)
+          SECTION 2. 16 SOLUTIONS (UNIQUE 3D SOLUTIONS ECOSYSTEM BACKDROP)
           ========================================================================= */}
-      <section id="solutions-showcase" className="py-20 text-white relative border-b border-sky-300/30 overflow-hidden">
-        {/* Background Visual Layer matching Section 3 3D technology graphic and exact blue overlay */}
+      <section id="solutions-showcase" className="py-24 text-white relative overflow-hidden">
+        {/* Background Visual Layer: Unique 3D Solutions Ecosystem Backdrop */}
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
           <img
-            src={b4bappPreviewImg}
+            src={solutionsBackdropImg}
             alt="B4B Solutions 3D technology ecosystem backdrop"
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover object-center scale-105"
           />
-          {/* Exact matching luminous blue overlays as Section 3 */}
+          {/* Luminous blue overlays harmonizing with Section 3 */}
           <div className="absolute inset-0 bg-[#0A2A5E]/30" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
+          {/* Seamless top and bottom blending gradients to eliminate harsh section breaks */}
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#0A2552]/80 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#08204D]/80" />
         </div>
 
-        {/* Ambient lighting accent matching Section 3 */}
+        {/* Ambient lighting accent */}
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-sky-500/25 rounded-full blur-3xl pointer-events-none z-[1]" />
         <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-sky-400/20 rounded-full blur-3xl pointer-events-none z-[1]" />
 
@@ -618,10 +626,10 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 3. CRM & ERP SPOTLIGHT: B4BAPP (3D TECH VISUAL BACKGROUND)
+          SECTION 3. CRM & ERP SPOTLIGHT: B4BAPP (UNIQUE 3D APP DASHBOARD BACKDROP)
           ========================================================================= */}
-      <section id="software" className="py-20 text-white border-b border-[#0D2147] relative overflow-hidden">
-        {/* Background Visual Layer showcasing the user-selected 3D technology graphic */}
+      <section id="software" className="py-24 text-white relative overflow-hidden">
+        {/* Background Visual Layer showcasing the unique 3D CRM & ERP graphic */}
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
           <img
             src={b4bappPreviewImg}
@@ -630,9 +638,12 @@ export const HomePage: React.FC = () => {
             decoding="async"
             className="w-full h-full object-cover object-center scale-105"
           />
-          {/* Luminous blue overlay: harmonizes with the bright sky-blue 3D graphic without blacking it out */}
+          {/* Luminous blue overlay: harmonizes with the bright sky-blue 3D graphic */}
           <div className="absolute inset-0 bg-[#0A2A5E]/30" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
+          {/* Seamless top and bottom blending gradients to eliminate harsh section breaks */}
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#08204D]/80 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#0A2552]/80" />
         </div>
 
         {/* Ambient lighting accent */}
@@ -812,23 +823,27 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 4. INDUSTRIES WE SERVE (MATCHING SECTION 3 3D TECH BACKDROP)
+          SECTION 4. INDUSTRIES WE SERVE (UNIQUE 3D COMMERCIAL TRADES BACKDROP)
           ========================================================================= */}
-      <section className="py-20 text-white border-b border-sky-300/30 relative overflow-hidden">
-        {/* Background Visual Layer matching Section 3 3D technology graphic and exact blue overlay */}
+      <section className="py-24 text-white relative overflow-hidden">
+        {/* Background Visual Layer: Unique 3D Commercial Trades & Logistics Grid */}
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
           <img
-            src={b4bappPreviewImg}
-            alt="B4B Commercial Industries 3D backdrop"
+            src={industriesBackdropImg}
+            alt="B4B Commercial Industries 3D trade logistics and buildings grid"
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover object-center scale-105"
           />
+          {/* Luminous blue overlay harmonizing with the whole page */}
           <div className="absolute inset-0 bg-[#0A2A5E]/30" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
+          {/* Seamless top and bottom blending gradients to eliminate harsh section breaks */}
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#0A2552]/80 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#09224A]/80" />
         </div>
 
-        {/* Ambient lighting accent matching Section 3 */}
+        {/* Ambient lighting accent */}
         <div className="absolute top-1/2 left-1/3 w-[650px] h-[650px] bg-sky-400/25 rounded-full blur-3xl pointer-events-none z-[1]" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 relative z-10">
@@ -917,23 +932,27 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 5. ADVISORY INTAKE & DEMO DESK (MATCHING SECTION 3 3D TECH BACKDROP)
+          SECTION 5. ADVISORY INTAKE & DEMO DESK (UNIQUE 3D EXECUTIVE ADVISORY BACKDROP)
           ========================================================================= */}
-      <section className="py-20 text-white border-b border-[#0D2147] relative overflow-hidden">
-        {/* Background Visual Layer matching Section 3 3D technology graphic and exact blue overlay */}
+      <section className="py-24 text-white relative overflow-hidden">
+        {/* Background Visual Layer: Unique 3D Executive Advisory & Coaching Workspace */}
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
           <img
-            src={b4bappPreviewImg}
-            alt="B4B Advisory Intake 3D backdrop"
+            src={advisoryBackdropImg}
+            alt="B4B Advisory Intake 3D executive coaching workspace"
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover object-center scale-105"
           />
+          {/* Luminous blue overlay harmonizing with the whole page */}
           <div className="absolute inset-0 bg-[#0A2A5E]/30" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
+          {/* Seamless top and bottom blending gradients to eliminate harsh section breaks */}
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#09224A]/80 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#07142B]" />
         </div>
 
-        {/* Ambient lighting accent matching Section 3 */}
+        {/* Ambient lighting accent */}
         <div className="absolute -top-32 right-1/4 w-[600px] h-[600px] bg-sky-400/25 rounded-full blur-3xl pointer-events-none z-[1]" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="bg-gradient-to-br from-sky-600/25 via-[#103E7E]/35 to-sky-700/25 backdrop-blur-2xl rounded-3xl border border-sky-300/40 shadow-[0_20px_60px_rgba(2,132,199,0.25)] p-8 sm:p-12 overflow-hidden relative">
