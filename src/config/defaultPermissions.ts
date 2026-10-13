@@ -146,9 +146,16 @@ function buildDefaultPermissions(): SystemPermissionMatrix {
     'admin-commission-maker',
     'admin-territory',
     'admin-services',
+    'admin-subscriptions',
+    'admin-leads',
+    'admin-clients',
+    'admin-scoreboard',
+    'admin-jobs',
     'admin-affiliates',
-    'admin-jobs-moderation',
+    'admin-cms',
+    'admin-training',
     'admin-roles-permissions',
+    'admin-reports',
     'shared-ebox',
   ]
   adminSidebarMenus.forEach((id) => {
@@ -157,17 +164,23 @@ function buildDefaultPermissions(): SystemPermissionMatrix {
     }
   })
 
-  // 3. BIZ PRO default menus (Streamlined 9 base + 1 leader)
+  // 3. BIZ PRO default menus (All Advisor Tools + Leader tools)
   const bizProBaseMenus = [
     'bizpro-bulletin',
     'bizpro-dashboard',
     'bizpro-leads',
     'bizpro-clients',
     'bizpro-communication',
+    'bizpro-marketing',
     'bizpro-services',
     'bizpro-commissions',
     'bizpro-rank',
+    'bizpro-scoreboard',
     'bizpro-training',
+    'bizpro-territory',
+    'bizpro-branding',
+    'bizpro-support',
+    'bizpro-subscription',
     'shared-ebox',
   ]
   bizProBaseMenus.forEach((id) => {
@@ -183,6 +196,11 @@ function buildDefaultPermissions(): SystemPermissionMatrix {
   // Biz Pro Leader menus (Rank 4+)
   const bizProLeaderMenus = [
     'bizpro-team',
+    'bizpro-team-commissions',
+    'bizpro-recruit',
+    'bizpro-team-scoreboard',
+    'bizpro-territory-assignment',
+    'bizpro-team-reports',
   ]
   bizProLeaderMenus.forEach((id) => {
     if (matrix.bizpro[id]) {
@@ -195,13 +213,16 @@ function buildDefaultPermissions(): SystemPermissionMatrix {
     }
   })
 
-  // 4. CLIENT default menus (Streamlined 6)
+  // 4. CLIENT default menus (All SME Client Tools)
   const clientMenus = [
     'client-dashboard',
     'client-orders',
     'client-funding',
+    'client-documents',
     'client-messages',
     'client-invoices',
+    'client-book-coach',
+    'client-support',
     'shared-ebox',
   ]
   clientMenus.forEach((id) => {
@@ -216,19 +237,21 @@ function buildDefaultPermissions(): SystemPermissionMatrix {
     }
   })
 
-  // 5. AFFILIATE default menus (Streamlined 5)
+  // 5. AFFILIATE default menus (All Referral Partner Tools - strictly isolated)
   const affiliateMenus = [
     'affiliate-dashboard',
     'affiliate-links',
+    'affiliate-submit-lead',
     'affiliate-referrals',
     'affiliate-commissions',
-    'shared-ebox',
+    'affiliate-marketing',
+    'affiliate-profile',
   ]
   affiliateMenus.forEach((id) => {
     if (matrix.affiliate[id]) {
       matrix.affiliate[id] = createStandardPerm({
-        create: id === 'affiliate-links',
-        edit: false,
+        create: id === 'affiliate-links' || id === 'affiliate-submit-lead',
+        edit: id === 'affiliate-profile',
         delete: false,
         export: id === 'affiliate-commissions' || id === 'affiliate-links',
         scope: 'own',
@@ -236,12 +259,14 @@ function buildDefaultPermissions(): SystemPermissionMatrix {
     }
   })
 
-  // 6. EMPLOYER default menus (Streamlined 5)
+  // 6. EMPLOYER default menus (All Hiring Enterprise Tools - strictly isolated)
   const employerMenus = [
     'employer-dashboard',
     'employer-post-job',
     'employer-jobs',
     'employer-applicants',
+    'employer-company',
+    'employer-billing',
     'employer-messages',
   ]
   employerMenus.forEach((id) => {
@@ -257,13 +282,15 @@ function buildDefaultPermissions(): SystemPermissionMatrix {
     }
   })
 
-  // 7. JOB SEEKER default menus (Streamlined 5)
+  // 7. JOB SEEKER default menus (All Candidate Tools)
   const seekerMenus = [
     'seeker-dashboard',
     'seeker-search',
+    'seeker-saved',
     'seeker-applications',
     'seeker-profile',
-    'shared-messages',
+    'seeker-alerts',
+    'seeker-messages',
   ]
   seekerMenus.forEach((id) => {
     if (matrix.jobseeker[id]) {

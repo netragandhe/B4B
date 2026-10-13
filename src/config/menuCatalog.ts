@@ -1,4 +1,5 @@
 import { Menu } from '../lib/rbac/types'
+export type { Menu } from '../lib/rbac/types'
 
 /**
  * Complete Master Menu Catalog for OAL / B4B Financial Platform
@@ -490,7 +491,7 @@ export const MENU_CATALOG: Menu[] = [
     id: 'client-dashboard',
     label: 'Client Dashboard',
     icon: 'LayoutDashboard',
-    route: '/portal/dashboard',
+    route: '/portal/client/dashboard',
     module: 'Dashboard',
     group: 'Client Portal',
     order: 201,
@@ -836,6 +837,19 @@ export const MENU_CATALOG: Menu[] = [
     isCore: false,
     description: 'Email and notification preferences for newly posted positions.',
   },
+  {
+    id: 'seeker-messages',
+    label: 'Employer Messages',
+    icon: 'MessageSquare',
+    route: '/portal/seeker/messages',
+    module: 'Shared',
+    group: 'Job Seeker Portal',
+    order: 507,
+    isCore: false,
+    badge: '1 New',
+    badgeVariant: 'emerald',
+    description: 'Direct messaging channel with interviewing employers.',
+  },
 
   // ==========================================
   // 8. SHARED MENUS (4)
@@ -907,3 +921,30 @@ export const MENU_MAP: Record<string, Menu> = MENU_CATALOG.reduce((acc, item) =>
   acc[item.id] = item
   return acc
 }, {} as Record<string, Menu>)
+
+/**
+ * Determines whether a menu strictly belongs to a specific role's domain.
+ * Enforces strict role isolation so menus are never merged or leaked across roles.
+ */
+export function isMenuAllowedForRole(roleId: string, menuId: string): boolean {
+  if (roleId === 'admin') {
+    return menuId.startsWith('admin-') || menuId === 'shared-ebox' || menuId === 'shared-settings'
+  }
+  if (roleId === 'bizpro') {
+    return menuId.startsWith('bizpro-') || menuId === 'shared-ebox'
+  }
+  if (roleId === 'client') {
+    return menuId.startsWith('client-') || menuId === 'shared-ebox'
+  }
+  if (roleId === 'affiliate') {
+    return menuId.startsWith('affiliate-')
+  }
+  if (roleId === 'employer') {
+    return menuId.startsWith('employer-')
+  }
+  if (roleId === 'jobseeker') {
+    return menuId.startsWith('seeker-')
+  }
+  return true
+}
+

@@ -5,17 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import {
   Handshake,
-  DollarSign,
-  Share2,
-  Users,
-  Award,
-  Sparkles,
   ArrowRight,
-  CheckCircle2,
-  TrendingUp,
   PhoneCall,
   ChevronRight,
-  ShieldCheck,
   Cpu,
 } from 'lucide-react'
 import '@/components/website/corporateTheme.css'
@@ -27,7 +19,7 @@ import { Textarea } from '@/components/ui/Textarea'
 import { useToast } from '@/components/ui/Toast'
 import { CoachRequestModal } from '@/components/forms/CoachRequestModal'
 import { UsaMapMotif } from '@/components/website/UsaMapMotif'
-import { B4BAPP_SOFTWARE, BRAND_IDENTITY } from '@/content/clientContent'
+import { B4BAPP_SOFTWARE } from '@/content/clientContent'
 
 const partnerAppSchema = z.object({
   partnerType: z.string().min(1, 'Partner category required'),
@@ -69,7 +61,7 @@ export const AffiliatesPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#EEF1EC] text-[#14231E] transition-colors duration-200 font-body">
+    <div className="min-h-screen bg-[#E9EDF4] text-[#14233B] transition-colors duration-200 font-body">
       <SEOHead
         title="Affiliates, Partners & Influencers | B4B America"
         description="Solution #14: Lucrative partnership and revenue-sharing opportunities with B4B America for CPAs, commercial brokers, consultants, and creators."
@@ -85,24 +77,24 @@ export const AffiliatesPage: React.FC = () => {
           ]}
         />
 
-        {/* Hero Section */}
-        <div className="relative p-8 sm:p-12 rounded-3xl bg-[#06201A] text-white border border-[#0B4A3A] shadow-xl overflow-hidden">
+        {/* Hero Section in Midnight Navy #07142B */}
+        <div className="relative p-8 sm:p-12 rounded-3xl bg-[#07142B] text-white border border-[#0D2147] shadow-xl overflow-hidden">
           <div className="absolute right-0 top-0 w-1/2 h-full pointer-events-none opacity-15 overflow-hidden">
-            <UsaMapMotif className="w-full h-full text-[#C8793A]" opacity={0.2} />
+            <UsaMapMotif className="w-full h-full text-[#F8C61A]" opacity={0.2} />
           </div>
 
           <div className="max-w-3xl space-y-6 relative z-10">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-black font-mono px-2.5 py-1 rounded bg-[#06201A] text-[#C8793A] border border-[#0B4A3A]">
+              <span className="text-xs font-black font-mono px-2.5 py-1 rounded bg-[#0D2147] text-[#F8C61A] border border-[#0D2147]">
                 Solution #14 of 16
               </span>
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#0B4A3A] text-white font-mono">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#0D2147] text-[#B8C4D9] font-mono">
                 Growth & Revenue Sharing
               </span>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-[#0B4A3A] text-[#C8793A] flex items-center justify-center shrink-0 shadow-md">
+              <div className="w-14 h-14 rounded-2xl bg-[#0D2147] text-[#F8C61A] flex items-center justify-center shrink-0 shadow-md">
                 <Handshake className="w-7 h-7" />
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-heading text-white tracking-tight">
@@ -110,7 +102,7 @@ export const AffiliatesPage: React.FC = () => {
               </h1>
             </div>
 
-            <p className="text-base sm:text-lg text-[#B9CBC3] leading-relaxed max-w-2xl font-body">
+            <p className="text-base sm:text-lg text-[#B8C4D9] leading-relaxed max-w-2xl font-body">
               Lucrative revenue-sharing partnership opportunities for CPAs, commercial brokers, consultants, and digital creators to monetize business relationships across our 16 solutions.
             </p>
 
@@ -118,11 +110,11 @@ export const AffiliatesPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
               <button
                 onClick={() => setCoachModalOpen(true)}
-                className="btn-copper-dark group"
+                className="btn-gold-dark group"
               >
-                <PhoneCall className="w-4 h-4 text-[#06201A]" />
+                <PhoneCall className="w-4 h-4 text-[#07142B]" />
                 <span>Speak with a Business Coach</span>
-                <ArrowRight className="w-4 h-4 text-[#06201A] transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 text-[#07142B] transition-transform group-hover:translate-x-1" />
               </button>
 
               <Link
@@ -130,7 +122,7 @@ export const AffiliatesPage: React.FC = () => {
                 className="btn-outline-dark group"
               >
                 <span>Click Here for Solution Details</span>
-                <ChevronRight className="w-4 h-4 text-[#C8793A] transition-transform group-hover:translate-x-1" />
+                <ChevronRight className="w-4 h-4 text-[#F8C61A] transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
@@ -165,25 +157,25 @@ export const AffiliatesPage: React.FC = () => {
                     setActivePartnerType(tier.id)
                     setValue('partnerType', `${tier.title}`)
                   }}
-                  className={`p-5 rounded-2xl border text-left cursor-pointer transition-all ${
+                  className={`p-5 rounded-2xl border text-left cursor-pointer transition-all shadow-xs ${
                     activePartnerType === tier.id
-                      ? 'border-[#0E7A5A] bg-white shadow-sm'
-                      : 'border-[#14231E]/10 bg-white hover:border-[#0E7A5A]'
+                      ? 'border-[#0C43A3] bg-white ring-2 ring-[#0C43A3]/20'
+                      : 'border-[#14233B]/10 bg-white hover:border-[#0C43A3]'
                   }`}
                 >
-                  <h4 className="text-sm font-extrabold text-[#14231E] font-heading">{tier.title}</h4>
-                  <p className="text-xs text-[#14231E]/70 mt-1.5 leading-relaxed font-body">{tier.desc}</p>
+                  <h4 className="text-sm font-extrabold text-[#14233B] font-heading">{tier.title}</h4>
+                  <p className="text-xs text-[#14233B]/70 mt-1.5 leading-relaxed font-body">{tier.desc}</p>
                 </div>
               ))}
             </div>
 
             {/* Application Form in White Card */}
-            <div className="p-6 sm:p-8 rounded-2xl bg-white border border-[#14231E]/10 shadow-sm space-y-6">
+            <div className="p-6 sm:p-8 rounded-2xl bg-white border border-[#14233B]/10 shadow-sm space-y-6">
               <div className="space-y-1">
-                <h3 className="text-xl font-extrabold text-[#14231E] font-heading">
+                <h3 className="text-xl font-extrabold text-[#14233B] font-heading">
                   Apply for the B4B America Partner Network
                 </h3>
-                <p className="text-xs text-[#14231E]/70 font-body">
+                <p className="text-xs text-[#14233B]/70 font-body">
                   Active partner application for {activePartnerType} Category.
                 </p>
               </div>
@@ -219,7 +211,7 @@ export const AffiliatesPage: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="btn-emerald-light w-full sm:w-auto"
+                    className="btn-blue-light w-full sm:w-auto"
                   >
                     Submit Partner Application
                   </button>
@@ -227,7 +219,7 @@ export const AffiliatesPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setCoachModalOpen(true)}
-                    className="text-xs font-bold text-[#0E7A5A] hover:underline flex items-center gap-1 font-mono"
+                    className="text-xs font-bold text-[#0C43A3] hover:underline flex items-center gap-1 font-mono min-h-[44px]"
                   >
                     <span>Speak with a Partner Coach</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -237,12 +229,12 @@ export const AffiliatesPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column: B4BAPP Software Portal & Commission Tier Structure in Forest Black */}
+          {/* Right Column: B4BAPP Software Portal & Commission Tier Structure in Midnight Navy */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="p-6 sm:p-8 rounded-3xl bg-[#06201A] text-white border border-[#0B4A3A] shadow-xl space-y-5">
+            <div className="p-6 sm:p-8 rounded-3xl bg-[#07142B] text-white border border-[#0D2147] shadow-xl space-y-5">
               <div className="flex items-center gap-2">
-                <Cpu className="w-4 h-4 text-[#C8793A]" />
-                <span className="text-xs font-bold uppercase tracking-wider text-[#C8793A] font-mono">
+                <Cpu className="w-4 h-4 text-[#F8C61A]" />
+                <span className="text-xs font-bold uppercase tracking-wider text-[#F8C61A] font-mono">
                   B4BAPP Biz Pro Portal
                 </span>
               </div>
@@ -251,38 +243,38 @@ export const AffiliatesPage: React.FC = () => {
                 Monetize Across 100 Service Products
               </h3>
 
-              <p className="text-xs text-[#B9CBC3] leading-relaxed font-body">
+              <p className="text-xs text-[#B8C4D9] leading-relaxed font-body">
                 As a B4B Network partner, track commissions, review real-time client pipeline telemetry, and access the Bulletin Sales Scoreboard via B4BAPP ($25/mo Biz Pro subscription).
               </p>
 
               {/* Ranks list from B4BAPP doc */}
               <div className="space-y-2 pt-2">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#B9CBC3] font-mono">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-[#B8C4D9] font-mono">
                   Career Commission Tiers (From B4BAPP Software Document)
                 </p>
                 <div className="space-y-1.5 font-mono">
                   {B4BAPP_SOFTWARE.ranks.slice(0, 5).map((rank, i) => (
                     <div
                       key={rank}
-                      className="p-2.5 rounded-xl bg-[#0B4A3A]/40 border border-[#0B4A3A] flex items-center justify-between text-xs"
+                      className="p-2.5 rounded-xl bg-[#0D2147] border border-[#0D2147] flex items-center justify-between text-xs"
                     >
                       <span className="font-semibold text-white">
                         {i + 1}. {rank}
                       </span>
-                      <span className="text-[10px] text-[#C8793A] font-bold">Tier {i + 1}</span>
+                      <span className="text-[10px] text-[#F8C61A] font-bold">Tier {i + 1}</span>
                     </div>
                   ))}
                 </div>
-                <p className="text-[11px] text-[#B9CBC3] text-right font-mono">
+                <p className="text-[11px] text-[#B8C4D9] text-right font-mono">
                   Highest: Senior National Channel VP
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-[#0B4A3A] flex items-center justify-between text-xs">
-                <span className="text-[#B9CBC3]">Existing Partner?</span>
+              <div className="pt-3 border-t border-[#0D2147] flex items-center justify-between text-xs">
+                <span className="text-[#B8C4D9]">Existing Partner?</span>
                 <Link
                   to="/portal/login"
-                  className="text-[#C8793A] font-bold hover:underline inline-flex items-center gap-1 font-mono"
+                  className="text-[#F8C61A] font-bold hover:underline inline-flex items-center gap-1 font-mono"
                 >
                   <span>Portal Login</span>
                   <ChevronRight className="w-3.5 h-3.5" />

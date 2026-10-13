@@ -16,6 +16,8 @@ import { Badge } from '@/components/ui/Badge'
 import { SOLUTIONS_DATA } from '@/mock-data/solutions'
 import { brandConfig } from '@/config/brand'
 import { usePermission } from '@/hooks/usePermission'
+import { useAuth } from '@/hooks/useAuth'
+import { normalizeRoleId } from '@/lib/rbac/permissionService'
 
 interface CommandPaletteModalProps {
   isOpen: boolean
@@ -29,8 +31,10 @@ export const CommandPaletteModal: React.FC<CommandPaletteModalProps> = ({
   onOpenCoachModal,
 }) => {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const { getMenusForRole } = usePermission()
-  const allowedMenus = getMenusForRole()
+  const currentRoleId = normalizeRoleId(user?.role)
+  const allowedMenus = getMenusForRole(currentRoleId)
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 

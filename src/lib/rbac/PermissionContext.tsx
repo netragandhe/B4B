@@ -11,7 +11,8 @@ import {
   Role,
   AuditLogEntry,
 } from './types'
-import { MENU_CATALOG, MENU_MAP } from '@/config/menuCatalog'
+import { MENU_CATALOG, MENU_MAP, isMenuAllowedForRole } from '@/config/menuCatalog'
+import { DEFAULT_ROLES, DEFAULT_PERMISSIONS } from '@/config/defaultPermissions'
 import { permissionService, normalizeRoleId } from './permissionService'
 import { Shield, Eye, X, AlertTriangle } from 'lucide-react'
 
@@ -40,11 +41,31 @@ export const PermissionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const { user } = useAuth()
   const { toast } = useToast()
 
-  const [roles, setRoles] = useState<Role[]>([])
-  const [permissions, setPermissions] = useState<SystemPermissionMatrix>({})
+  const [roles, setRoles] = useState<Role[]>(() => {
+    try {
+      const raw = localStorage.getItem('b4b_rbac_roles_v9')
+      if (raw) {
+        const parsed = JSON.parse(raw)
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed
+      }
+    } catch {}
+    return DEFAULT_ROLES
+  })
+
+  const [permissions, setPermissions] = useState<SystemPermissionMatrix>(() => {
+    try {
+      const raw = localStorage.getItem('b4b_rbac_permissions_v9')
+      if (raw) {
+        const parsed = JSON.parse(raw)
+        if (parsed && typeof parsed === 'object') return parsed
+      }
+    } catch {}
+    return DEFAULT_PERMISSIONS
+  })
+
   const [auditLog, setAuditLog] = useState<AuditLogEntry[]>([])
   const [userOverrides, setUserOverrides] = useState<Record<string, Partial<PermissionItem>>>({})
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   // Impersonation state
   const [impersonatedRole, setImpersonatedRole] = useState<RoleId | null>(() => {
@@ -60,10 +81,25 @@ export const PermissionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     return normalizeRoleId(user?.role)
   }, [user?.role])
 
-  // Active role is impersonated role if set, else actual user role
+  // Active role is impersonated role ONLY if actual user is Admin, else actual user role
   const activeRoleId = useMemo<RoleId>(() => {
-    return impersonatedRole || actualRoleId
+    if (actualRoleId === 'admin' && impersonatedRole) {
+      return impersonatedRole
+    }
+    return actualRoleId
   }, [impersonatedRole, actualRoleId])
+
+  // Automatically reset any stale impersonation if user is not Admin
+  useEffect(() => {
+    if (actualRoleId !== 'admin' && impersonatedRole) {
+      setImpersonatedRole(null)
+      try {
+        localStorage.removeItem(IMPERSONATION_STORAGE_KEY)
+      } catch {
+        // ignore
+      }
+    }
+  }, [actualRoleId, impersonatedRole])
 
   // Effective rank for Biz Pro
   const userRank = useMemo<number>(() => {
@@ -105,9 +141,9 @@ export const PermissionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (
-        e.key === 'b4b_rbac_permissions_v2' ||
-        e.key === 'b4b_rbac_roles_v2' ||
-        e.key === 'b4b_rbac_user_overrides_v2'
+        e.key === 'b4b_rbac_permissions_v9' ||
+        e.key === 'b4b_rbac_roles_v9' ||
+        e.key === 'b4b_rbac_user_overrides_v9'
       ) {
         loadData(true)
         toast({
@@ -253,9 +289,14 @@ export const PermissionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const getMenusForRole = useCallback(
     (targetRoleId?: RoleId): Menu[] => {
       const roleToInspect = targetRoleId || activeRoleId
-      const rolePerms = permissions[roleToInspect] || {}
+      const rolePerms = permissions[roleToInspect] || DEFAULT_PERMISSIONS[roleToInspect] || {}
 
       return MENU_CATALOG.filter((menu) => {
+        // 0. Strict role boundary isolation: menus belonging to other roles are NEVER returned
+        if (!isMenuAllowedForRole(roleToInspect, menu.id)) {
+          return false
+        }
+
         // 1. Admin lockout protection: Admin always sees admin critical core menus
         if (roleToInspect === 'admin') {
           if (

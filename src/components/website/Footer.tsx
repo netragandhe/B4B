@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  Shield,
   PhoneCall,
-  Mail,
   MapPin,
-  ExternalLink,
-  Lock,
   FileText,
   ChevronRight,
   Sparkles,
@@ -28,44 +24,44 @@ export const Footer: React.FC = () => {
     <footer
       data-redesigned="true"
       data-theme="dark"
-      className="relative bg-[#06201A] text-[#B9CBC3] border-t border-[#0B4A3A]/70 pt-16 pb-12 overflow-hidden"
+      className="relative bg-[#07142B] text-[#B8C4D9] border-t border-[#0D2147] pt-16 pb-12 overflow-hidden"
     >
       {/* Background USA Map Motif watermark */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-10 flex items-center justify-center">
-        <UsaMapMotif className="w-full max-w-5xl text-[#C8793A]" opacity={0.12} />
+        <UsaMapMotif className="w-full max-w-5xl text-[#F8C61A]" opacity={0.12} />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
         {/* Top Pre-Footer Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 pb-12 border-b border-[#0B4A3A]">
-          {/* Col 1: Soft Stone badge logo container + Vision statement */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 pb-12 border-b border-[#0D2147]">
+          {/* Col 1: White badge logo container + Vision statement */}
           <div className="lg:col-span-5 space-y-4">
-            {/* Soft Stone badge container on dark background */}
-            <div className="bg-[#EEF1EC] rounded-xl p-3 inline-block shadow-lg border border-[#EEF1EC]/40">
+            {/* White rounded badge container on dark background */}
+            <div className="bg-white rounded-xl p-2.5 inline-block shadow-md border border-white/80">
               <img
                 src="/brand/logo-full.png"
                 alt="B4B America - The Connection for Small Business Solutions"
-                className="h-10 sm:h-12 w-auto object-contain"
+                className="h-9 sm:h-10 w-auto object-contain"
                 loading="lazy"
               />
             </div>
 
-            <p className="text-xs uppercase font-extrabold tracking-widest text-[#C8793A] font-mono">
+            <p className="text-xs uppercase font-extrabold tracking-widest text-[#F8C61A] font-mono">
               {BRAND_IDENTITY.tagline}
             </p>
 
-            <p className="text-[#B9CBC3] text-sm max-w-md leading-relaxed font-normal">
+            <p className="text-[#B8C4D9] text-sm max-w-md leading-relaxed font-normal">
               "{BRAND_IDENTITY.vision}." We connect American entrepreneurs to 16 vital solutions,
               from non-dilutive credit lines and business planning to payment processing and custom software.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-2 text-xs text-[#B9CBC3]">
+            <div className="flex flex-col sm:flex-row gap-4 pt-2 text-xs text-[#B8C4D9]">
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#C8793A] shrink-0" />
+                <MapPin className="w-4 h-4 text-[#F8C61A] shrink-0" />
                 <span>Financial District, New York, NY</span>
               </div>
               <div className="flex items-center gap-2">
-                <PhoneCall className="w-4 h-4 text-[#C8793A] shrink-0" />
+                <PhoneCall className="w-4 h-4 text-[#F8C61A] shrink-0" />
                 <span>+1 (888) 540-B4BA</span>
               </div>
             </div>
@@ -73,17 +69,17 @@ export const Footer: React.FC = () => {
 
           {/* Col 2: Solutions 1 to 6 (Finance & Credit) */}
           <div className="lg:col-span-2 sm:col-span-4 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#C8793A] font-mono">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#F8C61A] font-mono">
               Capital & Finance
             </h4>
-            <ul className="space-y-2 text-xs text-[#B9CBC3]">
+            <ul className="space-y-2 text-xs text-[#B8C4D9]">
               {financeSolutions.map((sol) => (
                 <li key={sol.id}>
                   <Link
                     to={`/solutions#${sol.slug}`}
                     className="hover:text-white transition-colors flex items-center gap-1.5 group"
                   >
-                    <span className="text-[10px] text-[#0E7A5A] font-mono font-bold">#{sol.number}</span>
+                    <span className="text-[10px] text-[#0C43A3] font-mono font-bold">#{sol.number}</span>
                     <span className="group-hover:translate-x-0.5 transition-transform truncate">
                       {sol.title}
                     </span>
@@ -95,17 +91,17 @@ export const Footer: React.FC = () => {
 
           {/* Col 3: Solutions 7 to 14 (Marketing & Growth) */}
           <div className="lg:col-span-3 sm:col-span-4 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#C8793A] font-mono">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#F8C61A] font-mono">
               Marketing & Growth
             </h4>
-            <ul className="space-y-2 text-xs text-[#B9CBC3]">
+            <ul className="space-y-2 text-xs text-[#B8C4D9]">
               {growthSolutions.map((sol) => (
                 <li key={sol.id}>
                   <Link
                     to={`/solutions#${sol.slug}`}
                     className="hover:text-white transition-colors flex items-center gap-1.5 group"
                   >
-                    <span className="text-[10px] text-[#0E7A5A] font-mono font-bold">#{sol.number}</span>
+                    <span className="text-[10px] text-[#0C43A3] font-mono font-bold">#{sol.number}</span>
                     <span className="group-hover:translate-x-0.5 transition-transform truncate">
                       {sol.title}
                     </span>
@@ -115,7 +111,7 @@ export const Footer: React.FC = () => {
               <li>
                 <Link
                   to="/apply"
-                  className="text-[#C8793A] font-semibold hover:underline inline-flex items-center gap-1 mt-1 font-mono text-xs"
+                  className="text-[#F8C61A] font-semibold hover:underline inline-flex items-center gap-1 mt-1 font-mono text-xs"
                 >
                   <span>Pre-Qualify Capital Desk</span>
                   <ChevronRight className="w-3 h-3" />
@@ -126,17 +122,17 @@ export const Footer: React.FC = () => {
 
           {/* Col 4: Operations & Technology (B4BAPP) */}
           <div className="lg:col-span-2 sm:col-span-4 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#C8793A] font-mono">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#F8C61A] font-mono">
               Tech & Operations
             </h4>
-            <ul className="space-y-2 text-xs text-[#B9CBC3]">
+            <ul className="space-y-2 text-xs text-[#B8C4D9]">
               {opsTechSolutions.map((sol) => (
                 <li key={sol.id}>
                   <Link
                     to={`/solutions#${sol.slug}`}
                     className="hover:text-white transition-colors flex items-center gap-1.5 group"
                   >
-                    <span className="text-[10px] text-[#0E7A5A] font-mono font-bold">#{sol.number}</span>
+                    <span className="text-[10px] text-[#0C43A3] font-mono font-bold">#{sol.number}</span>
                     <span className="group-hover:translate-x-0.5 transition-transform truncate">
                       {sol.title}
                     </span>
@@ -154,16 +150,16 @@ export const Footer: React.FC = () => {
                       window.location.href = '/#software'
                     }
                   }}
-                  className="text-xs font-bold text-white hover:text-[#C8793A] transition-colors flex items-center gap-1 cursor-pointer"
+                  className="text-xs font-bold text-white hover:text-[#F8C61A] transition-colors flex items-center gap-1 cursor-pointer"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-[#C8793A]" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#F8C61A]" />
                   <span>B4BAPP Portal ($25/mo)</span>
                 </button>
               </li>
               <li>
                 <Link
                   to="/portal/login"
-                  className="text-xs text-[#B9CBC3] hover:text-white transition-colors"
+                  className="text-xs text-[#B8C4D9] hover:text-white transition-colors"
                 >
                   Biz Pro Portal Login
                 </Link>
@@ -172,9 +168,8 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-
         {/* Bottom Legal Links & Disclaimers */}
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#B9CBC3]">
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#B8C4D9]">
           <p>© {new Date().getFullYear()} B4B America • B4B Network. All rights reserved.</p>
 
           <div className="flex flex-wrap items-center gap-6">
@@ -192,13 +187,13 @@ export const Footer: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveLegalModal('earnings')}
-              className="hover:text-white cursor-pointer transition-colors text-[#C8793A] font-medium"
+              className="hover:text-white cursor-pointer transition-colors text-[#F8C61A] font-medium"
             >
               Earnings Disclaimer
             </button>
             <Link
               to="/design-system"
-              className="text-[#B9CBC3] hover:text-white transition-colors"
+              className="text-[#B8C4D9] hover:text-white transition-colors"
             >
               Design Tokens
             </Link>
@@ -215,25 +210,25 @@ export const Footer: React.FC = () => {
           onClick={() => setActiveLegalModal(null)}
         >
           <div
-            className="w-full max-w-lg bg-[#EEF1EC] text-[#14231E] p-6 rounded-2xl shadow-2xl border border-[#0B4A3A] max-h-[80vh] overflow-y-auto"
+            className="w-full max-w-lg bg-[#E9EDF4] text-[#14233B] p-6 rounded-2xl shadow-2xl border border-[#0D2147] max-h-[80vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-[#14231E]/20">
-              <h3 className="text-base font-bold text-[#14231E] flex items-center gap-2 font-heading">
-                <FileText className="w-4 h-4 text-[#0E7A5A]" />
+            <div className="flex items-center justify-between pb-3 border-b border-[#14233B]/20">
+              <h3 className="text-base font-bold text-[#14233B] flex items-center gap-2 font-heading">
+                <FileText className="w-4 h-4 text-[#0C43A3]" />
                 {activeLegalModal === 'privacy' && 'Privacy Policy'}
                 {activeLegalModal === 'terms' && 'Terms of Service'}
                 {activeLegalModal === 'earnings' && 'Earnings & Compensation Disclaimer'}
               </h3>
               <button
                 onClick={() => setActiveLegalModal(null)}
-                className="text-xs font-bold px-2 py-1 bg-white rounded-md border border-[#14231E]/20 text-[#14231E]"
+                className="text-xs font-bold px-2.5 py-1.5 bg-white rounded-md border border-[#14233B]/20 text-[#14233B] min-h-[32px] cursor-pointer"
               >
                 Close
               </button>
             </div>
 
-            <div className="py-4 space-y-3 text-xs text-[#14231E]/80 leading-relaxed font-body">
+            <div className="py-4 space-y-3 text-xs text-[#14233B]/80 leading-relaxed font-body">
               {activeLegalModal === 'privacy' && (
                 <>
                   <p>
@@ -264,7 +259,7 @@ export const Footer: React.FC = () => {
 
               {activeLegalModal === 'earnings' && (
                 <>
-                  <p className="font-bold text-[#14231E]">
+                  <p className="font-bold text-[#14233B]">
                     Mandatory Client & Affiliate Earnings Disclosure:
                   </p>
                   <p>
@@ -282,10 +277,10 @@ export const Footer: React.FC = () => {
               )}
             </div>
 
-            <div className="pt-3 border-t border-[#14231E]/20 flex justify-end">
+            <div className="pt-3 border-t border-[#14233B]/20 flex justify-end">
               <button
                 onClick={() => setActiveLegalModal(null)}
-                className="btn-emerald-light"
+                className="btn-blue-light"
               >
                 Understood & Close
               </button>

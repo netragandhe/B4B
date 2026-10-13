@@ -249,6 +249,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const res = await authService.login(emailToUse, passToUse, rememberMe)
     if (res.success && res.user && !res.requiresOtp) {
+      try {
+        localStorage.removeItem('b4b_rbac_impersonated_role')
+      } catch {
+        // ignore
+      }
       setUser(res.user)
       setStatus('authenticated')
     }
@@ -260,6 +265,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const user = MOCK_USERS[email] || Object.values(MOCK_USERS).find((u) => u.role === role) || MOCK_USERS['admin@demo.com']
     const res = await authService.login(user.email, 'Demo@1234', true, true)
     if (res.success && res.user) {
+      try {
+        localStorage.removeItem('b4b_rbac_impersonated_role')
+      } catch {
+        // ignore
+      }
       setUser(res.user)
       setStatus('authenticated')
     }
@@ -269,6 +279,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const verifyOtp = async (email: string, otp: string) => {
     const res = await authService.verifyOtp(email, otp)
     if (res.success && res.user) {
+      try {
+        localStorage.removeItem('b4b_rbac_impersonated_role')
+      } catch {
+        // ignore
+      }
       setUser(res.user)
       setStatus('authenticated')
     }
@@ -278,6 +293,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signup = async (data: SignupData) => {
     const res = await authService.signup(data)
     if (res.success && res.user) {
+      try {
+        localStorage.removeItem('b4b_rbac_impersonated_role')
+      } catch {
+        // ignore
+      }
       setUser(res.user)
       setStatus('authenticated')
     }
@@ -320,6 +340,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await authService.logout()
     try {
       sessionStorage.removeItem('b4b_last_portal_path')
+      localStorage.removeItem('b4b_rbac_impersonated_role')
     } catch {
       // ignore
     }
@@ -331,6 +352,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const switchRole = (newRole: UserRole) => {
     try {
       sessionStorage.removeItem('b4b_last_portal_path')
+      localStorage.removeItem('b4b_rbac_impersonated_role')
     } catch {
       // ignore
     }

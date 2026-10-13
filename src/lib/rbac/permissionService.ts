@@ -8,7 +8,7 @@ import {
   AuditLogEntry,
   UserMenuOverride,
 } from './types'
-import { MENU_CATALOG, MENU_MAP } from '@/config/menuCatalog'
+import { MENU_CATALOG, MENU_MAP, isMenuAllowedForRole } from '@/config/menuCatalog'
 import {
   DEFAULT_ROLES,
   DEFAULT_PERMISSIONS,
@@ -17,10 +17,10 @@ import {
 } from '@/config/defaultPermissions'
 
 const STORAGE_KEYS = {
-  PERMISSIONS: 'b4b_rbac_permissions_v4',
-  ROLES: 'b4b_rbac_roles_v4',
-  AUDIT_LOG: 'b4b_rbac_audit_log_v4',
-  USER_OVERRIDES: 'b4b_rbac_user_overrides_v4',
+  PERMISSIONS: 'b4b_rbac_permissions_v9',
+  ROLES: 'b4b_rbac_roles_v9',
+  AUDIT_LOG: 'b4b_rbac_audit_log_v9',
+  USER_OVERRIDES: 'b4b_rbac_user_overrides_v9',
 }
 
 // Simulated mock delay
@@ -46,12 +46,20 @@ function getStoredPermissions(): SystemPermissionMatrix {
     if (raw) {
       const parsed = JSON.parse(raw)
       if (parsed && typeof parsed === 'object') {
-        // Ensure all catalog menus exist in stored permissions
+        // Ensure all catalog menus exist in stored permissions with strict role boundary isolation
         let mutated = false
         Object.keys(parsed).forEach((roleId) => {
           MENU_CATALOG.forEach((menu) => {
-            if (!parsed[roleId][menu.id]) {
-              parsed[roleId][menu.id] = DEFAULT_PERMISSIONS[roleId]?.[menu.id] ? JSON.parse(JSON.stringify(DEFAULT_PERMISSIONS[roleId][menu.id])) : createEmptyPermission()
+            // Role Isolation: If a menu does NOT belong to this role, it must NEVER have view: true
+            if (!isMenuAllowedForRole(roleId, menu.id)) {
+              if (parsed[roleId]?.[menu.id]?.view) {
+                parsed[roleId][menu.id] = createEmptyPermission()
+                mutated = true
+              }
+            } else if (!parsed[roleId]?.[menu.id]) {
+              parsed[roleId][menu.id] = DEFAULT_PERMISSIONS[roleId]?.[menu.id]
+                ? JSON.parse(JSON.stringify(DEFAULT_PERMISSIONS[roleId][menu.id]))
+                : createEmptyPermission()
               mutated = true
             }
           })
@@ -86,7 +94,7 @@ function getStoredAuditLog(): AuditLogEntry[] {
       actor: 'System Initialization',
       roleId: 'admin',
       action: 'RESET_ALL',
-      summary: 'Initialized baseline RBAC security permission matrix for 6 system roles across 68 menus.',
+      summary: 'Initialized baseline RBAC security permission matrix for 6 system roles across isolated role domains.',
     },
   ]
   localStorage.setItem(STORAGE_KEYS.AUDIT_LOG, JSON.stringify(initialLog))
@@ -130,6 +138,11 @@ function enforceSafetyRules(
   item: PermissionItem,
   patch?: Partial<PermissionItem>
 ): PermissionItem {
+  // 0. Strict role boundary isolation: Cross-role menus can NEVER be enabled for this role
+  if (!isMenuAllowedForRole(roleId, menuId)) {
+    return createEmptyPermission()
+  }
+
   const menu = MENU_MAP[menuId]
   const cleanItem = { ...item }
 
@@ -143,15 +156,7 @@ function enforceSafetyRules(
     }
   }
 
-  // 2. Core menus (e.g. dashboard, profile, subscription) must always remain viewable
-  if (menu && menu.isCore) {
-    cleanItem.view = true
-    if (cleanItem.scope === 'none') {
-      cleanItem.scope = 'own'
-    }
-  }
-
-  // 3. Action dependency rule:
+  // 2. Action dependency rule:
   // If patch explicitly set view to false, or item has view === false without an action patch turning it on:
   if (patch?.view === false) {
     cleanItem.view = false

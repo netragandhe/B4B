@@ -59,6 +59,8 @@ export interface MenuItem {
 export const ALL_MENU_ITEMS: Record<string, MenuItem> = {
   ebox: { id: 'ebox', name: 'eBOX', href: '/portal/ebox', icon: FolderArchive, module: 'ebox', badge: 'New', badgeVariant: 'emerald', isHighlighted: true },
   dashboard: { id: 'dashboard', name: 'Dashboard Overview', href: '/portal/dashboard', icon: LayoutDashboard, module: 'dashboard' },
+  adminOverview: { id: 'admin-overview', name: 'Overview Dashboard', href: '/portal/admin/dashboard', icon: LayoutDashboard, module: 'dashboard' },
+  clientDashboard: { id: 'client-dashboard', name: 'Client Dashboard', href: '/portal/client/dashboard', icon: LayoutDashboard, module: 'dashboard' },
   
   // Biz Pro Core & Leader
   bulletin: { id: 'bulletin', name: 'B4B Bulletin', href: '/portal/bizpro/bulletin', icon: Megaphone, module: 'dashboard', badge: 'Live', badgeVariant: 'primary' },
@@ -126,6 +128,7 @@ export const ALL_MENU_ITEMS: Record<string, MenuItem> = {
   clientSupport: { id: 'client-support', name: 'Support', href: '/portal/client/support', icon: HelpCircle, module: 'messages' },
 
   // Affiliate Specific
+  affiliateDashboard: { id: 'affiliate-dashboard', name: 'Partner Dashboard', href: '/portal/affiliate/dashboard', icon: LayoutDashboard, module: 'dashboard' },
   affiliateLinks: { id: 'affiliate-links', name: 'My Unique Links', href: '/portal/affiliate/links', icon: Share2, module: 'leads', badge: '5 Active', badgeVariant: 'purple' },
   affiliateSubmitLead: { id: 'affiliate-submit-lead', name: 'Submit Lead', href: '/portal/affiliate/submit-lead', icon: UserPlus, module: 'leads', badge: 'Fast Track', badgeVariant: 'emerald' },
   affiliateReferrals: { id: 'affiliate-referrals', name: 'Referral Pipeline', href: '/portal/affiliate/referrals', icon: Target, module: 'leads', badge: '15 Deals', badgeVariant: 'primary' },
@@ -140,7 +143,7 @@ export const ALL_MENU_ITEMS: Record<string, MenuItem> = {
 export function getMenuItemsForRole(role: UserRole, rankLevel: number = 1): MenuItem[] {
   const roleDefinitions: Record<UserRole, string[]> = {
     Admin: [
-      'dashboard',
+      'adminOverview',
       'adminBizPro',
       'adminBulletin',
       'rankRules',
@@ -165,32 +168,41 @@ export function getMenuItemsForRole(role: UserRole, rankLevel: number = 1): Menu
       'ebox',
     ],
     Client: [
-      'dashboard',
+      'clientDashboard',
       'clientOrders',
       'clientFundingStatus',
+      'clientDocuments',
       'clientMessages',
       'clientInvoices',
+      'clientBookCoach',
+      'clientSupport',
       'ebox',
     ],
     Affiliate: [
-      'dashboard',
+      'affiliateDashboard',
       'affiliateLinks',
+      'affiliateSubmitLead',
       'affiliateReferrals',
       'affiliatePayouts',
-      'ebox',
+      'affiliateMarketing',
+      'affiliateProfile',
     ],
     Employer: [
       'employerDashboard',
       'postJob',
       'myJobs',
       'applicants',
+      'companyProfile',
+      'employerBilling',
       'employerMessages',
     ],
     'Job Seeker': [
       'seekerDashboard',
       'searchJobs',
+      'savedJobs',
       'myApplications',
       'seekerProfile',
+      'jobAlerts',
       'seekerMessages',
     ],
   }

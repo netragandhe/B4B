@@ -8,14 +8,14 @@ interface UsaMapMotifProps {
 
 /**
  * Modern geometric USA Map motif derived from the B4B America national emblem.
- * Uses Emerald (#0E7A5A) grid and Copper (#C8793A) connection lines.
+ * Uses Logo Blue (#0C43A3) and Logo Gold (#F8C61A) network nodes.
  */
 export const UsaMapMotif: React.FC<UsaMapMotifProps> = ({
   className = '',
   opacity = 0.08,
   variant = 'subtle',
 }) => {
-  const strokeColor = variant === 'bold' ? '#0E7A5A' : 'currentColor'
+  const strokeColor = variant === 'bold' ? '#0C43A3' : 'currentColor'
 
   return (
     <svg
@@ -28,12 +28,12 @@ export const UsaMapMotif: React.FC<UsaMapMotifProps> = ({
     >
       <defs>
         <pattern id="usa-grid-pattern" width="32" height="32" patternUnits="userSpaceOnUse">
-          <circle cx="2" cy="2" r="1.5" fill="#0E7A5A" fillOpacity="0.35" />
+          <circle cx="2" cy="2" r="1.5" fill="#0C43A3" fillOpacity="0.35" />
         </pattern>
         <linearGradient id="usa-gradient-shimmer" x1="0" y1="0" x2="960" y2="600" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#0E7A5A" stopOpacity="0.4" />
-          <stop offset="50%" stopColor="#C8793A" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="#06201A" stopOpacity="0.5" />
+          <stop offset="0%" stopColor="#0C43A3" stopOpacity="0.4" />
+          <stop offset="50%" stopColor="#F8C61A" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#07142B" stopOpacity="0.5" />
         </linearGradient>
       </defs>
 
@@ -52,7 +52,7 @@ export const UsaMapMotif: React.FC<UsaMapMotifProps> = ({
       />
 
       {/* Internal Regional Coordinates & Network Connections across 12 Divisions */}
-      <g stroke="#C8793A" strokeWidth="1.75" strokeDasharray="4 4" strokeOpacity="0.6">
+      <g stroke="#F8C61A" strokeWidth="1.75" strokeDasharray="4 4" strokeOpacity="0.6">
         <line x1="840" y1="170" x2="820" y2="230" />
         <line x1="820" y1="230" x2="800" y2="280" />
         <line x1="800" y1="280" x2="740" y2="380" />
@@ -66,19 +66,19 @@ export const UsaMapMotif: React.FC<UsaMapMotifProps> = ({
       </g>
 
       {/* Key Federal Reserve Hub Node Pinpoints */}
-      <g fill="#0E7A5A">
-        <circle cx="840" cy="170" r="6" fill="#C8793A" /> {/* Boston */}
-        <circle cx="820" cy="230" r="7" fill="#C8793A" /> {/* New York */}
-        <circle cx="800" cy="280" r="6" fill="#C8793A" /> {/* Philadelphia */}
+      <g fill="#0C43A3">
+        <circle cx="840" cy="170" r="6" fill="#F8C61A" /> {/* Boston */}
+        <circle cx="820" cy="230" r="7" fill="#F8C61A" /> {/* New York */}
+        <circle cx="800" cy="280" r="6" fill="#F8C61A" /> {/* Philadelphia */}
         <circle cx="730" cy="270" r="6" /> {/* Cleveland */}
         <circle cx="760" cy="330" r="6" /> {/* Richmond */}
-        <circle cx="740" cy="380" r="6.5" fill="#C8793A" /> {/* Atlanta */}
-        <circle cx="620" cy="260" r="7" fill="#C8793A" /> {/* Chicago */}
+        <circle cx="740" cy="380" r="6.5" fill="#F8C61A" /> {/* Atlanta */}
+        <circle cx="620" cy="260" r="7" fill="#F8C61A" /> {/* Chicago */}
         <circle cx="600" cy="340" r="6" /> {/* St. Louis */}
         <circle cx="550" cy="200" r="6" /> {/* Minneapolis */}
         <circle cx="530" cy="320" r="6" /> {/* Kansas City */}
-        <circle cx="520" cy="450" r="7" fill="#C8793A" /> {/* Dallas */}
-        <circle cx="160" cy="310" r="7" fill="#C8793A" /> {/* San Francisco */}
+        <circle cx="520" cy="450" r="7" fill="#F8C61A" /> {/* Dallas */}
+        <circle cx="160" cy="310" r="7" fill="#F8C61A" /> {/* San Francisco */}
       </g>
     </svg>
   )
