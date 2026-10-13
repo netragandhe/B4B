@@ -86,7 +86,7 @@ export const CompanyPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Vision */}
           <div className="p-8 rounded-2xl bg-white border border-[#14233B]/10 space-y-4 shadow-sm hover:border-[#0C43A3] transition-all">
-            <span className="text-xs font-black font-mono px-2.5 py-1 rounded bg-[#07142B] text-[#F8C61A]">
+            <span className="text-xs font-bold font-mono px-2.5 py-1 rounded bg-blue-50 text-[#013CA0] border border-blue-200">
               [ Vision ]
             </span>
             <h3 className="text-xl font-extrabold text-[#14233B] leading-snug font-heading">
@@ -99,7 +99,7 @@ export const CompanyPage: React.FC = () => {
 
           {/* Mission */}
           <div className="p-8 rounded-2xl bg-white border border-[#14233B]/10 space-y-4 shadow-sm hover:border-[#0C43A3] transition-all">
-            <span className="text-xs font-black font-mono px-2.5 py-1 rounded bg-[#07142B] text-[#F8C61A]">
+            <span className="text-xs font-bold font-mono px-2.5 py-1 rounded bg-blue-50 text-[#013CA0] border border-blue-200">
               [ Mission ]
             </span>
             <h3 className="text-xl font-extrabold text-[#14233B] leading-snug font-heading">
@@ -112,7 +112,7 @@ export const CompanyPage: React.FC = () => {
 
           {/* Values Mantra */}
           <div className="p-8 rounded-2xl bg-white border border-[#14233B]/10 space-y-4 shadow-sm hover:border-[#0C43A3] transition-all">
-            <span className="text-xs font-black font-mono px-2.5 py-1 rounded bg-[#07142B] text-[#F8C61A]">
+            <span className="text-xs font-bold font-mono px-2.5 py-1 rounded bg-blue-50 text-[#013CA0] border border-blue-200">
               [ Values ]
             </span>
             <h3 className="text-xl font-extrabold text-[#14233B] leading-snug font-heading">

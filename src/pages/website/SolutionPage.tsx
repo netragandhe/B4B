@@ -324,7 +324,7 @@ export const SolutionPage: React.FC = () => {
                   >
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-mono font-bold text-[#F8C61A] bg-[#07142B] px-2 py-0.5 rounded">
+                        <span className="text-xs font-mono font-bold text-[#013CA0] bg-blue-50 border border-blue-200 px-2 py-0.5 rounded">
                           #{rel.number}
                         </span>
                         <div className="w-8 h-8 rounded-lg bg-[#E9EDF4] text-[#0C43A3] flex items-center justify-center">

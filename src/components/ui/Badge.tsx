@@ -24,7 +24,7 @@ export const badgeVariants = cva(
         purple:
           'bg-purple-50 text-[#013CA0] border-blue-300/80 dark:bg-blue-950/60 dark:text-blue-200 dark:border-blue-800/50',
         navy:
-          'bg-[#07142B] text-[#FFC911] border-[#1E3A6E] shadow-xs',
+          'bg-blue-50 text-[#013CA0] border-blue-200/90 font-semibold dark:bg-[#162E5A] dark:text-blue-200 dark:border-[#1E3A6E]',
         royal:
           'bg-[#013CA0] text-white border-[#013CA0] shadow-xs',
         outline:
