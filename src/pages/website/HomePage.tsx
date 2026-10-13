@@ -140,7 +140,7 @@ export const HomePage: React.FC = () => {
     TERRITORY_DIVISIONS[0]
 
   return (
-    <div className="min-h-screen bg-[#E9EDF4] text-[#14233B] transition-colors duration-200 overflow-x-hidden font-body">
+    <div className="min-h-screen bg-[#07142B] text-white transition-colors duration-200 overflow-x-hidden font-body">
       {/* Dynamic CSS override for legacy layout headers/footers */}
       <style>{`
         body > #root > .min-h-screen > header.sticky,
@@ -159,33 +159,26 @@ export const HomePage: React.FC = () => {
       <Navbar variant="dark" onOpenCoachModal={() => setCoachModalOpen(true)} />
 
       {/* =========================================================================
-          SECTION 1. HERO (DARK BAND: Midnight Navy #07142B)
+          SECTION 1. HERO (MATCHING SECTION 3 LUMINOUS BLUE PALETTE)
           ========================================================================= */}
-      <section className="relative py-20 bg-[#07142B] text-white border-b border-[#0D2147] overflow-hidden">
-        {/* Background Photo Layer (Eager loaded, object-cover, 70% dark navy overlay) */}
+      <section className="relative py-20 text-white border-b border-sky-300/25 overflow-hidden">
+        {/* Background Photo Layer with luminous blue overlay matching Section 3 */}
         <div className="absolute inset-0 pointer-events-none z-0">
           <img
             src={heroBgImg}
             alt="B4B America commercial business commerce operations"
             loading="eager"
             decoding="sync"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-center scale-105"
           />
-          <div className="absolute inset-0 bg-[#07142B] opacity-70" />
+          {/* Exact matching luminous blue overlays as Section 3 */}
+          <div className="absolute inset-0 bg-[#0A2A5E]/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
         </div>
 
-        {/* Subtle geometric technical dot pattern background */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-20 z-[1]"
-          style={{
-            backgroundImage: 'radial-gradient(rgba(12, 67, 163, 0.4) 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
-          }}
-        />
-
-        {/* Ambient subtle glows */}
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#0C43A3]/25 rounded-full blur-3xl pointer-events-none z-[1]" />
-        <div className="absolute top-1/2 -right-32 w-96 h-96 bg-[#F8C61A]/10 rounded-full blur-3xl pointer-events-none z-[1]" />
+        {/* Ambient lighting accent matching Section 3 */}
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-sky-500/25 rounded-full blur-3xl pointer-events-none z-[1]" />
+        <div className="absolute top-1/2 -right-32 w-96 h-96 bg-sky-400/20 rounded-full blur-3xl pointer-events-none z-[1]" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -198,7 +191,7 @@ export const HomePage: React.FC = () => {
               className="lg:col-span-7 space-y-6 text-left"
             >
               {/* Top Pill Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0D2147] border border-[#0D2147] shadow-xs">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/20 backdrop-blur-md border border-sky-300/40 shadow-xs">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#F8C61A] animate-pulse" />
                 <span className="text-xs font-bold uppercase tracking-wider text-[#F8C61A] font-mono">
                   NATIONAL SMALL BUSINESS OPERATING NETWORK
@@ -251,31 +244,31 @@ export const HomePage: React.FC = () => {
                 </button>
               </div>
 
-              {/* Fact Indicators with Big Gold Numbers */}
-              <div className="pt-6 border-t border-[#0D2147] grid grid-cols-3 gap-6 max-w-xl text-left font-mono">
-                <div className="space-y-0.5">
+              {/* Fact Indicators with Big Gold Numbers - Halka Blue Glass Boxes */}
+              <div className="pt-6 border-t border-sky-300/25 grid grid-cols-3 gap-3.5 max-w-xl text-left font-mono">
+                <div className="p-3 rounded-xl bg-sky-500/20 border border-sky-300/35 backdrop-blur-md space-y-0.5">
                   <div className="flex items-center gap-1.5">
-                    <p className="text-3xl font-extrabold text-[#F8C61A] tabular-nums">16</p>
-                    <span className="w-2 h-2 rounded-full bg-[#0C43A3]" />
+                    <p className="text-2xl sm:text-3xl font-extrabold text-[#F8C61A] tabular-nums">16</p>
+                    <span className="w-2 h-2 rounded-full bg-sky-400" />
                   </div>
-                  <p className="text-xs font-bold text-[#B8C4D9] uppercase tracking-wider">Core Solutions</p>
-                  <p className="text-[11px] text-[#B8C4D9]/70 font-sans">Payments to software</p>
+                  <p className="text-[11px] sm:text-xs font-bold text-white uppercase tracking-wider">Core Solutions</p>
+                  <p className="text-[10px] sm:text-[11px] text-blue-100 font-sans">Payments to software</p>
                 </div>
-                <div className="space-y-0.5">
+                <div className="p-3 rounded-xl bg-sky-500/20 border border-sky-300/35 backdrop-blur-md space-y-0.5">
                   <div className="flex items-center gap-1.5">
-                    <p className="text-3xl font-extrabold text-[#F8C61A] tabular-nums">12</p>
+                    <p className="text-2xl sm:text-3xl font-extrabold text-[#F8C61A] tabular-nums">12</p>
                     <span className="w-2 h-2 rounded-full bg-[#F8C61A]" />
                   </div>
-                  <p className="text-xs font-bold text-[#B8C4D9] uppercase tracking-wider">Fed Divisions</p>
-                  <p className="text-[11px] text-[#B8C4D9]/70 font-sans">Coast-to-coast coverage</p>
+                  <p className="text-[11px] sm:text-xs font-bold text-white uppercase tracking-wider">Fed Divisions</p>
+                  <p className="text-[10px] sm:text-[11px] text-blue-100 font-sans">Coast-to-coast coverage</p>
                 </div>
-                <div className="space-y-0.5">
+                <div className="p-3 rounded-xl bg-sky-500/20 border border-sky-300/35 backdrop-blur-md space-y-0.5">
                   <div className="flex items-center gap-1.5">
-                    <p className="text-3xl font-extrabold text-[#F8C61A] tabular-nums">32</p>
-                    <span className="w-2 h-2 rounded-full bg-[#0C43A3]" />
+                    <p className="text-2xl sm:text-3xl font-extrabold text-[#F8C61A] tabular-nums">32</p>
+                    <span className="w-2 h-2 rounded-full bg-sky-400" />
                   </div>
-                  <p className="text-xs font-bold text-[#B8C4D9] uppercase tracking-wider">Trade Sectors</p>
-                  <p className="text-[11px] text-[#B8C4D9]/70 font-sans">Trades & commerce</p>
+                  <p className="text-[11px] sm:text-xs font-bold text-white uppercase tracking-wider">Trade Sectors</p>
+                  <p className="text-[10px] sm:text-[11px] text-blue-100 font-sans">Trades & commerce</p>
                 </div>
               </div>
             </motion.div>
@@ -290,7 +283,7 @@ export const HomePage: React.FC = () => {
               <div
                 onMouseEnter={() => setIsAutoCycling(false)}
                 onMouseLeave={() => setIsAutoCycling(true)}
-                className="relative bg-gradient-to-b from-[#0D2147]/95 via-[#0A1B3B]/95 to-[#07142B]/95 text-white rounded-2xl p-4 sm:p-5 shadow-2xl border border-white/15 overflow-hidden w-full backdrop-blur-xl transition-all"
+                className="relative bg-gradient-to-br from-sky-600/25 via-[#1658B3]/30 to-sky-700/25 text-white rounded-3xl p-4 sm:p-5 shadow-[0_16px_48px_rgba(2,132,199,0.25)] border border-sky-300/40 overflow-hidden w-full backdrop-blur-2xl transition-all"
               >
                 {/* Background ambient lighting */}
                 <div className="absolute top-0 right-0 w-56 h-56 bg-[#013CA0]/25 rounded-full blur-3xl pointer-events-none" />
@@ -452,6 +445,7 @@ export const HomePage: React.FC = () => {
                       ))}
                     </motion.div>
                   </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -461,23 +455,41 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 2. 16 SOLUTIONS (STONE BAND: Cool Stone #E9EDF4)
+          SECTION 2. 16 SOLUTIONS (EXACT MATCH TO SECTION 3 BACKGROUND & ATMOSPHERE)
           ========================================================================= */}
-      <section id="solutions-showcase" className="py-20 bg-[#E9EDF4] text-[#14233B] relative border-b border-[#14233B]/10">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="solutions-showcase" className="py-20 text-white relative border-b border-sky-300/30 overflow-hidden">
+        {/* Background Visual Layer matching Section 3 3D technology graphic and exact blue overlay */}
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+          <img
+            src={b4bappPreviewImg}
+            alt="B4B Solutions 3D technology ecosystem backdrop"
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover object-center scale-105"
+          />
+          {/* Exact matching luminous blue overlays as Section 3 */}
+          <div className="absolute inset-0 bg-[#0A2A5E]/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
+        </div>
+
+        {/* Ambient lighting accent matching Section 3 */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-sky-500/25 rounded-full blur-3xl pointer-events-none z-[1]" />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-sky-400/20 rounded-full blur-3xl pointer-events-none z-[1]" />
+
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           {/* Centered Section Header */}
           <div className="text-center max-w-3xl mx-auto space-y-4 mb-12">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#14233B]/15 shadow-xs text-xs font-bold text-[#0C43A3] font-mono">
-              <Layers className="w-3.5 h-3.5 text-[#0C43A3]" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/20 backdrop-blur-md border border-sky-300/40 shadow-sm text-xs font-bold text-[#F8C61A] font-mono">
+              <Layers className="w-3.5 h-3.5 text-[#F8C61A]" />
               <span>THE B4B BUSINESS SOLUTIONS NETWORK</span>
             </div>
 
-            <h2 className="text-[28px] lg:text-[36px] font-extrabold font-heading text-[#14233B] tracking-tight leading-tight">
+            <h2 className="text-[28px] lg:text-[36px] font-extrabold font-heading text-white tracking-tight leading-tight">
               16 Solutions Every Small Business Needs to Thrive
             </h2>
 
-            <p className="text-base sm:text-lg text-[#14233B]/75 leading-relaxed">
+            <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed">
               We design ideas and turn prospects into clients. We offer solutions for you to build business credit, accept payments and secure business funding.
             </p>
 
@@ -489,8 +501,8 @@ export const HomePage: React.FC = () => {
                   onClick={() => setActiveCategory(cat)}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer font-mono min-h-[44px] ${
                     activeCategory === cat
-                      ? 'bg-[#0C43A3] text-white shadow-sm'
-                      : 'bg-white text-[#14233B] border border-[#14233B]/15 hover:border-[#0C43A3]'
+                      ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg border border-sky-200/50'
+                      : 'bg-sky-500/15 text-blue-100 hover:text-white hover:bg-sky-500/30 backdrop-blur-md border border-sky-300/30'
                   }`}
                 >
                   {cat}
@@ -511,10 +523,10 @@ export const HomePage: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35, delay: (idx % 3) * 0.05 }}
-                  className="solution-card group"
+                  className="group flex flex-col justify-between h-full rounded-2xl overflow-hidden bg-gradient-to-r from-sky-500/25 to-blue-600/20 hover:from-sky-500/35 hover:to-blue-600/30 backdrop-blur-xl border border-sky-300/40 hover:border-sky-200/80 shadow-[0_8px_24px_rgba(14,165,233,0.16)] hover:shadow-[0_16px_40px_rgba(14,165,233,0.28)] hover:-translate-y-2 transition-all duration-300"
                 >
                   {/* Visual Photo Header with Image Zoom, Badges & Floating Icon */}
-                  <div className="relative w-full h-44 sm:h-48 overflow-hidden bg-slate-100">
+                  <div className="relative w-full h-44 sm:h-48 overflow-hidden bg-slate-900">
                     <img
                       src={SOLUTION_IMAGES[solution.id]}
                       alt={`${solution.title} - B4B America commercial business solution`}
@@ -523,20 +535,20 @@ export const HomePage: React.FC = () => {
                       className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-500 ease-out"
                     />
                     {/* Multi-layer Gradient for Contrast */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#07142B]/65 via-[#07142B]/15 to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#07142B]/85 via-sky-950/25 to-transparent pointer-events-none" />
 
                     {/* Top Row: Category Pill & Solution Number */}
                     <div className="absolute top-3 inset-x-3 flex items-center justify-between pointer-events-none">
-                      <span className="text-[11px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md text-[#07142B] border border-white/60 shadow-xs">
+                      <span className="text-[11px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-sky-500/30 backdrop-blur-md text-white border border-sky-200/40 shadow-xs">
                         {solution.category}
                       </span>
-                      <span className="text-[11px] font-mono font-black text-[#F8C61A] bg-[#07142B]/85 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15 shadow-xs">
+                      <span className="text-[11px] font-mono font-black text-[#F8C61A] bg-[#07142B]/85 backdrop-blur-md px-2.5 py-1 rounded-full border border-sky-300/30 shadow-xs">
                         #{solution.number}
                       </span>
                     </div>
 
                     {/* Bottom Row: Icon Box floating on bottom-right */}
-                    <div className="absolute bottom-3 right-3 w-10 h-10 rounded-xl bg-white/95 backdrop-blur-md text-[#0C43A3] shadow-md border border-white/80 flex items-center justify-center group-hover:bg-[#0C43A3] group-hover:text-white transition-colors duration-300 pointer-events-none">
+                    <div className="absolute bottom-3 right-3 w-10 h-10 rounded-xl bg-sky-500/30 backdrop-blur-md text-sky-100 shadow-md border border-sky-200/50 flex items-center justify-center group-hover:bg-[#F8C61A] group-hover:text-[#07142B] transition-colors duration-300 pointer-events-none">
                       <IconComponent className="w-5 h-5 stroke-[2.2]" />
                     </div>
                   </div>
@@ -544,19 +556,19 @@ export const HomePage: React.FC = () => {
                   {/* Card Content & Action Buttons */}
                   <div className="solution-card-body">
                     <div className="space-y-2.5">
-                      {/* Title: 20px, semibold, navy text with hover color transition */}
-                      <h3 className="solution-card-title group-hover:text-[#0C43A3] transition-colors">
+                      {/* Title: 20px, semibold, text with hover color transition */}
+                      <h3 className="solution-card-title group-hover:text-[#F8C61A] transition-colors">
                         {solution.title}
                       </h3>
 
-                      {/* Description: minimum 15px, line-height 1.6, text color #14233B at ~80%, max 3 lines */}
+                      {/* Description: minimum 15px, line-height 1.6, luminous text, max 3 lines */}
                       <p className="solution-card-desc">
                         {solution.shortDesc}
                       </p>
                     </div>
 
                     {/* Buttons Pinned to the Bottom of the Card */}
-                    <div className="pt-5 mt-5 border-t border-slate-100 flex flex-col gap-2.5">
+                    <div className="pt-5 mt-5 border-t border-sky-300/20 flex flex-col gap-2.5">
                       {/* Primary Button: Full-width, Logo Blue background, white text, 14px */}
                       <button
                         onClick={() => setCoachModalOpen(true)}
@@ -585,7 +597,7 @@ export const HomePage: React.FC = () => {
           <div className="text-center pt-10">
             <Link
               to="/solutions"
-              className="inline-flex items-center gap-2 text-sm font-bold text-[#0C43A3] hover:underline font-mono min-h-[44px]"
+              className="inline-flex items-center gap-2 text-sm font-bold text-sky-300 hover:text-[#F8C61A] hover:underline font-mono min-h-[44px]"
             >
               <span>Explore full details for all 16 solutions</span>
               <ArrowRight className="w-4 h-4" />
@@ -607,13 +619,13 @@ export const HomePage: React.FC = () => {
             decoding="async"
             className="w-full h-full object-cover object-center scale-105"
           />
-          {/* Balanced translucent overlay: reveals the 3D graphic vibrantly while ensuring clean contrast */}
-          <div className="absolute inset-0 bg-[#07142B]/35" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#07142B]/80 via-[#07142B]/45 to-[#07142B]/25" />
+          {/* Luminous blue overlay: harmonizes with the bright sky-blue 3D graphic without blacking it out */}
+          <div className="absolute inset-0 bg-[#0A2A5E]/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
         </div>
 
         {/* Ambient lighting accent */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#0C43A3]/20 rounded-full blur-3xl pointer-events-none z-[1]" />
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-sky-500/25 rounded-full blur-3xl pointer-events-none z-[1]" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
@@ -621,7 +633,7 @@ export const HomePage: React.FC = () => {
             {/* Left Column: Text Content & Features */}
             <div className="lg:col-span-6 space-y-6 text-left">
               {/* Gold small label badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#07142B]/90 backdrop-blur-md border border-white/20">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/20 backdrop-blur-md border border-sky-300/40 shadow-sm">
                 <Cpu className="w-3.5 h-3.5 text-[#F8C61A]" />
                 <span className="text-[12px] font-bold uppercase tracking-wider text-[#F8C61A] font-mono">
                   {B4BAPP_SOFTWARE.name} • {B4BAPP_SOFTWARE.category}
@@ -633,71 +645,71 @@ export const HomePage: React.FC = () => {
                 Enterprise CRM & ERP Designed For Small Business Pros
               </h2>
 
-              {/* Body text in #DCE4F0, crisp legibility */}
-              <p className="text-[16px] text-[#DCE4F0] leading-relaxed">
+              {/* Body text in luminous crisp blue-50, clean readability */}
+              <p className="text-[16px] text-blue-50 leading-relaxed font-normal">
                 {B4BAPP_SOFTWARE.description}
               </p>
 
-              {/* 3 Core Capability Highlights - Polished Box Cards */}
+              {/* 3 Core Capability Highlights - Halka Blue (Light Blue Frosted Glass) Cards */}
               <div className="space-y-3.5 pt-2">
-                <div className="flex items-start gap-4 p-4.5 rounded-xl bg-[#07142B]/90 backdrop-blur-md border border-white/20 shadow-lg hover:border-[#0C43A3] transition-all">
-                  <div className="w-11 h-11 rounded-xl bg-[#0C43A3] text-white flex items-center justify-center shrink-0 shadow-md">
+                <div className="flex items-start gap-4 p-4.5 rounded-2xl bg-gradient-to-r from-sky-500/25 to-blue-600/20 hover:from-sky-500/35 hover:to-blue-600/30 backdrop-blur-xl border border-sky-300/40 hover:border-sky-200/80 shadow-[0_8px_24px_rgba(14,165,233,0.16)] transition-all group">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 text-white flex items-center justify-center shrink-0 shadow-md border border-sky-200/50">
                     <Check className="w-5 h-5 stroke-[2.5]" />
                   </div>
                   <div className="space-y-1">
-                    <h4 className="text-[17px] font-bold text-white font-heading">
+                    <h4 className="text-[18px] font-extrabold text-white font-heading tracking-tight leading-snug">
                       Automated Job Costing & Invoicing
                     </h4>
-                    <p className="text-[15px] text-[#DCE4F0] leading-relaxed">
+                    <p className="text-[15px] text-blue-50 leading-relaxed font-normal">
                       Instant PO management, inventory descriptions for up to 100 service products, and procurement tracking.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-4.5 rounded-xl bg-[#07142B]/90 backdrop-blur-md border border-white/20 shadow-lg hover:border-[#F8C61A]/60 transition-all">
-                  <div className="w-11 h-11 rounded-xl bg-[#F8C61A] text-[#07142B] flex items-center justify-center shrink-0 font-bold shadow-md">
+                <div className="flex items-start gap-4 p-4.5 rounded-2xl bg-gradient-to-r from-sky-500/25 to-blue-600/20 hover:from-sky-500/35 hover:to-blue-600/30 backdrop-blur-xl border border-sky-300/40 hover:border-[#F8C61A]/80 shadow-[0_8px_24px_rgba(14,165,233,0.16)] transition-all group">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#F8C61A] to-[#F5B800] text-[#07142B] flex items-center justify-center shrink-0 shadow-md font-bold border border-white/40">
                     <Activity className="w-5 h-5 stroke-[2.5]" />
                   </div>
                   <div className="space-y-1">
-                    <h4 className="text-[17px] font-bold text-white font-heading">
+                    <h4 className="text-[18px] font-extrabold text-white font-heading tracking-tight leading-snug">
                       Pipeline & Deal Tracking
                     </h4>
-                    <p className="text-[15px] text-[#DCE4F0] leading-relaxed">
+                    <p className="text-[15px] text-blue-50 leading-relaxed font-normal">
                       White-label CRM lead intake, automated communication feeds, and conversion analytics for Biz Pros.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-4.5 rounded-xl bg-[#07142B]/90 backdrop-blur-md border border-white/20 shadow-lg hover:border-[#0C43A3] transition-all">
-                  <div className="w-11 h-11 rounded-xl bg-[#0C43A3] text-white flex items-center justify-center shrink-0 shadow-md">
+                <div className="flex items-start gap-4 p-4.5 rounded-2xl bg-gradient-to-r from-sky-500/25 to-blue-600/20 hover:from-sky-500/35 hover:to-blue-600/30 backdrop-blur-xl border border-sky-300/40 hover:border-sky-200/80 shadow-[0_8px_24px_rgba(14,165,233,0.16)] transition-all group">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 text-white flex items-center justify-center shrink-0 shadow-md border border-sky-200/50">
                     <TrendingUp className="w-5 h-5 stroke-[2.5]" />
                   </div>
                   <div className="space-y-1">
-                    <h4 className="text-[17px] font-bold text-white font-heading">
+                    <h4 className="text-[18px] font-extrabold text-white font-heading tracking-tight leading-snug">
                       Bulletin Sales Scoreboard & Career Ladder
                     </h4>
-                    <p className="text-[15px] text-[#DCE4F0] leading-relaxed">
+                    <p className="text-[15px] text-blue-50 leading-relaxed font-normal">
                       Real-time category leaderboards and 9-tier Biz Pro career progression from Account Executive to Senior National VP.
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Pricing Box with Gold label, Gold $25 and high-contrast typography */}
-              <div className="p-6 rounded-2xl bg-[#07142B]/95 backdrop-blur-md border border-white/20 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+              {/* Pricing Box - Halka Blue Frosted Glass with Gold Accent */}
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-sky-600/30 via-blue-600/25 to-sky-500/25 backdrop-blur-2xl border border-sky-300/45 shadow-[0_12px_36px_rgba(14,165,233,0.22)] flex flex-col sm:flex-row sm:items-center justify-between gap-5">
                 <div className="space-y-1">
-                  <p className="text-[12px] font-bold text-[#F8C61A] tracking-wider uppercase font-mono">
+                  <p className="text-[12px] font-extrabold text-[#F8C61A] tracking-wider uppercase font-mono">
                     Biz Pro Access Subscription
                   </p>
                   <div className="flex items-baseline gap-2">
                     <span className="text-3xl sm:text-4xl font-extrabold text-[#F8C61A] font-heading tracking-tight">
                       $25
                     </span>
-                    <span className="text-[15px] font-medium text-[#DCE4F0]">
+                    <span className="text-[15px] font-bold text-white">
                       / month
                     </span>
                   </div>
-                  <p className="text-[14px] text-[#DCE4F0] leading-relaxed">
+                  <p className="text-[14px] text-blue-100/90 leading-relaxed">
                     Entry subscription for Biz Pros, scales with ranking
                   </p>
                 </div>
@@ -718,58 +730,63 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Column: Clean card (Deep Navy, 16px radius, white 20% border) holding existing content */}
+            {/* Right Column: Halka Blue Frosted Glass Card holding Corporate Philosophy */}
             <div className="lg:col-span-6 space-y-6">
-              <div className="rounded-2xl bg-[#07142B]/90 backdrop-blur-md border border-white/20 p-6 sm:p-8 space-y-6 text-left shadow-2xl relative">
+              <div className="rounded-2xl bg-gradient-to-br from-sky-600/25 via-[#1658B3]/30 to-sky-700/25 backdrop-blur-2xl border border-sky-300/40 p-6 sm:p-8 space-y-6 text-left shadow-[0_16px_48px_rgba(2,132,199,0.25)] relative">
                 {/* Header */}
-                <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <div className="flex items-center justify-between border-b border-sky-200/25 pb-4">
                   <div className="flex items-center gap-2.5">
                     <Compass className="w-5 h-5 text-[#F8C61A]" />
-                    <h3 className="text-[18px] sm:text-[20px] font-extrabold text-white font-heading">
+                    <h3 className="text-[18px] sm:text-[20px] font-extrabold text-white font-heading tracking-tight">
                       Corporate Philosophy & 5 Foundations
                     </h3>
                   </div>
-                  <span className="text-[12px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#0D2147] text-[#F8C61A] border border-white/15">
+                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#F8C61A]/15 text-[#F8C61A] border border-[#F8C61A]/30">
                     B4B MANTRA
                   </span>
                 </div>
 
-                {/* Quote in #DCE4F0 with Gold Mantra */}
-                <p className="text-[15px] sm:text-[16px] text-[#DCE4F0] leading-relaxed">
-                  "{BRAND_IDENTITY.vision}." The B4B America Mantra:{' '}
-                  <strong className="text-[#F8C61A] font-mono font-bold block sm:inline mt-1 sm:mt-0">
-                    {BRAND_IDENTITY.mantra}
-                  </strong>
-                </p>
+                {/* Quote Box with Clean Structure */}
+                <div className="p-4 rounded-xl bg-sky-500/15 border border-sky-300/30 backdrop-blur-md space-y-2">
+                  <p className="text-[15px] sm:text-[16px] text-white/95 leading-relaxed italic font-body">
+                    "{BRAND_IDENTITY.vision}."
+                  </p>
+                  <p className="text-[14px] text-blue-100">
+                    The B4B America Mantra:{' '}
+                    <strong className="text-[#F8C61A] font-mono font-bold not-italic">
+                      {BRAND_IDENTITY.mantra}
+                    </strong>
+                  </p>
+                </div>
 
-                {/* 5 Mantra Step Boxes with Clean Typography & Clear Spacing */}
+                {/* 5 Mantra Step Boxes with Halka Blue Translucent Cards & Crisp Text */}
                 <div className="space-y-3">
                   {BRAND_IDENTITY.mantraSteps.map((step) => (
                     <div
                       key={step.step}
-                      className="p-3.5 sm:p-4 rounded-xl bg-[#0D2147]/90 border border-white/15 flex items-center justify-between gap-4 hover:border-[#F8C61A]/50 hover:bg-[#0D2147] transition-all group shadow-sm"
+                      className="p-3.5 sm:p-4 rounded-xl bg-sky-500/20 hover:bg-sky-400/30 border border-sky-200/35 hover:border-[#F8C61A]/70 backdrop-blur-md flex items-center justify-between gap-4 transition-all duration-200 group shadow-xs"
                     >
                       <div className="flex items-start gap-3.5">
-                        <span className="w-8 h-8 rounded-lg bg-[#F8C61A]/15 border border-[#F8C61A]/30 flex items-center justify-center text-sm font-black font-mono text-[#F8C61A] shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                        <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F8C61A]/25 to-[#F8C61A]/10 border border-[#F8C61A]/40 text-[#F8C61A] font-mono font-black text-sm flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform mt-0.5">
                           {step.step}
                         </span>
                         <div className="space-y-0.5">
-                          <p className="text-[15px] font-bold text-white font-heading">
+                          <p className="text-[16px] font-extrabold text-white font-heading tracking-wide">
                             {step.title}
                           </p>
-                          <p className="text-[13px] sm:text-[14px] text-[#DCE4F0] leading-snug">
+                          <p className="text-[14px] text-blue-50 leading-relaxed font-normal">
                             {step.desc}
                           </p>
                         </div>
                       </div>
-                      <ChevronRight className="w-4 h-4 text-[#F8C61A] shrink-0 group-hover:translate-x-1 transition-transform" />
+                      <ChevronRight className="w-4 h-4 text-sky-200 shrink-0 group-hover:text-[#F8C61A] group-hover:translate-x-1 transition-all" />
                     </div>
                   ))}
                 </div>
 
                 {/* Footer with Gold label */}
-                <div className="pt-3 border-t border-white/10 flex items-center justify-between">
-                  <span className="text-[14px] sm:text-[15px] text-[#DCE4F0]">
+                <div className="pt-3 border-t border-sky-200/25 flex items-center justify-between">
+                  <span className="text-[14px] sm:text-[15px] text-blue-100 font-medium">
                     Biz Pro Career Framework:
                   </span>
                   <span className="text-[#F8C61A] font-bold font-mono text-[13px] sm:text-[14px]">
@@ -784,28 +801,44 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 4. INDUSTRIES WE SERVE (STONE BAND: Cool Stone #E9EDF4)
+          SECTION 4. INDUSTRIES WE SERVE (MATCHING SECTION 3 3D TECH BACKDROP)
           ========================================================================= */}
-      <section className="py-20 bg-[#E9EDF4] text-[#14233B] border-b border-[#14233B]/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <section className="py-20 text-white border-b border-sky-300/30 relative overflow-hidden">
+        {/* Background Visual Layer matching Section 3 3D technology graphic and exact blue overlay */}
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+          <img
+            src={b4bappPreviewImg}
+            alt="B4B Commercial Industries 3D backdrop"
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover object-center scale-105"
+          />
+          <div className="absolute inset-0 bg-[#0A2A5E]/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
+        </div>
+
+        {/* Ambient lighting accent matching Section 3 */}
+        <div className="absolute top-1/2 left-1/3 w-[650px] h-[650px] bg-sky-400/25 rounded-full blur-3xl pointer-events-none z-[1]" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 relative z-10">
           
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-3 text-left max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#14233B]/15 text-xs font-bold text-[#0C43A3] font-mono">
-                <Building2 className="w-3.5 h-3.5 text-[#0C43A3]" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/20 backdrop-blur-md border border-sky-300/40 text-xs font-bold text-[#F8C61A] font-mono shadow-sm">
+                <Building2 className="w-3.5 h-3.5 text-[#F8C61A]" />
                 <span>SECTOR SPECIALIZATION</span>
               </div>
-              <h2 className="text-[28px] lg:text-[36px] font-extrabold font-heading text-[#14233B] tracking-tight leading-tight">
+              <h2 className="text-[28px] lg:text-[36px] font-extrabold font-heading text-white tracking-tight leading-tight">
                 Industries We Serve
               </h2>
-              <p className="text-base text-[#14233B]/75">
+              <p className="text-base text-blue-100/90">
                 Tailored solutions for 32 key business trades operating in towns and cities across America.
               </p>
             </div>
 
             <div className="text-left md:text-right">
-              <span className="text-xs font-bold text-[#0C43A3] font-mono">
+              <span className="text-xs font-bold text-sky-300 font-mono">
                 Click any trade to speak with a specialized coach
               </span>
             </div>
@@ -822,7 +855,7 @@ export const HomePage: React.FC = () => {
                     setActiveIndustryFilter(ind.name)
                     setCoachModalOpen(true)
                   }}
-                  className="industry-photo-tile group"
+                  className="group relative rounded-2xl aspect-[4/3] overflow-hidden cursor-pointer bg-gradient-to-r from-sky-500/25 to-blue-600/20 hover:from-sky-500/35 hover:to-blue-600/30 backdrop-blur-xl border border-sky-300/40 hover:border-sky-200/80 shadow-[0_8px_24px_rgba(14,165,233,0.16)] hover:shadow-[0_16px_40px_rgba(14,165,233,0.28)] hover:-translate-y-2 transition-all duration-300"
                 >
                   {/* Photo or Deep Navy Fallback */}
                   {ind.image ? (
@@ -833,9 +866,9 @@ export const HomePage: React.FC = () => {
                       className="tile-img"
                     />
                   ) : (
-                    <div className="w-full h-full bg-[#0D2147] flex items-center justify-center p-6 relative">
+                    <div className="w-full h-full bg-gradient-to-br from-sky-600/25 via-[#1658B3]/30 to-sky-700/25 flex items-center justify-center p-6 relative">
                       {IconComp && (
-                        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#F8C61A] group-hover:scale-110 transition-transform duration-300">
+                        <div className="w-16 h-16 rounded-2xl bg-sky-500/20 border border-sky-200/35 flex items-center justify-center text-[#F8C61A] group-hover:scale-110 transition-transform duration-300">
                           <IconComp className="w-8 h-8 stroke-[1.75]" />
                         </div>
                       )}
@@ -863,7 +896,7 @@ export const HomePage: React.FC = () => {
                 setActiveIndustryFilter('')
                 setCoachModalOpen(true)
               }}
-              className="inline-flex items-center gap-2 text-sm font-bold text-[#0C43A3] hover:underline font-mono min-h-[44px] cursor-pointer"
+              className="inline-flex items-center gap-2 text-sm font-bold text-sky-300 hover:text-[#F8C61A] hover:underline font-mono min-h-[44px] cursor-pointer"
             >
               <span>Explore tailored solutions for all 32 commercial trade sectors</span>
               <ArrowRight className="w-4 h-4" />
@@ -873,16 +906,31 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 5. ADVISORY INTAKE & DEMO DESK (DARK BAND: Midnight Navy #07142B)
+          SECTION 5. ADVISORY INTAKE & DEMO DESK (MATCHING SECTION 3 3D TECH BACKDROP)
           ========================================================================= */}
-      <section className="py-20 bg-[#07142B] text-white border-b border-[#0D2147] relative overflow-hidden">
+      <section className="py-20 text-white border-b border-[#0D2147] relative overflow-hidden">
+        {/* Background Visual Layer matching Section 3 3D technology graphic and exact blue overlay */}
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+          <img
+            src={b4bappPreviewImg}
+            alt="B4B Advisory Intake 3D backdrop"
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover object-center scale-105"
+          />
+          <div className="absolute inset-0 bg-[#0A2A5E]/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
+        </div>
+
+        {/* Ambient lighting accent matching Section 3 */}
+        <div className="absolute -top-32 right-1/4 w-[600px] h-[600px] bg-sky-400/25 rounded-full blur-3xl pointer-events-none z-[1]" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="bg-[#0D2147] rounded-3xl border border-[#0D2147] shadow-2xl p-8 sm:p-12 overflow-hidden relative">
+          <div className="bg-gradient-to-br from-sky-600/25 via-[#103E7E]/35 to-sky-700/25 backdrop-blur-2xl rounded-3xl border border-sky-300/40 shadow-[0_20px_60px_rgba(2,132,199,0.25)] p-8 sm:p-12 overflow-hidden relative">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
               
               {/* Left Column: Platform Demo Pitch & Visuals */}
               <div className="lg:col-span-5 space-y-6 text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#07142B] text-xs font-bold text-[#F8C61A] font-mono">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/20 backdrop-blur-md border border-sky-300/40 text-xs font-bold text-[#F8C61A] font-mono shadow-sm">
                   <Play className="w-3.5 h-3.5 text-[#F8C61A] fill-current" />
                   <span>ON-DEMAND ADVISORY DESK</span>
                 </div>
@@ -891,27 +939,27 @@ export const HomePage: React.FC = () => {
                   Speak with a Business Coach
                 </h2>
 
-                <p className="text-sm sm:text-base text-[#B8C4D9] leading-relaxed">
+                <p className="text-sm sm:text-base text-blue-100/90 leading-relaxed">
                   Book a consultation or live system walkthrough with an executive business coach. 
                   Learn how to optimize working capital, POS rates, and software workflow across all 16 solutions.
                 </p>
 
                 <div className="space-y-3 pt-2 text-xs text-white font-medium">
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-2.5 p-3 rounded-xl bg-sky-500/20 border border-sky-200/35 backdrop-blur-md shadow-xs">
                     <CheckCircle2 className="w-4 h-4 text-[#F8C61A] shrink-0" />
                     <span>Dedicated 1-on-1 business coach review</span>
                   </div>
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-2.5 p-3 rounded-xl bg-sky-500/20 border border-sky-200/35 backdrop-blur-md shadow-xs">
                     <CheckCircle2 className="w-4 h-4 text-[#F8C61A] shrink-0" />
                     <span>Custom solutions blueprint tailored to your trade sector</span>
                   </div>
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-2.5 p-3 rounded-xl bg-sky-500/20 border border-sky-200/35 backdrop-blur-md shadow-xs">
                     <CheckCircle2 className="w-4 h-4 text-[#F8C61A] shrink-0" />
                     <span>Capital guidance across 12 Federal Reserve Divisions</span>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-[#07142B] flex items-center gap-4 text-xs font-mono text-[#B8C4D9]">
+                <div className="p-4 rounded-xl bg-sky-500/15 border border-sky-300/30 backdrop-blur-md flex items-center gap-4 text-xs font-mono text-blue-100">
                   <div>
                     <p className="font-bold text-white">Direct Advisory Desk:</p>
                     <p>+1 (888) 540-B4BA</p>
@@ -923,18 +971,18 @@ export const HomePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Right Column: Embedded Consultation Intake Form (White Form Card) */}
-              <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xl text-[#14233B]">
-                <div className="space-y-2 mb-6 text-left border-b border-slate-100 pb-4">
+              {/* Right Column: Embedded Consultation Intake Form (Halka Blue Glassmorphic Card) */}
+              <div className="lg:col-span-7 bg-gradient-to-br from-sky-600/25 via-[#1658B3]/30 to-sky-700/25 backdrop-blur-2xl p-6 sm:p-8 rounded-2xl border border-sky-300/40 shadow-[0_16px_48px_rgba(2,132,199,0.25)] text-white advisory-form-glass">
+                <div className="space-y-2 mb-6 text-left border-b border-sky-200/25 pb-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-extrabold font-heading text-[#14233B]">
+                    <h3 className="text-xl font-extrabold font-heading text-white">
                       Schedule Executive Consultation
                     </h3>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-[#0C43A3] font-bold border border-blue-200">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-sky-500/20 text-[#F8C61A] font-bold border border-sky-300/40">
                       ⚡ 60-Second Setup
                     </span>
                   </div>
-                  <p className="text-xs text-[#14233B]/70">
+                  <p className="text-xs text-blue-100">
                     Connect directly with a dedicated coach within 1 business hour.
                   </p>
                 </div>
