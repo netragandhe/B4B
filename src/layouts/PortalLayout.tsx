@@ -236,14 +236,28 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
         }`}
       >
         {/* Brand Header */}
-        <div className="p-4 sm:p-5 border-b border-slate-100 dark:border-[#1E3A6E] flex items-center justify-between">
-          <Link to={getHomeRoute()} className="flex items-center gap-2.5 truncate overflow-hidden">
-            <BrandLogo variant={isCollapsed ? 'icon' : 'wordmark'} size={isCollapsed ? 'sm' : 'md'} showTagline={false} />
+        <div
+          className={`border-b border-slate-100 dark:border-[#1E3A6E] transition-all ${
+            isCollapsed
+              ? 'py-3.5 px-2 flex flex-col items-center justify-center gap-2.5'
+              : 'p-4 sm:p-5 flex items-center justify-between'
+          }`}
+        >
+          <Link
+            to={getHomeRoute()}
+            className="flex items-center justify-center shrink-0"
+            title="B4B America"
+          >
+            <BrandLogo
+              variant={isCollapsed ? 'icon' : 'wordmark'}
+              size={isCollapsed ? 'sm' : 'md'}
+              showTagline={false}
+            />
           </Link>
 
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-1.5 rounded-lg border border-slate-200 dark:border-[#1E3A6E] bg-slate-50 dark:bg-[#162E5A]/50 text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg border border-slate-200 dark:border-[#1E3A6E] bg-slate-50 dark:bg-[#162E5A]/50 text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer shrink-0"
             title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
           >
             {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
