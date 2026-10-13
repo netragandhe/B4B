@@ -36,14 +36,26 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 pb-12 border-b border-[#0D2147]">
           {/* Col 1: White badge logo container + Vision statement */}
           <div className="lg:col-span-5 space-y-4">
-            {/* White rounded badge container on dark background */}
-            <div className="bg-white rounded-xl p-2.5 inline-block shadow-md border border-white/80">
-              <img
-                src="/brand/logo-full.png"
-                alt="B4B America - The Connection for Small Business Solutions"
-                className="h-9 sm:h-10 w-auto object-contain"
-                loading="lazy"
-              />
+            {/* Round Badge Logo container */}
+            <div className="flex items-center gap-4 sm:gap-5">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full p-[3.5px] bg-[linear-gradient(to_bottom,#FFC911_50%,#013CA0_50%)] shadow-2xl inline-block shrink-0">
+                <div className="w-full h-full rounded-full bg-white p-1 overflow-hidden flex items-center justify-center">
+                  <img
+                    src="/brand/logo-full.png"
+                    alt="B4B America - The Connection for Small Business Solutions"
+                    className="w-full h-full object-contain scale-125"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-extrabold text-2xl sm:text-3xl text-white tracking-tight leading-none font-['Plus_Jakarta_Sans',sans-serif]">
+                  B4B <span className="text-[#FFC911]">AMERICA</span>
+                </span>
+                <span className="text-xs sm:text-sm text-slate-300 font-bold uppercase tracking-wider mt-1.5">
+                  Small Business Solutions
+                </span>
+              </div>
             </div>
 
             <p className="text-xs uppercase font-extrabold tracking-widest text-[#F8C61A] font-mono">

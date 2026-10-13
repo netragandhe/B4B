@@ -275,11 +275,6 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
         <div className="p-4 sm:p-5 border-b border-slate-100 dark:border-[#0B4A3A] flex items-center justify-between">
           <Link to={getHomeRoute()} className="flex items-center gap-2.5 truncate overflow-hidden">
             <BrandLogo variant={isCollapsed ? 'icon' : 'wordmark'} size={isCollapsed ? 'sm' : 'md'} showTagline={false} />
-            {!isCollapsed && (
-              <span className="text-lg font-black text-[#0E7A5A] dark:text-white tracking-tight leading-none">
-                B4B
-              </span>
-            )}
           </Link>
 
           <button

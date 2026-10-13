@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   CreditCard,
   LayoutGrid,
@@ -29,6 +29,7 @@ import {
   Play,
   Cpu,
   Layers,
+  ChevronLeft,
   ChevronRight,
   TrendingUp,
   UtensilsCrossed,
@@ -99,13 +100,33 @@ const iconMap: Record<string, React.ElementType> = {
   Globe,
 }
 
+const TELEMETRY_TICKER = [
+  '16 Core Solutions Active',
+  '12 Federal Reserve Divisions Live',
+  '100% Verified Network Readiness',
+  '1-on-1 Dedicated Coach Support',
+  '32 Trade & Commerce Sectors',
+  'B4BAPP Enterprise CRM/ERP Ready',
+  'Coast-to-Coast Pre-Qualification in 3 Mins',
+]
+
 export const HomePage: React.FC = () => {
   const navigate = useNavigate()
   const [coachModalOpen, setCoachModalOpen] = useState(false)
   const [searchModalOpen, setSearchModalOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState<string>('All')
-  const [selectedTerritoryId, setSelectedTerritoryId] = useState<number>(2) // Default NY & Atlantic
+  const [activeDivisionIndex, setActiveDivisionIndex] = useState<number>(1) // Default Div #2 (NY & Atlantic)
+  const [isAutoCycling, setIsAutoCycling] = useState<boolean>(true)
   const [activeIndustryFilter, setActiveIndustryFilter] = useState<string>('')
+
+  // Auto-cycle through the 12 Federal Reserve Territory Divisions every 4 seconds
+  useEffect(() => {
+    if (!isAutoCycling) return
+    const interval = setInterval(() => {
+      setActiveDivisionIndex((prev) => (prev + 1) % TERRITORY_DIVISIONS.length)
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [isAutoCycling])
 
   // Filter 16 solutions by category
   const filteredSolutions = CLIENT_16_SOLUTIONS.filter((sol) => {
@@ -115,7 +136,7 @@ export const HomePage: React.FC = () => {
 
   // Selected territory details
   const selectedTerritory =
-    TERRITORY_DIVISIONS.find((t) => t.id === selectedTerritoryId) ||
+    TERRITORY_DIVISIONS[activeDivisionIndex] ||
     TERRITORY_DIVISIONS[0]
 
   return (
@@ -259,163 +280,177 @@ export const HomePage: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Right Column: High-Fidelity Executive Cockpit Widget (Deep Navy #0D2147) */}
+            {/* Right Column: Compact Auto-Cycling & Auto-Scrolling Telemetry Widget */}
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="lg:col-span-5 shrink-0"
             >
-              <div className="relative bg-[#0D2147] text-white rounded-2xl p-6 shadow-2xl border border-white/15 overflow-hidden shrink-0 w-full">
+              <div
+                onMouseEnter={() => setIsAutoCycling(false)}
+                onMouseLeave={() => setIsAutoCycling(true)}
+                className="relative bg-gradient-to-b from-[#0D2147]/95 via-[#0A1B3B]/95 to-[#07142B]/95 text-white rounded-2xl p-4 sm:p-5 shadow-2xl border border-white/15 overflow-hidden w-full backdrop-blur-xl transition-all"
+              >
                 {/* Background ambient lighting */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#0C43A3]/20 rounded-full blur-2xl pointer-events-none" />
+                <div className="absolute top-0 right-0 w-56 h-56 bg-[#013CA0]/25 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-[#FFC911]/10 rounded-full blur-2xl pointer-events-none" />
 
-                <div className="relative z-10 space-y-5">
-                  {/* Card Header Bar */}
-                  <div className="flex items-center justify-between border-b border-[#07142B] pb-3.5">
+                <div className="relative z-10 space-y-3.5">
+                  {/* Card Header Bar: Live Pulse + Division Indicator + Prev/Next Controls */}
+                  <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
                     <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#F8C61A] animate-ping" />
-                      <span className="font-mono text-[12px] font-bold uppercase tracking-wider text-[#F8C61A]">
-                        B4B Executive Cockpit
+                      <span className="relative flex h-2.5 w-2.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFC911] opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FFC911]" />
+                      </span>
+                      <span className="font-mono text-xs font-black uppercase tracking-wider text-[#FFC911]">
+                        Live Executive Telemetry
                       </span>
                     </div>
-                    <span className="font-mono text-[12px] px-2.5 py-0.5 rounded-full bg-[#07142B] text-[#B8C4D9] border border-white/10">
-                      12 DIVISIONS TELEMETRY
-                    </span>
-                  </div>
 
-                  {/* 3 Top KPIs Row with Big Gold Numbers */}
-                  <div className="grid grid-cols-3 gap-2.5">
-                    <div className="p-3 rounded-xl bg-[#07142B] border border-[#07142B] space-y-1">
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-[12px] text-[#B8C4D9]">Readiness</span>
-                        <span className="font-mono text-[12px] font-bold px-1.5 py-0.5 rounded bg-[#0C43A3] text-white">
-                          Verified
-                        </span>
-                      </div>
-                      <p className="text-xl sm:text-2xl font-black font-mono text-white tabular-nums">100%</p>
-                      <p className="text-[14px] text-[#B8C4D9] truncate">Full Network</p>
-                    </div>
-
-                    <div className="p-3 rounded-xl bg-[#07142B] border border-[#07142B] space-y-1">
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-[12px] text-[#B8C4D9]">Solutions</span>
-                        <span className="font-mono text-[12px] font-bold px-1.5 py-0.5 rounded bg-[#F8C61A] text-[#07142B]">
-                          Active
-                        </span>
-                      </div>
-                      <p className="text-xl sm:text-2xl font-black font-mono text-[#F8C61A] tabular-nums">16</p>
-                      <p className="text-[14px] text-[#B8C4D9] truncate">Full Suite</p>
-                    </div>
-
-                    <div className="p-3 rounded-xl bg-[#07142B] border border-[#07142B] space-y-1">
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-[12px] text-[#B8C4D9]">Support</span>
-                        <span className="font-mono text-[12px] font-bold px-1.5 py-0.5 rounded bg-[#0C43A3] text-white">
-                          1-on-1
-                        </span>
-                      </div>
-                      <p className="text-xl sm:text-2xl font-black font-mono text-white tabular-nums">Dedicated</p>
-                      <p className="text-[14px] text-[#B8C4D9] truncate">Coach Support</p>
-                    </div>
-                  </div>
-
-                  {/* Dynamic Spline Chart with Logo Blue & Gold Points */}
-                  <div className="p-3.5 rounded-xl bg-[#07142B] border border-[#07142B] space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 font-mono text-[12px] text-[#B8C4D9]">
-                        <Activity className="w-3.5 h-3.5 text-[#0C43A3]" />
-                        <span>Business Growth Framework</span>
-                      </div>
-                      <span className="font-mono text-[12px] text-[#F8C61A]">5 Foundations</span>
-                    </div>
-
-                    {/* SVG Spline with Gradient */}
-                    <div className="h-20 w-full relative">
-                      <svg className="w-full h-full overflow-visible" viewBox="0 0 320 80" preserveAspectRatio="none">
-                        <defs>
-                          <linearGradient id="chartNavyGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#0C43A3" stopOpacity="0.5" />
-                            <stop offset="100%" stopColor="#0C43A3" stopOpacity="0.0" />
-                          </linearGradient>
-                        </defs>
-                        <line x1="0" y1="20" x2="320" y2="20" stroke="#0D2147" strokeWidth="0.8" strokeDasharray="3 3" />
-                        <line x1="0" y1="50" x2="320" y2="50" stroke="#0D2147" strokeWidth="0.8" strokeDasharray="3 3" />
-                        <path
-                          d="M0,65 Q40,55 80,48 T160,32 T240,18 T320,8 L320,80 L0,80 Z"
-                          fill="url(#chartNavyGradient)"
-                        />
-                        <path
-                          d="M0,65 Q40,55 80,48 T160,32 T240,18 T320,8"
-                          fill="none"
-                          stroke="#0C43A3"
-                          strokeWidth="2.5"
-                          strokeLinecap="round"
-                        />
-                        <circle cx="80" cy="48" r="3.5" fill="#F8C61A" />
-                        <circle cx="160" cy="32" r="3.5" fill="#F8C61A" />
-                        <circle cx="240" cy="18" r="3.5" fill="#F8C61A" />
-                        <circle cx="320" cy="8" r="4.5" fill="#F8C61A" className="animate-pulse" />
-                      </svg>
-                    </div>
-
-                    <div className="flex items-center justify-between font-mono text-[12px] text-[#B8C4D9] pt-1">
-                      <span>1. Identity</span>
-                      <span>2. Funding</span>
-                      <span>3. Planning</span>
-                      <span>4. Marketing</span>
-                      <span className="text-white font-bold">5. Systems</span>
-                    </div>
-                  </div>
-
-                  {/* Active Selected Territory Division Display */}
-                  <div className="p-3.5 rounded-xl bg-[#07142B] border border-[#07142B] space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[14px] font-bold text-[#F8C61A]">
-                        Division #{selectedTerritory.regionNumber}: {selectedTerritory.name}
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-mono text-[11px] px-2 py-0.5 rounded-full bg-[#07142B] text-[#B8C4D9] border border-white/10 font-bold">
+                        Div {selectedTerritory.regionNumber} of 12
                       </span>
-                      <span className="font-mono text-[12px] px-2 py-0.5 rounded-full bg-[#0D2147] text-[#B8C4D9] border border-white/10">
-                        HQ: {selectedTerritory.headOffice}
+                      <button
+                        onClick={() =>
+                          setActiveDivisionIndex((prev) =>
+                            prev === 0 ? TERRITORY_DIVISIONS.length - 1 : prev - 1
+                          )
+                        }
+                        className="w-6 h-6 rounded-md bg-[#07142B] hover:bg-[#013CA0] text-[#B8C4D9] hover:text-white flex items-center justify-center transition border border-white/10 cursor-pointer"
+                        title="Previous Division"
+                        aria-label="Previous Division"
+                      >
+                        <ChevronLeft className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() =>
+                          setActiveDivisionIndex((prev) => (prev + 1) % TERRITORY_DIVISIONS.length)
+                        }
+                        className="w-6 h-6 rounded-md bg-[#07142B] hover:bg-[#013CA0] text-[#B8C4D9] hover:text-white flex items-center justify-center transition border border-white/10 cursor-pointer"
+                        title="Next Division"
+                        aria-label="Next Division"
+                      >
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* 3 Top KPIs Strip: Compact & High Contrast */}
+                  <div className="grid grid-cols-3 gap-2 text-center">
+                    <div className="p-2 rounded-xl bg-[#07142B]/90 border border-white/5 space-y-0.5">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-[#B8C4D9] block">Readiness</span>
+                      <p className="text-base sm:text-lg font-black font-mono text-white">100%</p>
+                      <span className="text-[10px] font-bold text-emerald-400 font-mono block">Verified</span>
+                    </div>
+                    <div className="p-2 rounded-xl bg-[#07142B]/90 border border-white/5 space-y-0.5">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-[#B8C4D9] block">Solutions</span>
+                      <p className="text-base sm:text-lg font-black font-mono text-[#FFC911]">16</p>
+                      <span className="text-[10px] font-bold text-[#FFC911] font-mono block">Active Suite</span>
+                    </div>
+                    <div className="p-2 rounded-xl bg-[#07142B]/90 border border-white/5 space-y-0.5">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-[#B8C4D9] block">Support</span>
+                      <p className="text-base sm:text-lg font-black font-mono text-white">1-on-1</p>
+                      <span className="text-[10px] font-bold text-blue-300 font-mono block">Dedicated</span>
+                    </div>
+                  </div>
+
+                  {/* Auto-Cycling Division Showcase Box (with AnimatePresence) */}
+                  <div className="relative rounded-xl bg-[#07142B]/90 border border-white/10 p-3.5 overflow-hidden">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={selectedTerritory.id}
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -10 }}
+                        transition={{ duration: 0.3 }}
+                        className="space-y-2"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <span className="text-[10px] font-mono uppercase font-black px-2 py-0.5 rounded-full bg-[#013CA0] text-white tracking-wider inline-block">
+                              Federal Reserve Div #{selectedTerritory.regionNumber}
+                            </span>
+                            <h3 className="text-sm sm:text-base font-extrabold text-white mt-1 leading-snug">
+                              {selectedTerritory.name}
+                            </h3>
+                          </div>
+                          <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-[#0D2147] text-[#FFC911] border border-[#FFC911]/30 font-bold shrink-0">
+                            HQ: {selectedTerritory.headOffice}
+                          </span>
+                        </div>
+
+                        <p className="text-xs text-[#B8C4D9] leading-relaxed line-clamp-2">
+                          <strong className="text-white">States Covered: </strong>
+                          <span>{selectedTerritory.coverage}</span>
+                        </p>
+                      </motion.div>
+                    </AnimatePresence>
+
+                    {/* Auto-cycle Progress Line */}
+                    <div className="mt-2.5 pt-2 border-t border-white/5 flex items-center justify-between gap-3">
+                      <div className="flex-1 bg-white/10 h-1 rounded-full overflow-hidden">
+                        {isAutoCycling && (
+                          <motion.div
+                            key={activeDivisionIndex}
+                            initial={{ width: '0%' }}
+                            animate={{ width: '100%' }}
+                            transition={{ duration: 4, ease: 'linear' }}
+                            className="h-full bg-gradient-to-r from-[#013CA0] to-[#FFC911]"
+                          />
+                        )}
+                      </div>
+                      <span className="text-[10px] font-mono text-[#B8C4D9]/70 shrink-0">
+                        {isAutoCycling ? 'Auto-cycling (4s)' : 'Paused (hover)'}
                       </span>
                     </div>
-                    <p className="text-[14px] text-[#B8C4D9] leading-relaxed">
-                      <strong className="text-white">States Covered:</strong> {selectedTerritory.coverage}
-                    </p>
                   </div>
 
-                  {/* Quick Division Selector Pills */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between font-mono text-[12px] text-[#B8C4D9]">
-                      <span className="uppercase tracking-wider">Federal Reserve Division Switcher:</span>
-                      <span className="text-[#F8C61A]">Div {selectedTerritory.regionNumber} of 12</span>
-                    </div>
-                    <div className="grid grid-cols-4 sm:grid-cols-6 gap-1.5">
-                      {TERRITORY_DIVISIONS.map((terr) => (
-                        <button
-                          key={terr.id}
-                          onClick={() => setSelectedTerritoryId(terr.id)}
-                          className={`px-1.5 py-1 rounded-lg font-mono text-[12px] font-medium transition-all truncate text-center cursor-pointer min-h-[32px] ${
-                            selectedTerritoryId === terr.id
-                              ? 'bg-[#F8C61A] text-[#07142B] font-extrabold shadow-sm'
-                              : 'bg-[#07142B] text-[#B8C4D9] hover:bg-[#07142B]/80 border border-white/10'
-                          }`}
-                        >
-                          Div {terr.regionNumber}
-                        </button>
-                      ))}
-                    </div>
+                  {/* 12 Mini Division Quick Selector Bars */}
+                  <div className="flex items-center justify-between gap-1 px-0.5">
+                    {TERRITORY_DIVISIONS.map((terr, idx) => (
+                      <button
+                        key={terr.id}
+                        onClick={() => setActiveDivisionIndex(idx)}
+                        className={`h-1.5 flex-1 rounded-full transition-all cursor-pointer ${
+                          activeDivisionIndex === idx
+                            ? 'bg-[#FFC911] shadow-xs scale-y-125'
+                            : 'bg-white/15 hover:bg-white/40'
+                        }`}
+                        title={`Div ${terr.regionNumber}: ${terr.name}`}
+                        aria-label={`Jump to Division ${terr.regionNumber}`}
+                      />
+                    ))}
                   </div>
 
-                  {/* Territory Action Footer */}
-                  <div className="pt-2 border-t border-[#07142B] flex items-center justify-between">
-                    <span className="text-[14px] text-[#B8C4D9]">Regional assistance ready:</span>
-                    <button
-                      onClick={() => setCoachModalOpen(true)}
-                      className="font-mono text-[14px] font-bold text-[#F8C61A] hover:underline inline-flex items-center gap-1 cursor-pointer"
-                    >
+                  {/* Connect with Division Coach CTA */}
+                  <button
+                    onClick={() => setCoachModalOpen(true)}
+                    className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#FFC911] to-[#FFBD0A] hover:brightness-105 active:scale-[0.99] text-[#07142B] font-bold text-xs flex items-center justify-between transition shadow-md group cursor-pointer"
+                  >
+                    <span className="flex items-center gap-2 font-mono">
+                      <PhoneCall className="w-3.5 h-3.5 text-[#07142B]" />
                       <span>Connect with Div #{selectedTerritory.regionNumber} Coach</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
+                    </span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+
+                  {/* Auto-scrolling Continuous Live Ticker Marquee */}
+                  <div className="overflow-hidden relative w-full py-1.5 bg-[#07142B]/80 rounded-lg border border-white/5">
+                    <motion.div
+                      className="flex items-center gap-6 whitespace-nowrap text-[11px] font-mono font-medium text-[#B8C4D9]"
+                      animate={{ x: ['0%', '-50%'] }}
+                      transition={{ repeat: Infinity, ease: 'linear', duration: 22 }}
+                    >
+                      {[...TELEMETRY_TICKER, ...TELEMETRY_TICKER].map((item, i) => (
+                        <span key={i} className="flex items-center gap-2 shrink-0">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#FFC911]" />
+                          <span>{item}</span>
+                        </span>
+                      ))}
+                    </motion.div>
                   </div>
                 </div>
               </div>

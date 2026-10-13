@@ -237,7 +237,7 @@ export const LoginPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0244B5] via-[#013CA0] to-[#01266B] text-slate-900 font-sans flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden selection:bg-[#FFC911] selection:text-black">
+    <div className="min-h-screen bg-gradient-to-br from-[#0244B5] via-[#013CA0] to-[#01266B] text-slate-900 font-['Plus_Jakarta_Sans',sans-serif] flex flex-col items-center justify-center pt-24 sm:pt-28 pb-10 sm:pb-14 px-4 sm:px-6 relative overflow-x-hidden selection:bg-[#FFC911] selection:text-black">
       <SEOHead title="Portal Sign In | B4B Executive Platform" description="Sign in to your B4B client, B4B Coach, or corporate portal account." />
 
       {/* 1. Atmospheric Translucent Blue Background Elements */}
@@ -246,38 +246,40 @@ export const LoginPage: React.FC = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-sky-400/15 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px] pointer-events-none" />
 
-      {/* Top Header Link */}
-      <div className="relative z-10 w-full max-w-[400px] sm:max-w-[420px] flex items-center justify-between mb-8 sm:mb-10 px-1">
+      {/* Top Header Navigation (Screen Left & Right Corners) */}
+      <header className="absolute top-4 sm:top-6 left-0 right-0 z-20 px-4 sm:px-8 flex items-center justify-between pointer-events-none">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 hover:bg-white/25 text-white text-xs font-bold backdrop-blur-md transition-all border border-white/20 shadow-sm group"
+          className="pointer-events-auto inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 hover:bg-white/25 text-white text-xs font-semibold backdrop-blur-md transition-all border border-white/20 shadow-sm group"
         >
           <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
           <span>Back to Website</span>
         </Link>
 
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 border border-white/20 text-white text-[11px] font-semibold backdrop-blur-md">
+        <div className="pointer-events-auto inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 border border-white/20 text-white text-xs font-semibold backdrop-blur-md shadow-sm">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           <span>Official Portal</span>
         </div>
-      </div>
+      </header>
 
       {/* ========================================================================= */}
       {/* 2. CENTER LIGHT YELLOW CARD (Matching Logo Color #FFC911)                 */}
       {/* ========================================================================= */}
-      <div className="relative z-10 w-full max-w-[400px] sm:max-w-[420px]">
-        {/* ROUND LOGO BADGE (OVERLAPPING TOP EDGE) */}
+      <div className="relative z-10 w-full max-w-[400px] sm:max-w-[420px] mt-6 sm:mt-8">
+        {/* ROUND LOGO BADGE (OVERLAPPING TOP EDGE - HALF YELLOW & HALF BLUE OUTLINE) */}
         <div className="absolute -top-14 sm:-top-16 left-1/2 -translate-x-1/2 z-20">
           <Link
             to="/"
-            className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-white shadow-[0_14px_35px_rgba(0,0,0,0.25)] border-[5px] border-[#FFC911] p-3 flex items-center justify-center hover:scale-105 transition-transform duration-200 group block"
+            className="w-28 h-28 sm:w-32 sm:h-32 rounded-full p-[5px] bg-[linear-gradient(to_bottom,#FFC911_50%,#013CA0_50%)] shadow-[0_14px_35px_rgba(0,0,0,0.25)] hover:scale-105 transition-transform duration-200 group block"
             title="B4B America"
           >
-            <img
-              src="/brand/logo-full.png"
-              alt="B4B America Logo"
-              className="w-full h-full object-contain filter drop-shadow-xs"
-            />
+            <div className="w-full h-full rounded-full bg-white p-3 flex items-center justify-center">
+              <img
+                src="/brand/logo-full.png"
+                alt="B4B America Logo"
+                className="w-full h-full object-contain filter drop-shadow-xs"
+              />
+            </div>
           </Link>
         </div>
 
@@ -311,12 +313,12 @@ export const LoginPage: React.FC = () => {
                     <input
                       type="email"
                       placeholder="username"
-                      className="flex-1 h-12 px-3.5 bg-white text-slate-900 placeholder:text-slate-400 font-semibold text-sm focus:outline-none"
+                      className="flex-1 h-12 px-3.5 bg-white text-slate-900 placeholder:text-slate-400 font-medium text-sm focus:outline-none"
                       {...register('email')}
                     />
                   </div>
                   {errors.email?.message && (
-                    <p className="text-[11px] font-bold text-rose-950 mt-1 pl-1">
+                    <p className="text-[11px] font-semibold text-rose-950 mt-1 pl-1">
                       {errors.email.message}
                     </p>
                   )}
@@ -331,7 +333,7 @@ export const LoginPage: React.FC = () => {
                     <input
                       type={showPassword ? 'text' : 'password'}
                       placeholder="password"
-                      className="flex-1 h-12 px-3.5 bg-white text-slate-900 placeholder:text-slate-400 font-semibold text-sm focus:outline-none"
+                      className="flex-1 h-12 px-3.5 bg-white text-slate-900 placeholder:text-slate-400 font-medium text-sm focus:outline-none"
                       {...register('password')}
                     />
                     <button
@@ -343,19 +345,19 @@ export const LoginPage: React.FC = () => {
                     </button>
                   </div>
                   {errors.password?.message && (
-                    <p className="text-[11px] font-bold text-rose-950 mt-1 pl-1">
+                    <p className="text-[11px] font-semibold text-rose-950 mt-1 pl-1">
                       {errors.password.message}
                     </p>
                   )}
                 </div>
 
                 {/* Remember Me */}
-                <div className="flex items-center justify-start text-xs pt-0.5 font-bold text-[#0B2545]">
+                <div className="flex items-center justify-start text-xs pt-0.5 font-medium text-[#01266B]">
                   <label className="flex items-center gap-2 cursor-pointer select-none">
                     <input
                       type="checkbox"
                       {...register('rememberMe')}
-                      className="w-4 h-4 accent-[#0B2545] rounded cursor-pointer"
+                      className="w-4 h-4 accent-[#013CA0] rounded cursor-pointer"
                     />
                     <span>Remember me</span>
                   </label>
@@ -365,10 +367,10 @@ export const LoginPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-12 rounded-xl bg-white hover:bg-slate-50 active:bg-slate-100 text-black font-black text-sm uppercase tracking-wider shadow-[0_8px_20px_rgba(0,0,0,0.18)] hover:shadow-[0_10px_25px_rgba(0,0,0,0.25)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer mt-2"
+                  className="w-full h-12 rounded-xl bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-950 font-bold text-sm uppercase tracking-wider shadow-[0_8px_20px_rgba(0,0,0,0.18)] hover:shadow-[0_10px_25px_rgba(0,0,0,0.25)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer mt-2"
                 >
                   {isSubmitting ? (
-                    <RefreshCw className="w-4 h-4 animate-spin text-black" />
+                    <RefreshCw className="w-4 h-4 animate-spin text-slate-950" />
                   ) : (
                     <span>Login</span>
                   )}
@@ -376,25 +378,25 @@ export const LoginPage: React.FC = () => {
               </form>
 
               {/* Bottom Signup and Forgot Password Links */}
-              <div className="text-center space-y-1.5 pt-2 text-xs font-bold text-[#0B2545]">
+              <div className="text-center space-y-1.5 pt-2 text-xs font-medium text-[#01266B]">
                 <p>
                   Don't have an account?{' '}
-                  <Link to="/portal/signup" className="underline font-black text-black hover:text-[#0B2545]">
+                  <Link to="/portal/signup" className="underline font-bold text-[#01266B] hover:text-black">
                     Sign Up
                   </Link>
                 </p>
                 <p>
-                  <Link to="/portal/forgot-password" className="hover:underline font-semibold text-[#0B2545]/90 hover:text-black">
+                  <Link to="/portal/forgot-password" className="hover:underline font-medium text-[#01266B]/90 hover:text-black">
                     Forgot your password?
                   </Link>
                 </p>
               </div>
 
               {/* 1-Click Demo Quick Role Access */}
-              <div className="pt-3 mt-3 border-t border-black/10">
-                <div className="flex items-center justify-between text-[11px] font-extrabold text-[#0B2545] mb-2">
-                  <span className="flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-[#0B2545]" /> 1-Click Demo Preview:
+              <div className="pt-3.5 mt-3.5 border-t border-blue-950/15">
+                <div className="flex items-center justify-between text-xs font-semibold text-[#01266B] mb-2">
+                  <span className="flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-[#013CA0]" /> 1-Click Demo Preview:
                   </span>
                 </div>
                 <div className="grid grid-cols-3 gap-1.5">
@@ -410,10 +412,10 @@ export const LoginPage: React.FC = () => {
                       key={item.role}
                       type="button"
                       onClick={() => handleDemoQuickLogin(item.role)}
-                      className={`py-1 px-1.5 rounded-lg font-extrabold text-[11px] shadow-2xs hover:shadow-xs transition-all border border-black/5 truncate cursor-pointer text-center ${
+                      className={`h-9 px-2 rounded-xl text-xs tracking-tight transition-all duration-150 cursor-pointer text-center flex items-center justify-center text-white border ${
                         selectedRole === item.role
-                          ? 'bg-white text-black ring-2 ring-[#013CA0] shadow-sm font-black'
-                          : 'bg-white/80 hover:bg-white text-[#0B2545] hover:text-black'
+                          ? 'bg-[#002261] font-bold border-2 border-white shadow-md ring-2 ring-white/50 scale-[1.02]'
+                          : 'bg-[#013CA0] hover:bg-[#024BC7] font-semibold border-white/10 hover:shadow-xs'
                       }`}
                     >
                       {item.label}
