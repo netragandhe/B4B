@@ -139,8 +139,8 @@ export const SolutionsPage: React.FC = () => {
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer min-h-[44px] ${
                   selectedCategory === cat
-                    ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md border border-sky-200/50'
-                    : 'bg-sky-500/15 text-blue-100 hover:text-white hover:bg-sky-500/30 border border-sky-300/30'
+                    ? 'bg-[#013CA0] text-white shadow-xs'
+                    : 'bg-[#E9EDF4] text-[#14233B] border border-[#14233B]/10 hover:border-[#013CA0]'
                 }`}
               >
                 {cat === 'All' ? 'All 16 Solutions' : `${cat} Group`}
@@ -178,7 +178,7 @@ export const SolutionsPage: React.FC = () => {
                     {/* Header: Number Badge + Group Tag + Icon */}
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-black font-mono px-2 py-0.5 rounded bg-[#07142B]/90 text-[#F8C61A] border border-sky-300/40 shadow-xs">
+                        <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-blue-50 text-[#013CA0] border border-blue-200">
                           #{solution.number}
                         </span>
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/25 text-white border border-sky-300/30 font-mono">
@@ -244,7 +244,7 @@ export const SolutionsPage: React.FC = () => {
                     </div>
                     <div className="space-y-1.5">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-black font-mono px-2 py-0.5 rounded bg-[#07142B]/90 text-[#F8C61A] border border-sky-300/40">
+                        <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-blue-50 text-[#013CA0] border border-blue-200">
                           #{solution.number}
                         </span>
                         <span className="text-xs font-bold text-sky-300 font-mono">

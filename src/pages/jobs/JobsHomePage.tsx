@@ -81,28 +81,28 @@ export const JobsHomePage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#E9EDF4] text-[#14233B] font-body transition-colors">
+    <div className="min-h-screen bg-[#07142B] text-white font-body transition-colors relative">
       <SEOHead
         title="B4B America Jobs | The Connect for Small Business Solutions"
         description="Search trending small business jobs, sales roles, gigs, and corporate career opportunities across 12 federal reserve territory divisions."
       />
 
       {/* Top Secondary Job Bar */}
-      <div className="bg-[#07142B] text-[#B8C4D9] text-xs py-2.5 px-4 border-b border-[#0D2147] font-mono">
+      <div className="bg-[#07142B] text-sky-200/80 text-xs py-2.5 px-4 border-b border-sky-300/20 font-mono">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
-            <Link to="/jobs" className="text-white hover:text-[#F8C61A] font-bold">
+            <Link to="/jobs" className="text-white hover:text-[#FFC911] font-bold">
               HOME
             </Link>
-            <span className="text-[#0D2147]">|</span>
+            <span className="text-sky-300/30">|</span>
             <Link
               to="/jobs/post"
-              className="text-[#F8C61A] hover:underline font-bold inline-flex items-center gap-1"
+              className="text-[#FFC911] hover:underline font-bold inline-flex items-center gap-1"
             >
               <PlusCircle className="w-3.5 h-3.5" />
               <span>POST A JOB</span>
             </Link>
-            <span className="text-[#0D2147]">|</span>
+            <span className="text-sky-300/30">|</span>
             <button
               onClick={() => {
                 setActiveTab('salary')
@@ -112,7 +112,7 @@ export const JobsHomePage: React.FC = () => {
             >
               SEARCH BY SALARIES
             </button>
-            <span className="text-[#0D2147]">|</span>
+            <span className="text-sky-300/30">|</span>
             <button
               onClick={() => {
                 setActiveTab('gigs')
@@ -127,7 +127,7 @@ export const JobsHomePage: React.FC = () => {
           <div className="flex items-center gap-3">
             <Link
               to="/portal/login"
-              className="px-2.5 py-1 rounded-md bg-[#0D2147] text-white hover:border-[#F8C61A] transition-colors border border-[#0D2147]"
+              className="px-2.5 py-1 rounded-md bg-[#081F42] text-white hover:border-[#FFC911] transition-colors border border-sky-300/30 font-bold"
             >
               [ Login ]
             </Link>
@@ -136,7 +136,7 @@ export const JobsHomePage: React.FC = () => {
       </div>
 
       {/* HERO & SEARCH BAR: Midnight Navy (#07142B) */}
-      <section className="bg-[#07142B] text-white pt-12 pb-20 px-4 border-b border-[#0D2147]">
+      <section className="bg-[#07142B] text-white pt-12 pb-20 px-4 border-b border-sky-300/20">
         <div className="max-w-6xl mx-auto space-y-8 text-center sm:text-left">
           <Breadcrumb
             items={[
@@ -147,18 +147,16 @@ export const JobsHomePage: React.FC = () => {
           />
 
           <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0D2147] border border-[#0D2147]">
-              <span className="w-2 h-2 rounded-full bg-[#F8C61A] animate-pulse" />
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#B8C4D9]">
-                B4B Solution #10 • Employment & Talent Exchange
-              </span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/20 border border-sky-300/40 text-xs font-mono font-bold uppercase tracking-wider text-[#FFC911] shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-[#FFC911] animate-pulse" />
+              <span>B4B Solution #10 • Employment & Talent Exchange</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-heading text-white tracking-tight">
               The Connect for Small Business Solutions
             </h1>
 
-            <p className="text-sm sm:text-base text-[#B8C4D9] max-w-2xl font-normal">
+            <p className="text-sm sm:text-base text-blue-100/90 max-w-2xl font-normal leading-relaxed">
               Search trending jobs, commercial contracts, sales roles, and independent gigs across 12 federal reserve territory divisions.
             </p>
           </div>
@@ -166,17 +164,17 @@ export const JobsHomePage: React.FC = () => {
           {/* MAIN SEARCH PANEL */}
           <form
             onSubmit={handleSearchSubmit}
-            className="bg-white p-3 sm:p-4 rounded-2xl shadow-2xl border border-slate-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center text-slate-800"
+            className="bg-gradient-to-b from-[#0F356B]/95 via-[#0C2A54]/95 to-[#081F42]/98 p-3 sm:p-4 rounded-2xl shadow-2xl border border-sky-300/40 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center text-white backdrop-blur-md"
           >
             {/* 1. Keyword */}
             <div className="lg:col-span-3 relative">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
+              <Search className="w-4 h-4 text-sky-200/60 absolute left-3 top-3.5" />
               <input
                 type="text"
                 placeholder="Job title, skills, keyword"
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0C43A3] text-slate-900"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-sky-300/30 bg-[#081F42]/90 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#FFC911] text-white placeholder-sky-200/50"
               />
             </div>
 
@@ -185,11 +183,11 @@ export const JobsHomePage: React.FC = () => {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0C43A3] text-slate-900 bg-white"
+                className="w-full px-3 py-2.5 rounded-xl border border-sky-300/30 bg-[#081F42]/90 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#FFC911] text-white"
               >
-                <option value="">All Categories</option>
+                <option value="" className="bg-[#081F42] text-white">All Categories</option>
                 {JOB_CATEGORIES_CLIENT.map((cat) => (
-                  <option key={cat} value={cat}>
+                  <option key={cat} value={cat} className="bg-[#081F42] text-white">
                     {cat}
                   </option>
                 ))}
@@ -204,7 +202,7 @@ export const JobsHomePage: React.FC = () => {
                 maxLength={2}
                 value={stateCode}
                 onChange={(e) => setStateCode(e.target.value.toUpperCase())}
-                className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium uppercase focus:outline-none focus:ring-2 focus:ring-[#0C43A3] text-slate-900"
+                className="w-full px-3 py-2.5 rounded-xl border border-sky-300/30 bg-[#081F42]/90 text-sm font-medium uppercase focus:outline-none focus:ring-2 focus:ring-[#FFC911] text-white placeholder-sky-200/50"
               />
             </div>
 
@@ -215,7 +213,7 @@ export const JobsHomePage: React.FC = () => {
                 placeholder="City (e.g. NYC, Austin)"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0C43A3] text-slate-900"
+                className="w-full px-3 py-2.5 rounded-xl border border-sky-300/30 bg-[#081F42]/90 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#FFC911] text-white placeholder-sky-200/50"
               />
             </div>
 
@@ -223,7 +221,7 @@ export const JobsHomePage: React.FC = () => {
             <div className="lg:col-span-2">
               <button
                 type="submit"
-                className="btn-gold-dark w-full"
+                className="btn-gold-dark w-full !py-2.5"
               >
                 <span>SEARCH NOW</span>
                 <ArrowRight className="w-4 h-4 text-[#07142B]" />
@@ -232,32 +230,32 @@ export const JobsHomePage: React.FC = () => {
           </form>
 
           {/* Quick Action Badges */}
-          <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-[#B8C4D9]">
-            <span className="font-mono text-[#F8C61A] font-bold">Hiring for your company?</span>
+          <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-blue-100/80">
+            <span className="font-mono text-[#FFC911] font-bold">Hiring for your company?</span>
             <Link
               to="/jobs/post"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0D2147] text-white hover:border-[#F8C61A] transition-colors font-bold border border-[#0D2147]"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#081F42] text-white hover:border-[#FFC911] transition-colors font-bold border border-sky-300/30"
             >
-              <PlusCircle className="w-3.5 h-3.5 text-[#F8C61A]" />
+              <PlusCircle className="w-3.5 h-3.5 text-[#FFC911]" />
               <span>Post a Job Listing</span>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* BROWSE SECTIONS: Cool Stone background */}
+      {/* BROWSE SECTIONS: Glassmorphic theme */}
       <section id="browse-sections" className="max-w-6xl mx-auto px-4 py-16 space-y-8">
         <div className="text-center sm:text-left space-y-2">
-          <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#0C43A3]">
+          <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#FFC911]">
             Official Directory Taxonomies
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-[#14233B]">
+          <h2 className="text-2xl sm:text-4xl font-extrabold font-heading text-white">
             Search Trending Jobs and Projects
           </h2>
         </div>
 
         {/* Tab Controls */}
-        <div className="flex flex-wrap gap-2 border-b border-[#14233B]/10 pb-3">
+        <div className="flex flex-wrap gap-2 border-b border-sky-300/20 pb-3">
           {[
             { id: 'popular', label: 'Popular Searches' },
             { id: 'category', label: 'Jobs by Categories' },
@@ -270,8 +268,8 @@ export const JobsHomePage: React.FC = () => {
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer min-h-[44px] ${
                 activeTab === tab.id
-                  ? 'bg-[#0C43A3] text-white shadow-sm'
-                  : 'bg-white text-[#14233B] hover:bg-slate-50 border border-[#14233B]/10'
+                  ? 'bg-[#FFC911] text-[#013CA0] font-black shadow-lg border border-[#FFC911]'
+                  : 'bg-[#081F42]/80 text-white hover:bg-[#0F356B] border border-sky-300/30'
               }`}
             >
               {tab.label}
@@ -280,14 +278,14 @@ export const JobsHomePage: React.FC = () => {
         </div>
 
         {/* Tab Content Panels */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-[#14233B]/10 min-h-[180px]">
+        <div className="bg-gradient-to-b from-[#0F356B]/90 via-[#0C2A54]/90 to-[#081F42]/95 rounded-2xl p-6 sm:p-8 shadow-2xl border border-sky-300/40 min-h-[180px] backdrop-blur-md text-white">
           {activeTab === 'popular' && (
             <div className="flex flex-wrap gap-2.5">
               {POPULAR_SEARCHES_CLIENT.map((item) => (
                 <button
                   key={item}
                   onClick={() => handleQuickFilter('q', item)}
-                  className="px-3.5 py-1.5 rounded-lg bg-[#E9EDF4] text-[#14233B] hover:bg-[#0C43A3] hover:text-white transition-colors text-xs font-semibold cursor-pointer border border-[#14233B]/10 hover:border-[#0C43A3] min-h-[36px]"
+                  className="px-3.5 py-1.5 rounded-lg bg-[#081F42]/80 text-white hover:bg-[#FFC911] hover:text-[#013CA0] transition-colors text-xs font-semibold cursor-pointer border border-sky-300/30 min-h-[36px]"
                 >
                   {item}
                 </button>
@@ -301,10 +299,10 @@ export const JobsHomePage: React.FC = () => {
                 <button
                   key={cat}
                   onClick={() => handleQuickFilter('category', cat)}
-                  className="p-3 text-left rounded-xl bg-[#E9EDF4]/70 hover:bg-[#0C43A3] hover:text-white transition-all text-xs font-semibold text-[#14233B] border border-[#14233B]/10 hover:border-[#0C43A3] flex items-center justify-between group cursor-pointer min-h-[44px]"
+                  className="p-3 text-left rounded-xl bg-[#081F42]/80 hover:bg-[#FFC911] hover:text-[#013CA0] transition-all text-xs font-semibold text-white border border-sky-300/30 flex items-center justify-between group cursor-pointer min-h-[44px]"
                 >
                   <span className="truncate">{cat}</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-white shrink-0 ml-1" />
+                  <ChevronRight className="w-3.5 h-3.5 text-sky-200 group-hover:text-[#013CA0] shrink-0 ml-1" />
                 </button>
               ))}
             </div>
@@ -321,15 +319,15 @@ export const JobsHomePage: React.FC = () => {
                     p.set('state', loc.state)
                     navigate(`/jobs/search?${p.toString()}`)
                   }}
-                  className="p-3 text-left rounded-xl bg-[#E9EDF4]/70 hover:bg-[#0C43A3] hover:text-white transition-all text-xs font-semibold text-[#14233B] border border-[#14233B]/10 hover:border-[#0C43A3] flex items-center justify-between group cursor-pointer min-h-[44px]"
+                  className="p-3 text-left rounded-xl bg-[#081F42]/80 hover:bg-[#FFC911] hover:text-[#013CA0] transition-all text-xs font-semibold text-white border border-sky-300/30 flex items-center justify-between group cursor-pointer min-h-[44px]"
                 >
                   <span className="flex items-center gap-1.5 truncate">
-                    <MapPin className="w-3.5 h-3.5 text-[#0C43A3] group-hover:text-white shrink-0" />
+                    <MapPin className="w-3.5 h-3.5 text-[#FFC911] group-hover:text-[#013CA0] shrink-0" />
                     <span>
                       {loc.city}, {loc.state}
                     </span>
                   </span>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-white shrink-0" />
+                  <ChevronRight className="w-3.5 h-3.5 text-sky-200 group-hover:text-[#013CA0] shrink-0" />
                 </button>
               ))}
             </div>
@@ -346,13 +344,13 @@ export const JobsHomePage: React.FC = () => {
                     if (sal.max < 1000000) p.set('maxSalary', String(sal.max))
                     navigate(`/jobs/search?${p.toString()}`)
                   }}
-                  className="p-5 rounded-2xl bg-[#07142B] text-white hover:border-[#F8C61A] transition-all text-left space-y-2 border border-[#0D2147] cursor-pointer group"
+                  className="p-5 rounded-2xl bg-[#081F42]/90 text-white hover:border-[#FFC911] transition-all text-left space-y-2 border border-sky-300/30 cursor-pointer group shadow-lg"
                 >
-                  <DollarSign className="w-5 h-5 text-[#F8C61A]" />
-                  <p className="text-sm font-bold text-white group-hover:text-[#F8C61A] transition-colors">
+                  <DollarSign className="w-5 h-5 text-[#FFC911]" />
+                  <p className="text-sm font-bold text-white group-hover:text-[#FFC911] transition-colors">
                     {sal.label}
                   </p>
-                  <p className="text-[11px] font-mono text-[#B8C4D9]">
+                  <p className="text-[11px] font-mono text-sky-200/80">
                     Search roles in this bracket &rarr;
                   </p>
                 </button>
@@ -366,7 +364,7 @@ export const JobsHomePage: React.FC = () => {
                 <button
                   key={gig}
                   onClick={() => handleQuickFilter('q', gig)}
-                  className="px-3.5 py-1.5 rounded-lg bg-[#E9EDF4] text-[#14233B] hover:bg-[#0C43A3] hover:text-white transition-colors text-xs font-semibold cursor-pointer border border-[#14233B]/10 hover:border-[#0C43A3] min-h-[36px]"
+                  className="px-3.5 py-1.5 rounded-lg bg-[#081F42]/80 text-white hover:bg-[#FFC911] hover:text-[#013CA0] transition-colors text-xs font-semibold cursor-pointer border border-sky-300/30 min-h-[36px]"
                 >
                   {gig}
                 </button>
@@ -380,17 +378,17 @@ export const JobsHomePage: React.FC = () => {
       <section className="max-w-6xl mx-auto px-4 pb-20 space-y-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#0C43A3]">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#FFC911]">
               Live Board Listings
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-[#14233B]">
+            <h2 className="text-2xl sm:text-4xl font-extrabold font-heading text-white">
               Latest Approved Openings
             </h2>
           </div>
 
           <Link
             to="/jobs/search"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0C43A3] hover:underline"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#FFC911] hover:underline"
           >
             <span>View All Search Results</span>
             <ArrowRight className="w-4 h-4" />
@@ -402,23 +400,23 @@ export const JobsHomePage: React.FC = () => {
             {[1, 2, 3, 4, 5, 6].map((n) => (
               <div
                 key={n}
-                className="h-56 bg-white rounded-2xl animate-pulse border border-[#14233B]/10 p-6 space-y-4"
+                className="h-56 bg-[#081F42]/80 rounded-2xl animate-pulse border border-sky-300/30 p-6 space-y-4"
               >
-                <div className="h-4 bg-slate-200 rounded w-1/3" />
-                <div className="h-6 bg-slate-200 rounded w-3/4" />
-                <div className="h-4 bg-slate-200 rounded w-1/2" />
-                <div className="h-10 bg-slate-200 rounded-xl" />
+                <div className="h-4 bg-sky-500/20 rounded w-1/3" />
+                <div className="h-6 bg-sky-500/20 rounded w-3/4" />
+                <div className="h-4 bg-sky-500/20 rounded w-1/2" />
+                <div className="h-10 bg-sky-500/20 rounded-xl" />
               </div>
             ))}
           </div>
         ) : trendingJobs.length === 0 ? (
-          <div className="bg-white rounded-2xl p-12 text-center space-y-4 border border-[#14233B]/10">
-            <Briefcase className="w-12 h-12 text-slate-400 mx-auto" />
-            <h3 className="text-lg font-bold text-[#14233B]">No Jobs Found</h3>
-            <p className="text-xs text-[#14233B]/70 max-w-md mx-auto">
+          <div className="bg-gradient-to-b from-[#0F356B]/90 via-[#0C2A54]/90 to-[#081F42]/95 rounded-2xl p-12 text-center space-y-4 border border-sky-300/40 text-white shadow-xl">
+            <Briefcase className="w-12 h-12 text-[#FFC911] mx-auto" />
+            <h3 className="text-lg font-bold text-white">No Jobs Found</h3>
+            <p className="text-xs text-blue-100/80 max-w-md mx-auto">
               There are currently no active listings. Post a job to appear here!
             </p>
-            <Link to="/jobs/post" className="btn-blue-light inline-flex">
+            <Link to="/jobs/post" className="btn-gold-dark inline-flex !py-2.5 !px-5">
               <span>Post the First Job</span>
             </Link>
           </div>
@@ -428,50 +426,50 @@ export const JobsHomePage: React.FC = () => {
               <div
                 key={job.id}
                 onClick={() => navigate(`/jobs/${job.id}`)}
-                className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md border border-[#14233B]/10 hover:border-[#0C43A3] transition-all flex flex-col justify-between space-y-5 cursor-pointer group"
+                className="bg-gradient-to-b from-[#0F356B]/90 via-[#0C2A54]/90 to-[#081F42]/95 rounded-2xl p-6 shadow-xl hover:shadow-2xl border border-sky-300/40 hover:border-sky-300/80 transition-all flex flex-col justify-between space-y-5 cursor-pointer group text-white backdrop-blur-md"
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-blue-50 text-[#0C43A3] border border-blue-200">
+                    <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-200 border border-sky-400/30">
                       {job.category}
                     </span>
                     {job.isDemo && (
-                      <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200">
+                      <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#FFC911]/20 text-[#FFC911] border border-[#FFC911]/30">
                         DEMO DATA
                       </span>
                     )}
                   </div>
 
-                  <h3 className="text-base sm:text-lg font-bold font-heading text-[#14233B] group-hover:text-[#0C43A3] transition-colors leading-snug">
+                  <h3 className="text-base sm:text-lg font-bold font-heading text-white group-hover:text-[#FFC911] transition-colors leading-snug">
                     {job.title}
                   </h3>
 
-                  <div className="space-y-1.5 text-xs text-[#14233B]/70">
+                  <div className="space-y-1.5 text-xs text-blue-100/80">
                     <div className="flex items-center gap-1.5">
-                      <Building2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      <span className="font-semibold text-[#14233B]">{job.company}</span>
+                      <Building2 className="w-3.5 h-3.5 text-[#FFC911] shrink-0" />
+                      <span className="font-semibold text-white">{job.company}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <MapPin className="w-3.5 h-3.5 text-sky-300 shrink-0" />
                       <span>
                         {job.city}, {job.state}
                       </span>
-                      <span className="text-slate-300">•</span>
-                      <span className="font-mono">{job.jobType}</span>
+                      <span className="text-sky-400/40">•</span>
+                      <span className="font-mono text-sky-200">{job.jobType}</span>
                     </div>
                   </div>
 
-                  <p className="text-xs text-[#14233B]/70 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-blue-100/80 line-clamp-2 leading-relaxed">
                     {job.description}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-xs font-bold text-[#0C43A3] font-mono">
+                <div className="pt-4 border-t border-sky-300/30 flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#FFC911] font-mono">
                     {job.salary}
                   </span>
 
-                  <span className="text-xs font-bold text-[#0C43A3] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                  <span className="text-xs font-bold text-sky-300 flex items-center gap-1 group-hover:text-[#FFC911] group-hover:translate-x-1 transition-all">
                     <span>View Role</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>

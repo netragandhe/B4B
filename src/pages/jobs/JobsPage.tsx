@@ -117,35 +117,33 @@ export const JobsPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#E9EDF4] text-[#14233B] transition-colors duration-200 font-body">
+    <div className="min-h-screen bg-[#07142B] text-white transition-colors duration-200 font-body relative">
       <SEOHead
         title="Careers & Open Positions | B4B America"
         description="Join B4B America. Build tools, underwriting facilities, and strategic advisory programs that help American small businesses thrive."
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-14 text-left">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-14 text-left relative z-10">
         {/* Top Breadcrumb */}
         <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Careers' }]} />
 
         {/* Hero Section in Midnight Navy #07142B */}
-        <div className="relative p-8 sm:p-12 rounded-3xl bg-[#07142B] text-white border border-[#0D2147] shadow-xl overflow-hidden">
+        <div className="relative p-8 sm:p-12 rounded-3xl bg-gradient-to-b from-[#0F356B]/90 via-[#0C2A54]/90 to-[#081F42]/95 text-white border border-sky-300/40 shadow-2xl overflow-hidden backdrop-blur-md">
           <div className="absolute right-0 top-0 w-1/2 h-full pointer-events-none opacity-15 overflow-hidden">
             <UsaMapMotif className="w-full h-full text-[#F8C61A]" opacity={0.2} />
           </div>
 
           <div className="max-w-3xl space-y-5 relative z-10">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0D2147] border border-[#0D2147]">
-              <span className="w-2 h-2 rounded-full bg-[#F8C61A] animate-pulse" />
-              <span className="text-xs font-bold uppercase tracking-wider text-[#F8C61A] font-mono">
-                B4B America Careers
-              </span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/20 border border-sky-300/40 text-xs font-mono font-bold uppercase tracking-wider text-[#FFC911] shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-[#FFC911] animate-pulse" />
+              <span>B4B America Careers</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-extrabold font-heading text-white tracking-tight">
               Build the Future of American Small Business
             </h1>
 
-            <p className="text-base sm:text-lg text-[#B8C4D9] leading-relaxed font-body">
+            <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed font-body">
               We are assembling a mission-driven team of credit underwriters, fintech engineers, business coaches, and client advocates across all 12 territory divisions.
             </p>
 
@@ -165,13 +163,13 @@ export const JobsPage: React.FC = () => {
                 className="btn-outline-dark group"
               >
                 <span>Click Here for Job Board</span>
-                <ChevronRight className="w-4 h-4 text-[#F8C61A] transition-transform group-hover:translate-x-1" />
+                <ChevronRight className="w-4 h-4 text-[#FFC911] transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Department Filter & Job Listings in White Cards on Cool Stone */}
+        {/* Department Filter & Job Listings in Glassmorphic Cards */}
         <div className="space-y-6">
           <div className="flex flex-wrap items-center gap-2 font-mono">
             {departments.map((dept) => (
@@ -180,8 +178,8 @@ export const JobsPage: React.FC = () => {
                 onClick={() => setSelectedDept(dept)}
                 className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer min-h-[44px] ${
                   selectedDept === dept
-                    ? 'bg-[#0C43A3] text-white shadow-xs'
-                    : 'bg-white text-[#14233B] border border-[#14233B]/15 hover:bg-[#E9EDF4]'
+                    ? 'bg-[#FFC911] text-[#013CA0] font-black shadow-lg border border-[#FFC911]'
+                    : 'bg-[#081F42]/80 text-white border border-sky-300/30 hover:bg-[#0F356B]'
                 }`}
               >
                 {dept}
@@ -193,27 +191,27 @@ export const JobsPage: React.FC = () => {
             {filteredJobs.map((job) => (
               <div
                 key={job.id}
-                className="p-6 sm:p-8 rounded-2xl bg-white border border-[#14233B]/10 shadow-sm space-y-4 flex flex-col justify-between hover:border-[#0C43A3] hover:-translate-y-0.5 hover:shadow-lg transition-all"
+                className="p-6 sm:p-8 rounded-2xl bg-gradient-to-b from-[#0F356B]/90 via-[#0C2A54]/90 to-[#081F42]/95 border border-sky-300/40 shadow-xl space-y-4 flex flex-col justify-between hover:border-sky-300/80 hover:-translate-y-0.5 hover:shadow-2xl transition-all text-white backdrop-blur-md"
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#E9EDF4] text-[#0C43A3] border border-[#14233B]/10 font-mono">
+                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-200 border border-sky-400/30 font-mono">
                       {job.department}
                     </span>
-                    <span className="text-xs font-bold text-[#14233B] font-heading">{job.type}</span>
+                    <span className="text-xs font-bold text-sky-200 font-heading">{job.type}</span>
                   </div>
 
-                  <h3 className="text-lg font-extrabold text-[#14233B] font-heading">{job.title}</h3>
-                  <p className="text-xs text-[#14233B]/70 leading-relaxed font-body">{job.description}</p>
+                  <h3 className="text-lg font-extrabold text-white font-heading">{job.title}</h3>
+                  <p className="text-xs text-blue-100/80 leading-relaxed font-body">{job.description}</p>
 
                   <div className="space-y-1.5 pt-2">
-                    <p className="text-[11px] font-bold text-[#14233B] uppercase tracking-wider font-mono">
+                    <p className="text-[11px] font-bold text-[#FFC911] uppercase tracking-wider font-mono">
                       Key Qualifications:
                     </p>
-                    <ul className="space-y-1 text-xs text-[#14233B]/70 font-body">
+                    <ul className="space-y-1 text-xs text-blue-100/80 font-body">
                       {job.requirements.map((req, i) => (
                         <li key={i} className="flex items-center gap-2">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#0C43A3] shrink-0" />
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#FFC911] shrink-0" />
                           <span>{req}</span>
                         </li>
                       ))}
@@ -221,12 +219,12 @@ export const JobsPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-[#14233B]/10 flex items-center justify-between">
-                  <span className="text-xs font-bold text-[#0C43A3] font-mono">{job.compensation}</span>
+                <div className="pt-4 border-t border-sky-300/30 flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#FFC911] font-mono">{job.compensation}</span>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setCoachModalOpen(true)}
-                      className="btn-blue-light !h-10 !py-1 !px-3 !text-xs"
+                      className="btn-outline-dark !h-10 !py-1 !px-3 !text-xs"
                     >
                       Speak with Coach
                     </button>
@@ -235,7 +233,7 @@ export const JobsPage: React.FC = () => {
                         setActiveJob(job)
                         setIsApplyModalOpen(true)
                       }}
-                      className="btn-outline-light !h-10 !py-1 !px-3 !text-xs"
+                      className="btn-gold-dark !h-10 !py-1 !px-3 !text-xs"
                     >
                       Apply Now
                     </button>
@@ -247,30 +245,30 @@ export const JobsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Application Modal in Cool Stone Container */}
+      {/* Application Modal in Dark Glassmorphic Container */}
       {isApplyModalOpen && activeJob && (
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
           onClick={() => setIsApplyModalOpen(false)}
         >
           <div
-            className="w-full max-w-lg bg-[#E9EDF4] text-[#14233B] p-6 sm:p-8 rounded-3xl shadow-2xl border border-[#0D2147] max-h-[90vh] overflow-y-auto font-body"
+            className="w-full max-w-lg bg-gradient-to-b from-[#0F356B] via-[#0C2A54] to-[#081F42] text-white p-6 sm:p-8 rounded-3xl shadow-2xl border border-sky-300/40 max-h-[90vh] overflow-y-auto font-body"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-4 border-b border-[#14233B]/15">
+            <div className="flex items-center justify-between pb-4 border-b border-sky-300/30">
               <div>
-                <h3 className="text-lg font-extrabold text-[#14233B] font-heading">
+                <h3 className="text-lg font-extrabold text-white font-heading">
                   Apply for {activeJob.title}
                 </h3>
-                <p className="text-xs text-[#14233B]/70 font-mono">
+                <p className="text-xs text-sky-200/80 font-mono">
                   {activeJob.department} • {activeJob.location}
                 </p>
               </div>
               <button
                 onClick={() => setIsApplyModalOpen(false)}
-                className="text-xs px-2.5 py-1 rounded bg-white text-[#14233B] font-bold border border-[#14233B]/20 min-h-[32px] cursor-pointer"
+                className="text-xs px-2.5 py-1 rounded bg-[#081F42] text-white font-bold border border-sky-300/30 min-h-[32px] cursor-pointer hover:border-sky-300"
               >
                 Close
               </button>
@@ -304,7 +302,7 @@ export const JobsPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn-blue-light w-full"
+                className="btn-gold-dark w-full !py-3 !text-sm"
               >
                 Submit Application
               </button>

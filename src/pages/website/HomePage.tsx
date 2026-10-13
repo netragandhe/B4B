@@ -615,7 +615,7 @@ export const HomePage: React.FC = () => {
                       <span className="text-[11px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-sky-500/30 backdrop-blur-md text-white border border-sky-200/40 shadow-xs">
                         {solution.category}
                       </span>
-                      <span className="text-[11px] font-mono font-black text-[#F8C61A] bg-[#07142B]/85 backdrop-blur-md px-2.5 py-1 rounded-full border border-sky-300/30 shadow-xs">
+                      <span className="text-[11px] font-mono font-black text-white bg-[#013CA0] backdrop-blur-md px-2.5 py-1 rounded-full border border-sky-300/30 shadow-xs">
                         #{solution.number}
                       </span>
                     </div>

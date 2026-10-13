@@ -97,7 +97,7 @@ export const AffiliateDashboardPage: React.FC = () => {
 
   const handleDownloadQr = () => {
     const link = document.createElement('a')
-    link.href = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><rect width="300" height="300" fill="%23ffffff"/><text x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-size="16" fill="%2306201A">B4B Referral QR Code</text></svg>'
+    link.href = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><rect width="300" height="300" fill="%23ffffff"/><text x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-size="16" fill="%2307142B">B4B Referral QR Code</text></svg>'
     link.download = 'B4B_Referral_QR.svg'
     link.click()
     setQrModalOpen(false)
@@ -178,7 +178,7 @@ export const AffiliateDashboardPage: React.FC = () => {
                   onClick={() => setPartnerType(t)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                     partnerType === t
-                      ? 'bg-[#0E7A5A] text-white shadow-sm'
+                      ? 'bg-[#013CA0] text-white shadow-sm'
                       : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
@@ -190,8 +190,8 @@ export const AffiliateDashboardPage: React.FC = () => {
             <Button
               size="sm"
               onClick={() => setSubmitLeadOpen(true)}
-              leftIcon={<Share2 className="w-3.5 h-3.5 text-[#06201A]" />}
-              className="bg-[#C8793A] hover:bg-[#b56b30] text-[#06201A] font-extrabold shadow-md border border-[#96521E]/30 px-4 py-2 rounded-xl cursor-pointer !opacity-100 transition-all hover:scale-[1.02]"
+              leftIcon={<Share2 className="w-3.5 h-3.5 text-[#07142B]" />}
+              className="bg-[#FFC911] hover:bg-amber-400 text-[#07142B] font-extrabold shadow-md border border-amber-500/30 px-4 py-2 rounded-xl cursor-pointer !opacity-100 transition-all hover:scale-[1.02]"
             >
               Submit Direct Lead
             </Button>
@@ -200,20 +200,20 @@ export const AffiliateDashboardPage: React.FC = () => {
       </div>
 
       {/* TOP PERFORMING TRACKING LINK BANNER */}
-      <Card variant="bento" className="p-4 bg-gradient-to-r from-[#06201A] via-[#0B2B22] to-[#06201A] text-white border border-[#0B4A3A] shadow-xl space-y-3">
+      <Card variant="bento" className="p-4 bg-gradient-to-r from-[#07142B] via-[#0D2147] to-[#013CA0] text-white border border-[#1E3A6E] shadow-xl space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0E7A5A]/20 text-[#0E7A5A] flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-[#FFC911]/20 text-[#FFC911] flex items-center justify-center shrink-0">
               <Share2 className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-bold text-sm text-white">{topLink.name}</span>
-                <Badge variant="emerald" size="sm">
+                <Badge variant="gold" size="sm">
                   Top Performing Link
                 </Badge>
               </div>
-              <div className="text-xs text-emerald-300 font-mono mt-0.5">{topLink.url}</div>
+              <div className="text-xs text-[#FFC911] font-mono mt-0.5">{topLink.url}</div>
             </div>
           </div>
 
@@ -230,8 +230,8 @@ export const AffiliateDashboardPage: React.FC = () => {
             <Button
               size="sm"
               onClick={handleCopyTopLink}
-              leftIcon={copied ? <Check className="w-3.5 h-3.5 text-[#06201A]" /> : <Copy className="w-3.5 h-3.5 text-[#06201A]" />}
-              className="bg-[#C8793A] hover:bg-[#b56b30] text-[#06201A] font-bold shadow-md cursor-pointer !opacity-100 px-3.5 py-2"
+              leftIcon={copied ? <Check className="w-3.5 h-3.5 text-[#07142B]" /> : <Copy className="w-3.5 h-3.5 text-[#07142B]" />}
+              className="bg-[#FFC911] hover:bg-amber-400 text-[#07142B] font-bold shadow-md cursor-pointer !opacity-100 px-3.5 py-2"
             >
               {copied ? 'Copied' : 'Copy Link'}
             </Button>
@@ -301,8 +301,8 @@ export const AffiliateDashboardPage: React.FC = () => {
             <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorVol" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#0E7A5A" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="#0E7A5A" stopOpacity={0.0} />
+                  <stop offset="5%" stopColor="#013CA0" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="#013CA0" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
@@ -311,9 +311,9 @@ export const AffiliateDashboardPage: React.FC = () => {
               <RechartsTooltip
                 formatter={(val: any) => [`$${Number(val).toLocaleString()}k`, 'Funded Volume']}
                 contentStyle={{
-                  backgroundColor: '#06201A',
+                  backgroundColor: '#07142B',
                   borderRadius: '10px',
-                  border: '1px solid #0B4A3A',
+                  border: '1px solid #1E3A6E',
                   color: '#fff',
                   fontSize: '12px',
                 }}
@@ -322,7 +322,7 @@ export const AffiliateDashboardPage: React.FC = () => {
                 type="monotone"
                 dataKey="volume"
                 name="Volume"
-                stroke="#0E7A5A"
+                stroke="#013CA0"
                 strokeWidth={3}
                 fillOpacity={1}
                 fill="url(#colorVol)"
@@ -424,7 +424,7 @@ export const AffiliateDashboardPage: React.FC = () => {
               size="sm"
               type="submit"
               leftIcon={<Send className="w-3.5 h-3.5 text-white" />}
-              className="bg-[#0E7A5A] hover:bg-[#0B6349] text-white font-bold px-4 py-2 rounded-xl cursor-pointer"
+              className="bg-[#013CA0] hover:bg-[#07142B] text-white font-bold px-4 py-2 rounded-xl cursor-pointer"
             >
               Submit Referral
             </Button>
@@ -443,7 +443,7 @@ export const AffiliateDashboardPage: React.FC = () => {
         maxWidth="sm"
       >
         <div className="space-y-4 text-center">
-          <div className="p-6 rounded-2xl bg-white text-slate-900 inline-block shadow-lg mx-auto border-4 border-[#0E7A5A]">
+          <div className="p-6 rounded-2xl bg-white text-slate-900 inline-block shadow-lg mx-auto border-4 border-[#013CA0]">
             {/* SVG QR Code Simulation */}
             <div className="w-48 h-48 bg-slate-950 p-2 rounded-lg flex items-center justify-center">
               <QrCode className="w-40 h-40 text-white" />
@@ -457,8 +457,8 @@ export const AffiliateDashboardPage: React.FC = () => {
           <Button
             size="sm"
             onClick={handleDownloadQr}
-            leftIcon={<Download className="w-3.5 h-3.5 text-[#06201A]" />}
-            className="w-full justify-center bg-[#C8793A] hover:bg-[#b56b30] text-[#06201A] font-extrabold py-2.5 rounded-xl cursor-pointer shadow-md"
+            leftIcon={<Download className="w-3.5 h-3.5 text-[#07142B]" />}
+            className="w-full justify-center bg-[#FFC911] hover:bg-amber-400 text-[#07142B] font-extrabold py-2.5 rounded-xl cursor-pointer shadow-md"
           >
             Download PNG (300 DPI)
           </Button>

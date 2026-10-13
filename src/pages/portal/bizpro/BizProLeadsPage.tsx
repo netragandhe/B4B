@@ -31,11 +31,12 @@ import { useToast } from '@/components/ui/Toast'
 import { INITIAL_LEADS, Lead } from '@/mock-data/bizproData'
 import { formatCurrency } from '@/lib/utils'
 import { Can } from '@/components/auth/Can'
+import { leadService } from '@/lib/services/leadService'
 
 export const BizProLeadsPage: React.FC = () => {
   const { toast } = useToast()
 
-  const [leads, setLeads] = useState<Lead[]>(INITIAL_LEADS)
+  const [leads, setLeads] = useState<Lead[]>([])
   const [viewMode, setViewMode] = useState<'kanban' | 'table'>('kanban')
   const [searchQuery, setSearchQuery] = useState('')
   const [stageFilter, setStageFilter] = useState('all')
@@ -56,6 +57,20 @@ export const BizProLeadsPage: React.FC = () => {
     source: 'Inbound Web',
   })
 
+  const loadLeads = async () => {
+    try {
+      const data = await leadService.getLeads()
+      setLeads(data)
+    } catch (err) {
+      console.error(err)
+      setLeads(INITIAL_LEADS)
+    }
+  }
+
+  React.useEffect(() => {
+    loadLeads()
+  }, [])
+
   const stages: Lead['stage'][] = ['New', 'Contacted', 'Qualified', 'Proposal', 'Won', 'Lost']
 
   const filteredLeads = leads.filter((lead) => {
@@ -71,48 +86,57 @@ export const BizProLeadsPage: React.FC = () => {
     return true
   })
 
-  const handleAddLeadSubmit = (e: React.FormEvent) => {
+  const handleAddLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const created: Lead = {
-      id: `ld_${Date.now()}`,
-      name: newLeadData.name || 'New Prospect',
-      company: newLeadData.company || 'Prospect Co',
-      email: newLeadData.email || 'prospect@company.com',
-      phone: newLeadData.phone || '+1 (555) 000-0000',
-      stage: newLeadData.stage,
-      dealValue: Number(newLeadData.dealValue) || 250000,
-      source: newLeadData.source,
-      assignedDate: new Date().toISOString().split('T')[0],
-      lastActivity: 'Just now - Created',
-      notes: ['Lead registered into B4B Coach CRM.'],
+    try {
+      const created = await leadService.addLead({
+        name: newLeadData.name || 'New Prospect',
+        company: newLeadData.company || 'Prospect Co',
+        email: newLeadData.email || 'prospect@company.com',
+        phone: newLeadData.phone || '+1 (555) 000-0000',
+        dealValue: newLeadData.dealValue,
+        source: newLeadData.source,
+      })
+      setLeads((prev) => [created, ...prev])
+      setAddModalOpen(false)
+      toast({
+        title: 'Lead Added to Pipeline',
+        description: `${created.name} (${created.company}) has been added under ${created.stage}.`,
+        type: 'success',
+      })
+    } catch (err) {
+      console.error(err)
     }
-    setLeads((prev) => [created, ...prev])
-    setAddModalOpen(false)
-    toast({
-      title: 'Lead Added to Pipeline',
-      description: `${created.name} (${created.company}) has been added under ${created.stage}.`,
-      type: 'success',
-    })
   }
 
-  const handleAddNote = () => {
+  const handleAddNote = async () => {
     if (!newNote.trim() || !selectedLead) return
-    const updatedNotes = [...selectedLead.notes, newNote]
-    const updatedLead = { ...selectedLead, notes: updatedNotes, lastActivity: 'Just now - Note Added' }
-    setSelectedLead(updatedLead)
-    setLeads((prev) => prev.map((l) => (l.id === selectedLead.id ? updatedLead : l)))
-    setNewNote('')
-    toast({ title: 'Note Saved', type: 'info' })
+    try {
+      const updated = await leadService.addNote(selectedLead.id, newNote.trim())
+      if (updated) {
+        setSelectedLead(updated)
+        setLeads((prev) => prev.map((l) => (l.id === updated.id ? updated : l)))
+      }
+      setNewNote('')
+      toast({ title: 'Note Saved to CRM', type: 'info' })
+    } catch (err) {
+      console.error(err)
+    }
   }
 
-  const handleMoveStage = (leadId: string, newStage: Lead['stage']) => {
-    setLeads((prev) =>
-      prev.map((l) => (l.id === leadId ? { ...l, stage: newStage, lastActivity: `Moved to ${newStage}` } : l))
-    )
-    if (selectedLead?.id === leadId) {
-      setSelectedLead((prev) => (prev ? { ...prev, stage: newStage } : null))
+  const handleMoveStage = async (leadId: string, newStage: Lead['stage']) => {
+    try {
+      const updated = await leadService.updateStage(leadId, newStage)
+      if (updated) {
+        setLeads((prev) => prev.map((l) => (l.id === leadId ? updated : l)))
+        if (selectedLead?.id === leadId) {
+          setSelectedLead(updated)
+        }
+      }
+      toast({ title: 'Lead Stage Updated', description: `Moved to ${newStage}`, type: 'success' })
+    } catch (err) {
+      console.error(err)
     }
-    toast({ title: 'Lead Stage Updated', description: `Moved to ${newStage}`, type: 'success' })
   }
 
   return (

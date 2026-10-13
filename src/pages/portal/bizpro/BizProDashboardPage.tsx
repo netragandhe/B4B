@@ -90,11 +90,11 @@ export const BizProDashboardPage: React.FC = () => {
 
   // Lead Funnel stage distribution data
   const funnelData = [
-    { stage: 'New', count: 8, fill: '#0E7A5A' },
-    { stage: 'Contacted', count: 6, fill: '#C8793A' },
-    { stage: 'Qualified', count: 5, fill: '#10B981' },
-    { stage: 'Proposal', count: 3, fill: '#059669' },
-    { stage: 'Won', count: 2, fill: '#0B4A3A' },
+    { stage: 'New', count: 8, fill: '#013CA0' },
+    { stage: 'Contacted', count: 6, fill: '#FFC911' },
+    { stage: 'Qualified', count: 5, fill: '#2563EB' },
+    { stage: 'Proposal', count: 3, fill: '#3B82F6' },
+    { stage: 'Won', count: 2, fill: '#07142B' },
   ]
 
   // Leaderboard Widget Data (Top 10)
@@ -168,7 +168,7 @@ ${currentRank.title} | B4B America`
               variant="outline"
               size="sm"
               onClick={() => setAiModalOpen(true)}
-              leftIcon={<Sparkles className="w-3.5 h-3.5 text-[#0E7A5A]" />}
+              leftIcon={<Sparkles className="w-3.5 h-3.5 text-[#013CA0] dark:text-[#FFC911]" />}
             >
               AI Campaign Copy
             </Button>
@@ -259,9 +259,9 @@ ${currentRank.title} | B4B America`
                 <RechartsTooltip
                   formatter={(value: any) => [`$${Number(value).toLocaleString()}`, '']}
                   contentStyle={{
-                    backgroundColor: '#06201A',
+                    backgroundColor: '#07142B',
                     borderRadius: '10px',
-                    border: '1px solid #0B4A3A',
+                    border: '1px solid #1E3A6E',
                     color: '#fff',
                     fontSize: '12px',
                   }}
@@ -303,14 +303,14 @@ ${currentRank.title} | B4B America`
                 <RechartsTooltip
                   formatter={(val: any) => [`${val} Leads`, 'Stage Count']}
                   contentStyle={{
-                    backgroundColor: '#06201A',
+                    backgroundColor: '#07142B',
                     borderRadius: '10px',
-                    border: '1px solid #0B4A3A',
+                    border: '1px solid #1E3A6E',
                     color: '#fff',
                     fontSize: '12px',
                   }}
                 />
-                <Bar dataKey="count" name="Leads" fill="#0E7A5A" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="count" name="Leads" fill="#013CA0" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -328,30 +328,30 @@ ${currentRank.title} | B4B America`
             </h3>
             <button
               onClick={() => setLeaderboardDrawerOpen(true)}
-              className="text-xs font-semibold text-[#0E7A5A] dark:text-[#10B981] hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-xs font-semibold text-[#013CA0] dark:text-[#FFC911] hover:underline flex items-center gap-1 cursor-pointer"
             >
               <span>View Top 10</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          <Card variant="bento" className="divide-y divide-slate-100 dark:divide-[#0B4A3A] p-2">
+          <Card variant="bento" className="divide-y divide-slate-100 dark:divide-[#1E3A6E] p-2">
             {leaderboard.slice(0, 5).map((rep) => (
               <div
                 key={rep.rank}
                 className={`p-3.5 rounded-xl flex items-center justify-between gap-3 transition-colors ${
                   rep.isYou
-                    ? 'bg-[#0E7A5A]/10 dark:bg-[#0B4A3A]/40 border border-[#0E7A5A]/30 dark:border-[#0B4A3A]'
-                    : 'hover:bg-slate-50 dark:hover:bg-[#0B2B22]/40'
+                    ? 'bg-blue-50/80 dark:bg-[#162E5A]/50 border border-blue-200 dark:border-[#1E3A6E]'
+                    : 'hover:bg-slate-50 dark:hover:bg-[#162E5A]/40'
                 }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <span
                     className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs shrink-0 ${
                       rep.rank === 1
-                        ? 'bg-amber-400 text-slate-900 shadow-md'
+                        ? 'bg-[#FFC911] text-[#07142B] font-extrabold shadow-md'
                         : rep.rank === 2
-                        ? 'bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white'
+                        ? 'bg-blue-100 dark:bg-[#162E5A] text-[#013CA0] dark:text-white'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-500'
                     }`}
                   >
@@ -360,13 +360,13 @@ ${currentRank.title} | B4B America`
                   <Avatar src={rep.avatar} name={rep.name} size="sm" />
                   <div className="min-w-0">
                     <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
-                      {rep.name} {rep.isYou && <span className="text-[10px] text-[#0E7A5A] font-extrabold">(YOU)</span>}
+                      {rep.name} {rep.isYou && <span className="text-[10px] text-[#013CA0] dark:text-[#FFC911] font-extrabold">(YOU)</span>}
                     </p>
                     <p className="text-[11px] text-slate-500">{rep.deals} Deals Funded</p>
                   </div>
                 </div>
 
-                <span className="font-extrabold text-xs text-emerald-600 dark:text-emerald-400 shrink-0">
+                <span className="font-extrabold text-xs text-[#013CA0] dark:text-[#FFC911] shrink-0">
                   {rep.volume}
                 </span>
               </div>
@@ -382,13 +382,13 @@ ${currentRank.title} | B4B America`
             </h3>
             <button
               onClick={() => setRoadmapOpen(true)}
-              className="text-xs font-semibold text-[#0E7A5A] dark:text-[#10B981] hover:underline cursor-pointer"
+              className="text-xs font-semibold text-[#013CA0] dark:text-[#FFC911] hover:underline cursor-pointer"
             >
               Rank Roadmap
             </button>
           </div>
 
-          <Card variant="bento" className="p-5 space-y-4 bg-gradient-to-br from-amber-50/50 to-orange-50/20 dark:from-amber-950/20 dark:to-[#06201A] border-amber-200 dark:border-amber-900/40">
+          <Card variant="bento" className="p-5 space-y-4 bg-gradient-to-br from-blue-50/50 to-amber-50/20 dark:from-[#162E5A]/30 dark:to-[#07142B] border-blue-200 dark:border-[#1E3A6E]">
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-800 dark:text-amber-400">
@@ -621,17 +621,17 @@ ${currentRank.title} | B4B America`
       >
         <div className="space-y-4 text-xs text-left">
           {/* Quick Summary Pill Row */}
-          <div className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-xl bg-[#0E7A5A]/10 dark:bg-[#0B4A3A]/30 border border-[#0E7A5A]/30 dark:border-[#0B4A3A]">
+          <div className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-xl bg-blue-50/80 dark:bg-[#162E5A]/50 border border-blue-200 dark:border-[#1E3A6E]">
             <div className="flex items-center gap-2">
               <Trophy className="w-4 h-4 text-amber-500" />
               <span className="font-bold text-slate-900 dark:text-white">
-                Your Current Status: <span className="text-[#0E7A5A] dark:text-[#10B981] font-extrabold">{currentRank.title} (Rank {currentRank.level})</span>
+                Your Current Status: <span className="text-[#013CA0] dark:text-[#FFC911] font-extrabold">{currentRank.title} (Rank {currentRank.level})</span>
               </span>
             </div>
             <Link
               to="/portal/bizpro/rank"
               onClick={() => setRoadmapOpen(false)}
-              className="text-xs font-bold text-[#0E7A5A] hover:underline dark:text-[#10B981] inline-flex items-center gap-1"
+              className="text-xs font-bold text-[#013CA0] hover:underline dark:text-[#FFC911] inline-flex items-center gap-1"
             >
               <span>Open Full Rank Portal</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -639,9 +639,9 @@ ${currentRank.title} | B4B America`
           </div>
 
           {/* Clean Executive Matrix Table */}
-          <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#0B4A3A] max-h-[55vh] overflow-y-auto custom-scrollbar">
+          <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#1E3A6E] max-h-[55vh] overflow-y-auto custom-scrollbar">
             <table className="w-full text-left border-collapse text-xs">
-              <thead className="sticky top-0 bg-slate-100 dark:bg-[#06201A] border-b border-slate-200 dark:border-[#0B4A3A] text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+              <thead className="sticky top-0 bg-slate-100 dark:bg-[#07142B] border-b border-slate-200 dark:border-[#1E3A6E] text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
                 <tr>
                   <th className="p-3 w-20">Rank</th>
                   <th className="p-3">Title & Classification</th>
@@ -651,7 +651,7 @@ ${currentRank.title} | B4B America`
                   <th className="p-3 text-right">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-[#0B4A3A] bg-white dark:bg-[#0B2B22]">
+              <tbody className="divide-y divide-slate-100 dark:divide-[#1E3A6E] bg-white dark:bg-[#0D2147]">
                 {BIZPRO_RANKS.map((r) => {
                   const isCurrent = r.level === currentRank.level
                   const isPassed = r.level < currentRank.level
@@ -661,12 +661,12 @@ ${currentRank.title} | B4B America`
                       key={r.level}
                       className={`transition-colors ${
                         isCurrent
-                          ? 'bg-[#0E7A5A]/10 dark:bg-[#0B4A3A]/40 font-semibold'
-                          : 'hover:bg-slate-50/60 dark:hover:bg-slate-800/30'
+                          ? 'bg-blue-50/80 dark:bg-[#162E5A]/50 font-semibold'
+                          : 'hover:bg-slate-50/60 dark:hover:bg-[#162E5A]/30'
                       }`}
                     >
                       <td className="p-3">
-                        <Badge variant={isCurrent ? 'primary' : isPassed ? 'emerald' : 'navy'} size="sm">
+                        <Badge variant={isCurrent ? 'royal' : isPassed ? 'gold' : 'navy'} size="sm">
                           Rank {r.level}
                         </Badge>
                       </td>
@@ -676,7 +676,7 @@ ${currentRank.title} | B4B America`
                           {r.isLeader ? 'District Leadership' : 'Individual Producer'}
                         </div>
                       </td>
-                      <td className="p-3 font-bold text-emerald-600 dark:text-emerald-400">
+                      <td className="p-3 font-bold text-[#013CA0] dark:text-[#FFC911]">
                         {r.monthlyCommissionRange}
                       </td>
                       <td className="p-3 font-bold text-slate-700 dark:text-slate-300">
@@ -687,11 +687,11 @@ ${currentRank.title} | B4B America`
                       </td>
                       <td className="p-3 text-right whitespace-nowrap">
                         {isCurrent ? (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#0E7A5A] text-white shadow-xs">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#013CA0] text-white shadow-xs border border-[#FFC911]/40">
                             CURRENT
                           </span>
                         ) : isPassed ? (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 dark:bg-amber-950/60 dark:text-[#FFC911]">
                             ACHIEVED
                           </span>
                         ) : (
@@ -723,23 +723,23 @@ ${currentRank.title} | B4B America`
             Live rankings across all 12 Federal Reserve Districts for Q4 performance cycle.
           </p>
 
-          <div className="divide-y divide-slate-100 dark:divide-[#0B4A3A]">
+          <div className="divide-y divide-slate-100 dark:divide-[#1E3A6E]">
             {leaderboard.map((rep) => (
               <div
                 key={rep.rank}
                 className={`p-3 rounded-xl flex items-center justify-between gap-3 ${
                   rep.isYou
-                    ? 'bg-[#0E7A5A]/10 dark:bg-[#0B4A3A]/40 border border-[#0E7A5A]/30 dark:border-[#0B4A3A]'
-                    : 'hover:bg-slate-50 dark:hover:bg-[#0B2B22]/40'
+                    ? 'bg-blue-50/80 dark:bg-[#162E5A]/50 border border-blue-200 dark:border-[#1E3A6E]'
+                    : 'hover:bg-slate-50 dark:hover:bg-[#162E5A]/40'
                 }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <span
                     className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs shrink-0 ${
                       rep.rank === 1
-                        ? 'bg-amber-400 text-slate-900'
+                        ? 'bg-[#FFC911] text-[#07142B] font-extrabold'
                         : rep.rank === 2
-                        ? 'bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white'
+                        ? 'bg-blue-100 dark:bg-[#162E5A] text-[#013CA0] dark:text-white'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-500'
                     }`}
                   >
@@ -748,7 +748,7 @@ ${currentRank.title} | B4B America`
                   <Avatar src={rep.avatar} name={rep.name} size="sm" />
                   <div className="min-w-0">
                     <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
-                      {rep.name} {rep.isYou && <span className="text-[10px] text-[#0E7A5A] font-extrabold">(YOU)</span>}
+                      {rep.name} {rep.isYou && <span className="text-[10px] text-[#013CA0] dark:text-[#FFC911] font-extrabold">(YOU)</span>}
                     </p>
                     <p className="text-[10px] text-slate-400 truncate">{rep.district} • {rep.deals} Deals</p>
                   </div>

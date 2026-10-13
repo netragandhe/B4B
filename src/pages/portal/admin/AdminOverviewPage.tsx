@@ -270,14 +270,14 @@ export const AdminOverviewPage: React.FC = () => {
                 <RechartsTooltip
                   formatter={(val: any) => [`$${Number(val).toLocaleString()}k`, 'Funded Volume']}
                   contentStyle={{
-                    backgroundColor: '#06201A',
+                    backgroundColor: '#07142B',
                     borderRadius: '10px',
-                    border: '1px solid #0B4A3A',
+                    border: '1px solid #1E3A6E',
                     color: '#fff',
                     fontSize: '12px',
                   }}
                 />
-                <Bar dataKey="revenue" name="Volume" fill="#0E7A5A" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="revenue" name="Volume" fill="#013CA0" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -292,7 +292,7 @@ export const AdminOverviewPage: React.FC = () => {
               </h3>
               <p className="text-xs text-slate-500">Number of active reps per rank level.</p>
             </div>
-            <Badge variant="emerald" size="sm" className="shrink-0">
+            <Badge variant="royal" size="sm" className="shrink-0">
               9 Ranks Active
             </Badge>
           </div>
@@ -306,14 +306,14 @@ export const AdminOverviewPage: React.FC = () => {
                 <RechartsTooltip
                   formatter={(val: any, name: any, item: any) => [`${val} Reps`, item.payload.title]}
                   contentStyle={{
-                    backgroundColor: '#06201A',
+                    backgroundColor: '#07142B',
                     borderRadius: '10px',
-                    border: '1px solid #0B4A3A',
+                    border: '1px solid #1E3A6E',
                     color: '#fff',
                     fontSize: '12px',
                   }}
                 />
-                <Bar dataKey="count" fill="#10B981" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="count" fill="#FFC911" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -700,9 +700,9 @@ export const AdminOverviewPage: React.FC = () => {
         maxWidth="2xl"
       >
         <div className="space-y-4 text-xs text-left">
-          <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#0B4A3A] max-h-[55vh] overflow-y-auto custom-scrollbar">
+          <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#1E3A6E] max-h-[55vh] overflow-y-auto custom-scrollbar">
             <table className="w-full min-w-[620px] text-left border-collapse text-xs">
-              <thead className="sticky top-0 bg-slate-100 dark:bg-[#06201A] border-b border-slate-200 dark:border-[#0B4A3A] text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+              <thead className="sticky top-0 bg-slate-100 dark:bg-[#07142B] border-b border-slate-200 dark:border-[#1E3A6E] text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
                 <tr>
                   <th className="p-3 w-20">Rank</th>
                   <th className="p-3">Title & Level</th>
@@ -712,14 +712,14 @@ export const AdminOverviewPage: React.FC = () => {
                   <th className="p-3 text-right">Perks Count</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-[#0B4A3A] bg-white dark:bg-[#0B2B22]">
+              <tbody className="divide-y divide-slate-100 dark:divide-[#1E3A6E] bg-white dark:bg-[#0D2147]">
                 {BIZPRO_RANKS.map((r) => (
                   <tr
                     key={r.level}
-                    className="hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors"
+                    className="hover:bg-slate-50/60 dark:hover:bg-[#162E5A]/30 transition-colors"
                   >
                     <td className="p-3">
-                      <Badge variant={r.isLeader ? 'primary' : 'navy'} size="sm">
+                      <Badge variant={r.isLeader ? 'royal' : 'navy'} size="sm">
                         Rank {r.level}
                       </Badge>
                     </td>
@@ -729,7 +729,7 @@ export const AdminOverviewPage: React.FC = () => {
                         {r.isLeader ? 'District Leadership' : 'Individual Producer'}
                       </div>
                     </td>
-                    <td className="p-3 font-bold text-emerald-600 dark:text-emerald-400">
+                    <td className="p-3 font-bold text-[#013CA0] dark:text-[#FFC911]">
                       {r.monthlyCommissionRange}
                     </td>
                     <td className="p-3 font-bold text-slate-700 dark:text-slate-300">
@@ -765,7 +765,7 @@ export const AdminOverviewPage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[75vh] overflow-y-auto pr-1">
             {FED_REGIONS.map((r) => (
-              <Card key={r.id} variant="bento" className="p-3.5 space-y-2 border border-slate-200 dark:border-[#0B4A3A]">
+              <Card key={r.id} variant="bento" className="p-3.5 space-y-2 border border-slate-200 dark:border-[#1E3A6E]">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full" style={{ backgroundColor: r.color }} />

@@ -61,13 +61,13 @@ export const AffiliatesPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#E9EDF4] text-[#14233B] transition-colors duration-200 font-body">
+    <div className="min-h-screen bg-[#07142B] text-white transition-colors duration-200 font-body relative">
       <SEOHead
         title="Affiliates, Partners & Influencers | B4B America"
         description="Solution #14: Lucrative partnership and revenue-sharing opportunities with B4B America for CPAs, commercial brokers, consultants, and creators."
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-14 text-left">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-14 text-left relative z-10">
         {/* Top Breadcrumb */}
         <Breadcrumb
           items={[
@@ -78,23 +78,23 @@ export const AffiliatesPage: React.FC = () => {
         />
 
         {/* Hero Section in Midnight Navy #07142B */}
-        <div className="relative p-8 sm:p-12 rounded-3xl bg-[#07142B] text-white border border-[#0D2147] shadow-xl overflow-hidden">
+        <div className="relative p-8 sm:p-12 rounded-3xl bg-gradient-to-b from-[#0F356B]/90 via-[#0C2A54]/90 to-[#081F42]/95 text-white border border-sky-300/40 shadow-2xl overflow-hidden backdrop-blur-md">
           <div className="absolute right-0 top-0 w-1/2 h-full pointer-events-none opacity-15 overflow-hidden">
             <UsaMapMotif className="w-full h-full text-[#F8C61A]" opacity={0.2} />
           </div>
 
           <div className="max-w-3xl space-y-6 relative z-10">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-black font-mono px-2.5 py-1 rounded bg-[#0D2147] text-[#F8C61A] border border-[#0D2147]">
+              <span className="text-xs font-black font-mono px-2.5 py-1 rounded bg-[#FFC911] text-[#013CA0] shadow-xs">
                 Solution #14 of 16
               </span>
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#0D2147] text-[#B8C4D9] font-mono">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-sky-500/20 text-sky-200 border border-sky-400/30 font-mono">
                 Growth & Revenue Sharing
               </span>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-[#0D2147] text-[#F8C61A] flex items-center justify-center shrink-0 shadow-md">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-[#0C43A3] text-[#FFC911] flex items-center justify-center shrink-0 shadow-lg border border-sky-300/40">
                 <Handshake className="w-7 h-7" />
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-heading text-white tracking-tight">
@@ -102,7 +102,7 @@ export const AffiliatesPage: React.FC = () => {
               </h1>
             </div>
 
-            <p className="text-base sm:text-lg text-[#B8C4D9] leading-relaxed max-w-2xl font-body">
+            <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed max-w-2xl font-body">
               Lucrative revenue-sharing partnership opportunities for CPAs, commercial brokers, consultants, and digital creators to monetize business relationships across our 16 solutions.
             </p>
 
@@ -122,7 +122,7 @@ export const AffiliatesPage: React.FC = () => {
                 className="btn-outline-dark group"
               >
                 <span>Click Here for Solution Details</span>
-                <ChevronRight className="w-4 h-4 text-[#F8C61A] transition-transform group-hover:translate-x-1" />
+                <ChevronRight className="w-4 h-4 text-[#FFC911] transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
@@ -130,7 +130,7 @@ export const AffiliatesPage: React.FC = () => {
 
         {/* 3 Partner Categories & B4BAPP Career Ladder */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          {/* Left Column: Tiers & Application Form in White Container */}
+          {/* Left Column: Tiers & Application Form in Glassmorphic Container */}
           <div className="lg:col-span-7 space-y-8">
             {/* Category Selector Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -157,25 +157,25 @@ export const AffiliatesPage: React.FC = () => {
                     setActivePartnerType(tier.id)
                     setValue('partnerType', `${tier.title}`)
                   }}
-                  className={`p-5 rounded-2xl border text-left cursor-pointer transition-all shadow-xs ${
+                  className={`p-5 rounded-2xl border text-left cursor-pointer transition-all shadow-xl backdrop-blur-md ${
                     activePartnerType === tier.id
-                      ? 'border-[#0C43A3] bg-white ring-2 ring-[#0C43A3]/20'
-                      : 'border-[#14233B]/10 bg-white hover:border-[#0C43A3]'
+                      ? 'border-sky-300 bg-gradient-to-b from-[#0F356B] to-[#081F42] ring-2 ring-sky-300/40 text-white'
+                      : 'border-sky-300/30 bg-[#081F42]/80 hover:border-sky-300/60 text-white'
                   }`}
                 >
-                  <h4 className="text-sm font-extrabold text-[#14233B] font-heading">{tier.title}</h4>
-                  <p className="text-xs text-[#14233B]/70 mt-1.5 leading-relaxed font-body">{tier.desc}</p>
+                  <h4 className="text-sm font-extrabold text-white font-heading">{tier.title}</h4>
+                  <p className="text-xs text-blue-100/80 mt-1.5 leading-relaxed font-body">{tier.desc}</p>
                 </div>
               ))}
             </div>
 
-            {/* Application Form in White Card */}
-            <div className="p-6 sm:p-8 rounded-2xl bg-white border border-[#14233B]/10 shadow-sm space-y-6">
+            {/* Application Form in Glassmorphic Card */}
+            <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-b from-[#0F356B]/90 via-[#0C2A54]/90 to-[#081F42]/95 border border-sky-300/40 shadow-2xl space-y-6 text-white backdrop-blur-md">
               <div className="space-y-1">
-                <h3 className="text-xl font-extrabold text-[#14233B] font-heading">
+                <h3 className="text-xl font-extrabold text-white font-heading">
                   Apply for the B4B America Partner Network
                 </h3>
-                <p className="text-xs text-[#14233B]/70 font-body">
+                <p className="text-xs text-blue-100/80 font-body">
                   Active partner application for {activePartnerType} Category.
                 </p>
               </div>
@@ -211,7 +211,7 @@ export const AffiliatesPage: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="btn-blue-light w-full sm:w-auto"
+                    className="btn-gold-dark w-full sm:w-auto !py-3 !text-sm"
                   >
                     Submit Partner Application
                   </button>
@@ -219,7 +219,7 @@ export const AffiliatesPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setCoachModalOpen(true)}
-                    className="text-xs font-bold text-[#0C43A3] hover:underline flex items-center gap-1 font-mono min-h-[44px]"
+                    className="text-xs font-bold text-[#FFC911] hover:underline flex items-center gap-1 font-mono min-h-[44px]"
                   >
                     <span>Speak with a Partner Coach</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -231,10 +231,10 @@ export const AffiliatesPage: React.FC = () => {
 
           {/* Right Column: B4BAPP Software Portal & Commission Tier Structure in Midnight Navy */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="p-6 sm:p-8 rounded-3xl bg-[#07142B] text-white border border-[#0D2147] shadow-xl space-y-5">
+            <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#0F356B]/90 via-[#0C2A54]/90 to-[#081F42]/95 text-white border border-sky-300/40 shadow-2xl space-y-5 backdrop-blur-md">
               <div className="flex items-center gap-2">
-                <Cpu className="w-4 h-4 text-[#F8C61A]" />
-                <span className="text-xs font-bold uppercase tracking-wider text-[#F8C61A] font-mono">
+                <Cpu className="w-4 h-4 text-[#FFC911]" />
+                <span className="text-xs font-bold uppercase tracking-wider text-[#FFC911] font-mono">
                   B4BAPP Biz Pro Portal
                 </span>
               </div>
@@ -243,38 +243,38 @@ export const AffiliatesPage: React.FC = () => {
                 Monetize Across 100 Service Products
               </h3>
 
-              <p className="text-xs text-[#B8C4D9] leading-relaxed font-body">
+              <p className="text-xs text-blue-100/90 leading-relaxed font-body">
                 As a B4B Network partner, track commissions, review real-time client pipeline telemetry, and access the Bulletin Sales Scoreboard via B4BAPP ($25/mo Biz Pro subscription).
               </p>
 
               {/* Ranks list from B4BAPP doc */}
               <div className="space-y-2 pt-2">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#B8C4D9] font-mono">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-[#FFC911] font-mono">
                   Career Commission Tiers (From B4BAPP Software Document)
                 </p>
                 <div className="space-y-1.5 font-mono">
                   {B4BAPP_SOFTWARE.ranks.slice(0, 5).map((rank, i) => (
                     <div
                       key={rank}
-                      className="p-2.5 rounded-xl bg-[#0D2147] border border-[#0D2147] flex items-center justify-between text-xs"
+                      className="p-2.5 rounded-xl bg-[#081F42]/80 border border-sky-300/30 flex items-center justify-between text-xs"
                     >
                       <span className="font-semibold text-white">
                         {i + 1}. {rank}
                       </span>
-                      <span className="text-[10px] text-[#F8C61A] font-bold">Tier {i + 1}</span>
+                      <span className="text-[10px] text-[#FFC911] font-bold">Tier {i + 1}</span>
                     </div>
                   ))}
                 </div>
-                <p className="text-[11px] text-[#B8C4D9] text-right font-mono">
+                <p className="text-[11px] text-sky-200/70 text-right font-mono">
                   Highest: Senior National Channel VP
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-[#0D2147] flex items-center justify-between text-xs">
-                <span className="text-[#B8C4D9]">Existing Partner?</span>
+              <div className="pt-3 border-t border-sky-300/30 flex items-center justify-between text-xs">
+                <span className="text-blue-100/80">Existing Partner?</span>
                 <Link
                   to="/portal/login"
-                  className="text-[#F8C61A] font-bold hover:underline inline-flex items-center gap-1 font-mono"
+                  className="text-[#FFC911] font-bold hover:underline inline-flex items-center gap-1 font-mono"
                 >
                   <span>Portal Login</span>
                   <ChevronRight className="w-3.5 h-3.5" />

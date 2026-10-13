@@ -70,17 +70,17 @@ export const JobSeekerDashboardPage: React.FC = () => {
       <SEOHead title="Job Seeker Dashboard | B4B Portal" description="Explore corporate sales and executive openings, track active applications, and manage job alerts." />
 
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#06201A] via-[#0B2B22] to-[#06201A] text-white p-6 sm:p-8 border border-[#0B4A3A] shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#07142B] via-[#0D2147] to-[#013CA0] text-white p-6 sm:p-8 border border-[#1E3A6E] shadow-xl">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/30">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFC911]/20 text-[#FFC911] text-xs font-bold border border-[#FFC911]/30">
               <Zap className="w-3.5 h-3.5" /> Candidate Portal • Profile 85% Complete
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-white">
               Welcome back, Alex! 👋
             </h1>
-            <p className="text-xs sm:text-sm text-slate-300">
-              You have <strong className="text-emerald-400">3 active applications</strong> in progress and 1 new interview invitation from Nexus FinTech.
+            <p className="text-xs sm:text-sm text-slate-200">
+              You have <strong className="text-[#FFC911]">3 active applications</strong> in progress and 1 new interview invitation from Nexus FinTech.
             </p>
           </div>
 
@@ -90,7 +90,7 @@ export const JobSeekerDashboardPage: React.FC = () => {
               size="md"
               pill
               onClick={() => navigate('/portal/seeker/profile')}
-              className="font-bold bg-[#0E7A5A] hover:bg-[#0B4A3A] text-white shadow-lg shadow-emerald-950/30"
+              className="font-bold bg-[#FFC911] hover:bg-amber-400 text-[#07142B] shadow-lg shadow-blue-950/30 cursor-pointer"
             >
               <FileText className="w-4 h-4 mr-2" /> Update Resume
             </Button>
@@ -99,7 +99,7 @@ export const JobSeekerDashboardPage: React.FC = () => {
               size="md"
               pill
               onClick={() => navigate('/portal/seeker/alerts')}
-              className="border-slate-700 text-slate-200 hover:bg-slate-800"
+              className="border-white/30 text-white hover:bg-white/10 cursor-pointer"
             >
               <Bell className="w-4 h-4 mr-2" /> Job Alerts
             </Button>
@@ -108,9 +108,9 @@ export const JobSeekerDashboardPage: React.FC = () => {
       </div>
 
       {/* Search Bar Widget */}
-      <Card variant="bento" className="p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-md">
+      <Card variant="bento" className="p-5 sm:p-6 border border-slate-200 dark:border-[#1E3A6E] shadow-md">
         <h2 className="text-base font-bold font-heading text-slate-900 dark:text-white mb-3 flex items-center gap-2">
-          <Search className="w-4 h-4 text-[#0E7A5A]" /> Search Open Jobs & Gigs
+          <Search className="w-4 h-4 text-[#013CA0] dark:text-[#FFC911]" /> Search Open Jobs & Gigs
         </h2>
         <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           <Input
@@ -158,7 +158,7 @@ export const JobSeekerDashboardPage: React.FC = () => {
             variant="accent"
             size="md"
             pill
-            className="w-full font-bold bg-[#0E7A5A] hover:bg-[#0B4A3A] text-white"
+            className="w-full font-bold bg-[#013CA0] hover:bg-[#07142B] text-white cursor-pointer"
           >
             SEARCH NOW <ArrowRight className="w-4 h-4 ml-1.5" />
           </Button>
@@ -167,12 +167,12 @@ export const JobSeekerDashboardPage: React.FC = () => {
 
       {/* Quick Application Status Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card variant="bento" className="p-4 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <Card variant="bento" className="p-4 border border-slate-200 dark:border-[#1E3A6E] flex items-center justify-between">
           <div>
             <div className="text-xs text-slate-500 font-semibold">Active Applications</div>
             <div className="text-2xl font-black text-slate-900 dark:text-white font-heading mt-0.5">3</div>
           </div>
-          <div className="p-3 rounded-xl bg-[#0E7A5A]/10 text-[#0E7A5A]">
+          <div className="p-3 rounded-xl bg-blue-50 dark:bg-[#162E5A]/50 text-[#013CA0] dark:text-[#FFC911]">
             <Award className="w-5 h-5" />
           </div>
         </Card>

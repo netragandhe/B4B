@@ -125,26 +125,27 @@ export const ApplyPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 text-left">
-      {/* Breadcrumb & Header */}
-      <div className="space-y-3">
-        <Breadcrumb items={[{ label: 'Pre-Qualification Application' }]} />
-        <Badge variant="primary" size="md">
-          Institutional Intake
-        </Badge>
-        <h1 className="text-3xl sm:text-4xl font-extrabold font-heading text-[var(--text)]">
-          Apply for Pre-Approved Business Capital
-        </h1>
-        <p className="text-sm text-[var(--text-muted)]">
-          Takes under 4 minutes. Soft check only with 0 credit impact. Instant term sheet generation.
-        </p>
-      </div>
+    <div className="min-h-screen bg-[#07142B] text-white transition-colors duration-200 font-body py-10 relative">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-left relative z-10">
+        {/* Breadcrumb & Header */}
+        <div className="space-y-3">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Apply For Capital' }]} />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/20 border border-sky-300/40 text-xs font-bold text-[#FFC911] font-mono shadow-sm">
+            <span>Institutional Intake Desk</span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold font-heading text-white tracking-tight">
+            Apply for Pre-Approved Business Capital
+          </h1>
+          <p className="text-sm sm:text-base text-blue-100/90 leading-relaxed font-body">
+            Takes under 4 minutes. Soft check only with 0 credit impact. Instant term sheet generation across 40+ institutional private syndicates.
+          </p>
+        </div>
 
-      {/* Stepper Progress */}
-      <Stepper steps={STEPS} currentStep={currentStep} onStepClick={(idx) => setCurrentStep(idx)} />
+        {/* Stepper Progress */}
+        <Stepper steps={STEPS} currentStep={currentStep} onStepClick={(idx) => setCurrentStep(idx)} />
 
-      {/* Main Application Card Form */}
-      <Card variant="bento" className="p-6 sm:p-10 border-[var(--border)] shadow-xl">
+        {/* Main Application Card Form */}
+        <div className="p-6 sm:p-10 rounded-3xl bg-gradient-to-b from-[#0F356B]/90 via-[#0C2A54]/90 to-[#081F42]/95 border border-sky-300/40 shadow-2xl backdrop-blur-md text-white">
         {!isSubmitted ? (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             {/* STEP 1: Entity & Founder */}
@@ -415,7 +416,8 @@ export const ApplyPage: React.FC = () => {
             </div>
           </div>
         )}
-      </Card>
+        </div>
+      </div>
     </div>
   )
 }

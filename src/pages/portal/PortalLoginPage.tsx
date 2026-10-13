@@ -112,7 +112,7 @@ export const PortalLoginPage: React.FC = () => {
             onClick={() => handleSwitchMode('client')}
             className={`flex-1 py-2 rounded-lg flex items-center justify-center gap-2 transition-all ${
               portalMode === 'client'
-                ? 'bg-white dark:bg-[#0D1E36] text-blue-600 dark:text-blue-400 shadow-sm'
+                ? 'bg-white dark:bg-[#0D2147] text-[#013CA0] dark:text-[#FFC911] shadow-sm font-bold'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -123,7 +123,7 @@ export const PortalLoginPage: React.FC = () => {
             onClick={() => handleSwitchMode('partner')}
             className={`flex-1 py-2 rounded-lg flex items-center justify-center gap-2 transition-all ${
               portalMode === 'partner'
-                ? 'bg-white dark:bg-[#0D1E36] text-emerald-600 dark:text-emerald-400 shadow-sm'
+                ? 'bg-white dark:bg-[#0D2147] text-[#013CA0] dark:text-[#FFC911] shadow-sm font-bold'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
