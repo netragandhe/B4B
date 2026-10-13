@@ -445,7 +445,6 @@ export const HomePage: React.FC = () => {
                       ))}
                     </motion.div>
                   </div>
-                  </div>
                 </div>
               </div>
             </motion.div>
