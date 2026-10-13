@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   CreditCard,
   LayoutGrid,
@@ -29,6 +29,7 @@ import {
   Play,
   Cpu,
   Layers,
+  ChevronLeft,
   ChevronRight,
   TrendingUp,
   UtensilsCrossed,
@@ -49,14 +50,25 @@ import {
   INDUSTRIES_SERVED,
 } from '@/content/clientContent'
 import b4bappPreviewImg from '@/content/images/b4bapp-preview.webp'
-import heroBgImg from '@/content/images/hero-bg.webp'
+import heroBgImg from '@/content/images/hero-widescreen-bg.jpg'
+import softwareBackdropImg from '@/content/images/software-backdrop.jpg'
 import industryTruckImg from '@/content/images/industry-truck.webp'
+import industryRestaurantImg from '@/content/images/industry-restaurant.jpg'
+import industrySalonImg from '@/content/images/industry-salon.jpg'
+import industryConstructionImg from '@/content/images/industry-construction.jpg'
 import solutionsBackdropImg from '@/content/images/solutions-backdrop.jpg'
 import industriesBackdropImg from '@/content/images/industries-backdrop.jpg'
 import advisoryBackdropImg from '@/content/images/advisory-backdrop.jpg'
 import { SOLUTION_IMAGES } from '@/content/solutionImages'
 
-const FEATURED_INDUSTRIES = [
+interface FeaturedIndustryItem {
+  id: string
+  name: string
+  image: string
+  icon?: React.ElementType | null
+}
+
+const FEATURED_INDUSTRIES: FeaturedIndustryItem[] = [
   {
     id: 'ind-truck',
     name: 'Freight Trucking & Transportation',
@@ -66,19 +78,19 @@ const FEATURED_INDUSTRIES = [
   {
     id: 'ind-restaurant',
     name: 'Restaurants, Snack Bars, Sports Bars & Lounges',
-    image: null,
+    image: industryRestaurantImg,
     icon: UtensilsCrossed,
   },
   {
     id: 'ind-salon',
     name: 'Beauty Salons',
-    image: null,
+    image: industrySalonImg,
     icon: Sparkles,
   },
   {
     id: 'ind-construction',
     name: 'Construction & Residential Remodelers',
-    image: null,
+    image: industryConstructionImg,
     icon: HardHat,
   },
 ]
@@ -102,13 +114,33 @@ const iconMap: Record<string, React.ElementType> = {
   Globe,
 }
 
+const TELEMETRY_TICKER = [
+  '16 Core Solutions Active',
+  '12 Federal Reserve Divisions Live',
+  '100% Verified Network Readiness',
+  '1-on-1 Dedicated Coach Support',
+  '32 Trade & Commerce Sectors',
+  'B4BAPP Enterprise CRM/ERP Ready',
+  'Coast-to-Coast Pre-Qualification in 3 Mins',
+]
+
 export const HomePage: React.FC = () => {
   const navigate = useNavigate()
   const [coachModalOpen, setCoachModalOpen] = useState(false)
   const [searchModalOpen, setSearchModalOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState<string>('All')
-  const [selectedTerritoryId, setSelectedTerritoryId] = useState<number>(2) // Default NY & Atlantic
+  const [activeDivisionIndex, setActiveDivisionIndex] = useState<number>(1) // Default Div #2 (NY & Atlantic)
+  const [isAutoCycling, setIsAutoCycling] = useState<boolean>(true)
   const [activeIndustryFilter, setActiveIndustryFilter] = useState<string>('')
+
+  // Auto-cycle through the 12 Federal Reserve Territory Divisions every 4 seconds
+  useEffect(() => {
+    if (!isAutoCycling) return
+    const interval = setInterval(() => {
+      setActiveDivisionIndex((prev) => (prev + 1) % TERRITORY_DIVISIONS.length)
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [isAutoCycling])
 
   // Filter 16 solutions by category
   const filteredSolutions = CLIENT_16_SOLUTIONS.filter((sol) => {
@@ -116,48 +148,74 @@ export const HomePage: React.FC = () => {
     return sol.category === activeCategory
   })
 
+  // Sliding Carousel Controls for 16 Solutions
+  const solutionsTrackRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0)
+
+  const updateScrollButtons = () => {
+    if (!solutionsTrackRef.current) return
+    const { scrollLeft, scrollWidth, clientWidth } = solutionsTrackRef.current
+    setCanScrollLeft(scrollLeft > 12)
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 12)
+
+    const pageIndex = Math.round(scrollLeft / (clientWidth || 1))
+    setActiveSlideIndex(pageIndex)
+  }
+
+  const slideSolutions = (direction: 'left' | 'right') => {
+    if (!solutionsTrackRef.current) return
+    const clientWidth = solutionsTrackRef.current.clientWidth
+    const scrollAmount = direction === 'left' ? -clientWidth : clientWidth
+    solutionsTrackRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+  }
+
+  const scrollSolutionsToPage = (pageIdx: number) => {
+    if (!solutionsTrackRef.current) return
+    const clientWidth = solutionsTrackRef.current.clientWidth
+    solutionsTrackRef.current.scrollTo({ left: pageIdx * clientWidth, behavior: 'smooth' })
+  }
+
+  const handleCategoryChange = (cat: string) => {
+    setActiveCategory(cat)
+    if (solutionsTrackRef.current) {
+      solutionsTrackRef.current.scrollTo({ left: 0, behavior: 'smooth' })
+    }
+    setActiveSlideIndex(0)
+    setCanScrollLeft(false)
+    setCanScrollRight(true)
+  }
+
   // Selected territory details
   const selectedTerritory =
-    TERRITORY_DIVISIONS.find((t) => t.id === selectedTerritoryId) ||
+    TERRITORY_DIVISIONS[activeDivisionIndex] ||
     TERRITORY_DIVISIONS[0]
 
   return (
     <div className="min-h-screen bg-[#07142B] text-white transition-colors duration-200 overflow-x-hidden font-body">
-      {/* Dynamic CSS override for legacy layout headers/footers */}
-      <style>{`
-        body > #root > .min-h-screen > header.sticky,
-        body > #root > .min-h-screen > .bg-\\[var\\(--navy-900\\)\\],
-        body > #root > .min-h-screen > footer[data-theme="dark"]:not([data-redesigned="true"]) {
-          display: none !important;
-        }
-      `}</style>
-
       <SEOHead
         title="B4B America | The Connection for Small Business Solutions"
         description="The Connection for Small Business Solutions. 16 vital solutions for American small businesses: business credit repair, funding lines, merchant payments, custom software, and 1-on-1 coaching across 12 territory divisions."
       />
 
-      {/* Corporate Navbar: Midnight Navy with White Logo Badge */}
-      <Navbar variant="dark" onOpenCoachModal={() => setCoachModalOpen(true)} />
-
       {/* =========================================================================
-          SECTION 1. HERO (SEAMLESS CONTINUOUS LUMINOUS BLUE CANVAS)
+          SECTION 1. HERO (CRISP LUMINOUS BLUE WITH CLEAN BORDER)
           ========================================================================= */}
-      <section className="relative py-20 text-white overflow-hidden">
-        {/* Background Photo Layer with luminous blue overlay matching Section 3 */}
-        <div className="absolute inset-0 pointer-events-none z-0">
+      <section className="relative py-20 text-white border-b border-sky-400/25 overflow-hidden">
+        {/* Background Photo Layer */}
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
           <img
             src={heroBgImg}
             alt="B4B America commercial business commerce operations"
             loading="eager"
             decoding="sync"
-            className="w-full h-full object-cover object-center scale-105"
+            className="w-full h-full object-cover object-center"
           />
-          {/* Exact matching luminous blue overlays */}
-          <div className="absolute inset-0 bg-[#0A2A5E]/30" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
-          {/* Seamless bottom fade blending into Section 2 without harsh borders */}
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#0A2552]/80" />
+          {/* Luminous clean blue overlay */}
+          <div className="absolute inset-0 bg-[#0A2A5E]/45" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/85 via-[#0B2C68]/50 to-[#08204D]/35" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#07142B] opacity-80" />
         </div>
 
         {/* Ambient lighting accent */}
@@ -197,9 +255,9 @@ export const HomePage: React.FC = () => {
                 </p>
               </div>
 
-              {/* Client Mission Statement Excerpt */}
-              <p className="text-base sm:text-lg text-[#B8C4D9] max-w-2xl leading-relaxed font-normal">
-                {BRAND_IDENTITY.mission}
+              {/* Client Mission Statement Excerpt (Proper Short & Concise) */}
+              <p className="text-base sm:text-lg text-[#B8C4D9] max-w-xl leading-relaxed font-normal">
+                {BRAND_IDENTITY.missionShort}
               </p>
 
               {/* TWO MANDATORY CTAs: Gold on Dark + Outline Secondary */}
@@ -257,210 +315,177 @@ export const HomePage: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Right Column: Animated & Attractive Small Business Operating Hub - Halka Blue Glassmorphism */}
+            {/* Right Column: Compact Auto-Cycling & Auto-Scrolling Telemetry Widget */}
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="lg:col-span-5 shrink-0"
             >
-              <div className="relative bg-gradient-to-br from-sky-600/25 via-[#1658B3]/30 to-sky-700/25 text-white rounded-3xl p-6 sm:p-7 shadow-[0_16px_48px_rgba(2,132,199,0.25)] border border-sky-300/40 overflow-hidden shrink-0 w-full backdrop-blur-2xl">
-                {/* Animated ambient lighting glowing spheres */}
-                <div className="absolute -top-10 -right-10 w-64 h-64 bg-sky-500/30 rounded-full blur-3xl pointer-events-none animate-pulse" />
-                <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-[#F8C61A]/15 rounded-full blur-3xl pointer-events-none" />
+              <div
+                onMouseEnter={() => setIsAutoCycling(false)}
+                onMouseLeave={() => setIsAutoCycling(true)}
+                className="relative bg-gradient-to-br from-sky-600/25 via-[#1658B3]/30 to-sky-700/25 text-white rounded-3xl p-4 sm:p-5 shadow-[0_16px_48px_rgba(2,132,199,0.25)] border border-sky-300/40 overflow-hidden w-full backdrop-blur-2xl transition-all"
+              >
+                {/* Background ambient lighting */}
+                <div className="absolute top-0 right-0 w-56 h-56 bg-[#013CA0]/25 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-[#FFC911]/10 rounded-full blur-2xl pointer-events-none" />
 
-                <div className="relative z-10 space-y-5">
-                  {/* Card Header Bar with Live Blinking Pulse */}
-                  <div className="flex items-center justify-between border-b border-sky-200/25 pb-3.5">
+                <div className="relative z-10 space-y-3.5">
+                  {/* Card Header Bar: Live Pulse + Division Indicator + Prev/Next Controls */}
+                  <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
                     <div className="flex items-center gap-2">
                       <span className="relative flex h-2.5 w-2.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFC911] opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FFC911]" />
                       </span>
-                      <span className="font-mono text-[12px] font-bold uppercase tracking-wider text-emerald-400">
-                        B4B Live Operating Engine
+                      <span className="font-mono text-xs font-black uppercase tracking-wider text-[#FFC911]">
+                        Live Executive Telemetry
                       </span>
                     </div>
-                    <span className="font-mono text-[11px] px-2.5 py-0.5 rounded-full bg-sky-500/25 text-white border border-sky-300/35">
-                      12 DIVISIONS ACTIVE
-                    </span>
-                  </div>
 
-                  {/* 2 Floating Animated Solution Badges */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    <motion.div
-                      animate={{ y: [0, -4, 0] }}
-                      transition={{ repeat: Infinity, duration: 3.5, ease: 'easeInOut' }}
-                      className="p-3 rounded-xl bg-sky-500/20 hover:bg-sky-400/30 backdrop-blur-md border border-sky-200/35 shadow-md flex items-center gap-3 transition-colors"
-                    >
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 text-white flex items-center justify-center shrink-0 shadow-md border border-sky-200/40">
-                        <CreditCard className="w-5 h-5" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-[10px] font-mono font-bold text-[#F8C61A] uppercase tracking-wider truncate">POS Terminals</p>
-                        <p className="text-[12px] font-bold text-white truncate">Merchant Accounts Active</p>
-                      </div>
-                    </motion.div>
-
-                    <motion.div
-                      animate={{ y: [0, 4, 0] }}
-                      transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut', delay: 0.5 }}
-                      className="p-3 rounded-xl bg-sky-500/20 hover:bg-sky-400/30 backdrop-blur-md border border-sky-200/35 shadow-md flex items-center gap-3 transition-colors"
-                    >
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#F8C61A] to-[#EAB308] text-[#07142B] flex items-center justify-center shrink-0 shadow-md font-bold border border-white/40">
-                        <ShieldCheck className="w-5 h-5" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-[10px] font-mono font-bold text-blue-200 uppercase tracking-wider truncate">Credit Profile</p>
-                        <p className="text-[12px] font-bold text-white truncate">PAYDEX 80+ Target</p>
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  {/* 3 Live Telemetry KPI Cards */}
-                  <div className="grid grid-cols-3 gap-2.5">
-                    <div className="p-2.5 sm:p-3 rounded-xl bg-sky-500/20 border border-sky-200/30 backdrop-blur-md space-y-1">
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-[11px] text-blue-200">Readiness</span>
-                        <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-sky-500 text-white">
-                          Verified
-                        </span>
-                      </div>
-                      <p className="text-xl sm:text-2xl font-black font-mono text-white tabular-nums">100%</p>
-                      <p className="text-[12px] text-blue-100/80 truncate">Full Network</p>
-                    </div>
-
-                    <div className="p-2.5 sm:p-3 rounded-xl bg-sky-500/20 border border-sky-200/30 backdrop-blur-md space-y-1">
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-[11px] text-blue-200">Solutions</span>
-                        <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#F8C61A] text-[#07142B]">
-                          Active
-                        </span>
-                      </div>
-                      <p className="text-xl sm:text-2xl font-black font-mono text-[#F8C61A] tabular-nums">16</p>
-                      <p className="text-[12px] text-blue-100/80 truncate">Full Suite</p>
-                    </div>
-
-                    <div className="p-2.5 sm:p-3 rounded-xl bg-sky-500/20 border border-sky-200/30 backdrop-blur-md space-y-1">
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-[11px] text-blue-200">Support</span>
-                        <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-sky-500 text-white">
-                          1-on-1
-                        </span>
-                      </div>
-                      <p className="text-xl sm:text-2xl font-black font-mono text-white tabular-nums">Ready</p>
-                      <p className="text-[12px] text-blue-100/80 truncate">Coach Active</p>
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-mono text-[11px] px-2 py-0.5 rounded-full bg-[#07142B] text-[#B8C4D9] border border-white/10 font-bold">
+                        Div {selectedTerritory.regionNumber} of 12
+                      </span>
+                      <button
+                        onClick={() =>
+                          setActiveDivisionIndex((prev) =>
+                            prev === 0 ? TERRITORY_DIVISIONS.length - 1 : prev - 1
+                          )
+                        }
+                        className="w-6 h-6 rounded-md bg-[#07142B] hover:bg-[#013CA0] text-[#B8C4D9] hover:text-white flex items-center justify-center transition border border-white/10 cursor-pointer"
+                        title="Previous Division"
+                        aria-label="Previous Division"
+                      >
+                        <ChevronLeft className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() =>
+                          setActiveDivisionIndex((prev) => (prev + 1) % TERRITORY_DIVISIONS.length)
+                        }
+                        className="w-6 h-6 rounded-md bg-[#07142B] hover:bg-[#013CA0] text-[#B8C4D9] hover:text-white flex items-center justify-center transition border border-white/10 cursor-pointer"
+                        title="Next Division"
+                        aria-label="Next Division"
+                      >
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   </div>
 
-                  {/* Animated Business Growth Spline Chart */}
-                  <div className="p-3.5 rounded-xl bg-sky-500/15 border border-sky-200/30 backdrop-blur-md space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 font-mono text-[12px] text-blue-100">
-                        <Activity className="w-3.5 h-3.5 text-[#F8C61A]" />
-                        <span className="font-bold">Business Growth Framework</span>
-                      </div>
-                      <span className="font-mono text-[11px] font-bold text-[#F8C61A]">5 Foundations</span>
+                  {/* 3 Top KPIs Strip: Compact & High Contrast */}
+                  <div className="grid grid-cols-3 gap-2 text-center">
+                    <div className="p-2 rounded-xl bg-[#07142B]/90 border border-white/5 space-y-0.5">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-[#B8C4D9] block">Readiness</span>
+                      <p className="text-base sm:text-lg font-black font-mono text-white">100%</p>
+                      <span className="text-[10px] font-bold text-emerald-400 font-mono block">Verified</span>
                     </div>
-
-                    {/* SVG Spline with Gradient & Glowing Wave */}
-                    <div className="h-20 w-full relative">
-                      <svg className="w-full h-full overflow-visible" viewBox="0 0 320 80" preserveAspectRatio="none">
-                        <defs>
-                          <linearGradient id="chartWaveGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#0EA5E9" stopOpacity="0.5" />
-                            <stop offset="100%" stopColor="#0EA5E9" stopOpacity="0.0" />
-                          </linearGradient>
-                          <linearGradient id="splineStroke" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="#38BDF8" />
-                            <stop offset="70%" stopColor="#60A5FA" />
-                            <stop offset="100%" stopColor="#F8C61A" />
-                          </linearGradient>
-                        </defs>
-                        <line x1="0" y1="20" x2="320" y2="20" stroke="rgba(255,255,255,0.15)" strokeWidth="0.8" strokeDasharray="3 3" />
-                        <line x1="0" y1="50" x2="320" y2="50" stroke="rgba(255,255,255,0.15)" strokeWidth="0.8" strokeDasharray="3 3" />
-                        <path
-                          d="M0,65 Q40,55 80,48 T160,32 T240,18 T320,8 L320,80 L0,80 Z"
-                          fill="url(#chartWaveGradient)"
-                        />
-                        <path
-                          d="M0,65 Q40,55 80,48 T160,32 T240,18 T320,8"
-                          fill="none"
-                          stroke="url(#splineStroke)"
-                          strokeWidth="3"
-                          strokeLinecap="round"
-                        />
-                        <circle cx="80" cy="48" r="3.5" fill="#60A5FA" />
-                        <circle cx="160" cy="32" r="3.5" fill="#60A5FA" />
-                        <circle cx="240" cy="18" r="3.5" fill="#F8C61A" />
-                        <circle cx="320" cy="8" r="5" fill="#F8C61A" className="animate-pulse" />
-                      </svg>
+                    <div className="p-2 rounded-xl bg-[#07142B]/90 border border-white/5 space-y-0.5">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-[#B8C4D9] block">Solutions</span>
+                      <p className="text-base sm:text-lg font-black font-mono text-[#FFC911]">16</p>
+                      <span className="text-[10px] font-bold text-[#FFC911] font-mono block">Active Suite</span>
                     </div>
-
-                    <div className="flex items-center justify-between font-mono text-[11px] text-blue-200/90 pt-1">
-                      <span>1. Identity</span>
-                      <span>2. Funding</span>
-                      <span>3. Planning</span>
-                      <span>4. Marketing</span>
-                      <span className="text-[#F8C61A] font-bold">5. Systems</span>
+                    <div className="p-2 rounded-xl bg-[#07142B]/90 border border-white/5 space-y-0.5">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-[#B8C4D9] block">Support</span>
+                      <p className="text-base sm:text-lg font-black font-mono text-white">1-on-1</p>
+                      <span className="text-[10px] font-bold text-blue-300 font-mono block">Dedicated</span>
                     </div>
                   </div>
 
-                  {/* Active Selected Territory Division Card with Animated Transition */}
-                  <motion.div
-                    key={selectedTerritory.id}
-                    initial={{ opacity: 0, x: 8 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="p-3.5 rounded-xl bg-sky-500/20 border border-sky-200/35 backdrop-blur-md space-y-1.5"
+                  {/* Auto-Cycling Division Showcase Box (with AnimatePresence) */}
+                  <div className="relative rounded-xl bg-[#07142B]/90 border border-white/10 p-3.5 overflow-hidden">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={selectedTerritory.id}
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -10 }}
+                        transition={{ duration: 0.3 }}
+                        className="space-y-2"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <span className="text-[10px] font-mono uppercase font-black px-2 py-0.5 rounded-full bg-[#013CA0] text-white tracking-wider inline-block">
+                              Federal Reserve Div #{selectedTerritory.regionNumber}
+                            </span>
+                            <h3 className="text-sm sm:text-base font-extrabold text-white mt-1 leading-snug">
+                              {selectedTerritory.name}
+                            </h3>
+                          </div>
+                          <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-[#0D2147] text-[#FFC911] border border-[#FFC911]/30 font-bold shrink-0">
+                            HQ: {selectedTerritory.headOffice}
+                          </span>
+                        </div>
+
+                        <p className="text-xs text-[#B8C4D9] leading-relaxed line-clamp-2">
+                          <strong className="text-white">States Covered: </strong>
+                          <span>{selectedTerritory.coverage}</span>
+                        </p>
+                      </motion.div>
+                    </AnimatePresence>
+
+                    {/* Auto-cycle Progress Line */}
+                    <div className="mt-2.5 pt-2 border-t border-white/5 flex items-center justify-between gap-3">
+                      <div className="flex-1 bg-white/10 h-1 rounded-full overflow-hidden">
+                        {isAutoCycling && (
+                          <motion.div
+                            key={activeDivisionIndex}
+                            initial={{ width: '0%' }}
+                            animate={{ width: '100%' }}
+                            transition={{ duration: 4, ease: 'linear' }}
+                            className="h-full bg-gradient-to-r from-[#013CA0] to-[#FFC911]"
+                          />
+                        )}
+                      </div>
+                      <span className="text-[10px] font-mono text-[#B8C4D9]/70 shrink-0">
+                        {isAutoCycling ? 'Auto-cycling (4s)' : 'Paused (hover)'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* 12 Mini Division Quick Selector Bars */}
+                  <div className="flex items-center justify-between gap-1 px-0.5">
+                    {TERRITORY_DIVISIONS.map((terr, idx) => (
+                      <button
+                        key={terr.id}
+                        onClick={() => setActiveDivisionIndex(idx)}
+                        className={`h-1.5 flex-1 rounded-full transition-all cursor-pointer ${
+                          activeDivisionIndex === idx
+                            ? 'bg-[#FFC911] shadow-xs scale-y-125'
+                            : 'bg-white/15 hover:bg-white/40'
+                        }`}
+                        title={`Div ${terr.regionNumber}: ${terr.name}`}
+                        aria-label={`Jump to Division ${terr.regionNumber}`}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Connect with Division Coach CTA */}
+                  <button
+                    onClick={() => setCoachModalOpen(true)}
+                    className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#FFC911] to-[#FFBD0A] hover:brightness-105 active:scale-[0.99] text-[#07142B] font-bold text-xs flex items-center justify-between transition shadow-md group cursor-pointer"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[13px] sm:text-[14px] font-bold text-[#F8C61A] flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-[#F8C61A] animate-ping" />
-                        Division #{selectedTerritory.regionNumber}: {selectedTerritory.name}
-                      </span>
-                      <span className="font-mono text-[11px] px-2 py-0.5 rounded-full bg-[#07142B] text-sky-200 border border-sky-300/30">
-                        HQ: {selectedTerritory.headOffice}
-                      </span>
-                    </div>
-                    <p className="text-[13px] text-blue-100/90 leading-relaxed">
-                      <strong className="text-white">States Covered:</strong> {selectedTerritory.coverage}
-                    </p>
-                  </motion.div>
-
-                  {/* Quick Division Selector Pills */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between font-mono text-[11px] text-blue-200">
-                      <span className="uppercase tracking-wider">Federal Reserve Division Switcher:</span>
-                      <span className="text-[#F8C61A] font-bold">Div {selectedTerritory.regionNumber} of 12</span>
-                    </div>
-                    <div className="grid grid-cols-4 sm:grid-cols-6 gap-1.5">
-                      {TERRITORY_DIVISIONS.map((terr) => (
-                        <button
-                          key={terr.id}
-                          onClick={() => setSelectedTerritoryId(terr.id)}
-                          className={`px-1.5 py-1 rounded-lg font-mono text-[12px] font-medium transition-all truncate text-center cursor-pointer min-h-[32px] ${
-                            selectedTerritoryId === terr.id
-                              ? 'bg-[#F8C61A] text-[#07142B] font-extrabold shadow-md scale-105 border-0'
-                              : 'bg-sky-500/20 text-white/90 hover:bg-sky-400/30 border border-sky-300/30'
-                          }`}
-                        >
-                          Div {terr.regionNumber}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Territory Action Footer */}
-                  <div className="pt-2 border-t border-sky-200/25 flex items-center justify-between">
-                    <span className="text-[13px] text-blue-200">Regional assistance ready:</span>
-                    <button
-                      onClick={() => setCoachModalOpen(true)}
-                      className="font-mono text-[13px] sm:text-[14px] font-bold text-[#F8C61A] hover:underline inline-flex items-center gap-1.5 cursor-pointer group"
-                    >
+                    <span className="flex items-center gap-2 font-mono">
+                      <PhoneCall className="w-3.5 h-3.5 text-[#07142B]" />
                       <span>Connect with Div #{selectedTerritory.regionNumber} Coach</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </button>
+                    </span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+
+                  {/* Auto-scrolling Continuous Live Ticker Marquee */}
+                  <div className="overflow-hidden relative w-full py-1.5 bg-[#07142B]/80 rounded-lg border border-white/5">
+                    <motion.div
+                      className="flex items-center gap-6 whitespace-nowrap text-[11px] font-mono font-medium text-[#B8C4D9]"
+                      animate={{ x: ['0%', '-50%'] }}
+                      transition={{ repeat: Infinity, ease: 'linear', duration: 22 }}
+                    >
+                      {[...TELEMETRY_TICKER, ...TELEMETRY_TICKER].map((item, i) => (
+                        <span key={i} className="flex items-center gap-2 shrink-0">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#FFC911]" />
+                          <span>{item}</span>
+                        </span>
+                      ))}
+                    </motion.div>
                   </div>
                 </div>
               </div>
@@ -471,9 +496,9 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 2. 16 SOLUTIONS (UNIQUE 3D SOLUTIONS ECOSYSTEM BACKDROP)
+          SECTION 2. 16 SOLUTIONS (RESPONSIVE SLIDING CAROUSEL WITH 3D BACKDROP)
           ========================================================================= */}
-      <section id="solutions-showcase" className="py-24 text-white relative overflow-hidden">
+      <section id="solutions-showcase" className="py-20 text-white relative border-b border-sky-400/25 overflow-hidden">
         {/* Background Visual Layer: Unique 3D Solutions Ecosystem Backdrop */}
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
           <img
@@ -481,24 +506,23 @@ export const HomePage: React.FC = () => {
             alt="B4B Solutions 3D technology ecosystem backdrop"
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover object-center scale-105"
+            className="w-full h-full object-cover object-center scale-100"
           />
-          {/* Luminous blue overlays harmonizing with Section 3 */}
-          <div className="absolute inset-0 bg-[#0A2A5E]/30" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
-          {/* Seamless top and bottom blending gradients to eliminate harsh section breaks */}
-          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#0A2552]/80 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#08204D]/80" />
+          {/* Luminous clean blue overlay */}
+          <div className="absolute inset-0 bg-[#0A2A5E]/45" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/85 via-[#0B2C68]/55 to-[#08204D]/40" />
+          {/* Top and Bottom soft fade into base page background #07142B */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#07142B] via-transparent to-[#07142B] opacity-75" />
         </div>
 
         {/* Ambient lighting accent */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-sky-500/25 rounded-full blur-3xl pointer-events-none z-[1]" />
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-sky-400/20 rounded-full blur-3xl pointer-events-none z-[1]" />
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-sky-500/20 rounded-full blur-3xl pointer-events-none z-[1]" />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-sky-400/15 rounded-full blur-3xl pointer-events-none z-[1]" />
 
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           {/* Centered Section Header */}
-          <div className="text-center max-w-3xl mx-auto space-y-4 mb-12">
+          <div className="text-center max-w-3xl mx-auto space-y-4 mb-8">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/20 backdrop-blur-md border border-sky-300/40 shadow-sm text-xs font-bold text-[#F8C61A] font-mono">
               <Layers className="w-3.5 h-3.5 text-[#F8C61A]" />
               <span>THE B4B BUSINESS SOLUTIONS NETWORK</span>
@@ -517,7 +541,7 @@ export const HomePage: React.FC = () => {
               {['All', 'Finance', 'Growth', 'Operations', 'Technology'].map((cat) => (
                 <button
                   key={cat}
-                  onClick={() => setActiveCategory(cat)}
+                  onClick={() => handleCategoryChange(cat)}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer font-mono min-h-[44px] ${
                     activeCategory === cat
                       ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg border border-sky-200/50'
@@ -530,22 +554,52 @@ export const HomePage: React.FC = () => {
             </div>
           </div>
 
-          {/* 16 Solutions Grid: 3 columns desktop, 2 tablet, 1 mobile, 24px gaps */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+          {/* Slider Control Bar: Counter + Slide Left/Right Buttons */}
+          <div className="flex items-center justify-between gap-4 mb-4 px-1">
+            <div className="flex items-center gap-2 text-xs font-mono text-sky-200">
+              <span className="w-2 h-2 rounded-full bg-[#F8C61A] animate-pulse" />
+              <span>
+                Showing <strong>{filteredSolutions.length}</strong> Solutions • Slide to explore
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => slideSolutions('left')}
+                disabled={!canScrollLeft}
+                aria-label="Previous solutions"
+                className="w-10 h-10 rounded-xl bg-sky-500/20 hover:bg-sky-500/35 border border-sky-300/40 text-white flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed hover:border-sky-200 transition shadow-md cursor-pointer active:scale-95"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => slideSolutions('right')}
+                disabled={!canScrollRight}
+                aria-label="Next solutions"
+                className="w-10 h-10 rounded-xl bg-sky-500/20 hover:bg-sky-500/35 border border-sky-300/40 text-white flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed hover:border-sky-200 transition shadow-md cursor-pointer active:scale-95"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* 16 Solutions Horizontal Sliding Track */}
+          <div
+            ref={solutionsTrackRef}
+            onScroll={updateScrollButtons}
+            className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-6 pt-2 px-1"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
             {filteredSolutions.map((solution, idx) => {
               const IconComponent = iconMap[solution.iconName] || Layers
 
               return (
-                <motion.div
+                <div
                   key={solution.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: (idx % 3) * 0.05 }}
-                  className="group flex flex-col justify-between h-full rounded-2xl overflow-hidden bg-gradient-to-r from-sky-500/25 to-blue-600/20 hover:from-sky-500/35 hover:to-blue-600/30 backdrop-blur-xl border border-sky-300/40 hover:border-sky-200/80 shadow-[0_8px_24px_rgba(14,165,233,0.16)] hover:shadow-[0_16px_40px_rgba(14,165,233,0.28)] hover:-translate-y-2 transition-all duration-300"
+                  className="snap-start shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex flex-col justify-between rounded-2xl overflow-hidden bg-gradient-to-b from-[#0F356B]/90 via-[#0C2A54]/90 to-[#081F42]/95 hover:from-[#134485]/95 hover:to-[#0D2E5E]/95 backdrop-blur-xl border border-sky-300/40 hover:border-sky-200/90 shadow-[0_10px_28px_rgba(4,22,54,0.45)] hover:shadow-[0_16px_40px_rgba(14,165,233,0.3)] transition-all duration-300 group"
                 >
                   {/* Visual Photo Header with Image Zoom, Badges & Floating Icon */}
-                  <div className="relative w-full h-44 sm:h-48 overflow-hidden bg-slate-900">
+                  <div className="relative w-full h-44 sm:h-48 overflow-hidden bg-slate-900 shrink-0">
                     <img
                       src={SOLUTION_IMAGES[solution.id]}
                       alt={`${solution.title} - B4B America commercial business solution`}
@@ -573,25 +627,25 @@ export const HomePage: React.FC = () => {
                   </div>
 
                   {/* Card Content & Action Buttons */}
-                  <div className="solution-card-body">
+                  <div className="solution-card-body flex-1 flex flex-col justify-between">
                     <div className="space-y-2.5">
                       {/* Title: 20px, semibold, text with hover color transition */}
-                      <h3 className="solution-card-title group-hover:text-[#F8C61A] transition-colors">
+                      <h3 className="solution-card-title group-hover:text-[#F8C61A] transition-colors line-clamp-2 min-h-[48px] flex items-center">
                         {solution.title}
                       </h3>
 
                       {/* Description: minimum 15px, line-height 1.6, luminous text, max 3 lines */}
-                      <p className="solution-card-desc">
+                      <p className="solution-card-desc line-clamp-3 min-h-[66px]">
                         {solution.shortDesc}
                       </p>
                     </div>
 
                     {/* Buttons Pinned to the Bottom of the Card */}
-                    <div className="pt-5 mt-5 border-t border-sky-300/20 flex flex-col gap-2.5">
+                    <div className="pt-4 mt-4 border-t border-sky-300/20 flex flex-col gap-2.5">
                       {/* Primary Button: Full-width, Logo Blue background, white text, 14px */}
                       <button
                         onClick={() => setCoachModalOpen(true)}
-                        className="solution-btn-primary group/btn"
+                        className="solution-btn-primary group/btn cursor-pointer"
                       >
                         <PhoneCall className="w-4 h-4 text-white shrink-0" />
                         <span>{solution.ctaText}</span>
@@ -607,13 +661,28 @@ export const HomePage: React.FC = () => {
                       </Link>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               )
             })}
           </div>
 
-          {/* Quick link below grid */}
-          <div className="text-center pt-10">
+          {/* Pagination Indicators & Quick link */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-sky-300/20">
+            <div className="flex items-center gap-2">
+              {Array.from({ length: Math.ceil(filteredSolutions.length / 3) }).map((_, pIdx) => (
+                <button
+                  key={pIdx}
+                  onClick={() => scrollSolutionsToPage(pIdx)}
+                  aria-label={`Go to slide page ${pIdx + 1}`}
+                  className={`h-2 rounded-full transition-all cursor-pointer ${
+                    activeSlideIndex === pIdx
+                      ? 'w-8 bg-[#F8C61A] shadow-xs'
+                      : 'w-2 bg-sky-400/30 hover:bg-sky-400/60'
+                  }`}
+                />
+              ))}
+            </div>
+
             <Link
               to="/solutions"
               className="inline-flex items-center gap-2 text-sm font-bold text-sky-300 hover:text-[#F8C61A] hover:underline font-mono min-h-[44px]"
@@ -626,24 +695,22 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 3. CRM & ERP SPOTLIGHT: B4BAPP (UNIQUE 3D APP DASHBOARD BACKDROP)
+          SECTION 3. CRM & ERP SPOTLIGHT: B4BAPP (CRISP 3D BACKDROP WITH CLEAN BORDER)
           ========================================================================= */}
-      <section id="software" className="py-24 text-white relative overflow-hidden">
+      <section id="software" className="py-24 text-white relative border-b border-sky-400/25 overflow-hidden">
         {/* Background Visual Layer showcasing the unique 3D CRM & ERP graphic */}
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
           <img
-            src={b4bappPreviewImg}
+            src={softwareBackdropImg}
             alt="B4BAPP Enterprise CRM and ERP 3D technology dashboard visual"
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover object-center scale-105"
+            className="w-full h-full object-cover object-center"
           />
-          {/* Luminous blue overlay: harmonizes with the bright sky-blue 3D graphic */}
-          <div className="absolute inset-0 bg-[#0A2A5E]/30" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
-          {/* Seamless top and bottom blending gradients to eliminate harsh section breaks */}
-          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#08204D]/80 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#0A2552]/80" />
+          {/* Luminous clean blue overlay */}
+          <div className="absolute inset-0 bg-[#0A2A5E]/45" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/85 via-[#0B2C68]/55 to-[#08204D]/40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#07142B] via-transparent to-[#07142B] opacity-75" />
         </div>
 
         {/* Ambient lighting accent */}
@@ -823,9 +890,9 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 4. INDUSTRIES WE SERVE (UNIQUE 3D COMMERCIAL TRADES BACKDROP)
+          SECTION 4. INDUSTRIES WE SERVE (CRISP 3D BACKDROP WITH CLEAN BORDER)
           ========================================================================= */}
-      <section className="py-24 text-white relative overflow-hidden">
+      <section className="py-24 text-white relative border-b border-sky-400/25 overflow-hidden">
         {/* Background Visual Layer: Unique 3D Commercial Trades & Logistics Grid */}
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
           <img
@@ -833,14 +900,12 @@ export const HomePage: React.FC = () => {
             alt="B4B Commercial Industries 3D trade logistics and buildings grid"
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover object-center scale-105"
+            className="w-full h-full object-cover object-center"
           />
-          {/* Luminous blue overlay harmonizing with the whole page */}
-          <div className="absolute inset-0 bg-[#0A2A5E]/30" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
-          {/* Seamless top and bottom blending gradients to eliminate harsh section breaks */}
-          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#0A2552]/80 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#09224A]/80" />
+          {/* Luminous clean blue overlay */}
+          <div className="absolute inset-0 bg-[#0A2A5E]/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/80 via-[#0B2C68]/50 to-[#08204D]/35" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#07142B] via-transparent to-[#07142B] opacity-70" />
         </div>
 
         {/* Ambient lighting accent */}
@@ -881,7 +946,7 @@ export const HomePage: React.FC = () => {
                     setActiveIndustryFilter(ind.name)
                     setCoachModalOpen(true)
                   }}
-                  className="group relative rounded-2xl aspect-[4/3] overflow-hidden cursor-pointer bg-gradient-to-r from-sky-500/25 to-blue-600/20 hover:from-sky-500/35 hover:to-blue-600/30 backdrop-blur-xl border border-sky-300/40 hover:border-sky-200/80 shadow-[0_8px_24px_rgba(14,165,233,0.16)] hover:shadow-[0_16px_40px_rgba(14,165,233,0.28)] hover:-translate-y-2 transition-all duration-300"
+                  className="industry-photo-tile group relative rounded-2xl aspect-[4/3] overflow-hidden cursor-pointer bg-gradient-to-r from-sky-500/25 to-blue-600/20 hover:from-sky-500/35 hover:to-blue-600/30 backdrop-blur-xl border border-sky-300/40 hover:border-sky-200/80 shadow-[0_8px_24px_rgba(14,165,233,0.16)] hover:shadow-[0_16px_40px_rgba(14,165,233,0.28)] hover:-translate-y-2 transition-all duration-300"
                 >
                   {/* Photo or Deep Navy Fallback */}
                   {ind.image ? (
@@ -932,9 +997,9 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          SECTION 5. ADVISORY INTAKE & DEMO DESK (UNIQUE 3D EXECUTIVE ADVISORY BACKDROP)
+          SECTION 5. ADVISORY INTAKE & DEMO DESK (CRISP 3D BACKDROP WITH CLEAN BORDER)
           ========================================================================= */}
-      <section className="py-24 text-white relative overflow-hidden">
+      <section className="py-24 text-white relative border-b border-sky-400/25 overflow-hidden">
         {/* Background Visual Layer: Unique 3D Executive Advisory & Coaching Workspace */}
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
           <img
@@ -942,14 +1007,12 @@ export const HomePage: React.FC = () => {
             alt="B4B Advisory Intake 3D executive coaching workspace"
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover object-center scale-105"
+            className="w-full h-full object-cover object-center"
           />
-          {/* Luminous blue overlay harmonizing with the whole page */}
-          <div className="absolute inset-0 bg-[#0A2A5E]/30" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/75 via-[#0B2C68]/45 to-[#08204D]/25" />
-          {/* Seamless top and bottom blending gradients to eliminate harsh section breaks */}
-          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#09224A]/80 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#07142B]" />
+          {/* Luminous clean blue overlay */}
+          <div className="absolute inset-0 bg-[#0A2A5E]/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#08204D]/80 via-[#0B2C68]/50 to-[#08204D]/35" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#07142B] via-transparent to-[#07142B] opacity-70" />
         </div>
 
         {/* Ambient lighting accent */}
@@ -1031,10 +1094,6 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* =========================================================================
-          SECTION 6. FOOTER (MIDNIGHT BAND: Midnight Navy #07142B)
-          ========================================================================= */}
-      <Footer />
 
       {/* Global Coach Modal Triggered by Buttons */}
       <CoachRequestModal

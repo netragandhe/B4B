@@ -43,6 +43,8 @@ export const BRAND_IDENTITY = {
   vision: 'The Little Engine That Could, Made All The Small Businesses In America Thrive',
   mission:
     'We design ideas and turn prospects into clients. We offer solutions for you to build business credit, accept payments and secure business funding. During the growth phase, you may encounter challenges, like integrating new technology with older systems. We work smartly to connect you with the most cost-efficient technology to improve your business operations so you can experience healthy business growth.',
+  missionShort:
+    'We design ideas and turn prospects into clients. We offer proven solutions to build business credit, accept payments, and secure business funding.',
   mantra: 'Dreamers, Wake Up, Write A Plan, Design It, Be Ambitious NOW Execute!',
   mantraSteps: [
     { step: '01', title: 'Wake Up', desc: 'Acknowledge your potential and recognize the opportunity.' },
