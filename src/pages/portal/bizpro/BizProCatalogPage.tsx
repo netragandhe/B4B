@@ -32,6 +32,7 @@ import { Drawer } from '@/components/ui/Drawer'
 import { useToast } from '@/components/ui/Toast'
 import { THE_16_SERVICES, ServiceItem } from '@/mock-data/bizproData'
 import { formatCurrency } from '@/lib/utils'
+import { generateCommercialProposalPdf } from '@/lib/services/proposalService'
 
 export const BizProCatalogPage: React.FC = () => {
   const { toast } = useToast()
@@ -41,6 +42,8 @@ export const BizProCatalogPage: React.FC = () => {
   // Proposal items list
   const [proposalItems, setProposalItems] = useState<ServiceItem[]>([])
   const [proposalDrawerOpen, setProposalDrawerOpen] = useState(false)
+  const [targetClientCompany, setTargetClientCompany] = useState('Apex Freight & Logistics LLC')
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false)
 
   const categories = ['all', 'Capital', 'Advisory', 'Operations', 'Growth']
 
@@ -227,18 +230,54 @@ export const BizProCatalogPage: React.FC = () => {
                 </div>
               </div>
 
+              <div className="pt-2">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">
+                  Target Client Company Name
+                </label>
+                <input
+                  type="text"
+                  value={targetClientCompany}
+                  onChange={(e) => setTargetClientCompany(e.target.value)}
+                  placeholder="e.g. Apex Freight & Logistics LLC"
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-[#1E3A5F] bg-white dark:bg-[#0D2147] text-slate-900 dark:text-white font-medium focus:outline-none focus:ring-1 focus:ring-[#013CA0]"
+                />
+              </div>
+
               <Button
                 variant="accent"
                 size="md"
-                onClick={() => {
-                  setProposalDrawerOpen(false)
-                  setProposalItems([])
-                  toast({ title: 'Proposal Dispatched!', description: 'Generated PDF proposal sent to client.', type: 'success' })
+                isLoading={isGeneratingPdf}
+                onClick={async () => {
+                  try {
+                    setIsGeneratingPdf(true)
+                    const filename = await generateCommercialProposalPdf({
+                      clientCompany: targetClientCompany.trim() || 'Apex Freight & Logistics LLC',
+                      coachName: 'David Ross',
+                      coachTitle: 'Senior Commercial Advisor & Fractional CFO',
+                      items: proposalItems,
+                    })
+                    setProposalDrawerOpen(false)
+                    setProposalItems([])
+                    toast({
+                      title: 'Official B4B Proposal Dispatched!',
+                      description: `Generated & downloaded "${filename}". Automatically indexed into eBOX Vault.`,
+                      type: 'success',
+                    })
+                  } catch (err) {
+                    console.error('Failed to generate proposal PDF:', err)
+                    toast({
+                      title: 'Proposal Export Failed',
+                      description: 'Could not generate PDF document.',
+                      type: 'error',
+                    })
+                  } finally {
+                    setIsGeneratingPdf(false)
+                  }
                 }}
                 rightIcon={<ArrowRight className="w-4 h-4" />}
-                className="w-full justify-center"
+                className="w-full justify-center shadow-md shadow-[#FFC911]/20 font-bold"
               >
-                Generate & Dispatch Proposal PDF
+                Generate & Download B4B Proposal PDF
               </Button>
             </>
           ) : (

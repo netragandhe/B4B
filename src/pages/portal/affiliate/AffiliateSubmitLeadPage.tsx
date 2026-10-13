@@ -8,6 +8,7 @@ import { useToast } from '@/components/ui/Toast'
 import { CMS_16_SOLUTION_PAGES } from '@/mock-data/adminFullData'
 import { formatCurrency } from '@/lib/utils'
 import { Can } from '@/components/auth/Can'
+import { leadService } from '@/lib/services/leadService'
 
 export const AffiliateSubmitLeadPage: React.FC = () => {
   const { toast } = useToast()
@@ -19,25 +20,45 @@ export const AffiliateSubmitLeadPage: React.FC = () => {
   const [serviceInterest, setServiceInterest] = useState(CMS_16_SOLUTION_PAGES[0].title)
   const [facilityAmount, setFacilityAmount] = useState(350000)
   const [notes, setNotes] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!leadName || !email) {
       toast({ title: 'Validation Error', description: 'Lead name and email are required.', type: 'warning' })
       return
     }
 
-    toast({
-      title: 'Lead Fast-Tracked Successfully!',
-      description: `Submitted ${leadName} (${businessName}) for ${serviceInterest} (${formatCurrency(facilityAmount)}). Assigned to Underwriting Desk.`,
-      type: 'success',
-    })
+    try {
+      setIsSubmitting(true)
+      await leadService.addLead({
+        name: leadName.trim(),
+        company: businessName.trim() || 'Referral Commercial Client',
+        email: email.trim(),
+        phone: phone.trim(),
+        dealValue: facilityAmount,
+        serviceInterest,
+        notes: notes.trim(),
+        source: 'Affiliate Direct Referral',
+      })
 
-    setLeadName('')
-    setBusinessName('')
-    setPhone('')
-    setEmail('')
-    setNotes('')
+      toast({
+        title: 'Lead Fast-Tracked Successfully!',
+        description: `Submitted ${leadName} (${businessName}) for ${serviceInterest} (${formatCurrency(facilityAmount)}). Synced into Biz Pro CRM pipeline.`,
+        type: 'success',
+      })
+
+      setLeadName('')
+      setBusinessName('')
+      setPhone('')
+      setEmail('')
+      setNotes('')
+    } catch (err) {
+      console.error(err)
+      toast({ title: 'Submission Error', description: 'Could not dispatch lead.', type: 'error' })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
