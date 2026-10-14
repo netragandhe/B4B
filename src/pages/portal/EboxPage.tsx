@@ -228,6 +228,14 @@ export const EboxPage: React.FC = () => {
         }
       />
 
+      {/* DEMO NOTICE BANNER */}
+      <div className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300 text-xs font-medium">
+        <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+        <span>
+          <strong>Frontend Vault Preview:</strong> Uploads, document preview drawers, and PDF downloads operate in local memory for interface demonstration. Cloud synchronization and multi-tenant live access will connect to backend storage services upon deployment.
+        </span>
+      </div>
+
       {/* TOP VAULT METRICS KPIs - CLICKABLE FILTERS */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <button

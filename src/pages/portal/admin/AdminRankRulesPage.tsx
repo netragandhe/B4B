@@ -127,11 +127,11 @@ export const AdminRankRulesPage: React.FC = () => {
       />
 
       {/* RANK MATRIX TABLE */}
-      <Card variant="default" className="overflow-hidden border border-slate-200 dark:border-slate-800">
+      <Card variant="default" className="overflow-hidden border border-blue-200/90 shadow-xs bg-[#EEF4FC]">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold">
+              <tr className="bg-[#DFECFB] border-b border-blue-200 text-slate-700 font-bold">
                 <th className="py-3 px-4">Rank Level</th>
                 <th className="py-3 px-4">Title</th>
                 <th className="py-3 px-4">Personal Monthly Vol Range</th>
@@ -141,20 +141,20 @@ export const AdminRankRulesPage: React.FC = () => {
                 <th className="py-3 px-4">Team Override %</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-blue-100 bg-white/70">
               {rules.map((r) => (
-                <tr key={r.level} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors">
+                <tr key={r.level} className="hover:bg-blue-50/80 transition-colors">
                   <td className="py-3 px-4">
                     <Badge variant={r.level >= 4 ? 'gold' : 'navy'} size="sm">
                       Rank {r.level}
                     </Badge>
                   </td>
-                  <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">
+                  <td className="py-3 px-4 font-bold text-slate-900">
                     <input
                       type="text"
                       value={r.title}
                       onChange={(e) => handleRuleChange(r.level, 'title', e.target.value)}
-                      className="px-2 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 w-full font-bold"
+                      className="px-2.5 py-1 rounded-lg border border-blue-200 bg-white text-slate-900 w-full font-bold shadow-xs focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
                     />
                   </td>
                   <td className="py-3 px-4">
@@ -163,14 +163,14 @@ export const AdminRankRulesPage: React.FC = () => {
                         type="number"
                         value={r.personalMonthlyVolumeMin}
                         onChange={(e) => handleRuleChange(r.level, 'personalMonthlyVolumeMin', Number(e.target.value))}
-                        className="w-24 px-1.5 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 font-mono"
+                        className="w-24 px-2 py-1 rounded-lg border border-blue-200 bg-white text-slate-900 font-mono shadow-xs focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
                       />
-                      <span>-</span>
+                      <span className="text-slate-400">-</span>
                       <input
                         type="number"
                         value={r.personalMonthlyVolumeMax}
                         onChange={(e) => handleRuleChange(r.level, 'personalMonthlyVolumeMax', Number(e.target.value))}
-                        className="w-24 px-1.5 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 font-mono"
+                        className="w-24 px-2 py-1 rounded-lg border border-blue-200 bg-white text-slate-900 font-mono shadow-xs focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
                       />
                     </div>
                   </td>
@@ -180,7 +180,7 @@ export const AdminRankRulesPage: React.FC = () => {
                       min={1}
                       value={r.consecutiveMonthsRequired}
                       onChange={(e) => handleRuleChange(r.level, 'consecutiveMonthsRequired', Number(e.target.value))}
-                      className="w-16 px-1.5 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-center font-bold"
+                      className="w-16 px-1.5 py-1 rounded-lg border border-blue-200 bg-white text-slate-900 text-center font-bold shadow-xs focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
                     />
                   </td>
                   <td className="py-3 px-4">
@@ -189,7 +189,7 @@ export const AdminRankRulesPage: React.FC = () => {
                       min={0}
                       value={r.requiredTeamMembers}
                       onChange={(e) => handleRuleChange(r.level, 'requiredTeamMembers', Number(e.target.value))}
-                      className="w-16 px-1.5 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-center font-bold"
+                      className="w-16 px-1.5 py-1 rounded-lg border border-blue-200 bg-white text-slate-900 text-center font-bold shadow-xs focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
                     />
                   </td>
                   <td className="py-3 px-4">
@@ -200,9 +200,9 @@ export const AdminRankRulesPage: React.FC = () => {
                         max={100}
                         value={r.directCommissionPercent}
                         onChange={(e) => handleRuleChange(r.level, 'directCommissionPercent', Number(e.target.value))}
-                        className="w-16 px-1.5 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-center font-bold text-blue-600 dark:text-blue-400"
+                        className="w-16 px-1.5 py-1 rounded-lg border border-blue-200 bg-white text-center font-bold text-[#013CA0] shadow-xs focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
                       />
-                      <span>%</span>
+                      <span className="text-slate-500 font-bold">%</span>
                     </div>
                   </td>
                   <td className="py-3 px-4">
@@ -213,9 +213,9 @@ export const AdminRankRulesPage: React.FC = () => {
                         max={100}
                         value={r.teamOverridePercent}
                         onChange={(e) => handleRuleChange(r.level, 'teamOverridePercent', Number(e.target.value))}
-                        className="w-16 px-1.5 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-center font-bold text-emerald-600 dark:text-emerald-400"
+                        className="w-16 px-1.5 py-1 rounded-lg border border-blue-200 bg-white text-center font-bold text-emerald-700 shadow-xs focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
                       />
-                      <span>%</span>
+                      <span className="text-slate-500 font-bold">%</span>
                     </div>
                   </td>
                 </tr>

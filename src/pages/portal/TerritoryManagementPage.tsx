@@ -205,9 +205,9 @@ export const TerritoryManagementPage: React.FC = () => {
           />
 
           {/* FED DISTRICTS INTERACTIVE COLOR LEGEND */}
-          <Card variant="default" className="p-4">
-            <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5">
-              <Layers className="w-3.5 h-3.5 text-blue-500" />
+          <Card variant="default" className="p-4 border border-blue-200/90 shadow-xs bg-[#EEF4FC]">
+            <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5 text-[#013CA0]" />
               <span>12 Federal Reserve Districts & Assigned Leadership</span>
             </h3>
 
@@ -216,22 +216,22 @@ export const TerritoryManagementPage: React.FC = () => {
                 <button
                   key={d.id}
                   onClick={() => handleSelectDistrict(d.number)}
-                  className={`p-2 rounded-xl border text-left transition-all ${
+                  className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                     selectedDistrictNumber === d.number
-                      ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-950/40 ring-2 ring-blue-500/30'
-                      : 'border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/40 hover:border-slate-400'
+                      ? 'border-[#013CA0] bg-white ring-2 ring-blue-500/30 shadow-xs'
+                      : 'border-blue-200/80 bg-white/80 hover:bg-white hover:border-blue-400 shadow-xs'
                   }`}
                 >
                   <div className="flex items-center gap-1.5 mb-1">
                     <span
-                      className="w-3 h-3 rounded-full shrink-0"
+                      className="w-3 h-3 rounded-full shrink-0 shadow-xs"
                       style={{ backgroundColor: FED_DISTRICT_COLORS[d.number] }}
                     />
-                    <span className="font-bold text-slate-900 dark:text-white truncate">
+                    <span className="font-bold text-slate-900 truncate">
                       {d.number}. {d.name}
                     </span>
                   </div>
-                  <div className="text-[11px] text-slate-500 truncate">{d.assignedLeaderName || 'Unassigned'}</div>
+                  <div className="text-[11px] text-slate-500 truncate font-medium">{d.assignedLeaderName || 'Unassigned'}</div>
                 </button>
               ))}
             </div>
@@ -239,11 +239,11 @@ export const TerritoryManagementPage: React.FC = () => {
         </div>
       ) : (
         /* VIEW MODE 2: TABLE / LIST VIEW */
-        <Card variant="default" className="overflow-hidden border border-slate-200 dark:border-slate-800">
+        <Card variant="default" className="overflow-hidden border border-blue-200/90 shadow-xs bg-[#EEF4FC]">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-slate-50 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold">
+                <tr className="bg-[#DFECFB] border-b border-blue-200 text-slate-700 font-bold">
                   <th className="py-3 px-4">District</th>
                   <th className="py-3 px-4">Headquarters</th>
                   <th className="py-3 px-4">States Covered</th>
@@ -253,14 +253,14 @@ export const TerritoryManagementPage: React.FC = () => {
                   <th className="py-3 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-blue-100 bg-white/70">
                 {filteredDistricts.map((d) => (
                   <tr
                     key={d.id}
                     onClick={() => handleSelectDistrict(d.number)}
-                    className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors cursor-pointer"
+                    className="hover:bg-blue-50/80 transition-colors cursor-pointer"
                   >
-                    <td className="py-3 px-4 font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <td className="py-3 px-4 font-bold text-slate-900 flex items-center gap-2">
                       <span
                         className="w-3 h-3 rounded-full shrink-0"
                         style={{ backgroundColor: FED_DISTRICT_COLORS[d.number] }}
@@ -325,17 +325,17 @@ export const TerritoryManagementPage: React.FC = () => {
           <div className="space-y-6 text-left text-xs">
             {/* KPI Stat Cards */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 space-y-1">
-                <span className="text-[10px] font-bold text-slate-400 uppercase">Monthly Target</span>
-                <div className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">
+              <div className="p-3.5 rounded-xl border border-blue-200/80 bg-white space-y-1 shadow-xs">
+                <span className="text-[10px] font-bold text-slate-500 uppercase">Monthly Target</span>
+                <div className="text-base font-extrabold text-emerald-700">
                   {formatCurrency(activeDistrict.monthlyVolumeTarget)}
                 </div>
                 <div className="text-[10px] text-slate-500">Funded deal quota</div>
               </div>
 
-              <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 space-y-1">
-                <span className="text-[10px] font-bold text-slate-400 uppercase">Active B4B Coaches</span>
-                <div className="text-base font-extrabold text-blue-600 dark:text-blue-400">
+              <div className="p-3.5 rounded-xl border border-blue-200/80 bg-white space-y-1 shadow-xs">
+                <span className="text-[10px] font-bold text-slate-500 uppercase">Active B4B Coaches</span>
+                <div className="text-base font-extrabold text-[#013CA0]">
                   {activeDistrict.activeCoachesCount} Advisors
                 </div>
                 <div className="text-[10px] text-slate-500">Regional sales force</div>

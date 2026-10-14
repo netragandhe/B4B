@@ -88,7 +88,7 @@ export const Footer: React.FC = () => {
               {financeSolutions.map((sol) => (
                 <li key={sol.id}>
                   <Link
-                    to={`/solutions#${sol.slug}`}
+                    to={`/solutions/${sol.slug}`}
                     className="hover:text-white transition-colors flex items-center gap-1.5 group"
                   >
                     <span className="text-[10px] text-[#0C43A3] font-mono font-bold">#{sol.number}</span>
@@ -110,7 +110,7 @@ export const Footer: React.FC = () => {
               {growthSolutions.map((sol) => (
                 <li key={sol.id}>
                   <Link
-                    to={`/solutions#${sol.slug}`}
+                    to={`/solutions/${sol.slug}`}
                     className="hover:text-white transition-colors flex items-center gap-1.5 group"
                   >
                     <span className="text-[10px] text-[#0C43A3] font-mono font-bold">#{sol.number}</span>
@@ -141,7 +141,7 @@ export const Footer: React.FC = () => {
               {opsTechSolutions.map((sol) => (
                 <li key={sol.id}>
                   <Link
-                    to={`/solutions#${sol.slug}`}
+                    to={`/solutions/${sol.slug}`}
                     className="hover:text-white transition-colors flex items-center gap-1.5 group"
                   >
                     <span className="text-[10px] text-[#0C43A3] font-mono font-bold">#{sol.number}</span>

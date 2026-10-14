@@ -387,7 +387,7 @@ export const DesignSystemPage: React.FC = () => {
               variant="default"
             />
             <StatCard
-              title="OAL Scoreboard Rank"
+              title="B4B Scoreboard Rank"
               value="92 / 100"
               change={2.0}
               changePeriod="Tier 1 Institutional"
@@ -550,7 +550,7 @@ export const DesignSystemPage: React.FC = () => {
                 Trigger Error Toast
               </Button>
 
-              <Tooltip content="Fiduciary standard guarantee under OAL Network charter" position="top">
+              <Tooltip content="Fiduciary standard guarantee under B4B Network charter" position="top">
                 <Button variant="secondary">Hover for Tooltip</Button>
               </Tooltip>
             </div>
@@ -597,7 +597,7 @@ export const DesignSystemPage: React.FC = () => {
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          title="OAL Design System Modal"
+          title="B4B Design System Modal"
           description="Accessible dialog box with escape key listener, backdrop blur and clean animations."
           footer={
             <Button variant="primary" onClick={() => setIsModalOpen(false)}>

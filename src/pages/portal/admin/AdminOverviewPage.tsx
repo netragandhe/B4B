@@ -353,12 +353,12 @@ export const AdminOverviewPage: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search approvals..."
-                className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-blue-200 bg-white text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-xs"
               />
             </div>
 
             {/* Type Filter Buttons */}
-            <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg overflow-x-auto max-w-full no-scrollbar whitespace-nowrap">
+            <div className="flex items-center gap-1 bg-white/90 border border-blue-200/80 p-1 rounded-lg overflow-x-auto max-w-full no-scrollbar whitespace-nowrap shadow-xs">
               {(['All', 'B4B Coach', 'Employer', 'Draw/Underwriting'] as const).map((t) => (
                 <button
                   key={t}
@@ -368,8 +368,8 @@ export const AdminOverviewPage: React.FC = () => {
                   }}
                   className={`px-2.5 py-1 text-[11px] font-bold rounded-md transition-colors shrink-0 ${
                     typeFilter === t
-                      ? 'bg-blue-600 text-white shadow-sm'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      ? 'bg-[#013CA0] text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-blue-50'
                   }`}
                 >
                   {t}
@@ -398,7 +398,7 @@ export const AdminOverviewPage: React.FC = () => {
             paginatedApprovals.map((app) => (
               <div
                 key={app.id}
-                className="p-3.5 bg-slate-50/70 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-3"
+                className="p-3.5 bg-white/90 rounded-xl border border-blue-200/80 space-y-3 shadow-xs"
               >
                 {/* Top Badge & Status */}
                 <div className="flex items-center justify-between gap-2">
@@ -423,25 +423,25 @@ export const AdminOverviewPage: React.FC = () => {
 
                 {/* Title & Details */}
                 <div>
-                  <h4 className="font-bold text-xs text-slate-900 dark:text-white leading-snug">
+                  <h4 className="font-bold text-xs text-slate-900 leading-snug">
                     {app.title}
                   </h4>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                  <p className="text-[11px] text-slate-500 mt-0.5">
                     {app.subtitle}
                   </p>
                 </div>
 
                 {/* Amount & Date meta info */}
-                <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-200/60 dark:border-slate-800/60">
+                <div className="flex items-center justify-between text-xs pt-2 border-t border-blue-100">
                   <div>
                     <span className="text-slate-400 text-[11px]">Amount: </span>
-                    <span className="font-bold text-slate-800 dark:text-slate-200">
+                    <span className="font-bold text-slate-800">
                       {app.amount || 'N/A'}
                     </span>
                   </div>
                   <div>
                     <span className="text-slate-400 text-[11px]">Date: </span>
-                    <span className="font-medium text-slate-600 dark:text-slate-400">{app.date}</span>
+                    <span className="font-medium text-slate-600">{app.date}</span>
                   </div>
                 </div>
 
@@ -452,7 +452,7 @@ export const AdminOverviewPage: React.FC = () => {
                     variant="outline"
                     onClick={() => handleReject(app.id, app.title)}
                     leftIcon={<XCircle className="w-3.5 h-3.5 text-rose-500" />}
-                    className="w-full text-xs border-rose-200 text-rose-600 hover:bg-rose-50 dark:border-rose-900/50 dark:hover:bg-rose-950/30 justify-center"
+                    className="w-full text-xs border-rose-200 text-rose-600 hover:bg-rose-50 justify-center"
                   >
                     Reject
                   </Button>
@@ -469,17 +469,17 @@ export const AdminOverviewPage: React.FC = () => {
               </div>
             ))
           ) : (
-            <div className="py-8 text-center text-xs text-slate-500 bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-800">
+            <div className="py-8 text-center text-xs text-slate-500 bg-white/70 rounded-xl border border-dashed border-blue-200">
               No pending approval items matched your filter criteria.
             </div>
           )}
         </div>
 
         {/* Desktop View: Data Table (>=640px) */}
-        <div className="hidden sm:block overflow-x-auto border rounded-xl border-slate-200 dark:border-slate-800">
+        <div className="hidden sm:block overflow-x-auto border rounded-xl border-blue-200/80 bg-white/80 shadow-xs">
           <table className="w-full min-w-[680px] text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold">
+              <tr className="bg-[#DFECFB] border-b border-blue-200 text-slate-700 font-bold">
                 <th className="py-3 px-4 whitespace-nowrap">Request Type</th>
                 <th className="py-3 px-4">Title & Details</th>
                 <th className="py-3 px-4 whitespace-nowrap">Amount</th>
@@ -488,10 +488,10 @@ export const AdminOverviewPage: React.FC = () => {
                 <th className="py-3 px-4 text-right whitespace-nowrap">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-blue-100 bg-white/70">
               {paginatedApprovals.length > 0 ? (
                 paginatedApprovals.map((app) => (
-                  <tr key={app.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors">
+                  <tr key={app.id} className="hover:bg-blue-50/80 transition-colors">
                     <td className="py-3 px-4 whitespace-nowrap">
                       <Badge
                         variant={
@@ -509,10 +509,10 @@ export const AdminOverviewPage: React.FC = () => {
                       </Badge>
                     </td>
                     <td className="py-3 px-4">
-                      <div className="font-bold text-slate-900 dark:text-white">{app.title}</div>
+                      <div className="font-bold text-slate-900">{app.title}</div>
                       <div className="text-[11px] text-slate-500">{app.subtitle}</div>
                     </td>
-                    <td className="py-3 px-4 font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap">
+                    <td className="py-3 px-4 font-bold text-slate-800 whitespace-nowrap">
                       {app.amount || 'N/A'}
                     </td>
                     <td className="py-3 px-4 text-slate-500 whitespace-nowrap">{app.date}</td>
@@ -528,7 +528,7 @@ export const AdminOverviewPage: React.FC = () => {
                           variant="outline"
                           onClick={() => handleReject(app.id, app.title)}
                           leftIcon={<XCircle className="w-3.5 h-3.5 text-rose-500" />}
-                          className="text-xs border-rose-200 text-rose-600 hover:bg-rose-50 dark:border-rose-900/50 dark:hover:bg-rose-950/30"
+                          className="text-xs border-rose-200 text-rose-600 hover:bg-rose-50"
                         >
                           Reject
                         </Button>
@@ -598,15 +598,15 @@ export const AdminOverviewPage: React.FC = () => {
           </Badge>
         </div>
 
-        <div className="divide-y divide-slate-100 dark:divide-slate-800">
+        <div className="divide-y divide-blue-100 bg-white/70 rounded-xl border border-blue-200/70 p-2 sm:p-3 shadow-xs">
           {ADMIN_ACTIVITY_FEED.map((act) => (
-            <div key={act.id} className="py-3 flex items-start justify-between gap-2.5 sm:gap-3 text-xs">
+            <div key={act.id} className="py-2.5 px-2 flex items-start justify-between gap-2.5 sm:gap-3 text-xs hover:bg-blue-50/60 rounded-lg transition-colors">
               <div className="flex items-start gap-2.5 sm:gap-3 min-w-0">
                 <Avatar src={act.avatar} name={act.user} size="sm" />
                 <div className="min-w-0 leading-relaxed">
-                  <span className="font-bold text-slate-900 dark:text-white">{act.user} </span>
-                  <span className="text-slate-600 dark:text-slate-400">{act.action} </span>
-                  <span className="font-bold text-blue-600 dark:text-blue-400">{act.target}</span>
+                  <span className="font-bold text-slate-900">{act.user} </span>
+                  <span className="text-slate-600">{act.action} </span>
+                  <span className="font-bold text-[#013CA0]">{act.target}</span>
                 </div>
               </div>
               <span className="text-slate-400 shrink-0 text-[11px] whitespace-nowrap">{act.timestamp}</span>

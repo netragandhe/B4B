@@ -171,7 +171,7 @@ export const AdminServicesInventoryPage: React.FC = () => {
       />
 
       {/* FILTER BAR & CONTROLS */}
-      <Card variant="default" className="p-4 space-y-3 border border-slate-200 dark:border-slate-800">
+      <Card variant="default" className="card-halka-blue p-4 space-y-3 bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           {/* Search bar */}
           <div className="relative w-full sm:w-80">
@@ -184,7 +184,7 @@ export const AdminServicesInventoryPage: React.FC = () => {
                 setCurrentPage(1)
               }}
               placeholder="Search 100 services by title or SKU..."
-              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-blue-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
             />
           </div>
 
@@ -196,7 +196,7 @@ export const AdminServicesInventoryPage: React.FC = () => {
                 setCategoryFilter(e.target.value)
                 setCurrentPage(1)
               }}
-              className="px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+              className="px-2.5 py-1.5 text-xs rounded-lg border border-blue-200 bg-white text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20"
             >
               <option value="All">Category: All</option>
               <option value="Capital">Capital</option>
@@ -208,9 +208,9 @@ export const AdminServicesInventoryPage: React.FC = () => {
             {/* Sort price toggle */}
             <button
               onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-medium bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200 text-xs font-semibold bg-white hover:bg-blue-50 text-slate-700 transition-colors"
             >
-              <ArrowUpDown className="w-3 h-3" />
+              <ArrowUpDown className="w-3 h-3 text-blue-600" />
               <span>Price ({sortOrder.toUpperCase()})</span>
             </button>
 
@@ -221,7 +221,7 @@ export const AdminServicesInventoryPage: React.FC = () => {
                 setItemsPerPage(Number(e.target.value))
                 setCurrentPage(1)
               }}
-              className="px-2 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+              className="px-2 py-1.5 text-xs rounded-lg border border-blue-200 bg-white text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20"
             >
               <option value={10}>10 / page</option>
               <option value={25}>25 / page</option>
@@ -231,7 +231,7 @@ export const AdminServicesInventoryPage: React.FC = () => {
         </div>
 
         {/* Status Filter Tabs */}
-        <div className="flex items-center gap-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+        <div className="flex items-center gap-1.5 pt-2 border-t border-blue-200/80">
           {(['All', 'Active', 'Archived', 'Draft'] as const).map((st) => (
             <button
               key={st}
@@ -241,8 +241,8 @@ export const AdminServicesInventoryPage: React.FC = () => {
               }}
               className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors ${
                 statusFilter === st
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'bg-white/80 border border-blue-200/80 text-slate-600 hover:text-slate-900 hover:bg-white'
               }`}
             >
               {st}
@@ -252,11 +252,11 @@ export const AdminServicesInventoryPage: React.FC = () => {
       </Card>
 
       {/* CATALOG DATA TABLE */}
-      <Card variant="default" className="overflow-hidden border border-slate-200 dark:border-slate-800">
+      <Card variant="default" className="card-halka-blue overflow-hidden bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold">
+              <tr className="bg-[#DFECFB] border-b border-blue-200 text-slate-700 font-bold">
                 <th className="py-3 px-4">Service Product Title</th>
                 <th className="py-3 px-4">SKU</th>
                 <th className="py-3 px-4">Category</th>
@@ -266,21 +266,21 @@ export const AdminServicesInventoryPage: React.FC = () => {
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-blue-100">
               {paginatedProducts.length > 0 ? (
                 paginatedProducts.map((p) => (
-                  <tr key={p.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">{p.title}</td>
-                    <td className="py-3 px-4 font-mono text-slate-500">{p.sku}</td>
+                  <tr key={p.id} className="bg-white/70 hover:bg-blue-50/80 transition-colors">
+                    <td className="py-3 px-4 font-bold text-slate-900">{p.title}</td>
+                    <td className="py-3 px-4 font-mono text-slate-600">{p.sku}</td>
                     <td className="py-3 px-4">
                       <Badge variant="navy" size="sm">
                         {p.category}
                       </Badge>
                     </td>
-                    <td className="py-3 px-4 font-bold text-emerald-600 dark:text-emerald-400">
+                    <td className="py-3 px-4 font-bold text-emerald-700">
                       {formatCurrency(p.basePrice)}
                     </td>
-                    <td className="py-3 px-4 font-bold text-blue-600 dark:text-blue-400">{p.commissionRate}</td>
+                    <td className="py-3 px-4 font-bold text-blue-700">{p.commissionRate}</td>
                     <td className="py-3 px-4">
                       <Badge variant={p.status === 'Active' ? 'emerald' : p.status === 'Draft' ? 'amber' : 'danger'} size="sm" dot>
                         {p.status}
@@ -288,10 +288,10 @@ export const AdminServicesInventoryPage: React.FC = () => {
                     </td>
                     <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
-                        <Button size="sm" variant="outline" onClick={() => handleOpenEditModal(p)} leftIcon={<Edit3 className="w-3.5 h-3.5" />}>
+                        <Button size="sm" variant="outline" onClick={() => handleOpenEditModal(p)} leftIcon={<Edit3 className="w-3.5 h-3.5" />} className="bg-white border-blue-200 text-slate-700 hover:bg-blue-50">
                           Edit
                         </Button>
-                        <Button size="sm" variant="outline" onClick={() => handleDeleteProduct(p.id, p.title)} className="text-rose-500 hover:bg-rose-50 border-rose-200">
+                        <Button size="sm" variant="outline" onClick={() => handleDeleteProduct(p.id, p.title)} className="bg-white text-rose-600 hover:bg-rose-50 border-rose-200">
                           <Trash2 className="w-3.5 h-3.5" />
                         </Button>
                       </div>
@@ -300,7 +300,7 @@ export const AdminServicesInventoryPage: React.FC = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={7} className="py-8 text-center text-slate-500">
+                  <td colSpan={7} className="py-8 text-center text-slate-500 bg-white/50">
                     No services found matching your criteria.
                   </td>
                 </tr>
@@ -310,8 +310,8 @@ export const AdminServicesInventoryPage: React.FC = () => {
         </div>
 
         {/* PAGINATION CONTROLS */}
-        <div className="p-4 flex items-center justify-between border-t border-slate-100 dark:border-slate-800">
-          <div className="text-xs text-slate-500">
+        <div className="p-4 flex items-center justify-between border-t border-blue-200 bg-[#DFECFB]/40">
+          <div className="text-xs text-slate-600 font-medium">
             Page {currentPage} of {totalPages} ({filteredProducts.length} filtered out of {products.length} total services)
           </div>
           <div className="flex items-center gap-1">
@@ -321,6 +321,7 @@ export const AdminServicesInventoryPage: React.FC = () => {
               disabled={currentPage === 1}
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               leftIcon={<ChevronLeft className="w-3.5 h-3.5" />}
+              className="bg-white border-blue-200 text-slate-700"
             >
               Prev
             </Button>
@@ -330,6 +331,7 @@ export const AdminServicesInventoryPage: React.FC = () => {
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               rightIcon={<ChevronRight className="w-3.5 h-3.5" />}
+              className="bg-white border-blue-200 text-slate-700"
             >
               Next
             </Button>
@@ -339,10 +341,10 @@ export const AdminServicesInventoryPage: React.FC = () => {
 
       {/* ADD / EDIT SERVICE MODAL */}
       {isModalOpen && editingProduct && (
-        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <Card variant="bento" className="w-full max-w-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-5">
-            <div className="flex items-center justify-between border-b pb-3 border-slate-200 dark:border-slate-800">
-              <h3 className="font-bold text-base text-slate-900 dark:text-white">
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <Card variant="default" className="card-halka-blue w-full max-w-xl p-6 bg-white border border-blue-200 rounded-2xl shadow-xl space-y-5">
+            <div className="flex items-center justify-between border-b pb-3 border-blue-100">
+              <h3 className="font-bold text-base text-slate-900">
                 {products.some((p) => p.id === editingProduct.id) ? 'Edit Service Product' : 'Add New Service Product'}
               </h3>
               <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-600">
@@ -352,32 +354,32 @@ export const AdminServicesInventoryPage: React.FC = () => {
 
             <div className="space-y-4 text-xs">
               <div>
-                <label className="font-bold block mb-1">Service Title</label>
+                <label className="font-bold text-slate-700 block mb-1">Service Title</label>
                 <input
                   type="text"
                   value={editingProduct.title || ''}
                   onChange={(e) => setEditingProduct({ ...editingProduct, title: e.target.value })}
                   placeholder="e.g. Revenue-Based Working Capital Line"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950"
+                  className="w-full px-3 py-2 rounded-lg border border-blue-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="font-bold block mb-1">SKU Code</label>
+                  <label className="font-bold text-slate-700 block mb-1">SKU Code</label>
                   <input
                     type="text"
                     value={editingProduct.sku || ''}
                     onChange={(e) => setEditingProduct({ ...editingProduct, sku: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950"
+                    className="w-full px-3 py-2 rounded-lg border border-blue-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                   />
                 </div>
                 <div>
-                  <label className="font-bold block mb-1">Category</label>
+                  <label className="font-bold text-slate-700 block mb-1">Category</label>
                   <select
                     value={editingProduct.category || 'Capital'}
                     onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value as any })}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950"
+                    className="w-full px-3 py-2 rounded-lg border border-blue-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                   >
                     <option value="Capital">Capital</option>
                     <option value="Advisory">Advisory</option>
@@ -389,31 +391,31 @@ export const AdminServicesInventoryPage: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="font-bold block mb-1">Base Price ($)</label>
+                  <label className="font-bold text-slate-700 block mb-1">Base Price ($)</label>
                   <input
                     type="number"
                     value={editingProduct.basePrice || 0}
                     onChange={(e) => setEditingProduct({ ...editingProduct, basePrice: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950"
+                    className="w-full px-3 py-2 rounded-lg border border-blue-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                   />
                 </div>
                 <div>
-                  <label className="font-bold block mb-1">Commission Rate (%)</label>
+                  <label className="font-bold text-slate-700 block mb-1">Commission Rate (%)</label>
                   <input
                     type="text"
                     value={editingProduct.commissionRate || '3.0%'}
                     onChange={(e) => setEditingProduct({ ...editingProduct, commissionRate: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950"
+                    className="w-full px-3 py-2 rounded-lg border border-blue-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                   />
                 </div>
               </div>
 
               {/* Image Upload Simulator */}
               <div>
-                <label className="font-bold block mb-1">Product Media Image Upload</label>
-                <div className="p-4 border-2 border-dashed rounded-xl border-slate-300 dark:border-slate-700 text-center space-y-2">
-                  <Upload className="w-6 h-6 text-slate-400 mx-auto" />
-                  <div className="text-slate-500">Drag & drop service icon/banner image, or click to browse</div>
+                <label className="font-bold text-slate-700 block mb-1">Product Media Image Upload</label>
+                <div className="p-4 border-2 border-dashed rounded-xl border-blue-200 bg-blue-50/40 text-center space-y-2">
+                  <Upload className="w-6 h-6 text-blue-500 mx-auto" />
+                  <div className="text-slate-600 font-medium">Drag & drop service icon/banner image, or click to browse</div>
                   <input
                     type="file"
                     onChange={(e) => {
@@ -421,14 +423,14 @@ export const AdminServicesInventoryPage: React.FC = () => {
                         setImagePreview(URL.createObjectURL(e.target.files[0]))
                       }
                     }}
-                    className="text-[11px] text-slate-400"
+                    className="text-[11px] text-slate-500"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
-              <Button variant="outline" size="sm" onClick={() => setIsModalOpen(false)}>
+            <div className="flex justify-end gap-2 pt-3 border-t border-blue-100">
+              <Button variant="outline" size="sm" onClick={() => setIsModalOpen(false)} className="bg-white border-slate-200 text-slate-700">
                 Cancel
               </Button>
               <Button variant="accent" size="sm" onClick={handleSaveProduct} leftIcon={<Save className="w-4 h-4" />}>

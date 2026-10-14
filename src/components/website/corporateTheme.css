@@ -37,12 +37,12 @@
   --blue-400: #1B58C9;
   --gold-500: var(--color-logo-gold);
   --gold-400: var(--color-logo-gold);
-  --sky-50: rgba(14, 165, 233, 0.15);
-  --bg: #07142B;
-  --surface: #0B2C68;
-  --text: #FFFFFF;
-  --text-muted: #B8C4D9;
-  --border: rgba(125, 211, 252, 0.35);
+  --sky-50: #F0F4FA;
+  --bg: #F4F7FC;
+  --surface: #EEF4FC;
+  --text: #0F172A;
+  --text-muted: #475569;
+  --border: #BFDBFE;
 
   /* Legacy compatibility bridges */
   --color-forest: var(--color-midnight);
@@ -55,8 +55,8 @@
 /* Typography Assignments */
 body {
   font-family: var(--font-body);
-  color: #FFFFFF;
-  background-color: #07142B;
+  color: var(--text);
+  background-color: var(--bg);
 }
 
 .font-body {

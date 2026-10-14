@@ -103,6 +103,14 @@ export const BizProCatalogPage: React.FC = () => {
         }
       />
 
+      {/* DEMO NOTICE BANNER */}
+      <div className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 text-blue-700 dark:text-blue-300 text-xs font-medium">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+        <span>
+          <strong>Frontend Preview Environment:</strong> Service catalog items and client proposal compilation operate locally in your browser. Live client proposals and contract execution integrate via secure API endpoints.
+        </span>
+      </div>
+
       {/* CATEGORY & SEARCH BAR */}
       <Card variant="default" className="p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto">

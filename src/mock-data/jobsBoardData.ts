@@ -387,7 +387,7 @@ export const MOCK_JOBS: JobItem[] = [
   {
     id: 'job-112',
     title: 'FinTech Growth & Business Analyst Intern',
-    company: 'OAL Capital Network',
+    company: 'B4B Capital Network',
     companyLogo: 'https://images.unsplash.com/photo-1572021335469-31706a17aaef?w=120&auto=format&fit=crop&q=80',
     companyRating: 5.0,
     category: 'Internships',

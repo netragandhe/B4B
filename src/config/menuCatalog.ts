@@ -2,7 +2,7 @@ import { Menu } from '../lib/rbac/types'
 export type { Menu } from '../lib/rbac/types'
 
 /**
- * Complete Master Menu Catalog for OAL / B4B Financial Platform
+ * Complete Master Menu Catalog for B4B America Financial Platform
  * 
  * Contains all menus across all portals:
  * - Admin: 16

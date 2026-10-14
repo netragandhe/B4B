@@ -90,11 +90,11 @@ export const AdminTrainingCmsPage: React.FC = () => {
       />
 
       {/* TRAINING MODULES LIST */}
-      <Card variant="default" className="overflow-hidden border border-slate-200 dark:border-slate-800">
+      <Card variant="default" className="card-halka-blue overflow-hidden bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold">
+              <tr className="bg-[#DFECFB] border-b border-blue-200 text-slate-700 font-bold">
                 <th className="py-3 px-4">Course Title</th>
                 <th className="py-3 px-4">Category</th>
                 <th className="py-3 px-4">Min Rank Required</th>
@@ -103,11 +103,11 @@ export const AdminTrainingCmsPage: React.FC = () => {
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-blue-100">
               {modules.map((m) => (
-                <tr key={m.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors">
-                  <td className="py-3 px-4 font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                    <Video className="w-4 h-4 text-blue-500 shrink-0" />
+                <tr key={m.id} className="bg-white/70 hover:bg-blue-50/80 transition-colors">
+                  <td className="py-3 px-4 font-bold text-slate-900 flex items-center gap-2">
+                    <Video className="w-4 h-4 text-blue-600 shrink-0" />
                     <span>{m.title}</span>
                   </td>
                   <td className="py-3 px-4">
@@ -115,7 +115,7 @@ export const AdminTrainingCmsPage: React.FC = () => {
                       {m.category}
                     </Badge>
                   </td>
-                  <td className="py-3 px-4 font-bold text-slate-700 dark:text-slate-300">
+                  <td className="py-3 px-4 font-bold text-slate-700">
                     Rank {m.minRankRequired}+
                   </td>
                   <td className="py-3 px-4 text-slate-500">{m.duration}</td>
@@ -126,10 +126,10 @@ export const AdminTrainingCmsPage: React.FC = () => {
                   </td>
                   <td className="py-3 px-4 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <Button size="sm" variant="outline" onClick={() => handleEdit(m)} leftIcon={<Edit3 className="w-3.5 h-3.5" />}>
+                      <Button size="sm" variant="outline" onClick={() => handleEdit(m)} leftIcon={<Edit3 className="w-3.5 h-3.5" />} className="bg-white border-blue-200 text-slate-700 hover:bg-blue-50">
                         Edit
                       </Button>
-                      <Button size="sm" variant="outline" onClick={() => handleDelete(m.id)} className="text-rose-500 border-rose-200 hover:bg-rose-50">
+                      <Button size="sm" variant="outline" onClick={() => handleDelete(m.id)} className="text-rose-600 border-rose-200 hover:bg-rose-50 bg-white">
                         <Trash2 className="w-3.5 h-3.5" />
                       </Button>
                     </div>
@@ -143,41 +143,41 @@ export const AdminTrainingCmsPage: React.FC = () => {
 
       {/* EDIT MODAL / INLINE EDITOR */}
       {editingId && (
-        <Card variant="bento" className="p-6 border border-slate-200 dark:border-slate-800 space-y-4">
-          <h3 className="font-bold text-sm text-slate-900 dark:text-white">Edit Training Module Asset</h3>
+        <Card variant="default" className="card-halka-blue p-6 border border-[#BFDBFE] bg-[#EEF4FC] rounded-xl space-y-4 shadow-xs">
+          <h3 className="font-bold text-sm text-slate-900">Edit Training Module Asset</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
             <div>
-              <label className="font-bold block mb-1">Title</label>
+              <label className="font-bold text-slate-700 block mb-1">Title</label>
               <input
                 type="text"
                 value={formData.title || ''}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+                className="w-full px-3 py-2 rounded-lg border border-blue-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
               />
             </div>
             <div>
-              <label className="font-bold block mb-1">Category</label>
+              <label className="font-bold text-slate-700 block mb-1">Category</label>
               <input
                 type="text"
                 value={formData.category || ''}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+                className="w-full px-3 py-2 rounded-lg border border-blue-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
               />
             </div>
             <div>
-              <label className="font-bold block mb-1">Min Rank Required (1-9)</label>
+              <label className="font-bold text-slate-700 block mb-1">Min Rank Required (1-9)</label>
               <input
                 type="number"
                 min={1}
                 max={9}
                 value={formData.minRankRequired || 1}
                 onChange={(e) => setFormData({ ...formData, minRankRequired: Number(e.target.value) })}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+                className="w-full px-3 py-2 rounded-lg border border-blue-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
               />
             </div>
           </div>
           <div className="flex justify-end gap-2">
-            <Button variant="outline" size="sm" onClick={() => setEditingId(null)}>
+            <Button variant="outline" size="sm" onClick={() => setEditingId(null)} className="bg-white border-slate-200 text-slate-700">
               Cancel
             </Button>
             <Button variant="accent" size="sm" onClick={handleSave} leftIcon={<Save className="w-4 h-4" />}>

@@ -197,7 +197,7 @@ export const PortalDashboardPage: React.FC = () => {
         />
 
         <StatCard
-          title="OAL Health Score"
+          title="B4B Health Score"
           value="92 / 100"
           change={5.0}
           changePeriod="Scoreboard Rank: Tier 1"

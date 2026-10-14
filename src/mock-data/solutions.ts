@@ -73,7 +73,7 @@ export const SOLUTIONS_DATA: SolutionItem[] = [
       },
       {
         question: 'Are there any early termination or cancellation fees?',
-        answer: 'None. All OAL Network payment agreements are strictly month-to-month with no long-term lock-in contracts.',
+        answer: 'None. All B4B America payment agreements are strictly month-to-month with no long-term lock-in contracts.',
       },
       {
         question: 'How quickly can our business start processing?',
@@ -127,7 +127,7 @@ export const SOLUTIONS_DATA: SolutionItem[] = [
       },
       {
         question: 'Will our staff need technical training?',
-        answer: 'Your dedicated OAL operations coach conducts live team training and provides video onboarding guides for all staff.',
+        answer: 'Your dedicated B4B operations coach conducts live team training and provides video onboarding guides for all staff.',
       },
     ],
     relatedSlugs: ['accept-payments', 'bookkeeping-tax-prep', 'customer-service-academy'],
@@ -297,7 +297,7 @@ export const SOLUTIONS_DATA: SolutionItem[] = [
     iconName: 'Landmark',
     heroHeadline: 'Access Up to $5,000,000 in Competitive Non-Dilutive Capital',
     heroSub: 'Connect with 40+ institutional private credit funds, regional banks, and non-predatory lenders through a single intake.',
-    overview: 'Avoid predatory merchant cash advances with 40%+ factor rates. OAL Network matches creditworthy small businesses with structured working capital, SBA bridge facilities, inventory lines, and equipment loans with transparent amortization schedules.',
+    overview: 'Avoid predatory merchant cash advances with 40%+ factor rates. B4B America matches creditworthy small businesses with structured working capital, SBA bridge facilities, inventory lines, and equipment loans with transparent amortization schedules.',
     features: [
       {
         title: 'Prime-Linked Working Capital Revolvers',
@@ -695,7 +695,7 @@ export const SOLUTIONS_DATA: SolutionItem[] = [
     category: 'Operations & Strategy',
     badge: 'Ecosystem Growth',
     iconName: 'Handshake',
-    heroHeadline: 'Unlock Recurring Passive Revenue as an OAL Certified Affiliate or Partner',
+    heroHeadline: 'Unlock Recurring Passive Revenue as a B4B Certified Affiliate or Partner',
     heroSub: 'Earn up to $1,500+ per funded referral and recurring revenue shares by recommending solutions your clients already need.',
     overview: 'Whether you are a CPA, business broker, commercial real estate agent, podcaster, or community leader, our partner ecosystem rewards you handsomely for connecting small businesses with our capital facilities, payment solutions, and advisory services.',
     features: [
@@ -727,12 +727,12 @@ export const SOLUTIONS_DATA: SolutionItem[] = [
     ],
     faqs: [
       {
-        question: 'Who makes an ideal OAL Partner?',
+        question: 'Who makes an ideal B4B Partner?',
         answer: 'CPAs, commercial real estate brokers, attorneys, bookkeepers, marketing agencies, and community chambers of commerce.',
       },
       {
         question: 'Is there any fee to join the affiliate network?',
-        answer: 'No. Joining the OAL Partner Network is 100% free with immediate access to portal tracking and marketing assets.',
+        answer: 'No. Joining the B4B Partner Network is 100% free with immediate access to portal tracking and marketing assets.',
       },
     ],
     relatedSlugs: ['business-loans', 'business-management', 'find-jobs'],
@@ -884,7 +884,7 @@ export const TESTIMONIALS_DATA = [
     business: 'El Fuego Cantina & Grill',
     location: 'Austin, TX',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-    quote: 'OAL Network saved us $1,800 a month on payment processing and provided a $150k expansion loan in 3 days. Our business coach helped us launch a second location smoothly.',
+    quote: 'B4B America saved us $1,800 a month on payment processing and provided a $150k expansion loan in 3 days. Our business coach helped us launch a second location smoothly.',
     rating: 5,
     metric: 'Saved $21,600/yr in processing fees',
   },
@@ -894,7 +894,7 @@ export const TESTIMONIALS_DATA = [
     business: 'Jenkins Freight Haulers LLC',
     location: 'Atlanta, GA',
     image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80',
-    quote: 'Before OAL Network, broker invoice delays killed our cash flow. They set up our business credit, got us commercial equipment leases, and gave us an actual growth blueprint.',
+    quote: 'Before B4B America, broker invoice delays killed our cash flow. They set up our business credit, got us commercial equipment leases, and gave us an actual growth blueprint.',
     rating: 5,
     metric: 'Built 84 PAYDEX score in 75 days',
   },

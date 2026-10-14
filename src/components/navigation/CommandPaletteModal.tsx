@@ -73,7 +73,7 @@ export const CommandPaletteModal: React.FC<CommandPaletteModalProps> = ({
     { label: 'All 16 Small Business Solutions', href: '/solutions', category: 'Pages' },
     { label: 'Careers & Join Our Team', href: '/jobs', category: 'Company' },
     { label: 'Affiliates, Partners & Influencers', href: '/affiliates', category: 'Partners' },
-    { label: 'About OAL Network (Vision & Values)', href: '/company', category: 'Company' },
+    { label: 'About B4B America (Vision & Values)', href: '/company', category: 'Company' },
     { label: 'Contact Business Advisory Desk', href: '/contact', category: 'Support' },
     ...allowedMenus.map((m) => ({
       label: `${m.label} (${m.group})`,

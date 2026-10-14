@@ -95,7 +95,7 @@ export const GlobalAiChatWidget: React.FC = () => {
         aiResponseText = `Our fractional CFOs and business coaches are former corporate controllers and commercial credit officers. You get 1-on-1 strategy calls, 13-week cash forecasting, and debt covenant management without executive salary overhead.`
         actionLink = { label: 'Meet the Advisory Practice', url: '/advisory' }
       } else {
-        aiResponseText = `Thank you for your question! OAL Network offers 16 core solutions designed to help independent small businesses thrive—from capital sourcing and business credit to payment processing, marketing, and fractional CFO guidance. Would you like to connect with a live business coach?`
+        aiResponseText = `Thank you for your question! B4B America offers 16 core solutions designed to help independent small businesses thrive—from capital sourcing and business credit to payment processing, marketing, and fractional CFO guidance. Would you like to connect with a live business coach?`
         actionLink = { label: 'Speak with a Live Coach', url: '/contact' }
       }
 
@@ -125,7 +125,7 @@ export const GlobalAiChatWidget: React.FC = () => {
             <Bot className="w-5 h-5 group-hover:rotate-12 transition-transform" />
             <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[var(--green-600)] ring-2 ring-[var(--surface)] animate-pulse" />
           </div>
-          <span className="text-xs font-bold tracking-tight pr-1">Ask OAL Copilot</span>
+          <span className="text-xs font-bold tracking-tight pr-1">Ask B4B Copilot</span>
         </button>
       )}
 
@@ -140,7 +140,7 @@ export const GlobalAiChatWidget: React.FC = () => {
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h4 className="text-xs font-bold tracking-tight">OAL Business Copilot</h4>
+                  <h4 className="text-xs font-bold tracking-tight">B4B Business Copilot</h4>
                   <Badge variant="emerald" size="sm" dot className="text-[9px] py-0 px-1.5">
                     Online
                   </Badge>

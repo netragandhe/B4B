@@ -133,57 +133,63 @@ export const AdminBizProManagementPage: React.FC = () => {
       />
 
       {/* SEARCH BAR */}
-      <Card variant="default" className="p-4 flex items-center gap-3">
+      <Card variant="default" className="p-3.5 flex items-center gap-3 border border-blue-200/90 shadow-xs">
         <Input
           placeholder="Search B4B Coaches by name, email, company, region..."
           leftIcon={<Search className="w-4 h-4" />}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          className="border-blue-200 bg-white text-slate-900"
         />
       </Card>
 
       {/* BIZ PRO TABLE */}
-      <Card variant="default" className="divide-y divide-slate-100 dark:divide-[#1E3A5F]">
-        {filtered.map((rep) => (
-          <div
-            key={rep.id}
-            onClick={() => {
-              setSelectedRep(rep)
-              setNewRankLevel(rep.rankLevel)
-            }}
-            className="p-4 hover:bg-slate-50/80 dark:hover:bg-[#12294A]/40 cursor-pointer flex items-center justify-between gap-4 text-xs transition-colors"
-          >
-            <div className="flex items-center gap-3 min-w-0 flex-1">
-              <Avatar src={rep.avatar} name={rep.name} size="md" />
-              <div className="min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900 dark:text-white truncate">{rep.name}</span>
-                  <Badge variant="gold" size="sm">
-                    {rep.rank} (Rank {rep.rankLevel})
-                  </Badge>
-                  <Badge variant={rep.status === 'Active' ? 'emerald' : 'amber'} size="sm" dot>
-                    {rep.status}
-                  </Badge>
+      <Card variant="default" className="divide-y divide-blue-100 border border-blue-200/90 overflow-hidden shadow-xs">
+        {filtered.map((rep) => {
+          const isSelected = selectedRep?.id === rep.id
+          return (
+            <div
+              key={rep.id}
+              onClick={() => {
+                setSelectedRep(rep)
+                setNewRankLevel(rep.rankLevel)
+              }}
+              className={`p-4 cursor-pointer flex items-center justify-between gap-4 text-xs transition-colors ${
+                isSelected ? 'bg-blue-100/70 border-l-4 border-l-[#013CA0]' : 'bg-white/70 hover:bg-blue-50/80'
+              }`}
+            >
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <Avatar src={rep.avatar} name={rep.name} size="md" />
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-slate-900 truncate">{rep.name}</span>
+                    <Badge variant="gold" size="sm">
+                      {rep.rank} (Rank {rep.rankLevel})
+                    </Badge>
+                    <Badge variant={rep.status === 'Active' ? 'emerald' : 'amber'} size="sm" dot>
+                      {rep.status}
+                    </Badge>
+                  </div>
+                  <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                    {rep.company} • {rep.email} • Region: {rep.region}
+                  </p>
                 </div>
-                <p className="text-[11px] text-slate-500 truncate mt-0.5">
-                  {rep.company} • {rep.email} • Region: {rep.region}
-                </p>
               </div>
-            </div>
 
-            <div className="flex items-center gap-4 text-slate-400 shrink-0">
-              <div className="text-right">
-                <span className="text-[10px] font-bold text-slate-400 block uppercase">Volume</span>
-                <span className="font-extrabold text-emerald-600 dark:text-emerald-400 text-sm">
-                  {formatCurrency(rep.revenue)}
-                </span>
+              <div className="flex items-center gap-4 text-slate-400 shrink-0">
+                <div className="text-right">
+                  <span className="text-[10px] font-bold text-slate-500 block uppercase">Volume</span>
+                  <span className="font-extrabold text-emerald-700 text-sm">
+                    {formatCurrency(rep.revenue)}
+                  </span>
+                </div>
+                <Button size="sm" variant="outline" className="h-7 text-xs border-blue-200 text-blue-700 hover:bg-blue-50" leftIcon={<Edit className="w-3.5 h-3.5" />}>
+                  Edit Rank
+                </Button>
               </div>
-              <Button size="sm" variant="outline" className="h-7 text-xs" leftIcon={<Edit className="w-3.5 h-3.5" />}>
-                Edit Rank
-              </Button>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </Card>
 
       {/* DETAIL DRAWER / EDIT RANK */}
@@ -195,10 +201,10 @@ export const AdminBizProManagementPage: React.FC = () => {
       >
         {selectedRep && (
           <div className="space-y-6 text-left">
-            <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50/50 dark:from-[#12294A] dark:to-[#0D1E36] border border-blue-100 dark:border-[#1E3A5F] flex items-center gap-3">
+            <div className="p-4 rounded-xl bg-[#EEF4FC] border border-blue-200 flex items-center gap-3">
               <Avatar src={selectedRep.avatar} name={selectedRep.name} size="lg" />
               <div>
-                <h3 className="text-base font-bold font-heading text-slate-900 dark:text-white">
+                <h3 className="text-base font-bold font-heading text-slate-900">
                   {selectedRep.name}
                 </h3>
                 <p className="text-xs text-slate-500">{selectedRep.company} • Joined {selectedRep.joinDate}</p>
@@ -209,14 +215,14 @@ export const AdminBizProManagementPage: React.FC = () => {
             </div>
 
             {/* DRAWER TABS: RANK VS CUSTOM ACCESS OVERRIDES */}
-            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-[#12294A] border border-slate-200 dark:border-[#1E3A5F]">
+            <div className="flex items-center gap-1 p-1 rounded-xl bg-white border border-blue-200">
               <button
                 type="button"
                 onClick={() => setDrawerTab('rank')}
                 className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer ${
                   drawerTab === 'rank'
-                    ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                    ? 'bg-blue-600 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-blue-50'
                 }`}
               >
                 Profile & Rank Tier
@@ -237,11 +243,11 @@ export const AdminBizProManagementPage: React.FC = () => {
                 }}
                 className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-1.5 ${
                   drawerTab === 'customAccess'
-                    ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                    ? 'bg-blue-600 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-blue-50'
                 }`}
               >
-                <KeyRound className="w-3.5 h-3.5 text-amber-500" />
+                <KeyRound className="w-3.5 h-3.5" />
                 <span>Custom Access (Override)</span>
               </button>
             </div>

@@ -58,7 +58,7 @@ export const PortalLoginPage: React.FC = () => {
       setIsSubmitting(false)
       toast({
         title: 'Authentication Successful',
-        description: portalMode === 'partner' ? 'Welcome to OAL Partner Hub' : `Welcome to ${brandConfig.portalName}`,
+        description: portalMode === 'partner' ? 'Welcome to B4B Partner Hub' : `Welcome to ${brandConfig.portalName}`,
         type: 'success',
       })
       if (portalMode === 'partner') {
@@ -91,7 +91,7 @@ export const PortalLoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-slate-50 dark:bg-[#0A1628] text-slate-900 dark:text-slate-100">
-      <SEOHead title="Portal Terminal Login" description="Sign in to your OAL Network client terminal or partner hub." />
+      <SEOHead title="Portal Terminal Login" description="Sign in to your B4B America client terminal or partner hub." />
 
       <div className="w-full max-w-md space-y-6 text-left">
         <div className="text-center space-y-2">

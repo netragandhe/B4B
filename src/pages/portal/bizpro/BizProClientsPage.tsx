@@ -269,6 +269,14 @@ export const BizProClientsPage: React.FC = () => {
         }
       />
 
+      {/* DEMO NOTICE BANNER */}
+      <div className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 text-blue-700 dark:text-blue-300 text-xs font-medium">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+        <span>
+          <strong>Frontend Preview Environment:</strong> Client account creation, debt facility structuring, and notes are managed in reactive local storage for interface demonstrations.
+        </span>
+      </div>
+
       {/* FILTERS & SEARCH BAR */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="relative w-full sm:w-80">
@@ -278,7 +286,7 @@ export const BizProClientsPage: React.FC = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search company, contact, or coach..."
-            className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white"
+            className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm rounded-xl border border-blue-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-slate-900"
           />
         </div>
 
@@ -289,8 +297,8 @@ export const BizProClientsPage: React.FC = () => {
               onClick={() => setStatusFilter(st)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                 statusFilter === st
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'bg-white border border-blue-200 text-slate-600 hover:bg-blue-50 hover:text-slate-900'
               }`}
             >
               {st}
@@ -300,11 +308,11 @@ export const BizProClientsPage: React.FC = () => {
       </div>
 
       {/* CLIENTS DATA TABLE */}
-      <Card variant="default" className="overflow-hidden border border-slate-200 dark:border-slate-800">
+      <Card variant="default" className="card-halka-blue overflow-hidden bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold">
+              <tr className="bg-[#DFECFB] border-b border-blue-200 text-slate-700 font-bold">
                 <th className="py-3 px-4">Company & Contact</th>
                 <th className="py-3 px-4">Industry & Region</th>
                 <th className="py-3 px-4">Status</th>
@@ -313,7 +321,7 @@ export const BizProClientsPage: React.FC = () => {
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-blue-100">
               {filteredClients.length > 0 ? (
                 filteredClients.map((client) => (
                   <tr
@@ -322,14 +330,14 @@ export const BizProClientsPage: React.FC = () => {
                       setSelectedClient(client)
                       setDrawerTab('overview')
                     }}
-                    className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors cursor-pointer"
+                    className="bg-white/70 hover:bg-blue-50/80 transition-colors cursor-pointer"
                   >
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2.5">
                         <Avatar name={client.companyName} size="sm" />
                         <div>
-                          <div className="font-bold text-slate-900 dark:text-white">{client.companyName}</div>
-                          <div className="text-[11px] text-slate-400">
+                          <div className="font-bold text-slate-900">{client.companyName}</div>
+                          <div className="text-[11px] text-slate-500">
                             {client.contactPerson} • {client.email}
                           </div>
                         </div>
@@ -337,8 +345,8 @@ export const BizProClientsPage: React.FC = () => {
                     </td>
 
                     <td className="py-3 px-4">
-                      <div className="font-medium text-slate-800 dark:text-slate-200">{client.industry}</div>
-                      <div className="text-[11px] text-slate-400">{client.region}</div>
+                      <div className="font-medium text-slate-800">{client.industry}</div>
+                      <div className="text-[11px] text-slate-500">{client.region}</div>
                     </td>
 
                     <td className="py-3 px-4">
@@ -359,16 +367,16 @@ export const BizProClientsPage: React.FC = () => {
                     </td>
 
                     <td className="py-3 px-4">
-                      <span className="font-semibold text-slate-700 dark:text-slate-300">
+                      <span className="font-semibold text-slate-700">
                         {client.assignedCoachName}
                       </span>
                     </td>
 
                     <td className="py-3 px-4">
-                      <div className="font-bold text-emerald-600 dark:text-emerald-400">
+                      <div className="font-bold text-emerald-700">
                         {formatCurrency(client.totalFundedVolume)}
                       </div>
-                      <div className="text-[10px] text-slate-400">
+                      <div className="text-[10px] text-slate-500">
                         {client.activeFacilities.length} Facilities Active
                       </div>
                     </td>
@@ -380,16 +388,18 @@ export const BizProClientsPage: React.FC = () => {
                           size="sm"
                           onClick={() => handleOpenEditModal(client)}
                           title="Edit"
+                          className="hover:bg-blue-100 text-blue-600"
                         >
-                          <Edit2 className="w-3.5 h-3.5 text-blue-500" />
+                          <Edit2 className="w-3.5 h-3.5" />
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => handleDeleteClient(client.id, client.companyName)}
                           title="Delete"
+                          className="hover:bg-rose-100 text-rose-600"
                         >
-                          <Trash2 className="w-3.5 h-3.5 text-rose-500" />
+                          <Trash2 className="w-3.5 h-3.5" />
                         </Button>
                         <Button
                           variant="ghost"
@@ -398,8 +408,9 @@ export const BizProClientsPage: React.FC = () => {
                             setSelectedClient(client)
                             setDrawerTab('overview')
                           }}
+                          className="hover:bg-blue-100 text-slate-400"
                         >
-                          <ChevronRight className="w-4 h-4 text-slate-400" />
+                          <ChevronRight className="w-4 h-4" />
                         </Button>
                       </div>
                     </td>
@@ -407,7 +418,7 @@ export const BizProClientsPage: React.FC = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={6} className="py-8 text-center text-slate-400">
+                  <td colSpan={6} className="py-8 text-center text-slate-500 bg-white/50">
                     No clients found matching filter criteria.
                   </td>
                 </tr>
@@ -442,45 +453,45 @@ export const BizProClientsPage: React.FC = () => {
             {drawerTab === 'overview' && (
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase">Total Funded Volume</span>
-                    <div className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 mt-0.5">
+                  <div className="p-3 rounded-xl border border-blue-200 bg-[#EEF4FC]">
+                    <span className="text-[10px] font-bold text-slate-500 uppercase">Total Funded Volume</span>
+                    <div className="text-lg font-extrabold text-emerald-700 mt-0.5">
                       {formatCurrency(selectedClient.totalFundedVolume)}
                     </div>
                   </div>
 
-                  <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase">Active Debt Facilities</span>
-                    <div className="text-lg font-extrabold text-blue-600 dark:text-blue-400 mt-0.5">
+                  <div className="p-3 rounded-xl border border-blue-200 bg-[#EEF4FC]">
+                    <span className="text-[10px] font-bold text-slate-500 uppercase">Active Debt Facilities</span>
+                    <div className="text-lg font-extrabold text-blue-700 mt-0.5">
                       {selectedClient.activeFacilities.length} Lines
                     </div>
                   </div>
                 </div>
 
-                <Card variant="default" className="p-4 space-y-3">
-                  <h4 className="font-bold text-slate-900 dark:text-white">Corporate Contact Information</h4>
-                  <div className="space-y-2 text-slate-600 dark:text-slate-300">
+                <Card variant="default" className="card-halka-blue p-4 space-y-3 bg-[#EEF4FC] border-[#BFDBFE]">
+                  <h4 className="font-bold text-slate-900">Corporate Contact Information</h4>
+                  <div className="space-y-2 text-slate-700">
                     <div className="flex items-center gap-2">
-                      <Mail className="w-3.5 h-3.5 text-slate-400" />
+                      <Mail className="w-3.5 h-3.5 text-blue-500" />
                       <span>{selectedClient.email}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Phone className="w-3.5 h-3.5 text-slate-400" />
+                      <Phone className="w-3.5 h-3.5 text-emerald-600" />
                       <span>{selectedClient.phone}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Building className="w-3.5 h-3.5 text-slate-400" />
+                      <Building className="w-3.5 h-3.5 text-blue-500" />
                       <span>{selectedClient.industry} • {selectedClient.region}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                       <span>Assigned Coach: {selectedClient.assignedCoachName}</span>
                     </div>
                   </div>
                 </Card>
 
                 <div className="space-y-1.5">
-                  <span className="font-bold text-slate-700 dark:text-slate-300">Tags & Programs</span>
+                  <span className="font-bold text-slate-700">Tags & Programs</span>
                   <div className="flex flex-wrap gap-1.5">
                     {selectedClient.tags.map((tg) => (
                       <Badge key={tg} variant="navy" size="sm">
@@ -496,7 +507,7 @@ export const BizProClientsPage: React.FC = () => {
             {drawerTab === 'facilities' && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-slate-900 dark:text-white">Active Credit Facilities</h4>
+                  <h4 className="font-bold text-slate-900">Active Credit Facilities</h4>
                   <Button variant="accent" size="sm" onClick={() => setAddFacilityModalOpen(true)} leftIcon={<Plus className="w-3.5 h-3.5" />}>
                     Add Facility
                   </Button>
@@ -505,17 +516,17 @@ export const BizProClientsPage: React.FC = () => {
                 <div className="space-y-2.5">
                   {selectedClient.activeFacilities.length > 0 ? (
                     selectedClient.activeFacilities.map((fac) => (
-                      <Card key={fac.id} variant="default" className="p-3.5 space-y-1.5 border border-slate-200 dark:border-slate-800">
+                      <Card key={fac.id} variant="default" className="p-3.5 space-y-1.5 border border-blue-200 bg-white">
                         <div className="flex items-center justify-between">
-                          <span className="font-bold text-slate-900 dark:text-white">{fac.name}</span>
+                          <span className="font-bold text-slate-900">{fac.name}</span>
                           <Badge variant="emerald" size="sm">
                             {fac.status}
                           </Badge>
                         </div>
-                        <div className="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">
+                        <div className="text-sm font-extrabold text-emerald-700">
                           {formatCurrency(fac.amount)}
                         </div>
-                        <div className="flex items-center gap-3 text-[11px] text-slate-400">
+                        <div className="flex items-center gap-3 text-[11px] text-slate-500">
                           <span>Rate: {fac.rate}</span>
                           <span>•</span>
                           <span>Term: {fac.term}</span>
@@ -523,7 +534,7 @@ export const BizProClientsPage: React.FC = () => {
                       </Card>
                     ))
                   ) : (
-                    <p className="text-slate-400 italic py-4 text-center">No active credit facilities registered.</p>
+                    <p className="text-slate-500 italic py-4 text-center">No active credit facilities registered.</p>
                   )}
                 </div>
               </div>
@@ -533,7 +544,7 @@ export const BizProClientsPage: React.FC = () => {
             {drawerTab === 'documents' && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-slate-900 dark:text-white">Uploaded Corporate Filings</h4>
+                  <h4 className="font-bold text-slate-900">Uploaded Corporate Filings</h4>
                   <Button
                     variant="outline"
                     size="sm"
@@ -549,6 +560,7 @@ export const BizProClientsPage: React.FC = () => {
                       toast({ title: 'Document Ingested', description: 'Bank statements uploaded to vault.', type: 'success' })
                     }}
                     leftIcon={<UploadCloud className="w-3.5 h-3.5" />}
+                    className="bg-white border-blue-200 text-slate-700 hover:bg-blue-50"
                   >
                     Upload Document
                   </Button>
@@ -556,12 +568,12 @@ export const BizProClientsPage: React.FC = () => {
 
                 <div className="space-y-2">
                   {mockDocs.map((doc) => (
-                    <div key={doc.id} className="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
+                    <div key={doc.id} className="flex items-center justify-between p-2.5 rounded-xl border border-blue-200 bg-white">
                       <div className="flex items-center gap-2">
                         <FileText className="w-4 h-4 text-blue-500" />
                         <div>
-                          <div className="font-bold text-slate-900 dark:text-white">{doc.name}</div>
-                          <div className="text-[10px] text-slate-400">
+                          <div className="font-bold text-slate-900">{doc.name}</div>
+                          <div className="text-[10px] text-slate-500">
                             {doc.type} • {doc.size} • Uploaded {doc.date}
                           </div>
                         </div>
@@ -586,7 +598,7 @@ export const BizProClientsPage: React.FC = () => {
             {drawerTab === 'notes' && (
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="font-bold text-slate-900 dark:text-white">Add Strategy Note</label>
+                  <label className="font-bold text-slate-900">Add Strategy Note</label>
                   <div className="flex gap-2">
                     <input
                       type="text"
@@ -594,7 +606,7 @@ export const BizProClientsPage: React.FC = () => {
                       onChange={(e) => setNewNoteText(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleAddNote()}
                       placeholder="Record meeting recap or underwriting update..."
-                      className="flex-1 px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
+                      className="flex-1 px-3 py-1.5 text-xs rounded-xl border border-blue-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 outline-none"
                     />
                     <Button variant="accent" size="sm" onClick={handleAddNote} leftIcon={<Send className="w-3 h-3" />}>
                       Post
@@ -604,12 +616,12 @@ export const BizProClientsPage: React.FC = () => {
 
                 <div className="space-y-2.5 pt-2">
                   {selectedClient.notes.map((n) => (
-                    <div key={n.id} className="p-3 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 space-y-1">
+                    <div key={n.id} className="p-3 rounded-xl border border-blue-100 bg-white space-y-1">
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="font-bold text-slate-900 dark:text-white">{n.author}</span>
+                        <span className="font-bold text-slate-900">{n.author}</span>
                         <span className="text-slate-400">{n.date}</span>
                       </div>
-                      <p className="text-slate-700 dark:text-slate-300 text-xs">{n.text}</p>
+                      <p className="text-slate-700 text-xs">{n.text}</p>
                     </div>
                   ))}
                 </div>

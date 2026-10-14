@@ -129,13 +129,13 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
       />
 
       {/* TABS HEADER */}
-      <div className="flex border-b border-slate-800 gap-6 text-sm font-bold">
+      <div className="flex border-b border-blue-200 gap-6 text-sm font-bold">
         <button
           onClick={() => setActiveSubTab('settings')}
           className={`pb-3 transition-colors relative ${
             activeSubTab === 'settings'
-              ? 'text-blue-400 border-b-2 border-blue-500'
-              : 'text-slate-400 hover:text-white'
+              ? 'text-blue-700 border-b-2 border-blue-600'
+              : 'text-slate-500 hover:text-slate-900'
           }`}
         >
           Algorithm & Display Settings
@@ -144,8 +144,8 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
           onClick={() => setActiveSubTab('history')}
           className={`pb-3 transition-colors relative ${
             activeSubTab === 'history'
-              ? 'text-blue-400 border-b-2 border-blue-500'
-              : 'text-slate-400 hover:text-white'
+              ? 'text-blue-700 border-b-2 border-blue-600'
+              : 'text-slate-500 hover:text-slate-900'
           }`}
         >
           Settings Audit Log ({auditLogs.length})
@@ -154,8 +154,8 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
           onClick={() => setActiveSubTab('archives')}
           className={`pb-3 transition-colors relative ${
             activeSubTab === 'archives'
-              ? 'text-blue-400 border-b-2 border-blue-500'
-              : 'text-slate-400 hover:text-white'
+              ? 'text-blue-700 border-b-2 border-blue-600'
+              : 'text-slate-500 hover:text-slate-900'
           }`}
         >
           Archived Competitions ({archives.length})
@@ -166,10 +166,10 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
         <form onSubmit={handleSave} className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* RANKING ALGORITHM & METRICS */}
-            <Card variant="default" className="p-6 space-y-5 border-slate-800">
-              <div className="flex items-center justify-between border-b pb-3 border-slate-800">
-                <h3 className="font-bold text-sm text-white flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-emerald-400" />
+            <Card variant="default" className="card-halka-blue p-6 space-y-5 bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
+              <div className="flex items-center justify-between border-b pb-3 border-blue-200/80">
+                <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-emerald-600" />
                   <span>Ranking Metric & Scoring Engine</span>
                 </h3>
                 <Badge variant="emerald" size="sm">
@@ -179,7 +179,7 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
 
               <div className="space-y-4 text-xs">
                 <div>
-                  <label className="font-bold text-slate-300 block mb-1.5">Primary Ranking Metric</label>
+                  <label className="font-bold text-slate-700 block mb-1.5">Primary Ranking Metric</label>
                   <select
                     value={formData.rankingMetric}
                     onChange={(e) =>
@@ -188,7 +188,7 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                         rankingMetric: e.target.value as any,
                       }))
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white"
+                    className="w-full bg-white border border-blue-200 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                   >
                     <option value="revenue">Total Funded Commercial Volume ($ USD)</option>
                     <option value="deals">Total Closed Advisory / Debt Deals</option>
@@ -199,11 +199,11 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
 
                 {/* WEIGHT SLIDERS IF WEIGHTED */}
                 {formData.rankingMetric === 'weighted' && (
-                  <div className="p-4 rounded-xl bg-blue-950/30 border border-blue-500/30 space-y-3">
-                    <div className="font-bold text-blue-300">Composite Formula Weights:</div>
+                  <div className="p-4 rounded-xl bg-white border border-blue-200 space-y-3">
+                    <div className="font-bold text-blue-900">Composite Formula Weights:</div>
 
                     <div>
-                      <div className="flex justify-between font-medium mb-1 text-slate-300">
+                      <div className="flex justify-between font-medium mb-1 text-slate-700">
                         <span>Funded Volume Weight: {formData.revenueWeight}%</span>
                       </div>
                       <input
@@ -214,12 +214,12 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                         onChange={(e) =>
                           setFormData((prev) => ({ ...prev, revenueWeight: Number(e.target.value) }))
                         }
-                        className="w-full accent-blue-500 cursor-pointer"
+                        className="w-full accent-blue-600 cursor-pointer"
                       />
                     </div>
 
                     <div>
-                      <div className="flex justify-between font-medium mb-1 text-slate-300">
+                      <div className="flex justify-between font-medium mb-1 text-slate-700">
                         <span>Deals Closed Weight: {formData.dealsWeight}%</span>
                       </div>
                       <input
@@ -230,12 +230,12 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                         onChange={(e) =>
                           setFormData((prev) => ({ ...prev, dealsWeight: Number(e.target.value) }))
                         }
-                        className="w-full accent-blue-500 cursor-pointer"
+                        className="w-full accent-blue-600 cursor-pointer"
                       />
                     </div>
 
                     <div>
-                      <div className="flex justify-between font-medium mb-1 text-slate-300">
+                      <div className="flex justify-between font-medium mb-1 text-slate-700">
                         <span>Activity Points Weight: {formData.pointsWeight}%</span>
                       </div>
                       <input
@@ -246,7 +246,7 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                         onChange={(e) =>
                           setFormData((prev) => ({ ...prev, pointsWeight: Number(e.target.value) }))
                         }
-                        className="w-full accent-blue-500 cursor-pointer"
+                        className="w-full accent-blue-600 cursor-pointer"
                       />
                     </div>
                   </div>
@@ -262,6 +262,7 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, pointsPerDeal: Number(e.target.value) }))
                       }
+                      className="bg-white border-blue-200 text-slate-900 focus:ring-2 focus:ring-blue-500/20"
                       required
                     />
                   </FormField>
@@ -273,6 +274,7 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, pointsPerLead: Number(e.target.value) }))
                       }
+                      className="bg-white border-blue-200 text-slate-900 focus:ring-2 focus:ring-blue-500/20"
                       required
                     />
                   </FormField>
@@ -284,6 +286,7 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, pointsPerRecruit: Number(e.target.value) }))
                       }
+                      className="bg-white border-blue-200 text-slate-900 focus:ring-2 focus:ring-blue-500/20"
                       required
                     />
                   </FormField>
@@ -291,7 +294,7 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
 
                 {/* TIMEFRAMES */}
                 <div className="pt-2">
-                  <label className="font-bold text-slate-300 block mb-1.5">Enabled Timeframe Tabs for Coaches</label>
+                  <label className="font-bold text-slate-700 block mb-1.5">Enabled Timeframe Tabs for Coaches</label>
                   <div className="flex flex-wrap gap-2">
                     {(['Today', 'Week', 'Month', 'Year'] as const).map((tf) => {
                       const selected = formData.allowedTimeframes.includes(tf)
@@ -302,8 +305,8 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                           onClick={() => handleTimeframeToggle(tf)}
                           className={`px-3 py-1.5 rounded-lg font-bold border transition-colors flex items-center gap-1.5 ${
                             selected
-                              ? 'bg-blue-600 border-blue-500 text-white'
-                              : 'bg-slate-900 border-slate-700 text-slate-400'
+                              ? 'bg-blue-600 border-blue-600 text-white shadow-xs'
+                              : 'bg-white border-blue-200 text-slate-600 hover:bg-blue-50'
                           }`}
                         >
                           {selected && <Check className="w-3 h-3" />}
@@ -317,10 +320,10 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
             </Card>
 
             {/* PRIVACY & DISPLAY TOGGLES */}
-            <Card variant="default" className="p-6 space-y-5 border-slate-800">
-              <div className="flex items-center justify-between border-b pb-3 border-slate-800">
-                <h3 className="font-bold text-sm text-white flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-blue-400" />
+            <Card variant="default" className="card-halka-blue p-6 space-y-5 bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
+              <div className="flex items-center justify-between border-b pb-3 border-blue-200/80">
+                <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-blue-600" />
                   <span>Privacy & Visibility Controls</span>
                 </h3>
                 <Badge variant="royal" size="sm">
@@ -329,10 +332,10 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
               </div>
 
               <div className="space-y-4 text-xs">
-                <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-white/80 border border-blue-200/80 shadow-2xs">
                   <div>
-                    <div className="font-bold text-white">Show Revenue Numbers ($ USD)</div>
-                    <div className="text-[11px] text-slate-400">
+                    <div className="font-bold text-slate-900">Show Revenue Numbers ($ USD)</div>
+                    <div className="text-[11px] text-slate-500">
                       When disabled, exact funded dollars are hidden from non-admin coaches.
                     </div>
                   </div>
@@ -346,10 +349,10 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-white/80 border border-blue-200/80 shadow-2xs">
                   <div>
-                    <div className="font-bold text-white">Show Coach Names Publicly</div>
-                    <div className="text-[11px] text-slate-400">
+                    <div className="font-bold text-slate-900">Show Coach Names Publicly</div>
+                    <div className="text-[11px] text-slate-500">
                       When disabled, coaches are masked with anonymous IDs (e.g. Coach #3).
                     </div>
                   </div>
@@ -363,10 +366,10 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-white/80 border border-blue-200/80 shadow-2xs">
                   <div>
-                    <div className="font-bold text-white">Show Federal Reserve Regions</div>
-                    <div className="text-[11px] text-slate-400">
+                    <div className="font-bold text-slate-900">Show Federal Reserve Regions</div>
+                    <div className="text-[11px] text-slate-500">
                       Display geographic district tags next to producer entries.
                     </div>
                   </div>
@@ -388,7 +391,7 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, resetPeriod: e.target.value as any }))
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"
+                      className="w-full bg-white border border-blue-200 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                     >
                       <option value="Monthly">Monthly Reset</option>
                       <option value="Quarterly">Quarterly Reset</option>
@@ -402,7 +405,7 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, autoArchive: e.target.value === 'true' }))
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"
+                      className="w-full bg-white border border-blue-200 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                     >
                       <option value="true">Enabled (Snapshot on Reset)</option>
                       <option value="false">Disabled</option>
@@ -413,10 +416,10 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
             </Card>
 
             {/* TV MODE SCREEN CONFIGURATION */}
-            <Card variant="default" className="lg:col-span-2 p-6 space-y-5 border-slate-800">
-              <div className="flex items-center justify-between border-b pb-3 border-slate-800">
-                <h3 className="font-bold text-sm text-white flex items-center gap-2">
-                  <Tv className="w-4 h-4 text-purple-400" />
+            <Card variant="default" className="card-halka-blue lg:col-span-2 p-6 space-y-5 bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
+              <div className="flex items-center justify-between border-b pb-3 border-blue-200/80">
+                <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+                  <Tv className="w-4 h-4 text-purple-600" />
                   <span>Office TV Display & Screen Cast Preferences</span>
                 </h3>
                 <Badge variant="navy" size="sm">
@@ -433,13 +436,14 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, tvModeBanner: e.target.value }))
                       }
+                      className="bg-white border-blue-200 text-slate-900 focus:ring-2 focus:ring-blue-500/20"
                       required
                     />
                   </FormField>
                 </div>
 
                 <div>
-                  <label className="font-bold text-slate-300 block mb-1">Live Sync Interval (Seconds)</label>
+                  <label className="font-bold text-slate-700 block mb-1">Live Sync Interval (Seconds)</label>
                   <select
                     value={formData.tvRefreshIntervalSec}
                     onChange={(e) =>
@@ -448,7 +452,7 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                         tvRefreshIntervalSec: Number(e.target.value),
                       }))
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white"
+                    className="w-full bg-white border border-blue-200 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                   >
                     <option value={3}>3 Seconds (High Frequency)</option>
                     <option value={5}>5 Seconds (Standard Live)</option>
@@ -458,7 +462,7 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="font-bold text-slate-300 block mb-1">TV Auto-Scroll Pace</label>
+                  <label className="font-bold text-slate-700 block mb-1">TV Auto-Scroll Pace</label>
                   <select
                     value={formData.tvAutoScrollSpeed}
                     onChange={(e) =>
@@ -467,7 +471,7 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                         tvAutoScrollSpeed: e.target.value as any,
                       }))
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white"
+                    className="w-full bg-white border border-blue-200 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                   >
                     <option value="Slow (30s)">Slow (30s)</option>
                     <option value="Medium (15s)">Medium (15s)</option>
@@ -476,7 +480,7 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="font-bold text-slate-300 block mb-1">TV Display Theme</label>
+                  <label className="font-bold text-slate-700 block mb-1">TV Display Theme</label>
                   <select
                     value={formData.tvTheme}
                     onChange={(e) =>
@@ -485,7 +489,7 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                         tvTheme: e.target.value as any,
                       }))
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white"
+                    className="w-full bg-white border border-blue-200 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                   >
                     <option value="navy">Deep Navy Blue (Standard)</option>
                     <option value="dark">Midnight Black (OLED)</option>
@@ -507,13 +511,13 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
 
       {/* TAB 2: AUDIT LOG */}
       {activeSubTab === 'history' && (
-        <Card variant="default" className="divide-y divide-slate-800 overflow-hidden">
-          <div className="p-4 bg-slate-900/80 font-bold text-xs text-slate-300">
+        <Card variant="default" className="card-halka-blue bg-[#EEF4FC] border-[#BFDBFE] rounded-xl overflow-hidden shadow-xs">
+          <div className="p-4 bg-[#DFECFB] font-bold text-xs text-slate-800 border-b border-blue-200">
             Scoreboard Settings Modification Audit Trail
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-900 text-slate-400 font-semibold border-b border-slate-800">
+              <thead className="bg-[#DFECFB]/60 text-slate-700 font-bold border-b border-blue-200">
                 <tr>
                   <th className="py-3 px-4">Timestamp</th>
                   <th className="py-3 px-4">Admin User</th>
@@ -521,17 +525,17 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
                   <th className="py-3 px-4">Details</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
+              <tbody className="divide-y divide-blue-100">
                 {auditLogs.map((log) => (
-                  <tr key={log.id} className="hover:bg-slate-900/40">
-                    <td className="py-3 px-4 text-slate-400 font-mono">{log.timestamp}</td>
-                    <td className="py-3 px-4 font-bold text-white">{log.adminUser}</td>
+                  <tr key={log.id} className="bg-white/70 hover:bg-blue-50/80 transition-colors">
+                    <td className="py-3 px-4 text-slate-500 font-mono">{log.timestamp}</td>
+                    <td className="py-3 px-4 font-bold text-slate-900">{log.adminUser}</td>
                     <td className="py-3 px-4">
                       <Badge variant="royal" size="sm">
                         {log.action}
                       </Badge>
                     </td>
-                    <td className="py-3 px-4 text-slate-300">{log.details}</td>
+                    <td className="py-3 px-4 text-slate-600">{log.details}</td>
                   </tr>
                 ))}
               </tbody>
@@ -544,22 +548,22 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
       {activeSubTab === 'archives' && (
         <div className="space-y-4">
           {archives.map((arch) => (
-            <Card key={arch.periodId} variant="bento" className="p-5 space-y-3">
+            <Card key={arch.periodId} variant="default" className="card-halka-blue p-5 space-y-3 bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="font-bold text-base text-white">{arch.periodName}</h4>
-                  <span className="text-xs text-slate-400">Archived on {arch.archivedDate}</span>
+                  <h4 className="font-bold text-base text-slate-900">{arch.periodName}</h4>
+                  <span className="text-xs text-slate-500">Archived on {arch.archivedDate}</span>
                 </div>
                 <Badge variant="gold" size="md">
                   Winner: {arch.winnerName} ({formatCurrency(arch.winnerVolume)})
                 </Badge>
               </div>
 
-              <div className="pt-2 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-slate-300">
+              <div className="pt-2 border-t border-blue-200/80 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-slate-600">
                 {arch.topProducers.slice(0, 3).map((p, i) => (
-                  <div key={p.id} className="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800 flex items-center justify-between">
-                    <span className="font-semibold text-white">#{i + 1} {p.name}</span>
-                    <span className="text-emerald-400 font-bold">{formatCurrency(p.fundedVolume)}</span>
+                  <div key={p.id} className="p-2.5 rounded-lg bg-white/80 border border-blue-200 flex items-center justify-between">
+                    <span className="font-semibold text-slate-900">#{i + 1} {p.name}</span>
+                    <span className="text-emerald-700 font-bold">{formatCurrency(p.fundedVolume)}</span>
                   </div>
                 ))}
               </div>
@@ -577,12 +581,12 @@ export const AdminScoreboardSettingsPage: React.FC = () => {
         maxWidth="md"
       >
         <div className="space-y-4 text-left text-xs">
-          <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-2">
-            <div className="flex items-center gap-2 text-amber-400 font-bold">
-              <AlertTriangle className="w-4 h-4" />
+          <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 space-y-2">
+            <div className="flex items-center gap-2 text-amber-800 font-bold">
+              <AlertTriangle className="w-4 h-4 text-amber-600" />
               <span>Permanent Archival & Score Reset</span>
             </div>
-            <p className="text-slate-300 text-[11px]">
+            <p className="text-slate-700 text-[11px]">
               This action will create a permanent historical snapshot of current rankings in the archives and reset all live coach funded volume, deals, and points to <strong>0</strong> for the new cycle.
             </p>
           </div>

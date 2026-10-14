@@ -226,7 +226,7 @@ export const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   return (
-    <div className="min-h-screen flex bg-[#F4F7FC] dark:bg-[#07142B] text-slate-900 dark:text-slate-100 font-sans">
+    <div className="portal-layout min-h-screen flex bg-[#F4F7FC] text-slate-900 font-sans">
       {/* ========================================================================= */}
       {/* DESKTOP COLLAPSIBLE SIDEBAR */}
       {/* ========================================================================= */}

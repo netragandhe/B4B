@@ -178,7 +178,7 @@ export const AdminBulletinPage: React.FC = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search announcements..."
-            className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white"
+            className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm rounded-xl border border-blue-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-slate-900 shadow-xs"
           />
         </div>
 
@@ -189,8 +189,8 @@ export const AdminBulletinPage: React.FC = () => {
               onClick={() => setSelectedCategory(cat)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                 selectedCategory === cat
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'bg-white/90 border border-blue-200 text-slate-700 hover:bg-blue-50'
               }`}
             >
               {cat}
@@ -200,11 +200,11 @@ export const AdminBulletinPage: React.FC = () => {
       </div>
 
       {/* DATA TABLE / POSTS LIST */}
-      <Card variant="default" className="overflow-hidden border border-slate-200 dark:border-slate-800">
+      <Card variant="default" className="overflow-hidden border border-blue-200/90 shadow-xs bg-[#EEF4FC]">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold">
+              <tr className="bg-[#DFECFB] border-b border-blue-200 text-slate-700 font-bold">
                 <th className="py-3 px-4">Pinned</th>
                 <th className="py-3 px-4">Title & Excerpt</th>
                 <th className="py-3 px-4">Category</th>
@@ -213,15 +213,15 @@ export const AdminBulletinPage: React.FC = () => {
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-blue-100 bg-white/70">
               {filteredPosts.length > 0 ? (
                 filteredPosts.map((post) => (
-                  <tr key={post.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors">
+                  <tr key={post.id} className="hover:bg-blue-50/80 transition-colors">
                     <td className="py-3 px-4">
                       <button
                         onClick={() => handleTogglePin(post)}
                         className={`p-1.5 rounded transition-colors ${
-                          post.pinned ? 'text-amber-500 bg-amber-50 dark:bg-amber-950/40' : 'text-slate-300 hover:text-slate-600'
+                          post.pinned ? 'text-amber-500 bg-amber-50' : 'text-slate-400 hover:text-slate-600'
                         }`}
                         title={post.pinned ? 'Unpin' : 'Pin to top'}
                       >
@@ -230,7 +230,7 @@ export const AdminBulletinPage: React.FC = () => {
                     </td>
 
                     <td className="py-3 px-4 max-w-md">
-                      <div className="font-bold text-slate-900 dark:text-white line-clamp-1">{post.title}</div>
+                      <div className="font-bold text-slate-900 line-clamp-1">{post.title}</div>
                       <div className="text-slate-500 text-[11px] line-clamp-1 mt-0.5">{post.summary}</div>
                     </td>
 

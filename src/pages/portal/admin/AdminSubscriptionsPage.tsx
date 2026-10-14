@@ -171,61 +171,61 @@ export const AdminSubscriptionsPage: React.FC = () => {
 
       {/* METRIC CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card variant="bento" className="p-5 flex items-center justify-between border-blue-500/20 bg-blue-950/20">
+        <Card variant="default" className="card-halka-blue p-5 flex items-center justify-between bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
           <div>
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Monthly Recurring (MRR)</span>
-            <div className="text-2xl font-black text-white font-heading mt-1">${stats.mrr.toFixed(2)}</div>
-            <span className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1 mt-1">
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Monthly Recurring (MRR)</span>
+            <div className="text-2xl font-black text-slate-900 font-heading mt-1">${stats.mrr.toFixed(2)}</div>
+            <span className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1 mt-1">
               <TrendingUp className="w-3 h-3" /> +14.2% this month
             </span>
           </div>
-          <div className="p-3 rounded-xl bg-blue-600/20 border border-blue-500/30 text-blue-400">
+          <div className="p-3 rounded-xl bg-blue-100 border border-blue-200 text-blue-700">
             <DollarSign className="w-6 h-6" />
           </div>
         </Card>
 
-        <Card variant="bento" className="p-5 flex items-center justify-between">
+        <Card variant="default" className="card-halka-blue p-5 flex items-center justify-between bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
           <div>
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Active Coaches</span>
-            <div className="text-2xl font-black text-white font-heading mt-1">{stats.activeCount}</div>
-            <span className="text-[11px] text-slate-400 mt-1 block">Ranks 1 through 9</span>
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Active Coaches</span>
+            <div className="text-2xl font-black text-slate-900 font-heading mt-1">{stats.activeCount}</div>
+            <span className="text-[11px] text-slate-500 mt-1 block">Ranks 1 through 9</span>
           </div>
-          <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+          <div className="p-3 rounded-xl bg-emerald-100 border border-emerald-200 text-emerald-700">
             <Users className="w-6 h-6" />
           </div>
         </Card>
 
-        <Card variant="bento" className="p-5 flex items-center justify-between">
+        <Card variant="default" className="card-halka-blue p-5 flex items-center justify-between bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
           <div>
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Past Due / Failed</span>
-            <div className="text-2xl font-black text-amber-400 font-heading mt-1">{stats.pastDueCount}</div>
-            <span className="text-[11px] text-amber-400/80 mt-1 block">Dunning automated</span>
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Past Due / Failed</span>
+            <div className="text-2xl font-black text-amber-700 font-heading mt-1">{stats.pastDueCount}</div>
+            <span className="text-[11px] text-amber-700/80 mt-1 block">Dunning automated</span>
           </div>
-          <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400">
+          <div className="p-3 rounded-xl bg-amber-100 border border-amber-200 text-amber-700">
             <AlertCircle className="w-6 h-6" />
           </div>
         </Card>
 
-        <Card variant="bento" className="p-5 flex items-center justify-between">
+        <Card variant="default" className="card-halka-blue p-5 flex items-center justify-between bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
           <div>
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Cancelled / Churned</span>
-            <div className="text-2xl font-black text-slate-400 font-heading mt-1">{stats.cancelledCount}</div>
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Cancelled / Churned</span>
+            <div className="text-2xl font-black text-slate-500 font-heading mt-1">{stats.cancelledCount}</div>
             <span className="text-[11px] text-slate-500 mt-1 block">Grace period active</span>
           </div>
-          <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400">
+          <div className="p-3 rounded-xl bg-rose-100 border border-rose-200 text-rose-700">
             <RotateCcw className="w-6 h-6" />
           </div>
         </Card>
       </div>
 
       {/* TABS NAVIGATION */}
-      <div className="flex border-b border-slate-800 gap-6 text-sm font-bold">
+      <div className="flex border-b border-blue-200 gap-6 text-sm font-bold">
         <button
           onClick={() => setActiveTab('coaches')}
           className={`pb-3 transition-colors relative ${
             activeTab === 'coaches'
-              ? 'text-blue-400 border-b-2 border-blue-500'
-              : 'text-slate-400 hover:text-white'
+              ? 'text-blue-700 border-b-2 border-blue-600'
+              : 'text-slate-500 hover:text-slate-900'
           }`}
         >
           Coach Subscriptions ({subscriptions.length})
@@ -234,8 +234,8 @@ export const AdminSubscriptionsPage: React.FC = () => {
           onClick={() => setActiveTab('invoices')}
           className={`pb-3 transition-colors relative ${
             activeTab === 'invoices'
-              ? 'text-blue-400 border-b-2 border-blue-500'
-              : 'text-slate-400 hover:text-white'
+              ? 'text-blue-700 border-b-2 border-blue-600'
+              : 'text-slate-500 hover:text-slate-900'
           }`}
         >
           Invoices & Settlement ({invoices.length})
@@ -244,8 +244,8 @@ export const AdminSubscriptionsPage: React.FC = () => {
           onClick={() => setActiveTab('pricing')}
           className={`pb-3 transition-colors relative ${
             activeTab === 'pricing'
-              ? 'text-blue-400 border-b-2 border-blue-500'
-              : 'text-slate-400 hover:text-white'
+              ? 'text-blue-700 border-b-2 border-blue-600'
+              : 'text-slate-500 hover:text-slate-900'
           }`}
         >
           Plan Pricing Editor
@@ -262,15 +262,16 @@ export const AdminSubscriptionsPage: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 leftIcon={<Search className="w-4 h-4 text-slate-400" />}
+                className="bg-white border-blue-200 text-slate-900 focus:ring-2 focus:ring-blue-500/20"
               />
             </div>
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
-              <Filter className="w-4 h-4 text-slate-400" />
+              <Filter className="w-4 h-4 text-slate-500" />
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as any)}
-                className="bg-slate-900 border border-slate-700 rounded-lg text-xs p-2 text-white"
+                className="bg-white border border-blue-200 rounded-lg text-xs p-2 text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20"
               >
                 <option value="all">All Statuses</option>
                 <option value="active">Active Only</option>
@@ -280,10 +281,10 @@ export const AdminSubscriptionsPage: React.FC = () => {
             </div>
           </div>
 
-          <Card variant="default" className="divide-y divide-slate-800 overflow-hidden">
+          <Card variant="default" className="card-halka-blue overflow-hidden bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-900/80 text-slate-400 font-semibold border-b border-slate-800">
+                <thead className="bg-[#DFECFB] text-slate-700 font-bold border-b border-blue-200">
                   <tr>
                     <th className="py-3 px-4">B4B Coach</th>
                     <th className="py-3 px-4">Membership Tier</th>
@@ -294,28 +295,28 @@ export const AdminSubscriptionsPage: React.FC = () => {
                     <th className="py-3 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60">
+                <tbody className="divide-y divide-blue-100">
                   {filteredSubs.map((sub) => {
                     const price = sub.discountPercent
                       ? sub.monthlyPrice * ((100 - sub.discountPercent) / 100)
                       : sub.monthlyPrice
 
                     return (
-                      <tr key={sub.id} className="hover:bg-slate-900/40 transition-colors">
+                      <tr key={sub.id} className="bg-white/70 hover:bg-blue-50/80 transition-colors">
                         <td className="py-3.5 px-4">
-                          <div className="font-bold text-white">{sub.coachName}</div>
-                          <div className="text-[11px] text-slate-400">{sub.coachEmail}</div>
+                          <div className="font-bold text-slate-900">{sub.coachName}</div>
+                          <div className="text-[11px] text-slate-500">{sub.coachEmail}</div>
                         </td>
                         <td className="py-3.5 px-4">
-                          <span className="font-semibold text-blue-300">{sub.planName}</span>
+                          <span className="font-semibold text-blue-700">{sub.planName}</span>
                         </td>
                         <td className="py-3.5 px-4">
-                          <div className="font-bold text-white">${price.toFixed(2)} / mo</div>
+                          <div className="font-bold text-slate-900">${price.toFixed(2)} / mo</div>
                           {sub.discountPercent && (
-                            <span className="text-[10px] text-emerald-400">({sub.discountPercent}% VIP discount)</span>
+                            <span className="text-[10px] text-emerald-700 font-medium">({sub.discountPercent}% VIP discount)</span>
                           )}
                         </td>
-                        <td className="py-3.5 px-4 text-slate-300">
+                        <td className="py-3.5 px-4 text-slate-600">
                           {sub.cardBrand} •••• {sub.cardLast4}
                         </td>
                         <td className="py-3.5 px-4">
@@ -332,14 +333,14 @@ export const AdminSubscriptionsPage: React.FC = () => {
                             {sub.status.replace('_', ' ')}
                           </Badge>
                         </td>
-                        <td className="py-3.5 px-4 text-slate-300">{sub.nextBillingDate}</td>
+                        <td className="py-3.5 px-4 text-slate-600">{sub.nextBillingDate}</td>
                         <td className="py-3.5 px-4 text-right">
                           <div className="flex items-center justify-end gap-1.5">
                             <Button
                               size="sm"
                               variant="outline"
                               onClick={() => handleOpenPlanChange(sub)}
-                              className="text-[11px] h-7 px-2"
+                              className="text-[11px] h-7 px-2 bg-white border-blue-200 text-slate-700 hover:bg-blue-50"
                             >
                               Change Tier
                             </Button>
@@ -348,7 +349,7 @@ export const AdminSubscriptionsPage: React.FC = () => {
                                 size="sm"
                                 variant="ghost"
                                 onClick={() => handleApplyDiscount(sub.id)}
-                                className="text-[11px] h-7 px-2 text-emerald-400 hover:text-emerald-300"
+                                className="text-[11px] h-7 px-2 text-emerald-700 hover:text-emerald-800"
                                 title="Apply 20% Discount"
                               >
                                 <Percent className="w-3 h-3" />
@@ -378,10 +379,10 @@ export const AdminSubscriptionsPage: React.FC = () => {
 
       {/* TAB 2: INVOICES LOG */}
       {activeTab === 'invoices' && (
-        <Card variant="default" className="divide-y divide-slate-800 overflow-hidden">
+        <Card variant="default" className="card-halka-blue overflow-hidden bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-900/80 text-slate-400 font-semibold border-b border-slate-800">
+              <thead className="bg-[#DFECFB] text-slate-700 font-bold border-b border-blue-200">
                 <tr>
                   <th className="py-3 px-4">Invoice #</th>
                   <th className="py-3 px-4">Date</th>
@@ -392,17 +393,17 @@ export const AdminSubscriptionsPage: React.FC = () => {
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
+              <tbody className="divide-y divide-blue-100">
                 {invoices.map((inv) => (
-                  <tr key={inv.id} className="hover:bg-slate-900/40 transition-colors">
-                    <td className="py-3.5 px-4 font-mono font-bold text-blue-400">{inv.invoiceNumber}</td>
-                    <td className="py-3.5 px-4 text-slate-300">{inv.date}</td>
+                  <tr key={inv.id} className="bg-white/70 hover:bg-blue-50/80 transition-colors">
+                    <td className="py-3.5 px-4 font-mono font-bold text-blue-700">{inv.invoiceNumber}</td>
+                    <td className="py-3.5 px-4 text-slate-600">{inv.date}</td>
                     <td className="py-3.5 px-4">
-                      <div className="font-bold text-white">{inv.customerName}</div>
-                      <div className="text-[11px] text-slate-400">{inv.customerEmail}</div>
+                      <div className="font-bold text-slate-900">{inv.customerName}</div>
+                      <div className="text-[11px] text-slate-500">{inv.customerEmail}</div>
                     </td>
-                    <td className="py-3.5 px-4 text-white font-medium">{inv.planName}</td>
-                    <td className="py-3.5 px-4 font-bold text-white">${inv.amount.toFixed(2)}</td>
+                    <td className="py-3.5 px-4 text-slate-800 font-medium">{inv.planName}</td>
+                    <td className="py-3.5 px-4 font-bold text-slate-900">${inv.amount.toFixed(2)}</td>
                     <td className="py-3.5 px-4">
                       <Badge
                         variant={
@@ -429,7 +430,7 @@ export const AdminSubscriptionsPage: React.FC = () => {
                               billingService.refundInvoice(inv.id)
                               toast({ title: 'Invoice Refunded', description: `$${inv.amount} marked refunded.`, type: 'info' })
                             }}
-                            className="text-[11px] h-7 px-2 text-rose-400 hover:text-rose-300"
+                            className="text-[11px] h-7 px-2 text-rose-600 hover:text-rose-700"
                           >
                             Refund
                           </Button>
@@ -438,7 +439,7 @@ export const AdminSubscriptionsPage: React.FC = () => {
                           size="sm"
                           variant="outline"
                           onClick={() => billingService.generatePdfInvoice(inv)}
-                          className="text-[11px] h-7 px-2 gap-1"
+                          className="text-[11px] h-7 px-2 gap-1 bg-white border-blue-200 text-slate-700 hover:bg-blue-50"
                         >
                           <Download className="w-3 h-3" />
                           PDF
@@ -456,10 +457,10 @@ export const AdminSubscriptionsPage: React.FC = () => {
       {/* TAB 3: PLAN PRICING EDITOR */}
       {activeTab === 'pricing' && (
         <form onSubmit={handleSavePricing} className="space-y-6">
-          <div className="p-4 rounded-xl bg-blue-950/30 border border-blue-500/30 text-xs text-blue-300 flex items-start gap-3">
-            <Sparkles className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+          <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-900 flex items-start gap-3">
+            <Sparkles className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
             <div>
-              <strong className="block text-sm text-white font-bold">Client Pricing Specification Notice</strong>
+              <strong className="block text-sm text-blue-950 font-bold">Client Pricing Specification Notice</strong>
               Per client requirements: the starting B4B Coach subscription rate is <strong>$25 / month</strong> for Rank 1-3. Rates for higher rank tiers (Rank 4-6 and Rank 7-9) are initialized as placeholders labeled <em>"Price to be confirmed by client"</em>. You can adjust all pricing tiers below.
             </div>
           </div>
@@ -468,12 +469,12 @@ export const AdminSubscriptionsPage: React.FC = () => {
             {plans.map((plan) => {
               const draft = pricingDraft[plan.id] || { monthly: plan.monthlyPrice, annual: plan.annualPrice }
               return (
-                <Card key={plan.id} variant="bento" className="p-6 space-y-4">
+                <Card key={plan.id} variant="default" className="card-halka-blue p-6 space-y-4 bg-[#EEF4FC] border-[#BFDBFE] rounded-xl shadow-xs">
                   <div>
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 block">
                       {plan.rankGroup}
                     </span>
-                    <h4 className="text-lg font-bold text-white font-heading mt-0.5">{plan.name}</h4>
+                    <h4 className="text-lg font-bold text-slate-900 font-heading mt-0.5">{plan.name}</h4>
                   </div>
 
                   <Badge variant={plan.priceStatus.includes('$25') ? 'emerald' : 'royal'} size="sm">
@@ -492,6 +493,7 @@ export const AdminSubscriptionsPage: React.FC = () => {
                             [plan.id]: { ...draft, monthly: Number(e.target.value) },
                           }))
                         }
+                        className="bg-white border-blue-200 text-slate-900 focus:ring-2 focus:ring-blue-500/20"
                         required
                       />
                     </FormField>
@@ -507,12 +509,13 @@ export const AdminSubscriptionsPage: React.FC = () => {
                             [plan.id]: { ...draft, annual: Number(e.target.value) },
                           }))
                         }
+                        className="bg-white border-blue-200 text-slate-900 focus:ring-2 focus:ring-blue-500/20"
                         required
                       />
                     </FormField>
                   </div>
 
-                  <div className="pt-2 text-[11px] text-slate-400">
+                  <div className="pt-2 text-[11px] text-slate-500 font-medium">
                     Includes {plan.features.length} entitlement features.
                   </div>
                 </Card>
@@ -543,7 +546,7 @@ export const AdminSubscriptionsPage: React.FC = () => {
               id="admin-target-plan"
               value={targetPlanId}
               onChange={(e) => setTargetPlanId(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white"
+              className="w-full bg-white border border-blue-200 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
             >
               {plans.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -554,7 +557,7 @@ export const AdminSubscriptionsPage: React.FC = () => {
           </FormField>
 
           <div className="flex justify-end gap-3 pt-3">
-            <Button variant="outline" onClick={() => setEditPlanModalOpen(false)}>
+            <Button variant="outline" onClick={() => setEditPlanModalOpen(false)} className="bg-white border-slate-200 text-slate-700">
               Cancel
             </Button>
             <Button variant="accent" onClick={handleSavePlanChange} className="font-bold">

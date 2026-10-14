@@ -89,7 +89,7 @@ export const TerritoryMap: React.FC<TerritoryMapProps> = ({
 
   return (
     <div
-      className="relative w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900/90 select-none"
+      className="relative w-full overflow-hidden rounded-2xl border border-blue-200/90 bg-gradient-to-br from-[#EFF6FF] via-[#E4EFFE] to-[#DBEAFE] select-none shadow-xs"
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
@@ -99,11 +99,11 @@ export const TerritoryMap: React.FC<TerritoryMapProps> = ({
       }}
     >
       {/* Zoom / Pan Controls Overlay */}
-      <div className="absolute top-3 right-3 z-10 flex flex-col gap-1.5 bg-slate-800/90 backdrop-blur-md p-1.5 rounded-xl border border-slate-700 shadow-md">
+      <div className="absolute top-3 right-3 z-10 flex flex-col gap-1.5 bg-white/95 backdrop-blur-md p-1.5 rounded-xl border border-blue-200 shadow-sm">
         <button
           type="button"
           onClick={() => setZoomLevel((z) => Math.min(z + 0.3, 3))}
-          className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
+          className="p-1.5 rounded-lg text-slate-600 hover:text-[#013CA0] hover:bg-blue-50 transition-colors cursor-pointer"
           title="Zoom In"
         >
           <ZoomIn className="w-4 h-4" />
@@ -111,7 +111,7 @@ export const TerritoryMap: React.FC<TerritoryMapProps> = ({
         <button
           type="button"
           onClick={() => setZoomLevel((z) => Math.max(z - 0.3, 0.7))}
-          className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
+          className="p-1.5 rounded-lg text-slate-600 hover:text-[#013CA0] hover:bg-blue-50 transition-colors cursor-pointer"
           title="Zoom Out"
         >
           <ZoomOut className="w-4 h-4" />
@@ -119,7 +119,7 @@ export const TerritoryMap: React.FC<TerritoryMapProps> = ({
         <button
           type="button"
           onClick={resetZoom}
-          className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
+          className="p-1.5 rounded-lg text-slate-600 hover:text-[#013CA0] hover:bg-blue-50 transition-colors cursor-pointer"
           title="Reset View"
         >
           <RotateCcw className="w-4 h-4" />
@@ -159,9 +159,9 @@ export const TerritoryMap: React.FC<TerritoryMapProps> = ({
                 key={fips}
                 d={pathD}
                 fill={baseColor}
-                fillOpacity={isSelected ? 1 : isHovered ? 0.9 : selectedDistrictId ? 0.35 : 0.75}
-                stroke={isSelected || isHovered ? '#FFFFFF' : '#0F172A'}
-                strokeWidth={isSelected ? 2.5 : isHovered ? 1.8 : 0.75}
+                fillOpacity={isSelected ? 1 : isHovered ? 0.95 : selectedDistrictId ? 0.35 : 0.82}
+                stroke={isSelected ? '#013CA0' : isHovered ? '#1E40AF' : '#FFFFFF'}
+                strokeWidth={isSelected ? 2.5 : isHovered ? 2 : 1}
                 className="transition-all duration-150 cursor-pointer focus:outline-none"
                 onMouseEnter={(e) => {
                   const rect = e.currentTarget.getBoundingClientRect()
