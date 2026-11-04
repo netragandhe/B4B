@@ -1,0 +1,777 @@
+/* ==========================================================================
+   B4B AMERICA — MILLION DOLLAR TECHNOLOGY DESIGN SYSTEM
+   B4B Logo Color Palette: Logo Blue (#0C43A3), Logo Gold (#F8C61A),
+   Midnight Navy (#07142B), Deep Navy (#0D2147), Cool Stone (#E9EDF4),
+   White (#FFFFFF), Text Light (#14233B), Text Dark (#B8C4D9).
+   Strict Rule: No other hues. No pure-white pages/sections.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Public+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap');
+
+:root {
+  /* Core Brand Color Tokens */
+  --color-logo-blue: #0C43A3;      /* Primary buttons & links on light sections */
+  --color-logo-gold: #F8C61A;      /* Primary buttons on dark, big numbers, key accents */
+  --color-midnight: #07142B;       /* Hero, nav, dark sections, footer, text on gold */
+  --color-deep-navy: #0D2147;      /* Dark cards, card borders on dark, accents */
+  --color-stone: #E9EDF4;          /* Light section background (no pure white pages) */
+  --color-card-white: #FFFFFF;     /* Cards, forms, logo badge on dark only */
+
+  /* Text Contrast Tokens */
+  --color-text-light: #14233B;     /* Text on light / stone backgrounds */
+  --color-text-dark: #B8C4D9;      /* Text on dark backgrounds */
+  --color-text-on-gold: #07142B;   /* Text on gold buttons & badges (ALWAYS Navy #07142B) */
+
+  /* Typography Variables */
+  --font-heading: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* Global Aliases to seamlessly overwrite legacy green/copper/navy tokens */
+  --navy-950: var(--color-midnight);
+  --navy-900: var(--color-midnight);
+  --navy-800: var(--color-deep-navy);
+  --blue-600: var(--color-logo-blue);
+  --blue-700: #0A3785;
+  --blue-500: var(--color-logo-blue);
+  --blue-400: #1B58C9;
+  --gold-500: var(--color-logo-gold);
+  --gold-400: var(--color-logo-gold);
+  --sky-50: #F0F4FA;
+  --bg: #F4F7FC;
+  --surface: #EEF4FC;
+  --text: #0F172A;
+  --text-muted: #475569;
+  --border: #BFDBFE;
+
+  /* Legacy compatibility bridges */
+  --color-forest: var(--color-midnight);
+  --color-deep-emerald: var(--color-deep-navy);
+  --color-emerald: var(--color-logo-blue);
+  --color-copper: var(--color-logo-gold);
+  --color-text-on-copper: var(--color-text-on-gold);
+}
+
+/* Typography Assignments */
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background-color: var(--bg);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: var(--font-heading);
+  letter-spacing: -0.025em;
+}
+
+.font-mono, [data-mono="true"], .tabular-nums {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum' on, 'zero' on;
+}
+
+/* Section Rhythm Full-Width Bands */
+.section-hero {
+  background-color: var(--color-midnight);
+  color: #FFFFFF;
+}
+
+.section-solutions {
+  background-color: var(--color-stone);
+  color: var(--color-text-light);
+}
+
+.section-crm {
+  background-color: var(--color-midnight);
+  color: #FFFFFF;
+}
+
+.section-philosophy {
+  background-color: var(--color-deep-navy);
+  color: #FFFFFF;
+}
+
+.section-industries {
+  background-color: var(--color-stone);
+  color: var(--color-text-light);
+}
+
+.section-contact {
+  background: linear-gradient(135deg, var(--color-deep-navy) 0%, var(--color-midnight) 100%);
+  color: #FFFFFF;
+}
+
+.section-footer {
+  background-color: var(--color-midnight);
+  color: var(--color-text-dark);
+}
+
+/* Corporate Button Styles Site-Wide */
+/* 1. Primary Button On Dark: Gold fill (#F8C61A) + Midnight Navy text (#07142B) */
+.btn-gold-dark,
+.btn-copper-dark {
+  min-height: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: var(--color-logo-gold);
+  color: var(--color-midnight) !important;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(248, 198, 26, 0.4);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(248, 198, 26, 0.25);
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-gold-dark:hover,
+.btn-copper-dark:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(248, 198, 26, 0.38);
+  filter: brightness(1.05);
+}
+.btn-gold-dark:active,
+.btn-copper-dark:active {
+  transform: translateY(0);
+}
+.btn-gold-dark:focus-visible,
+.btn-copper-dark:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(248, 198, 26, 0.5);
+}
+
+/* 2. Primary Button On Light: Logo Blue fill (#0C43A3) + White text (#FFFFFF) */
+.btn-blue-light,
+.btn-emerald-light {
+  min-height: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: var(--color-logo-blue);
+  color: #FFFFFF !important;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(12, 67, 163, 0.4);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(12, 67, 163, 0.25);
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-blue-light:hover,
+.btn-emerald-light:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(12, 67, 163, 0.38);
+  filter: brightness(1.05);
+}
+.btn-blue-light:active,
+.btn-emerald-light:active {
+  transform: translateY(0);
+}
+.btn-blue-light:focus-visible,
+.btn-emerald-light:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(12, 67, 163, 0.5);
+}
+
+/* 3. Secondary Button On Dark (Solid High-Contrast Button) */
+.btn-outline-dark {
+  min-height: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: #FFFFFF;
+  color: #07142B;
+  border: 1.5px solid #FFFFFF;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.875rem;
+  padding: 0 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-outline-dark:hover {
+  background-color: #EBF3FF;
+  border-color: #EBF3FF;
+  color: #013CA0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
+}
+.btn-outline-dark:active {
+  transform: scale(0.98);
+}
+.btn-outline-dark:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(248, 198, 26, 0.5);
+}
+
+/* 4. Secondary Outlined Button On Light */
+.btn-outline-light {
+  min-height: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: transparent;
+  color: var(--color-logo-blue);
+  border: 1.5px solid var(--color-logo-blue);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-outline-light:hover {
+  background-color: rgba(12, 67, 163, 0.08);
+  transform: translateY(-2px);
+}
+.btn-outline-light:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(12, 67, 163, 0.4);
+}
+
+/* Card Styles */
+.card-white {
+  background-color: var(--color-card-white);
+  border: 1px solid rgba(20, 35, 59, 0.12);
+  border-radius: 16px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-white:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-logo-blue);
+  box-shadow: 0 12px 30px -10px rgba(12, 67, 163, 0.15);
+}
+
+/* 16 Solution Cards Design Specification - Halka Blue Frosted Glassmorphism */
+.solution-card {
+  background: linear-gradient(145deg, rgba(14, 165, 233, 0.22) 0%, rgba(16, 62, 126, 0.38) 50%, rgba(14, 165, 233, 0.18) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 18px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(125, 211, 252, 0.35);
+  box-shadow: 0 8px 32px rgba(14, 165, 233, 0.16);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  position: relative;
+}
+.solution-card:hover {
+  transform: translateY(-6px);
+  background: linear-gradient(145deg, rgba(14, 165, 233, 0.32) 0%, rgba(20, 75, 150, 0.48) 50%, rgba(14, 165, 233, 0.26) 100%);
+  border-color: rgba(186, 230, 253, 0.7);
+  box-shadow: 0 20px 48px rgba(14, 165, 233, 0.28), 0 0 0 1px rgba(248, 198, 26, 0.4);
+}
+
+.solution-card-body {
+  padding: 22px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.solution-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: rgba(248, 198, 26, 0.15);
+  color: var(--color-logo-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.solution-card-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #FFFFFF;
+}
+
+.solution-card-desc {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(224, 242, 254, 0.9);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.solution-btn-primary {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background-color: var(--color-logo-blue);
+  color: #FFFFFF !important;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(12, 67, 163, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.25;
+}
+.solution-btn-primary:hover {
+  background-color: #0A3785;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(12, 67, 163, 0.45);
+}
+
+.solution-link-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  color: #7DD3FC;
+  text-decoration: none;
+  align-self: flex-start;
+  padding: 4px 0;
+  transition: all 0.2s ease;
+}
+.solution-link-secondary:hover {
+  text-decoration: underline;
+  color: #F8C61A;
+}
+.solution-link-secondary:hover svg {
+  transform: translateX(4px);
+}
+
+.card-dark {
+  background-color: var(--color-deep-navy);
+  border: 1px solid rgba(13, 33, 71, 0.8);
+  border-radius: 16px;
+  color: var(--color-text-dark);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-dark:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-logo-gold);
+}
+
+/* Color Utility Classes */
+.bg-midnight { background-color: var(--color-midnight); }
+.bg-deep-navy { background-color: var(--color-deep-navy); }
+.bg-stone { background-color: var(--color-stone); }
+.bg-card-white { background-color: var(--color-card-white); }
+.bg-logo-blue { background-color: var(--color-logo-blue); }
+.bg-logo-gold { background-color: var(--color-logo-gold); }
+
+.text-midnight { color: var(--color-midnight); }
+.text-light { color: var(--color-text-light); }
+.text-dark { color: var(--color-text-dark); }
+.text-logo-blue { color: var(--color-logo-blue); }
+.text-logo-gold { color: var(--color-logo-gold); }
+
+.border-midnight { border-color: var(--color-midnight); }
+.border-deep-navy { border-color: var(--color-deep-navy); }
+.border-stone { border-color: var(--color-stone); }
+.border-logo-blue { border-color: var(--color-logo-blue); }
+.border-logo-gold { border-color: var(--color-logo-gold); }
+
+/* Angled Section Dividers */
+.divider-angled-dark {
+  position: relative;
+  clip-path: polygon(0 0, 100% 2.5vw, 100% 100%, 0 100%);
+}
+.divider-angled-light {
+  position: relative;
+  clip-path: polygon(0 2.5vw, 100% 0, 100% 100%, 0 100%);
+}
+.divider-angled-bottom {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2.5vw), 0 100%);
+}
+
+/* Industries We Serve Photo Tiles - Glassmorphic Halka Blue Frame */
+.industry-photo-tile {
+  position: relative;
+  border-radius: 18px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  cursor: pointer;
+  background: linear-gradient(145deg, rgba(14, 165, 233, 0.2) 0%, rgba(16, 62, 126, 0.35) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(125, 211, 252, 0.35);
+  box-shadow: 0 8px 32px rgba(14, 165, 233, 0.16);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+
+.industry-photo-tile:hover {
+  transform: translateY(-5px);
+  border-color: rgba(186, 230, 253, 0.7);
+  box-shadow: 0 16px 40px rgba(14, 165, 233, 0.28);
+}
+
+.industry-photo-tile .tile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.industry-photo-tile:hover .tile-img {
+  transform: scale(1.05);
+}
+
+.industry-photo-tile .tile-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(7, 20, 43, 0.92) 0%, rgba(7, 20, 43, 0.65) 50%, rgba(7, 20, 43, 0.1) 100%);
+  pointer-events: none;
+}
+
+.industry-photo-tile .tile-title {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
+  z-index: 10;
+}
+
+.industry-photo-tile .tile-title-underline {
+  position: relative;
+  display: inline;
+  background-image: linear-gradient(var(--color-logo-gold), var(--color-logo-gold));
+  background-position: bottom left;
+  background-size: 0% 2px;
+  background-repeat: no-repeat;
+  transition: background-size 0.3s ease;
+  padding-bottom: 2px;
+}
+
+.industry-photo-tile:hover .tile-title-underline {
+  background-size: 100% 2px;
+}
+
+/* Advisory Form Glassmorphic Inputs & Labels */
+.advisory-form-glass label {
+  color: rgba(224, 242, 254, 0.95) !important;
+}
+.advisory-form-glass input,
+.advisory-form-glass select,
+.advisory-form-glass textarea {
+  background-color: rgba(7, 20, 43, 0.65) !important;
+  color: #FFFFFF !important;
+  border-color: rgba(125, 211, 252, 0.4) !important;
+}
+.advisory-form-glass input::placeholder,
+.advisory-form-glass textarea::placeholder {
+  color: rgba(186, 230, 253, 0.6) !important;
+}
+.advisory-form-glass input:focus,
+.advisory-form-glass select:focus,
+.advisory-form-glass textarea:focus {
+  border-color: #38BDF8 !important;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25) !important;
+}
+
+/* ==========================================================================
+   B4B AMERICA — CORPORATE GLASSMORPHISM SYSTEM
+   Midnight frosted glass, backdrop blur, luminous border highlights,
+   crisp typography & sleek focus rings.
+   ========================================================================== */
+/* Glass Form Container Card — Matching Landing Page Telemetry Card */
+.glass-form-card {
+  background: linear-gradient(135deg, rgba(2, 132, 199, 0.25) 0%, rgba(22, 88, 179, 0.32) 50%, rgba(3, 105, 161, 0.25) 100%) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+  border: 1px solid rgba(125, 211, 252, 0.4) !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 
+    0 16px 48px rgba(2, 132, 199, 0.25),
+    0 25px 60px -15px rgba(0, 0, 0, 0.65),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+/* Headings & Texts inside Glass Card */
+.glass-form-card h2,
+.glass-form-card h3,
+.glass-form-card h4 {
+  color: #FFFFFF !important;
+}
+
+.glass-form-card p {
+  color: #B8C4D9 !important;
+}
+
+/* Section Dividers inside Glass Card */
+.glass-form-card .border-b,
+.glass-form-card .border-t {
+  border-color: rgba(125, 211, 252, 0.25) !important;
+}
+
+/* Form Labels inside Glass Card */
+.glass-form-card label {
+  color: #B8C4D9 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+}
+
+.glass-form-card label span.text-\[var\(--blue-600\)\],
+.glass-form-card label span.text-blue-600 {
+  color: #FFC911 !important; /* Gold required star */
+}
+
+/* Form Inputs, Selects, and Textareas — Matching Landing Page Inner Boxes */
+.glass-form-card input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+.glass-form-card select,
+.glass-form-card textarea {
+  background-color: rgba(7, 20, 43, 0.9) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(125, 211, 252, 0.35) !important;
+  border-radius: 10px !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(2, 132, 199, 0.1) !important;
+  transition: all 0.2s ease !important;
+}
+
+.glass-form-card input:not([type="checkbox"]):not([type="radio"]):not([type="file"])::placeholder,
+.glass-form-card textarea::placeholder {
+  color: rgba(184, 196, 217, 0.55) !important;
+}
+
+.glass-form-card input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):hover,
+.glass-form-card select:hover,
+.glass-form-card textarea:hover {
+  border-color: #38BDF8 !important;
+  background-color: rgba(7, 20, 43, 0.96) !important;
+}
+
+.glass-form-card input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus,
+.glass-form-card select:focus,
+.glass-form-card textarea:focus {
+  border-color: #FFC911 !important;
+  box-shadow: 0 0 0 3px rgba(255, 201, 17, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  background-color: rgba(7, 20, 43, 0.98) !important;
+  outline: none !important;
+}
+
+/* Dropdown Options */
+.glass-form-card select option {
+  background-color: #07142B !important;
+  color: #FFFFFF !important;
+  padding: 8px 12px !important;
+}
+
+/* Radio Group in Step 2 */
+.glass-form-card label:has(input[type="radio"]) {
+  background-color: rgba(7, 20, 43, 0.9) !important;
+  border: 1px solid rgba(125, 211, 252, 0.25) !important;
+  backdrop-filter: blur(10px) !important;
+  color: #FFFFFF !important;
+  transition: all 0.2s ease !important;
+}
+
+.glass-form-card label:has(input[type="radio"]):hover {
+  background-color: rgba(12, 34, 72, 0.9) !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
+}
+
+.glass-form-card label:has(input[type="radio"]:checked) {
+  background-color: rgba(12, 67, 163, 0.45) !important;
+  border-color: #FFC911 !important;
+  box-shadow: 0 0 16px rgba(255, 201, 17, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+.glass-form-card label:has(input[type="radio"]) span {
+  color: #FFFFFF !important;
+}
+
+.glass-form-card label:has(input[type="radio"]) span:last-child {
+  color: #B8C4D9 !important;
+}
+
+/* File Upload in Step 3 */
+.glass-form-card .border-dashed {
+  background-color: rgba(7, 20, 43, 0.85) !important;
+  border-color: rgba(125, 211, 252, 0.35) !important;
+  backdrop-filter: blur(10px) !important;
+  color: #FFFFFF !important;
+}
+
+.glass-form-card .border-dashed:hover {
+  background-color: rgba(12, 34, 72, 0.9) !important;
+  border-color: #38BDF8 !important;
+}
+
+.glass-form-card .border-dashed p,
+.glass-form-card .border-dashed span {
+  color: #FFFFFF !important;
+}
+
+/* Checkbox container in Step 3 */
+.glass-form-card .rounded-xl.bg-\[var\(--bg\)\],
+.glass-form-card .rounded-xl.bg-\[\#081834\]\/60 {
+  background-color: rgba(7, 20, 43, 0.9) !important;
+  border-color: rgba(125, 211, 252, 0.25) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.glass-form-card label:has(input[type="checkbox"]) span {
+  color: #FFFFFF !important;
+}
+
+.glass-form-card label:has(input[type="checkbox"]) span:last-child {
+  color: #B8C4D9 !important;
+}
+
+/* Stepper on Dark Glass Pages */
+.glass-stepper-dark .bg-slate-200 {
+  background-color: rgba(125, 211, 252, 0.3) !important;
+}
+
+.glass-stepper-dark .bg-slate-100 {
+  background-color: rgba(7, 20, 43, 0.9) !important;
+  border-color: rgba(125, 211, 252, 0.35) !important;
+  color: #B8C4D9 !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+.glass-stepper-dark .text-slate-400,
+.glass-stepper-dark .text-slate-500 {
+  color: #B8C4D9 !important;
+}
+
+.glass-stepper-dark .text-slate-800 {
+  color: #FFFFFF !important;
+}
+
+/* Ambient Glassmorphic Background Elements */
+.glass-bg-mesh {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-bg-mesh::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: 10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(12, 67, 163, 0.35) 0%, rgba(12, 67, 163, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(60px);
+  z-index: 0;
+}
+
+.glass-bg-mesh::after {
+  content: '';
+  position: absolute;
+  top: 35%;
+  right: 5%;
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.22) 0%, rgba(56, 189, 248, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(70px);
+  z-index: 0;
+}
+
+/* Remove Fiduciary Standard / Confidential Discovery per Task 6 */
+.service-page-layout form p.text-\[11px\],
+[role="dialog"] form p.text-\[11px\] {
+  display: none !important;
+}
+
+/* Service Page Form Contrast Tokens & Styling per Task 1 */
+.service-page-layout form label,
+#coach-intake-desk form label,
+[role="dialog"] form label {
+  color: var(--color-text-dark) !important;
+  font-size: max(12px, 0.75rem);
+}
+
+.service-page-layout form .peer ~ label,
+#coach-intake-desk form .peer ~ label,
+.service-page-layout form .peer ~ label span,
+#coach-intake-desk form .peer ~ label span,
+[role="dialog"] form .peer ~ label,
+[role="dialog"] form .peer ~ label span {
+  color: var(--color-text-dark) !important;
+  font-size: max(14px, 0.875rem) !important;
+  line-height: 1.5;
+}
+
+.service-page-layout form input::placeholder,
+.service-page-layout form textarea::placeholder,
+#coach-intake-desk form input::placeholder,
+#coach-intake-desk form textarea::placeholder,
+[role="dialog"] form input::placeholder,
+[role="dialog"] form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.65) !important;
+  opacity: 1 !important;
+}
+
+.service-page-layout form input,
+.service-page-layout form textarea,
+.service-page-layout form select,
+#coach-intake-desk form input,
+#coach-intake-desk form textarea,
+#coach-intake-desk form select,
+[role="dialog"] form input,
+[role="dialog"] form textarea,
+[role="dialog"] form select {
+  color: var(--color-card-white) !important;
+}
+
+/* Service Page Breadcrumb Styling per Task 2 */
+.service-page-layout nav[aria-label="Breadcrumb"] ol li:last-child span {
+  color: var(--color-card-white) !important;
+}
+
+
+

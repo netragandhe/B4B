@@ -1,0 +1,571 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model affiliatepayout {
+  id               String                 @id
+  affiliateId      String
+  amount           Decimal                @db.Decimal(10, 2)
+  period           String
+  status           affiliatepayout_status @default(PENDING)
+  scheduledDate    String?
+  paidDate         String?
+  createdAt        DateTime               @default(now())
+  affiliateprofile affiliateprofile       @relation(fields: [affiliateId], references: [id], onDelete: Cascade, map: "AffiliatePayout_affiliateId_fkey")
+
+  @@index([affiliateId], map: "AffiliatePayout_affiliateId_fkey")
+}
+
+model affiliateprofile {
+  id               String            @id
+  userId           String            @unique(map: "AffiliateProfile_userId_key")
+  referralCode     String            @unique(map: "AffiliateProfile_referralCode_key")
+  totalReferrals   Int               @default(0)
+  conversionRate   String            @default("0.0%")
+  totalCommissions Decimal           @default(0.00) @db.Decimal(12, 2)
+  status           String            @default("Active")
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime
+  affiliatepayout  affiliatepayout[]
+  user             user              @relation(fields: [userId], references: [id], onDelete: Cascade, map: "AffiliateProfile_userId_fkey")
+}
+
+model bizproprofile {
+  id                   String             @id
+  userId               String             @unique(map: "BizProProfile_userId_key")
+  rankLevel            Int                @default(1)
+  rankTitle            String             @default("Account Executive")
+  districtNumber       Int?
+  consecutiveMonthsHit Int                @default(0)
+  currentMonthVolume   Decimal            @default(0.00) @db.Decimal(12, 2)
+  allTimeEarnings      Decimal            @default(0.00) @db.Decimal(12, 2)
+  uplineCoachId        String?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime
+  bizproprofile        bizproprofile?     @relation("bizproprofileTobizproprofile", fields: [uplineCoachId], references: [id], map: "BizProProfile_uplineCoachId_fkey")
+  other_bizproprofile  bizproprofile[]    @relation("bizproprofileTobizproprofile")
+  user                 user               @relation(fields: [userId], references: [id], onDelete: Cascade, map: "BizProProfile_userId_fkey")
+  clientprofile        clientprofile[]
+  commissionledger     commissionledger[]
+  lead                 lead[]
+  scoreboardentry      scoreboardentry[]
+  territorynote        territorynote[]
+
+  @@index([uplineCoachId], map: "BizProProfile_uplineCoachId_fkey")
+}
+
+model bulletincomment {
+  id           String       @id
+  postId       String
+  authorId     String
+  content      String       @db.Text
+  createdAt    DateTime     @default(now())
+  user         user         @relation(fields: [authorId], references: [id], onDelete: Cascade, map: "BulletinComment_authorId_fkey")
+  bulletinpost bulletinpost @relation(fields: [postId], references: [id], onDelete: Cascade, map: "BulletinComment_postId_fkey")
+
+  @@index([authorId], map: "BulletinComment_authorId_fkey")
+  @@index([postId], map: "BulletinComment_postId_fkey")
+}
+
+model bulletinpost {
+  id               String             @id
+  title            String
+  summary          String?            @db.Text
+  contentHtml      String             @db.LongText
+  authorId         String
+  isPinned         Boolean            @default(false)
+  category         String             @default("General Announcement")
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime
+  bulletincomment  bulletincomment[]
+  user             user               @relation(fields: [authorId], references: [id], onDelete: Cascade, map: "BulletinPost_authorId_fkey")
+  bulletinreaction bulletinreaction[]
+
+  @@index([authorId], map: "BulletinPost_authorId_fkey")
+  @@index([isPinned, createdAt], map: "BulletinPost_isPinned_createdAt_idx")
+}
+
+model bulletinreaction {
+  id           String       @id
+  postId       String
+  userId       String
+  emoji        String
+  createdAt    DateTime     @default(now())
+  bulletinpost bulletinpost @relation(fields: [postId], references: [id], onDelete: Cascade, map: "BulletinReaction_postId_fkey")
+  user         user         @relation(fields: [userId], references: [id], onDelete: Cascade, map: "BulletinReaction_userId_fkey")
+
+  @@unique([postId, userId, emoji], map: "BulletinReaction_postId_userId_emoji_key")
+  @@index([userId], map: "BulletinReaction_userId_fkey")
+}
+
+model clientprofile {
+  id                 String               @id
+  userId             String               @unique(map: "ClientProfile_userId_key")
+  assignedCoachId    String?
+  companyName        String?
+  primaryContact     String?
+  annualRevenue      Decimal?             @db.Decimal(14, 2)
+  creditScore        Int?
+  industry           String?
+  yearsInBusiness    Int?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime
+  bizproprofile      bizproprofile?       @relation(fields: [assignedCoachId], references: [id], map: "ClientProfile_assignedCoachId_fkey")
+  user               user                 @relation(fields: [userId], references: [id], onDelete: Cascade, map: "ClientProfile_userId_fkey")
+  eboxdocument       eboxdocument[]
+  fundingapplication fundingapplication[]
+
+  @@index([assignedCoachId], map: "ClientProfile_assignedCoachId_fkey")
+}
+
+model cmspage {
+  id              String   @id
+  slug            String   @unique(map: "CmsPage_slug_key")
+  title           String
+  headline        String   @db.Text
+  summary         String   @db.Text
+  heroImage       String?  @db.Text
+  metaDescription String?  @db.Text
+  faqs            String?  @db.LongText
+  lastUpdated     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime
+}
+
+model commissionledger {
+  id               String                  @id
+  coachId          String
+  amount           Decimal                 @db.Decimal(12, 2)
+  type             String
+  description      String                  @db.Text
+  periodMonth      Int
+  periodYear       Int
+  status           commissionledger_status @default(PENDING)
+  stripeTransferId String?
+  createdAt        DateTime                @default(now())
+  bizproprofile    bizproprofile           @relation(fields: [coachId], references: [id], onDelete: Cascade, map: "CommissionLedger_coachId_fkey")
+
+  @@index([coachId, periodYear, periodMonth], map: "CommissionLedger_coachId_periodYear_periodMonth_idx")
+}
+
+model commissionrule {
+  id             String   @id
+  serviceName    String
+  category       String
+  basePercent    Decimal  @default(2.00) @db.Decimal(5, 2)
+  flatBonus      Decimal  @default(0.00) @db.Decimal(10, 2)
+  rankMultiplier Decimal  @default(1.00) @db.Decimal(4, 2)
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime
+}
+
+model eboxdocument {
+  id            String         @id
+  clientId      String?
+  uploaderId    String
+  fileName      String
+  s3Key         String         @unique(map: "EboxDocument_s3Key_key")
+  fileSizeBytes Int
+  mimeType      String
+  category      String
+  isEncrypted   Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime
+  clientprofile clientprofile? @relation(fields: [clientId], references: [id], map: "EboxDocument_clientId_fkey")
+  user          user           @relation(fields: [uploaderId], references: [id], onDelete: Cascade, map: "EboxDocument_uploaderId_fkey")
+
+  @@index([clientId, category], map: "EboxDocument_clientId_category_idx")
+  @@index([uploaderId], map: "EboxDocument_uploaderId_fkey")
+}
+
+model employerprofile {
+  id          String   @id
+  userId      String   @unique(map: "EmployerProfile_userId_key")
+  companyName String
+  industry    String?
+  website     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  user        user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "EmployerProfile_userId_fkey")
+  job         job[]
+}
+
+model fundingapplication {
+  id              String                         @id
+  clientId        String
+  facilityName    String
+  requestedAmount Decimal                        @db.Decimal(12, 2)
+  approvedAmount  Decimal?                       @db.Decimal(12, 2)
+  interestRate    String?
+  currentStep     fundingapplication_currentStep @default(SUBMITTED)
+  underwriterName String?
+  notes           String?                        @db.Text
+  createdAt       DateTime                       @default(now())
+  updatedAt       DateTime
+  clientprofile   clientprofile                  @relation(fields: [clientId], references: [id], onDelete: Cascade, map: "FundingApplication_clientId_fkey")
+
+  @@index([clientId], map: "FundingApplication_clientId_fkey")
+}
+
+model invoice {
+  id              String   @id
+  userId          String
+  invoiceNumber   String   @unique(map: "Invoice_invoiceNumber_key")
+  stripeInvoiceId String?  @unique(map: "Invoice_stripeInvoiceId_key")
+  amountPaid      Decimal  @db.Decimal(10, 2)
+  currency        String   @default("USD")
+  status          String   @default("Paid")
+  pdfReceiptUrl   String?  @db.Text
+  createdAt       DateTime @default(now())
+  user            user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Invoice_userId_fkey")
+
+  @@index([userId], map: "Invoice_userId_fkey")
+}
+
+model job {
+  id              String           @id
+  employerId      String
+  title           String
+  category        String
+  state           String
+  city            String
+  salaryMin       Decimal?         @db.Decimal(10, 2)
+  salaryMax       Decimal?         @db.Decimal(10, 2)
+  jobType         String
+  description     String           @db.Text
+  status          job_status       @default(PENDING)
+  rejectionReason String?          @db.Text
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime
+  employerprofile employerprofile  @relation(fields: [employerId], references: [id], onDelete: Cascade, map: "Job_employerId_fkey")
+  jobapplication  jobapplication[]
+
+  @@index([employerId], map: "Job_employerId_fkey")
+  @@index([status, category, state], map: "Job_status_category_state_idx")
+}
+
+model jobapplication {
+  id               String           @id
+  jobId            String
+  seekerId         String
+  status           String           @default("SUBMITTED")
+  coverLetter      String?          @db.Text
+  createdAt        DateTime         @default(now())
+  job              job              @relation(fields: [jobId], references: [id], onDelete: Cascade, map: "JobApplication_jobId_fkey")
+  jobseekerprofile jobseekerprofile @relation(fields: [seekerId], references: [id], onDelete: Cascade, map: "JobApplication_seekerId_fkey")
+
+  @@unique([jobId, seekerId], map: "JobApplication_jobId_seekerId_key")
+  @@index([seekerId], map: "JobApplication_seekerId_fkey")
+}
+
+model jobseekerprofile {
+  id             String           @id
+  userId         String           @unique(map: "JobSeekerProfile_userId_key")
+  resumeS3Key    String?
+  skills         String?          @db.LongText
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime
+  jobapplication jobapplication[]
+  user           user             @relation(fields: [userId], references: [id], onDelete: Cascade, map: "JobSeekerProfile_userId_fkey")
+}
+
+model lead {
+  id               String         @id
+  fullName         String
+  email            String
+  phone            String?
+  businessName     String?
+  serviceRequested String
+  estimatedValue   Decimal?       @db.Decimal(12, 2)
+  stage            lead_stage     @default(NEW_INQUIRY)
+  assignedCoachId  String?
+  source           String         @default("Website Direct")
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime
+  bizproprofile    bizproprofile? @relation(fields: [assignedCoachId], references: [id], map: "Lead_assignedCoachId_fkey")
+
+  @@index([assignedCoachId], map: "Lead_assignedCoachId_fkey")
+  @@index([stage, assignedCoachId], map: "Lead_stage_assignedCoachId_idx")
+}
+
+model pendingapproval {
+  id              String   @id
+  type            String
+  title           String
+  subtitle        String?  @db.Text
+  amount          String?
+  date            String
+  status          String   @default("Pending")
+  rejectionReason String?  @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime
+}
+
+model permissionauditlog {
+  id         String   @id
+  timestamp  DateTime @default(now())
+  user       String
+  action     String   @db.Text
+  roleTarget String
+}
+
+model rankrule {
+  level                     Int      @id
+  title                     String   @unique(map: "RankRule_title_key")
+  personalMonthlyVolumeMin  Decimal  @default(0.00) @db.Decimal(12, 2)
+  personalMonthlyVolumeMax  Decimal  @default(0.00) @db.Decimal(12, 2)
+  consecutiveMonthsRequired Int      @default(3)
+  requiredTeamMembers       Int      @default(0)
+  teamOverridePercent       Decimal  @default(0.00) @db.Decimal(5, 2)
+  directCommissionPercent   Decimal  @default(10.00) @db.Decimal(5, 2)
+  description               String?  @db.Text
+  termsOfPromotion          String?  @db.Text
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime
+}
+
+model rolepermission {
+  id        String   @id
+  roleId    String
+  menuId    String
+  canView   Boolean  @default(false)
+  canCreate Boolean  @default(false)
+  canEdit   Boolean  @default(false)
+  canDelete Boolean  @default(false)
+  canExport Boolean  @default(false)
+  scope     String   @default("OWN")
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+
+  @@unique([roleId, menuId], map: "RolePermission_roleId_menuId_key")
+}
+
+model scoreboardarchive {
+  id                 String   @id
+  month              String
+  topProducer        String
+  secondPlace        String?
+  thirdPlace         String?
+  totalNetworkVolume String
+  totalDealsClosed   Int
+  createdAt          DateTime @default(now())
+}
+
+model scoreboardauditlog {
+  id         String   @id
+  timestamp  DateTime @default(now())
+  modifiedBy String
+  action     String
+  changes    String?  @db.Text
+}
+
+model scoreboardentry {
+  id            String        @id
+  coachId       String
+  periodType    String
+  periodKey     String
+  closedVolume  Decimal       @default(0.00) @db.Decimal(14, 2)
+  dealsClosed   Int           @default(0)
+  pointsEarned  Int           @default(0)
+  rankPosition  Int?
+  updatedAt     DateTime
+  bizproprofile bizproprofile @relation(fields: [coachId], references: [id], onDelete: Cascade, map: "ScoreboardEntry_coachId_fkey")
+
+  @@unique([coachId, periodType, periodKey], map: "ScoreboardEntry_coachId_periodType_periodKey_key")
+}
+
+model scoreboardsetting {
+  id                          String   @id
+  cycleType                   String   @default("Monthly")
+  tvModeIntervalSeconds       Int      @default(15)
+  qualificationMinVolume      Decimal  @default(25000.00) @db.Decimal(12, 2)
+  directDealPointMultiplier   Int      @default(10)
+  overrideDealPointMultiplier Int      @default(5)
+  rankPromotionBonusPoints    Int      @default(50)
+  showEarningsPublicly        Boolean  @default(false)
+  showRankBadges              Boolean  @default(true)
+  autoArchiveAtMonthEnd       Boolean  @default(true)
+  tvDisplayTheme              String   @default("Dark Blue Glow")
+  updatedAt                   DateTime
+}
+
+model serviceproduct {
+  id             String   @id
+  title          String
+  sku            String   @unique(map: "ServiceProduct_sku_key")
+  category       String
+  basePrice      Decimal  @db.Decimal(12, 2)
+  commissionRate String
+  status         String   @default("Active")
+  description    String?  @db.Text
+  updatedAt      DateTime
+  createdAt      DateTime @default(now())
+
+  @@index([category, status], map: "ServiceProduct_category_status_idx")
+}
+
+model subscription {
+  id                   String              @id
+  userId               String
+  stripeSubscriptionId String?             @unique(map: "Subscription_stripeSubscriptionId_key")
+  planTier             String
+  amount               Decimal             @db.Decimal(10, 2)
+  status               subscription_status @default(ACTIVE)
+  currentPeriodStart   DateTime            @default(now())
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean             @default(false)
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime
+  user                 user                @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Subscription_userId_fkey")
+
+  @@index([userId], map: "Subscription_userId_fkey")
+}
+
+model subscriptionplan {
+  id           String   @id
+  name         String
+  monthlyPrice Decimal  @db.Decimal(10, 2)
+  annualPrice  Decimal  @db.Decimal(10, 2)
+  targetRank   String
+  features     String?  @db.LongText
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime
+}
+
+model territorydistrict {
+  id                Int             @id
+  number            Int             @unique(map: "TerritoryDistrict_number_key")
+  name              String
+  headOfficeCity    String
+  seniorVpName      String?
+  exclusivityStatus String          @default("Allocated")
+  branchCities      String?         @db.LongText
+  states            String?         @db.LongText
+  volume            Decimal         @default(0.00) @db.Decimal(14, 2)
+  brokersCount      Int             @default(0)
+  territorynote     territorynote[]
+}
+
+model territorynote {
+  id                String            @id
+  districtId        Int
+  coachId           String?
+  author            String            @default("Super Admin")
+  content           String            @db.Text
+  date              String?
+  createdAt         DateTime          @default(now())
+  bizproprofile     bizproprofile?    @relation(fields: [coachId], references: [id], map: "TerritoryNote_coachId_fkey")
+  territorydistrict territorydistrict @relation(fields: [districtId], references: [id], onDelete: Cascade, map: "TerritoryNote_districtId_fkey")
+
+  @@index([coachId], map: "TerritoryNote_coachId_fkey")
+  @@index([districtId], map: "TerritoryNote_districtId_fkey")
+}
+
+model trainingmodule {
+  id              String   @id
+  title           String
+  category        String
+  minRankRequired Int      @default(1)
+  duration        String
+  videoUrl        String   @db.Text
+  status          String   @default("Published")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime
+}
+
+model user {
+  id               String             @id
+  email            String             @unique(map: "User_email_key")
+  passwordHash     String
+  role             user_role          @default(BIZ_PRO)
+  fullName         String
+  phone            String?
+  companyName      String?
+  avatarUrl        String?            @db.Text
+  status           user_status        @default(ACTIVE)
+  twoFactorActive  Boolean            @default(false)
+  twoFactorOtp     String?
+  otpExpiresAt     DateTime?
+  lastLoginAt      DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime
+  affiliateprofile affiliateprofile?
+  bizproprofile    bizproprofile?
+  bulletincomment  bulletincomment[]
+  bulletinpost     bulletinpost[]
+  bulletinreaction bulletinreaction[]
+  clientprofile    clientprofile?
+  eboxdocument     eboxdocument[]
+  employerprofile  employerprofile?
+  invoice          invoice[]
+  jobseekerprofile jobseekerprofile?
+  subscription     subscription[]
+
+  @@index([role, status], map: "User_role_status_idx")
+}
+
+enum user_role {
+  ADMIN
+  BIZ_PRO
+  CLIENT
+  AFFILIATE
+  EMPLOYER
+  JOB_SEEKER
+}
+
+enum affiliatepayout_status {
+  PENDING
+  PROCESSING
+  PAID
+  FAILED
+}
+
+enum subscription_status {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  TRIALING
+}
+
+enum fundingapplication_currentStep {
+  SUBMITTED
+  DOCS_VERIFIED
+  UNDERWRITING_REVIEW
+  COMMITTEE_APPROVED
+  FUNDED_ACTIVE
+}
+
+enum commissionledger_status {
+  PENDING
+  PROCESSING
+  PAID
+  FAILED
+}
+
+enum lead_stage {
+  NEW_INQUIRY
+  CONTACTED
+  QUALIFIED
+  PROPOSAL_SENT
+  UNDERWRITING
+  CLOSED_WON
+  CLOSED_LOST
+}
+
+enum user_status {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum job_status {
+  PENDING
+  APPROVED
+  REJECTED
+}
